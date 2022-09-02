@@ -96,3 +96,8 @@ Frontend
  yarn add @testing-library/react @testing-library/jest-dom
  yarn add --dev fetch-mock redux-mock-store @types/fetch-mock @types/redux-mock-store node-fetch@2
  ```
+
+### Format
+- File Name: camelCase
+- React Component: PascalCase
+- Python/SQL : snake_case
