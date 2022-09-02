@@ -1,6 +1,6 @@
 # c21-tw-cap-group2
 
-## Set up environment
+## `Folder Structure`
 ```
 Backend
 ├── middleware
@@ -54,3 +54,5 @@ Frontend
 ├── tsconfig.json
 └── yarn.lock
 ```
+
+## `Command`
