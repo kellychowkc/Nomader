@@ -33,10 +33,16 @@ Frontend
 │   └── manifest.json
 ├── README.md
 ├── src
+│   ├── api
 │   ├── Components
 │       └── Login.tsx
 │   ├── Redux
-│       └── 
+│       ├── course
+│           ├── actions.ts
+│           ├── reducer.ts
+│           ├── state.ts
+│           └── thunks.ts
+│       └── store.ts
 │   ├── App.css
 │   ├── App.test.tsx
 │   ├── App.tsx
