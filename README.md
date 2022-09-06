@@ -91,8 +91,14 @@ Frontend
  yarn add redux-thunk
  yarn add jwt-simple @types/jwt-simple permit @types/permit
  yarn add jwt-decode
+ yarn add @chakra-ui/react @emotion/react @emotion/styled framer-motion
  
  Testing:
  yarn add @testing-library/react @testing-library/jest-dom
  yarn add --dev fetch-mock redux-mock-store @types/fetch-mock @types/redux-mock-store node-fetch@2
  ```
+
+### Format
+- File Name: camelCase
+- React Component: PascalCase
+- Python/SQL : snake_case
