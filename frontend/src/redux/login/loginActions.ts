@@ -1,8 +1,7 @@
 import React from 'react'
 
 function actions() {
-  return (
-  )
+  return
 }
 
 export default actions
