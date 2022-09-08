@@ -221,9 +221,6 @@ function SignUp() {
                                                 ></input>
                                             </div>
                                         </Center>
-                                        <Center w="full">
-                                            <Button w="full"></Button>
-                                        </Center>
                                     </Stack>
                                 </FormControl>
                                 <HStack>
