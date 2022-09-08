@@ -1,76 +1,62 @@
-import { Box, Container, Flex, Grid, GridItem } from '@chakra-ui/react'
+import { Box, Container, Flex, Image } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'
+import CallToAction from '../callToActionOnLanding/CallToAction'
 import InfiniteGrid from '../infiniteGrid/InfiniteGrid'
+import Nav from '../navBar/NavBar'
 
 function Landing() {
     return (
-        <Container>
-            <Text fontSize="3xl">Landing</Text>
-            <Box
-                w="100%"
-                h={['80vh', '60vh', '40vh', '30vh']}
-                border="1px"
-                borderColor="gray.200"
-            >
-                Main Box
+        <>
+            <Box w="90vw" h="auto" mb="3">
+                <Nav />
+            </Box>
+            <Box w="90vw" h={['90vh', '60vh', '50vh', '50vh', '50vh']} mb="3">
+                <CallToAction />
             </Box>
             <Flex
+                w="90vw"
+                mb="3"
                 flexDirection={['column', 'column', 'row', 'row']}
-                w="100%"
                 justify="space-between"
                 align="center"
             >
                 <Box
-                    w={['100%', '100%', '30%', '30%']}
-                    h={['35vh', '30vh', '25vh', '25vh']}
+                    w={['100%', '100%', '30%', '30%', '30%']}
+                    h={['30vh', '25vh', '25vh', '30vh', '35vh']}
                     border="1px"
                     borderColor="gray.200"
+                    backgroundColor="#0ABAB5"
                 >
-                    Sub Box #1
+                    <Image></Image>
+                    <Text>Sub Box #1</Text>
                 </Box>
                 <Box
-                    w={['100%', '100%', '30%', '30%']}
-                    h={['35vh', '30vh', '25vh', '25vh']}
+                    w={['100%', '100%', '30%', '30%', '30%']}
+                    h={['30vh', '25vh', '25vh', '30vh', '35vh']}
                     border="1px"
                     borderColor="gray.200"
+                    backgroundColor="#0ABAB5"
                 >
-                    Sub Box #2
+                    <Image></Image>
+                    <Text>Sub Box #2</Text>
                 </Box>
                 <Box
-                    w={['100%', '100%', '30%', '30%']}
-                    h={['35vh', '30vh', '25vh', '25vh']}
+                    w={['100%', '100%', '30%', '30%', '30%']}
+                    h={['30vh', '25vh', '25vh', '30vh', '35vh']}
                     border="1px"
                     borderColor="gray.200"
+                    backgroundColor="#0ABAB5"
                 >
-                    Sub Box #3
+                    <Image></Image>
+                    <Box>
+                        <Text>Sub Box #3</Text>
+                    </Box>
                 </Box>
             </Flex>
-            {/* <Grid
-                templateAreas={`"header header"
-              "nav main" 
-              "nav footer"`}
-                gridTemplateRows={'50px 1fr 30px'}
-                gridTemplateColumns={'150px 1fr'}
-                h="200px"
-                gap="1"
-                color="blackAlpha.700"
-                fontWeight="bold"
-            >
-                <GridItem pl="2" bg="orange.300" area={'header'}>
-                    Header
-                </GridItem>
-                <GridItem pl="2" bg="pink.300" area={'nav'}>
-                    Nav
-                </GridItem>
-                <GridItem pl="2" bg="green.300" area={'main'}>
-                    Main
-                </GridItem>
-                <GridItem pl="2" bg="blue.300" area={'footer'}>
-                    Footer
-                </GridItem>
-            </Grid> */}
-            <InfiniteGrid />
-        </Container>
+            <Box w="90vw">
+                <InfiniteGrid />
+            </Box>
+        </>
     )
 }
 

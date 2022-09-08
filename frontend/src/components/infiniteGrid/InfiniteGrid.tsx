@@ -15,7 +15,7 @@ const Item = ({ num }: any) => (
     <div
         className="item"
         style={{
-            width: '250px',
+            width: '450px',
         }}
     >
         <div className="thumbnail">
@@ -35,6 +35,7 @@ export default function InfiniteGrid() {
 
     return (
         <FrameInfiniteGrid
+            maxW={'7xl'}
             className="container"
             gap={5}
             frame={[
