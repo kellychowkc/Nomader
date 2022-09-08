@@ -1,0 +1,52 @@
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+}
+
+.logoContainer {
+    margin: 0 auto;
+    position: fixed;
+    top: -15rem;
+    box-sizing: border-box;
+    -webkit-clip-path: polygon(
+        50% 0,
+        100% 25%,
+        100% 75%,
+        50% 100%,
+        0 75%,
+        0 25%
+    );
+    -moz-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    -ms-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    height: 29rem;
+    background: inherit;
+    width: 100%;
+    color: #b0d8bc;
+    font-family: 'Roboto', sans-serif;
+}
+
+img {
+    height: 30rem;
+    width: 105%;
+}
+
+.signInContainer {
+    width: 100%;
+    position: relative;
+    top: 6rem;
+    padding: 0 1.5rem;
+}
+
+.btn {
+    transition: 0.5s;
+    text-align: center;
+    transition: 0.5s;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
