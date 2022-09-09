@@ -16,7 +16,7 @@ import {
 
 export default function CallToAction() {
     return (
-        <Container maxW={'7xl'}>
+        <Container w="90vw">
             <Stack
                 align={'center'}
                 spacing={{ base: 8, md: 10 }}

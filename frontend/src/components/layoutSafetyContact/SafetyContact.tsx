@@ -20,26 +20,26 @@ import {
 import {
     MdPhone,
     MdEmail,
-    MdLocationOn,
     MdFacebook,
-    MdOutlineEmail,
     MdHealthAndSafety,
     MdPerson,
 } from 'react-icons/md'
 import { BsGithub, BsDiscord, BsPerson } from 'react-icons/bs'
+import Nav from '../common/navBar/NavBar'
+import Dock from '../common/dock/Dock'
 
 export default function Contact() {
     return (
         <Flex
-            w="90vw"
-            h="auto"
-            mb="3"
+            w="full"
+            h="full"
             direction="column"
             justify="center"
             align="center"
         >
+            <Nav />
             <Container
-                bg="#43BeBD"
+                bg="#FFFFFF"
                 maxW="full"
                 mt={0}
                 centerContent
@@ -61,10 +61,7 @@ export default function Contact() {
                                             Safety Contact
                                             <MdHealthAndSafety />
                                         </Heading>
-                                        <Text
-                                            mt={{ sm: 3, md: 3, lg: 5 }}
-                                            color="gray.500"
-                                        >
+                                        <Text mt={{ sm: 3, md: 3, lg: 5 }}>
                                             Notify the person you trust about
                                             your safety. <p></p>Fill up your
                                             safety contact info to setup the
@@ -74,24 +71,25 @@ export default function Contact() {
                                             py={{
                                                 base: 5,
                                                 sm: 5,
-                                                md: 8,
-                                                lg: 10,
+                                                md: 5,
+                                                lg: 5,
                                             }}
                                         >
                                             <VStack
-                                                pl={0}
+                                                pl={3}
                                                 spacing={3}
                                                 alignItems="flex-start"
                                             >
                                                 <Text
                                                     fontSize="20px"
                                                     fontWeight="bold"
+                                                    align="center"
                                                 >
                                                     Trusted Person Info
                                                 </Text>
                                                 <Button
                                                     size="md"
-                                                    height="48px"
+                                                    height="40px"
                                                     width="200px"
                                                     variant="ghost"
                                                     color="#DCE2FF"
@@ -109,7 +107,7 @@ export default function Contact() {
                                                 </Button>
                                                 <Button
                                                     size="md"
-                                                    height="48px"
+                                                    height="40px"
                                                     width="200px"
                                                     variant="ghost"
                                                     color="#DCE2FF"
@@ -127,7 +125,7 @@ export default function Contact() {
                                                 </Button>
                                                 <Button
                                                     size="md"
-                                                    height="48px"
+                                                    height="40px"
                                                     width="200px"
                                                     variant="ghost"
                                                     color="#DCE2FF"
@@ -143,28 +141,10 @@ export default function Contact() {
                                                 >
                                                     person@iTrust.com
                                                 </Button>
-                                                <Button
-                                                    size="md"
-                                                    height="48px"
-                                                    width="200px"
-                                                    variant="ghost"
-                                                    color="#DCE2FF"
-                                                    _hover={{
-                                                        border: '2px solid #1C6FEB',
-                                                    }}
-                                                    leftIcon={
-                                                        <MdLocationOn
-                                                            color="#1970F1"
-                                                            size="20px"
-                                                        />
-                                                    }
-                                                >
-                                                    Hong Kong, Hong Kong
-                                                </Button>
                                             </VStack>
                                         </Box>
                                         <HStack
-                                            mt={{ lg: 10, md: 10 }}
+                                            mt={{ lg: 5, md: 5 }}
                                             spacing={5}
                                             px={5}
                                             alignItems="flex-start"
@@ -256,6 +236,7 @@ export default function Contact() {
                     </Box>
                 </Flex>
             </Container>
+            <Dock />
         </Flex>
     )
 }

@@ -38,23 +38,25 @@ import { ReactText } from 'react'
 interface LinkItemProps {
     name: string
     icon: IconType
+    path: string
 }
 const LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome },
-    { name: 'Dashboard', icon: FiTrendingUp },
-    { name: 'Manage User', icon: FiUser },
-    { name: 'Manage Forum', icon: FiStar },
-    { name: 'Manage Destination', icon: FiCompass },
+    { name: 'Home', icon: FiHome, path: '/' },
+    { name: 'Dashboard', icon: FiTrendingUp, path: '/control' },
+    { name: 'Manage User', icon: FiUser, path: '/user' },
+    { name: 'Manage Forum', icon: FiStar, path: '/' },
+    { name: 'Manage Destination', icon: FiCompass, path: '/' },
 ]
 
 export default function ControlPanel({ children }: { children: ReactNode }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <Box
-            w="90vw"
+            w="100vw"
             h="auto"
             minH="100vh"
             bg={useColorModeValue('gray.100', 'gray.900')}
+            m="0"
         >
             <SidebarContent
                 onClose={() => onClose}
@@ -105,7 +107,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 justifyContent="space-between"
             >
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-                    Logo
+                    Nomader
                 </Text>
                 <CloseButton
                     display={{ base: 'flex', md: 'none' }}
@@ -113,7 +115,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon}>
+                <NavItem key={link.name} icon={link.icon} path={link.path}>
                     {link.name}
                 </NavItem>
             ))}
@@ -124,11 +126,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
     icon: IconType
     children: ReactText
+    path: string
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
     return (
         <Link
-            href="#"
+            href={path}
             style={{ textDecoration: 'none' }}
             _focus={{ boxShadow: 'none' }}
         >
@@ -140,7 +143,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
                 role="group"
                 cursor="pointer"
                 _hover={{
-                    bg: 'cyan.400',
+                    bg: '#0ABAB5',
                     color: 'white',
                 }}
                 {...rest}
@@ -191,7 +194,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 fontFamily="monospace"
                 fontWeight="bold"
             >
-                Logo
+                Nomader
             </Text>
 
             <HStack spacing={{ base: '0', md: '6' }}>

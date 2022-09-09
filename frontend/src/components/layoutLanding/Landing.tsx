@@ -1,20 +1,28 @@
-import { Box, Container, Flex, Image } from '@chakra-ui/react'
-import { Text } from '@chakra-ui/react'
+import { Box, Container, Flex, Image, Text } from '@chakra-ui/react'
+import Nav from '../common/navBar/NavBar'
 import CallToAction from '../callToActionOnLanding/CallToAction'
 import InfiniteGrid from '../infiniteGrid/InfiniteGrid'
-import Nav from '../navBar/NavBar'
+import Dock from '../common/dock/Dock'
 
 function Landing() {
     return (
-        <>
-            <Box w="90vw" h="auto" mb="3">
-                <Nav />
-            </Box>
-            <Box w="90vw" h={['90vh', '60vh', '50vh', '50vh', '50vh']} mb="3">
-                <CallToAction />
-            </Box>
+        <Flex
+            w="full"
+            h="full"
+            direction="column"
+            justify="center"
+            align="center"
+        >
+            {/* === NavBar === */}
+            <Nav />
+
+            {/* === Main Section - Call To Action === */}
+
+            <CallToAction />
+
             <Flex
                 w="90vw"
+                h="auto"
                 mb="3"
                 flexDirection={['column', 'column', 'row', 'row']}
                 justify="space-between"
@@ -56,7 +64,8 @@ function Landing() {
             <Box w="90vw">
                 <InfiniteGrid />
             </Box>
-        </>
+            <Dock />
+        </Flex>
     )
 }
 
