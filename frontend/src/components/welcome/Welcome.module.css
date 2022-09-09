@@ -14,8 +14,8 @@
 }
 
 .welcomeBox {
-    height: 120%;
-    width: 120%;
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,7 +54,7 @@
 
 
 .button {
-    background-color: #ffffff8e;
+    /* background: #ffffffbb; */
     margin: 1rem;
     width: 70%;
     display: flex;

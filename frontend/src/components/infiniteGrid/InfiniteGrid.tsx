@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FrameInfiniteGrid } from '@egjs/react-infinitegrid'
+import { MasonryInfiniteGrid } from '@egjs/react-infinitegrid'
 
 function getItems(nextGroupKey: number, count: number) {
     const nextItems = []
@@ -15,7 +15,7 @@ const Item = ({ num }: any) => (
     <div
         className="item"
         style={{
-            width: '450px',
+            width: '32%',
         }}
     >
         <div className="thumbnail">
@@ -30,19 +30,14 @@ const Item = ({ num }: any) => (
     </div>
 )
 
-export default function InfiniteGrid() {
+export default function App() {
     const [items, setItems] = React.useState(() => getItems(0, 10))
 
     return (
-        <FrameInfiniteGrid
-            maxW={'7xl'}
+        <MasonryInfiniteGrid
             className="container"
-            gap={5}
-            frame={[
-                [1, 1, 2, 2, 3],
-                [1, 1, 4, 5, 5],
-            ]}
-            onRequestAppend={(e: any) => {
+            gap={8}
+            onRequestAppend={(e) => {
                 const nextGroupKey = (+e.groupKey! || 0) + 1
 
                 setItems([...items, ...getItems(nextGroupKey, 10)])
@@ -55,6 +50,6 @@ export default function InfiniteGrid() {
                     num={item.key}
                 />
             ))}
-        </FrameInfiniteGrid>
+        </MasonryInfiniteGrid>
     )
 }

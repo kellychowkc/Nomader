@@ -13,11 +13,13 @@ import {
     IconProps,
     useColorModeValue,
 } from '@chakra-ui/react'
+import { Link } from 'react-router-dom'
 
 export default function CallToAction() {
     return (
-        <Container w="90vw">
+        <Container w="90vw" centerContent>
             <Stack
+                w="85vw"
                 align={'center'}
                 spacing={{ base: 8, md: 10 }}
                 py={{ base: 20, md: 28 }}
@@ -67,7 +69,7 @@ export default function CallToAction() {
                             bg={'#0ABAB5'}
                             // _hover={{ bg: 'red.500' }}
                         >
-                            Sign Up
+                            <Link to="/welcome">Sign Up</Link>
                         </Button>
                         <Button
                             rounded={'full'}

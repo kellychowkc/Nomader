@@ -1,4 +1,11 @@
-import { Button, HStack, VStack, Text, Flex } from '@chakra-ui/react'
+import {
+    Button,
+    HStack,
+    VStack,
+    Text,
+    Flex,
+    useColorModeValue,
+} from '@chakra-ui/react'
 import React from 'react'
 import { MdChat, MdForum, MdHome, MdPeople, MdPerson } from 'react-icons/md'
 import { Link } from 'react-router-dom'
@@ -22,15 +29,15 @@ function Dock() {
                     justifyContent="space-around"
                     position="fixed"
                     bottom="0"
-                    bgColor="#0ABAB5"
+                    bg={useColorModeValue('gray.100', 'gray.900')}
                 >
                     <Button
                         h="60px"
                         w="60px"
-                        bgColor="#0ABAB5"
+                        bg={useColorModeValue('gray.100', 'gray.900')}
                         _hover={{
-                            color: 'white',
-                            boxShadow: '0px 0px 5px',
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.200', 'gray.700'),
                         }}
                     >
                         <Link to="/">
@@ -43,10 +50,10 @@ function Dock() {
                     <Button
                         h="60px"
                         w="60px"
-                        bgColor="#0ABAB5"
+                        bg={useColorModeValue('gray.100', 'gray.900')}
                         _hover={{
-                            color: 'white',
-                            boxShadow: '0px 0px 5px',
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.200', 'gray.700'),
                         }}
                     >
                         <Link to="/forum">
@@ -59,10 +66,10 @@ function Dock() {
                     <Button
                         h="60px"
                         w="60px"
-                        bgColor="#0ABAB5"
+                        bg={useColorModeValue('gray.100', 'gray.900')}
                         _hover={{
-                            color: 'white',
-                            boxShadow: '0px 0px 5px',
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.200', 'gray.700'),
                         }}
                     >
                         <Link to="/friends">
@@ -75,10 +82,10 @@ function Dock() {
                     <Button
                         h="60px"
                         w="60px"
-                        bgColor="#0ABAB5"
+                        bg={useColorModeValue('gray.100', 'gray.900')}
                         _hover={{
-                            color: 'white',
-                            boxShadow: '0px 0px 5px',
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.200', 'gray.700'),
                         }}
                     >
                         <Link to="/chat">
@@ -92,10 +99,10 @@ function Dock() {
                     <Button
                         h="60px"
                         w="60px"
-                        bgColor="#0ABAB5"
+                        bg={useColorModeValue('gray.100', 'gray.900')}
                         _hover={{
-                            color: 'white',
-                            boxShadow: '0px 0px 5px',
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.200', 'gray.700'),
                         }}
                     >
                         <Link to="/profile">
