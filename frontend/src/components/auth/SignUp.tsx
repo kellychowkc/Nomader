@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2'
 import styles from './SignUp.module.css'
 import { useFormik } from 'formik'
 import {
@@ -12,15 +13,13 @@ import {
     Heading,
     Select,
     Link,
-    Avatar,
-    AvatarBadge,
-    IconButton,
     Center,
     Textarea,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon, SmallCloseIcon } from '@chakra-ui/icons'
 import { FaTransgender, FaBirthdayCake } from 'react-icons/fa'
+import { BsFilePerson } from 'react-icons/bs'
 
 function SignUp() {
     const [showPassword, setShowPassword] = useState(false)
@@ -39,6 +38,8 @@ function SignUp() {
             phoneNum: '',
             country: '',
             profile: '',
+            job: '',
+            information: '',
         },
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2))
@@ -46,6 +47,34 @@ function SignUp() {
     })
 
     function toNextPage() {
+        console.log(
+            formik.values.firstName,
+            formik.values.lastName,
+            formik.values.username,
+            formik.values.password,
+            formik.values.email,
+            formik.values.phoneNum
+        )
+        if (
+            formik.values.firstName === '' ||
+            formik.values.lastName === '' ||
+            formik.values.username === '' ||
+            formik.values.password === '' ||
+            formik.values.email === '' ||
+            formik.values.phoneNum === ''
+        ) {
+            Swal.fire({
+                title: 'Notice',
+                text: 'Please input all the information',
+                icon: 'warning',
+            })
+            return
+        } else {
+            console.log('ok')
+            setNextPage(!nextPage)
+        }
+    }
+    function goBack() {
         setNextPage(!nextPage)
     }
 
@@ -54,11 +83,8 @@ function SignUp() {
         const reader = new FileReader()
         const url = reader.readAsDataURL(file)
         reader.onloadend = function (e) {
-            // console.log('check check url', reader.result)
             setImageStore(reader.result as string)
-            // console.log('show url', url)
         }
-        // console.log(file)
     }
 
     return (
@@ -77,7 +103,6 @@ function SignUp() {
                             fontSize={'4xl'}
                             color={'#b0d8bc'}
                             fontWeight={'500'}
-                            margin={'0'}
                         >
                             Sign up
                         </Heading>
@@ -87,16 +112,32 @@ function SignUp() {
                             <Stack spacing={2}>
                                 <HStack>
                                     <Box>
-                                        <FormControl id="firstName" isRequired>
+                                        <FormControl
+                                            id="firstName"
+                                            className={styles.box}
+                                            isRequired
+                                        >
                                             <Input
+                                                id="firstName"
+                                                name="firstName"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.firstName}
                                                 type="text"
                                                 placeholder={'First Name'}
                                             />
                                         </FormControl>
                                     </Box>
                                     <Box>
-                                        <FormControl id="lastName" isRequired>
+                                        <FormControl
+                                            id="lastName"
+                                            className={styles.box}
+                                            isRequired
+                                        >
                                             <Input
+                                                id="lastName"
+                                                name="lastName"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.lastName}
                                                 type="text"
                                                 placeholder={'Last Name'}
                                             />
@@ -105,22 +146,42 @@ function SignUp() {
                                 </HStack>
                                 <HStack>
                                     <Box>
-                                        <FaTransgender />
+                                        <FaTransgender
+                                            className={styles.icon}
+                                        />
                                     </Box>
                                     <Box>
-                                        <FormControl isRequired>
-                                            <Select>
+                                        <FormControl
+                                            className={styles.box}
+                                            isRequired
+                                        >
+                                            <Select
+                                                id="gender"
+                                                name="gender"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.gender}
+                                                placeholder={'Gender'}
+                                            >
                                                 <option>Male</option>
                                                 <option>Female</option>
                                             </Select>
                                         </FormControl>
                                     </Box>
                                     <Box>
-                                        <FaBirthdayCake />
+                                        <FaBirthdayCake
+                                            className={styles.icon}
+                                        />
                                     </Box>
                                     <Box>
-                                        <FormControl isRequired>
+                                        <FormControl
+                                            className={styles.box}
+                                            isRequired
+                                        >
                                             <Input
+                                                id="birthday"
+                                                name="birthday"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.birthday}
                                                 placeholder="Birthday"
                                                 size="md"
                                                 type="date"
@@ -128,18 +189,47 @@ function SignUp() {
                                         </FormControl>
                                     </Box>
                                 </HStack>
-                                <FormControl id="username" isRequired>
+                                <FormControl
+                                    id="username"
+                                    className={styles.box}
+                                    isRequired
+                                >
                                     <Input
+                                        id="username"
+                                        name="username"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.username}
                                         type="text"
+                                        className={styles.box}
                                         placeholder={'Username'}
                                     />
                                 </FormControl>
-                                <FormControl id="email" isRequired>
-                                    <Input type="email" placeholder={'Email'} />
+                                <FormControl
+                                    id="email"
+                                    className={styles.box}
+                                    isRequired
+                                >
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.email}
+                                        type="email"
+                                        className={styles.box}
+                                        placeholder={'Email'}
+                                    />
                                 </FormControl>
-                                <FormControl id="password" isRequired>
+                                <FormControl
+                                    id="password"
+                                    className={styles.box}
+                                    isRequired
+                                >
                                     <InputGroup>
                                         <Input
+                                            id="password"
+                                            name="password"
+                                            onChange={formik.handleChange}
+                                            value={formik.values.password}
                                             type={
                                                 showPassword
                                                     ? 'text'
@@ -168,8 +258,17 @@ function SignUp() {
                                 </FormControl>
                                 <HStack>
                                     <Box>
-                                        <FormControl isRequired>
-                                            <Select placeholder={'Country'}>
+                                        <FormControl
+                                            className={styles.box}
+                                            isRequired
+                                        >
+                                            <Select
+                                                id="country"
+                                                name="country"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.country}
+                                                placeholder={'Country'}
+                                            >
                                                 <option>US</option>
                                                 <option>UK</option>
                                                 <option>HK</option>
@@ -177,8 +276,15 @@ function SignUp() {
                                         </FormControl>
                                     </Box>
                                     <Box>
-                                        <FormControl isRequired>
+                                        <FormControl
+                                            className={styles.box}
+                                            isRequired
+                                        >
                                             <Input
+                                                id="phoneNum"
+                                                name="phoneNum"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.phoneNum}
                                                 type="number"
                                                 placeholder={'Phone Number'}
                                             />
@@ -206,37 +312,71 @@ function SignUp() {
                                 </Stack>
                             </Stack>
                         ) : (
-                            <Stack spacing={8} pt={2}>
+                            <Stack spacing={4} pt={2}>
                                 <FormControl id="profile">
                                     <Stack
                                         direction={['column', 'row']}
-                                        spacing={10}
+                                        spacing={6}
                                     >
                                         <Center>
-                                            <div>
-                                                <img src={imageStore} />
+                                            <div
+                                                className={
+                                                    styles.profileContainer
+                                                }
+                                            >
+                                                <div className={styles.profile}>
+                                                    <BsFilePerson />
+                                                    {imageStore === '' ? (
+                                                        <img
+                                                            src={require('../../assets/profileIcon.jpeg')}
+                                                        />
+                                                    ) : (
+                                                        <img src={imageStore} />
+                                                    )}
+                                                </div>
                                                 <input
                                                     type="file"
                                                     onChange={handleImageChange}
+                                                    id="profile"
+                                                    name="profile"
+                                                    value={
+                                                        formik.values.profile
+                                                    }
+                                                    className={styles.uploadBtn}
                                                 ></input>
+                                                <p className={styles.title}>
+                                                    Upload Profile Picture
+                                                </p>
                                             </div>
                                         </Center>
                                     </Stack>
                                 </FormControl>
                                 <HStack>
-                                    <FormControl isRequired>
-                                        <Select placeholder={'Job'}>
+                                    <FormControl className={styles.box}>
+                                        <Select
+                                            id="job"
+                                            name="job"
+                                            onChange={formik.handleChange}
+                                            value={formik.values.job}
+                                            placeholder={'Job'}
+                                        >
                                             <option>Slash</option>
                                             <option>Software Engineer</option>
                                             <option>Entrepreneur</option>
                                         </Select>
                                     </FormControl>
                                 </HStack>
-                                <FormControl isRequired>
-                                    <Textarea placeholder="Write a bio" />
+                                <FormControl className={styles.box}>
+                                    <Textarea
+                                        id="information"
+                                        name="information"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.information}
+                                        placeholder="Write a bio"
+                                    />
                                 </FormControl>
                                 <Stack
-                                    spacing={6}
+                                    spacing={4}
                                     direction={['column', 'row']}
                                 >
                                     <Button
@@ -245,12 +385,13 @@ function SignUp() {
                                         }
                                         className={styles.btn}
                                         onClick={() => {
-                                            toNextPage()
+                                            goBack()
                                         }}
                                     >
                                         Return
                                     </Button>
                                     <Button
+                                        type="submit"
                                         bgImage={
                                             'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                                         }
