@@ -19,10 +19,9 @@ import ControlPanel from './components/layoutControlPanel/ControlPanel'
 import Landing from './components/layoutLanding/Landing'
 import LayoutLogin from './components/layoutLogin/layoutLogin'
 import SignUp from './components/layoutSignUp/layoutSignUp'
-import Login from './components/login/Login'
 import Forum from './components/layoutForum/Forum'
 import { MdForum } from 'react-icons/md'
-
+import Login from './components/auth/Login'
 
 function App() {
     return (
