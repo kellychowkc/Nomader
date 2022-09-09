@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactText } from 'react'
 import {
     Box,
     Flex,
@@ -15,10 +15,29 @@ import {
     Stack,
     useColorMode,
     Center,
+    HStack,
+    IconButton,
+    FlexProps,
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
+
+interface LinkItemProps {
+    name: string
+    path: string
+}
+const LinkItems: Array<LinkItemProps> = [
+    { name: 'Destinations', path: '/destination' },
+    { name: 'Safety', path: '/contact' },
+]
+
+interface NavItemProps extends FlexProps {
+    children: ReactText
+    path: string
+}
+
+const NavLink = ({ children, path, ...rest }: NavItemProps) => (
     <Link
         px={2}
         py={1}
@@ -27,7 +46,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
             textDecoration: 'none',
             bg: useColorModeValue('gray.200', 'gray.700'),
         }}
-        href={'#'}
+        href={path}
     >
         {children}
     </Link>
@@ -37,14 +56,55 @@ export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
-        <>
-            <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+        <Flex
+            w="98vw"
+            h="auto"
+            minW="270px"
+            zIndex={9999}
+            justify="center"
+            align="center"
+            m="0"
+            p="0"
+            border="0"
+            position="sticky"
+            top="0"
+        >
+            <Box
+                w="100%"
+                bg={useColorModeValue('gray.100', 'gray.900')}
+                px={4}
+                m="0"
+            >
                 <Flex
+                    w="100%"
                     h={16}
                     alignItems={'center'}
                     justifyContent={'space-between'}
                 >
-                    <Box>Logo</Box>
+                    <IconButton
+                        size={'md'}
+                        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                        aria-label={'Open Menu'}
+                        display={{ md: 'none' }}
+                        onClick={isOpen ? onClose : onOpen}
+                    />
+                    <HStack spacing={8} alignItems={'center'}>
+                        <Box>Nomader</Box>
+                        <HStack
+                            as={'nav'}
+                            spacing={4}
+                            display={{
+                                base: 'none',
+                                md: 'flex',
+                            }}
+                        >
+                            {LinkItems.map((link) => (
+                                <NavLink key={link.name} path={link.path}>
+                                    {link.name}
+                                </NavLink>
+                            ))}
+                        </HStack>
+                    </HStack>
 
                     <Flex alignItems={'center'}>
                         <Stack direction={'row'} spacing={7}>
@@ -55,7 +115,6 @@ export default function Nav() {
                                     <SunIcon />
                                 )}
                             </Button>
-
                             <Menu>
                                 <MenuButton
                                     as={Button}
@@ -87,7 +146,7 @@ export default function Nav() {
                                     </Center>
                                     <br />
                                     <MenuDivider />
-                                    <MenuItem>Your Servers</MenuItem>
+                                    <MenuItem>Your Profile</MenuItem>
                                     <MenuItem>Account Settings</MenuItem>
                                     <MenuItem>Logout</MenuItem>
                                 </MenuList>
@@ -95,7 +154,18 @@ export default function Nav() {
                         </Stack>
                     </Flex>
                 </Flex>
+                {isOpen ? (
+                    <Box pb={4} display={{ md: 'none' }}>
+                        <Stack as={'nav'} spacing={4}>
+                            {LinkItems.map((link) => (
+                                <NavLink key={link.name} path={link.path}>
+                                    {link.name}
+                                </NavLink>
+                            ))}
+                        </Stack>
+                    </Box>
+                ) : null}
             </Box>
-        </>
+        </Flex>
     )
 }
