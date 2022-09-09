@@ -11,9 +11,7 @@ import {
     Center,
 } from '@chakra-ui/react'
 import React from 'react'
-
 import { Link } from 'react-router-dom'
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Dashboard from './components/contentDashboard/Dashboard'
 import Contact from './components/layoutSafetyContact/SafetyContact'
@@ -24,6 +22,7 @@ import SignUp from './components/layoutSignUp/layoutSignUp'
 import Login from './components/login/Login'
 import Forum from './components/layoutForum/Forum'
 import { MdForum } from 'react-icons/md'
+
 
 function App() {
     return (
