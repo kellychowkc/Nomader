@@ -17,7 +17,7 @@ import {
     Textarea,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { ViewIcon, ViewOffIcon, SmallCloseIcon } from '@chakra-ui/icons'
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { FaTransgender, FaBirthdayCake } from 'react-icons/fa'
 import { BsFilePerson } from 'react-icons/bs'
 

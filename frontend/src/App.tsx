@@ -1,4 +1,3 @@
-import { PhoneIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -10,27 +9,40 @@ import {
     Flex,
     Center,
 } from '@chakra-ui/react'
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
+import Welcome from './components/welcome/Welcome'
 import Dashboard from './components/contentDashboard/Dashboard'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import ControlPanel from './components/layoutControlPanel/ControlPanel'
 import Landing from './components/layoutLanding/Landing'
 import LayoutLogin from './components/layoutLogin/layoutLogin'
-import SignUp from './components/layoutSignUp/layoutSignUp'
-import Login from './components/login/Login'
 import Forum from './components/layoutForum/Forum'
-import { MdForum } from 'react-icons/md'
 import Dock from './components/common/dock/Dock'
+import Login from './components/auth/Login'
+import SignUp from './components/auth/SignUp'
 
+import { PhoneIcon } from '@chakra-ui/icons'
+import { MdForum } from 'react-icons/md'
 
 function App() {
     return (
-        <Container minW="270px" p="0" border="0" centerContent>
+        <Container
+            h="full"
+            w="full"
+            minW="270px"
+            p="0"
+            border="0"
+            centerContent
+        >
             <Router>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="welcome" element={<Welcome />} />
+
                     <Route
                         path="control/"
                         element={<ControlPanel children={<Dashboard />} />}
@@ -119,6 +131,19 @@ function Home() {
                                 fit="contain"
                             />
                             <VStack>
+                                <Box
+                                    as="button"
+                                    borderRadius="md"
+                                    bg="green"
+                                    color="white"
+                                    px={4}
+                                    h={8}
+                                >
+                                    <Link to="/welcome">
+                                        Welcome (Box as Button + Link)
+                                    </Link>
+                                </Box>
+                                <p></p>
                                 <Box
                                     as="button"
                                     borderRadius="md"
