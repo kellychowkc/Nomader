@@ -90,101 +90,88 @@ const Chat = () => {
                     >
                         Chat List
                     </Text>
-                    <Box w="80vw">
-                        <TableContainer>
-                            <Table
-                                variant="striped"
-                                colorScheme="teal"
-                                w="100%"
-                                border="2px"
-                                borderColor="gray.100"
-                            >
-                                <TableCaption>Chat List </TableCaption>
-                                <Thead>
-                                    <Tr>
-                                        <Th>Info (Avater, name)</Th>
-                                        <Th>Time (Last message)</Th>
-                                    </Tr>
-                                </Thead>
-                                <Box
-                                    w="100%"
-                                    maxH="15vh"
-                                    border="2px"
-                                    borderColor="red"
-                                    scrollBehavior="smooth"
-                                    overflow="scroll"
-                                >
-                                    <Tbody>
-                                        <Tr>
-                                            <Td>
-                                                <HStack>
-                                                    <Box className="friendAvatar">
-                                                        <Circle
-                                                            size="30px"
-                                                            bg="pink"
-                                                        />
-                                                    </Box>
-                                                    <VStack align="left">
-                                                        <Text
-                                                            className="nickname"
-                                                            fontWeight="bold"
-                                                        >
-                                                            Eric Chu
-                                                        </Text>
-                                                        <Text className="lastMessage">
-                                                            Ha ha ha ha ha, CLS
-                                                        </Text>
-                                                    </VStack>
-                                                </HStack>
-                                            </Td>
-                                            <Td>
-                                                <Text>17:51</Text>
-                                            </Td>
-                                        </Tr>
-                                        {chatsList.map((friend: IChat) => (
-                                            <Tr>
-                                                <Td>
-                                                    <HStack>
-                                                        <Box className="friendAvatar">
-                                                            <Circle
-                                                                size="30px"
-                                                                bg={
-                                                                    friend.avatar
-                                                                }
-                                                            />
-                                                        </Box>
-                                                        <VStack align="left">
-                                                            <Text
-                                                                className="nickname"
-                                                                fontWeight="bold"
-                                                            >
-                                                                {friend.name}
-                                                            </Text>
-                                                            <Text className="lastMessage">
-                                                                {
-                                                                    friend.lastMessage
-                                                                }
-                                                            </Text>
-                                                        </VStack>
-                                                    </HStack>
-                                                </Td>
-                                                <Td>
-                                                    <Text>
-                                                        {friend.lastMessageTime}
+                    <Box
+                        w="80vw"
+                        maxH="50vh"
+                        scrollBehavior="smooth"
+                        overflow="scroll"
+                    >
+                        <Table
+                            variant="striped"
+                            colorScheme="teal"
+                            w="100%"
+                            border="2px"
+                            borderColor="gray.100"
+                        >
+                            <TableCaption>Chat List </TableCaption>
+                            <Thead w="100%">
+                                <Tr>
+                                    <Th>Info (Avater, name)</Th>
+                                    <Th>Time (Last message)</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                <Tr>
+                                    <Td w="50%">
+                                        <HStack>
+                                            <Box className="friendAvatar">
+                                                <Circle size="30px" bg="pink" />
+                                            </Box>
+                                            <VStack align="left">
+                                                <Text
+                                                    className="nickname"
+                                                    fontWeight="bold"
+                                                >
+                                                    Eric Chu
+                                                </Text>
+                                                <Text className="lastMessage">
+                                                    Ha ha ha ha ha, CLS
+                                                </Text>
+                                            </VStack>
+                                        </HStack>
+                                    </Td>
+                                    <Td w="50%">
+                                        <Text>17:51</Text>
+                                    </Td>
+                                </Tr>
+                                {chatsList.map((friend: IChat, idx: number) => (
+                                    <Tr key={idx}>
+                                        <Td>
+                                            <HStack>
+                                                <Box className="friendAvatar">
+                                                    <Circle
+                                                        size="30px"
+                                                        bg={friend.avatar}
+                                                    />
+                                                </Box>
+                                                <VStack align="left">
+                                                    <Text
+                                                        className="nickname"
+                                                        fontWeight="bold"
+                                                    >
+                                                        {friend.name}
                                                     </Text>
-                                                </Td>
-                                            </Tr>
-                                        ))}
-                                    </Tbody>
-                                </Box>
-                                <Tfoot>
-                                    <Tr>
-                                        <Th></Th>
-                                        <Th></Th>
+                                                    <Text className="lastMessage">
+                                                        {friend.lastMessage}
+                                                    </Text>
+                                                </VStack>
+                                            </HStack>
+                                        </Td>
+                                        <Td>
+                                            <Text>
+                                                {friend.lastMessageTime}
+                                            </Text>
+                                        </Td>
                                     </Tr>
-                                </Tfoot>
-                            </Table>
-                        </TableContainer>
+                                ))}
+                            </Tbody>
+                            <Tfoot>
+                                <Tr>
+                                    <Th></Th>
+                                    <Th></Th>
+                                </Tr>
+                            </Tfoot>
+                        </Table>
                     </Box>
                 </VStack>
                 <Dock />

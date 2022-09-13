@@ -69,38 +69,61 @@ const Friends = () => {
                     >
                         Friend List
                     </Text>
-                    <Box w="80vw">
-                        <TableContainer>
-                            <Table
-                                variant="striped"
-                                colorScheme="teal"
-                                w="100%"
-                                border="2px"
-                                borderColor="gray.100"
-                            >
-                                <TableCaption>Friend List </TableCaption>
-                                <Thead>
-                                    <Tr>
-                                        <Th>Info (Avater, name)</Th>
-                                        <Th>Action (message, unfriend)</Th>
-                                    </Tr>
-                                </Thead>
-                                <Box
-                                    w="100%"
-                                    maxH="15vh"
-                                    border="2px"
-                                    borderColor="red"
-                                    scrollBehavior="smooth"
-                                    overflow="scroll"
-                                >
-                                    <Tbody>
-                                        <Tr>
+                    <Box
+                        w="80vw"
+                        maxH="50vh"
+                        scrollBehavior="smooth"
+                        overflow="scroll"
+                    >
+                        <Table
+                            variant="striped"
+                            colorScheme="teal"
+                            w="100%"
+                            border="2px"
+                            borderColor="gray.100"
+                        >
+                            <TableCaption>Friend List </TableCaption>
+                            <Thead>
+                                <Tr>
+                                    <Th>Info (Avater, name)</Th>
+                                    <Th>Action (message, unfriend)</Th>
+                                </Tr>
+                            </Thead>
+
+                            <Tbody>
+                                <Tr>
+                                    <Td>
+                                        <HStack>
+                                            <Box className="friendAvatar">
+                                                <Circle size="30px" bg="pink" />
+                                            </Box>
+                                            <VStack align="left">
+                                                <Text
+                                                    className="nickname"
+                                                    fontWeight="bold"
+                                                >
+                                                    Eric Chu
+                                                </Text>
+                                                <Text className="username">
+                                                    ericishandsome
+                                                </Text>
+                                            </VStack>
+                                        </HStack>
+                                    </Td>
+                                    <Td>
+                                        <Button ml="2">Message</Button>
+                                        <Button ml="2">Unfriend</Button>
+                                    </Td>
+                                </Tr>
+                                {friendsList.map(
+                                    (friend: IFriends, idx: number) => (
+                                        <Tr key={idx}>
                                             <Td>
                                                 <HStack>
                                                     <Box className="friendAvatar">
                                                         <Circle
                                                             size="30px"
-                                                            bg="pink"
+                                                            bg={friend.avatar}
                                                         />
                                                     </Box>
                                                     <VStack align="left">
@@ -108,10 +131,10 @@ const Friends = () => {
                                                             className="nickname"
                                                             fontWeight="bold"
                                                         >
-                                                            Eric Chu
+                                                            {friend.name}
                                                         </Text>
                                                         <Text className="username">
-                                                            ericishandsome
+                                                            {friend.username}
                                                         </Text>
                                                     </VStack>
                                                 </HStack>
@@ -121,53 +144,16 @@ const Friends = () => {
                                                 <Button ml="2">Unfriend</Button>
                                             </Td>
                                         </Tr>
-                                        {friendsList.map((friend: IFriends) => (
-                                            <Tr>
-                                                <Td>
-                                                    <HStack>
-                                                        <Box className="friendAvatar">
-                                                            <Circle
-                                                                size="30px"
-                                                                bg={
-                                                                    friend.avatar
-                                                                }
-                                                            />
-                                                        </Box>
-                                                        <VStack align="left">
-                                                            <Text
-                                                                className="nickname"
-                                                                fontWeight="bold"
-                                                            >
-                                                                {friend.name}
-                                                            </Text>
-                                                            <Text className="username">
-                                                                {
-                                                                    friend.username
-                                                                }
-                                                            </Text>
-                                                        </VStack>
-                                                    </HStack>
-                                                </Td>
-                                                <Td>
-                                                    <Button ml="2">
-                                                        Message
-                                                    </Button>
-                                                    <Button ml="2">
-                                                        Unfriend
-                                                    </Button>
-                                                </Td>
-                                            </Tr>
-                                        ))}
-                                    </Tbody>
-                                </Box>
-                                <Tfoot>
-                                    <Tr>
-                                        <Th></Th>
-                                        <Th></Th>
-                                    </Tr>
-                                </Tfoot>
-                            </Table>
-                        </TableContainer>
+                                    )
+                                )}
+                            </Tbody>
+                            <Tfoot>
+                                <Tr>
+                                    <Th></Th>
+                                    <Th></Th>
+                                </Tr>
+                            </Tfoot>
+                        </Table>
                     </Box>
                 </VStack>
                 <Dock />
