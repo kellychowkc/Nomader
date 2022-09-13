@@ -27,6 +27,9 @@ import SignUp from './components/auth/SignUp'
 
 import { PhoneIcon } from '@chakra-ui/icons'
 import { MdForum } from 'react-icons/md'
+import Friends from './components/layoutFriends/Friends'
+import Profile from './components/layoutProfile/Profile'
+import Chat from './components/layoutChat/Chat'
 
 function App() {
     return (
@@ -58,13 +61,9 @@ function App() {
                     <Route path="signup" element={<SignUp />} />
                     <Route path="contact" element={<Contact />} />
                     <Route path="forum" element={<Forum />} />
-                    {/* <Route path="/friend" element={<Friend />} />
-                        <Route path="/chat" element={<Chat />} /> */}
-
-                    {/* <Route path="/forum" element={<Forum />} />
-                        <Route path="/friends" element={<Friends />} />
-                        <Route path="/chat" element={<Chat />} />
-                        <Route path="/profile" element={<Profile />} /> */}
+                    <Route path="friends" element={<Friends />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="chat" element={<Chat />} />
 
                     <Route
                         path="*"
@@ -211,6 +210,18 @@ function Home() {
                                         <p></p>(Square + Link)
                                     </Link>
                                 </Square>
+
+                                <Box
+                                    borderRadius="md"
+                                    bg="pink"
+                                    color="white"
+                                    px={4}
+                                    h={8}
+                                >
+                                    <Link to="/friends">
+                                        Friends (Box + Link)
+                                    </Link>
+                                </Box>
                             </VStack>
                         </Flex>
                     </Flex>

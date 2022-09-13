@@ -1,4 +1,3 @@
-import { ReactText } from 'react'
 import {
     Box,
     Flex,
@@ -33,7 +32,7 @@ const LinkItems: Array<LinkItemProps> = [
 ]
 
 interface NavItemProps extends FlexProps {
-    children: ReactText
+    children: string | number
     path: string
 }
 

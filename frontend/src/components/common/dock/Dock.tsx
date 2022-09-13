@@ -1,16 +1,31 @@
 import {
-    Button,
+    Box,
     HStack,
     VStack,
     Text,
     Flex,
     useColorModeValue,
+    Icon,
 } from '@chakra-ui/react'
-import React from 'react'
+import { IconType } from 'react-icons/lib'
 import { MdChat, MdForum, MdHome, MdPeople, MdPerson } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
+
+interface Action {
+    name: string
+    path: string
+    icon: IconType
+}
 
 function Dock() {
+    const actions: Action[] = [
+        { name: 'Home', path: '/', icon: MdHome },
+        { name: 'Forum', path: '/forum', icon: MdForum },
+        { name: 'Friends', path: '/friends', icon: MdPeople },
+        { name: 'Chat', path: '/Chat', icon: MdChat },
+        { name: 'Profile', path: '/profile', icon: MdPerson },
+    ]
+
     return (
         <>
             <Flex
@@ -31,87 +46,34 @@ function Dock() {
                     bottom="0"
                     bg={useColorModeValue('gray.100', 'gray.900')}
                 >
-                    <Button
-                        h="60px"
-                        w="60px"
-                        bg={useColorModeValue('gray.100', 'gray.900')}
-                        _hover={{
-                            textDecoration: 'none',
-                            bg: useColorModeValue('gray.200', 'gray.700'),
-                        }}
-                    >
-                        <Link to="/">
-                            <VStack>
-                                <MdHome size="24px" />
-                                <Text>Home</Text>
-                            </VStack>
-                        </Link>
-                    </Button>
-                    <Button
-                        h="60px"
-                        w="60px"
-                        bg={useColorModeValue('gray.100', 'gray.900')}
-                        _hover={{
-                            textDecoration: 'none',
-                            bg: useColorModeValue('gray.200', 'gray.700'),
-                        }}
-                    >
-                        <Link to="/forum">
-                            <VStack>
-                                <MdForum size="24px" />
-                                <Text>Forum</Text>
-                            </VStack>
-                        </Link>
-                    </Button>
-                    <Button
-                        h="60px"
-                        w="60px"
-                        bg={useColorModeValue('gray.100', 'gray.900')}
-                        _hover={{
-                            textDecoration: 'none',
-                            bg: useColorModeValue('gray.200', 'gray.700'),
-                        }}
-                    >
-                        <Link to="/friends">
-                            <VStack>
-                                <MdPeople size="24px" />
-                                <Text>Friends</Text>
-                            </VStack>
-                        </Link>
-                    </Button>
-                    <Button
-                        h="60px"
-                        w="60px"
-                        bg={useColorModeValue('gray.100', 'gray.900')}
-                        _hover={{
-                            textDecoration: 'none',
-                            bg: useColorModeValue('gray.200', 'gray.700'),
-                        }}
-                    >
-                        <Link to="/chat">
-                            <VStack>
-                                <MdChat size="24px" />
-                                <Text>Chat</Text>
-                            </VStack>
-                        </Link>
-                    </Button>
-
-                    <Button
-                        h="60px"
-                        w="60px"
-                        bg={useColorModeValue('gray.100', 'gray.900')}
-                        _hover={{
-                            textDecoration: 'none',
-                            bg: useColorModeValue('gray.200', 'gray.700'),
-                        }}
-                    >
-                        <Link to="/profile">
-                            <VStack>
-                                <MdPerson size="24px" />
-                                <Text>Profile</Text>
-                            </VStack>
-                        </Link>
-                    </Button>
+                    {actions.map((action: Action, idx: number) => (
+                        <Box
+                            key={idx}
+                            h="60px"
+                            w="60px"
+                            _hover={{
+                                textDecoration: 'none',
+                                color: '#FFFFFF',
+                            }}
+                        >
+                            <NavLink
+                                to={action.path}
+                                style={({ isActive }) =>
+                                    isActive
+                                        ? {
+                                              border: '5px',
+                                              color: '#0ABAB5',
+                                          }
+                                        : {}
+                                }
+                            >
+                                <VStack>
+                                    <Icon as={action.icon} h="30px" w="30px" />
+                                    <Text>{action.name}</Text>
+                                </VStack>
+                            </NavLink>
+                        </Box>
+                    ))}
                 </HStack>
             </Flex>
         </>
