@@ -51,7 +51,7 @@ export async function up(knex: Knex): Promise<void> {
 
     const hasAttractionsType = await knex.schema.hasTable('attractions_type');
     if (!hasAttractionsType) {
-        await knex.schema.createTable('attractions_type', (table) => {
+        await knex.schema.createTable('attractions_interest', (table) => {
             table.increments();
             table.integer('attraction_id').unsigned();
             table.foreign('attraction_id').references('attractions.id');
