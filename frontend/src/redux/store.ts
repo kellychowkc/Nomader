@@ -16,6 +16,10 @@ export type RootActions = Action<any>;
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootActions>;
 
-const rootReducer = combineReducers{{
+const rootReducer = combineReducers<RootState, RootActions>({
     auth: authReducer,
-}}
+});
+
+export const store = configureStore({
+    reducer: rootReducer,
+});

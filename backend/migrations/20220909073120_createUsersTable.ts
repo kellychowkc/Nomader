@@ -10,7 +10,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("password").notNullable();
             table.string("first_name").notNullable();
             table.string("last_name").notNullable();
-            table.integer("birthday");
+            table.string("birthday");
             table.string("gender");
             table.string("information");
             table.string("profile");

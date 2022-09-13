@@ -17,14 +17,20 @@ import {
     Textarea,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { ViewIcon, ViewOffIcon, SmallCloseIcon } from '@chakra-ui/icons'
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { FaTransgender, FaBirthdayCake } from 'react-icons/fa'
 import { BsFilePerson } from 'react-icons/bs'
+import { useDispatch } from 'react-redux'
+import { RootThunkDispatch } from '../../redux/store'
+import { useNavigate } from 'react-router'
+import { signUpThunk } from '../../redux/auth/authThunk'
 
 function SignUp() {
     const [showPassword, setShowPassword] = useState(false)
     const [nextPage, setNextPage] = useState(false)
     const [imageStore, setImageStore] = useState('')
+    const dispatch = useDispatch<RootThunkDispatch>()
+    const navigate = useNavigate()
 
     const formik = useFormik({
         initialValues: {
@@ -43,6 +49,7 @@ function SignUp() {
         },
         onSubmit: (values) => {
             alert(JSON.stringify(values, null, 2))
+            dispatch(signUpThunk(values, navigate))
         },
     })
 
@@ -70,7 +77,6 @@ function SignUp() {
             })
             return
         } else {
-            console.log('ok')
             setNextPage(!nextPage)
         }
     }

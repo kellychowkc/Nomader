@@ -1,5 +1,6 @@
 export interface AuthState {
     isAuthenticated: boolean | null;
+    loading: boolean;
     error?: string;
 }
 

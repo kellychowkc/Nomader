@@ -4,6 +4,7 @@ import { logger } from "../utils/logger";
 import { checkPassword } from "../utils/hash";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
+import { User } from "../utils/models";
 
 export class UserController {
     constructor(private userService: UserService) {}
@@ -35,6 +36,8 @@ export class UserController {
                         id: user["id"],
                         username: user["username"],
                     };
+
+                    //jwt
                     const payload = {
                         id: user.id,
                         username: user.username,
@@ -48,10 +51,12 @@ export class UserController {
                     });
                 }
             } else {
+                res.status(401).json({
+                    success: false,
+                    message: "No such user or wrong password",
+                });
                 return;
             }
-
-            //jwt
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
@@ -61,9 +66,10 @@ export class UserController {
         }
     };
 
-    create = async (req: Request, res: Response) => {
+    signUp = async (req: Request, res: Response) => {
         try {
             const newUser = await this.userService.create(req.body);
+            console.log(newUser);
             if (newUser) {
                 res.status(201).json({ success: true, message: "Created" });
             } else {
@@ -80,4 +86,25 @@ export class UserController {
             });
         }
     };
+
+    getSelfInfo = async (req: Request, res: Response) => {
+        try {
+            const user = req.user!;
+            res.json(user);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+}
+
+declare global {
+    namespace Express {
+        interface Request {
+            user?: Omit<User, "password">;
+        }
+    }
 }

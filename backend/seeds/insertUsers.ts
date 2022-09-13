@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { hashPassword } from "../utility/hash";
+import { hashPassword } from "../utils/hash";
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
@@ -32,7 +32,7 @@ export async function seed(knex: Knex): Promise<void> {
                 information: "hi",
                 profile: "",
                 email: "danny@danny",
-                phone_num: "1234",
+                phone_num: "12345678",
                 job: "slash",
                 country: "UK",
             },
