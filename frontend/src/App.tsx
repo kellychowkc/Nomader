@@ -30,6 +30,7 @@ import { MdForum } from 'react-icons/md'
 import Friends from './components/layoutFriends/Friends'
 import Profile from './components/layoutProfile/Profile'
 import Chat from './components/layoutChat/Chat'
+import Home from './components/layoutHome/Home'
 
 function App() {
     return (
@@ -83,7 +84,7 @@ function App() {
     )
 }
 
-function Home() {
+export function testHome() {
     return (
         <>
             <Container w="full" h="full" centerContent>

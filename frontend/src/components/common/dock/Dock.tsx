@@ -45,6 +45,8 @@ function Dock() {
                     position="fixed"
                     bottom="0"
                     bg={useColorModeValue('gray.100', 'gray.900')}
+                    borderTopRadius="20px"
+                    boxShadow="0px 0px 20px #0ABAB5"
                 >
                     {actions.map((action: Action, idx: number) => (
                         <Box

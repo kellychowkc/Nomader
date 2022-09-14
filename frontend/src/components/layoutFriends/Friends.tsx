@@ -7,8 +7,6 @@ import {
     VStack,
     Flex,
     Table,
-    TableCaption,
-    TableContainer,
     Tbody,
     Td,
     Tfoot,
@@ -71,19 +69,23 @@ const Friends = () => {
                     </Text>
                     <Box
                         w="80vw"
-                        maxH="50vh"
+                        maxH="30vh"
                         scrollBehavior="smooth"
-                        overflow="scroll"
+                        overflowY="auto"
                     >
                         <Table
                             variant="striped"
                             colorScheme="teal"
                             w="100%"
-                            border="2px"
-                            borderColor="gray.100"
+                            // border="2px"
+                            // borderColor="gray.100"
                         >
-                            <TableCaption>Friend List </TableCaption>
-                            <Thead>
+                            <Thead
+                                position="sticky"
+                                top={0}
+                                bg="#FFFFFF"
+                                zIndex={10}
+                            >
                                 <Tr>
                                     <Th>Info (Avater, name)</Th>
                                     <Th>Action (message, unfriend)</Th>
@@ -111,8 +113,8 @@ const Friends = () => {
                                         </HStack>
                                     </Td>
                                     <Td>
-                                        <Button ml="2">Message</Button>
-                                        <Button ml="2">Unfriend</Button>
+                                        <Button m="1">Message</Button>
+                                        <Button m="1">Unfriend</Button>
                                     </Td>
                                 </Tr>
                                 {friendsList.map(
@@ -140,8 +142,8 @@ const Friends = () => {
                                                 </HStack>
                                             </Td>
                                             <Td>
-                                                <Button ml="2">Message</Button>
-                                                <Button ml="2">Unfriend</Button>
+                                                <Button m="1">Message</Button>
+                                                <Button m="1">Unfriend</Button>
                                             </Td>
                                         </Tr>
                                     )

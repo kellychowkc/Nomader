@@ -61,6 +61,38 @@ export const BlogAuthor: React.FC<BlogAuthorProps> = (props) => {
     )
 }
 
+interface Post {
+    title: string
+    content: string
+    category?: string
+    tags?: Array<string>
+    author?: string
+    date?: string
+    thumbnail?: any
+}
+
+const featurePosts: Post[] = [
+    {
+        title: 'Post #1',
+        content:
+            'Converting posting into object, with title, content, category, tag, author and dates....',
+        category: 'Tecky',
+        tags: ['project', 'news', 'digital nomad'],
+        author: 'Danny',
+        date: '2022-01-01',
+        thumbnail: 'pic/logo.JPG',
+    },
+    {
+        title: 'Post #2',
+        content: 'Testing... cat is the best. LOL',
+        category: 'Meme',
+        tags: ['meme', 'digital nomad'],
+        author: 'WTF',
+        date: '2022-09-11',
+        thumbnail: 'pic/cat.jpeg',
+    },
+]
+
 const Forum = () => {
     return (
         <Container w="full" h="full" maxW="max" p="0">
@@ -96,112 +128,115 @@ const Forum = () => {
                         Featuring Posts
                     </Text>
                     {/* Post */}
-                    <Box
-                        marginTop={{ base: '1', sm: '5' }}
-                        display="flex"
-                        flexDirection={{ sm: 'column', lg: 'row' }}
-                        justifyContent="space-between"
-                    >
+
+                    {featurePosts.map((post) => (
                         <Box
+                            marginTop={{ base: '1', sm: '5' }}
                             display="flex"
-                            flex="1"
-                            marginRight="3"
-                            position="relative"
-                            justifyContent="center"
-                            alignItems="center"
+                            flexDirection={{ sm: 'column', lg: 'row' }}
+                            justifyContent="space-between"
                         >
                             <Box
-                                width={{
-                                    base: '80%',
-                                    sm: '85%',
-                                    lg: '75%',
-                                    xl: '65%',
-                                }}
-                                zIndex="2"
-                                marginLeft={{ base: '0', sm: '5%' }}
-                                marginTop="5%"
                                 display="flex"
-                                alignItems="flex-end"
-                            >
-                                <Link
-                                    textDecoration="none"
-                                    _hover={{ textDecoration: 'none' }}
-                                >
-                                    <Image
-                                        borderRadius="lg"
-                                        src={
-                                            'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80'
-                                        }
-                                        alt="some good alt text"
-                                        objectFit="contain"
-                                    />
-                                </Link>
-                            </Box>
-                            <Box
-                                zIndex="1"
-                                width="100%"
-                                position="absolute"
-                                height="100%"
+                                flex="1"
+                                marginRight="3"
+                                position="relative"
+                                justifyContent="center"
+                                alignItems="center"
                             >
                                 <Box
-                                    bgGradient={useColorModeValue(
-                                        'radial(#0ABAB5 1px, transparent 1px)',
-                                        'radial(#0ABAB5 1px, transparent 1px)'
-                                    )}
-                                    backgroundSize="20px 20px"
-                                    opacity="0.4"
+                                    width={{
+                                        base: '80%',
+                                        sm: '85%',
+                                        lg: '75%',
+                                        xl: '65%',
+                                    }}
+                                    zIndex="2"
+                                    marginLeft={{ base: '0', sm: '5%' }}
+                                    marginTop="5%"
+                                    display="flex"
+                                    alignItems="flex-end"
+                                >
+                                    <Link
+                                        textDecoration="none"
+                                        _hover={{ textDecoration: 'none' }}
+                                    >
+                                        <Image
+                                            borderRadius="lg"
+                                            src={post.thumbnail}
+                                            alt="some good alt text"
+                                            objectFit="contain"
+                                        />
+                                    </Link>
+                                </Box>
+                                <Box
+                                    zIndex="1"
+                                    width="100%"
+                                    position="absolute"
                                     height="100%"
+                                >
+                                    <Box
+                                        // eslint-disable-next-line react-hooks/rules-of-hooks
+                                        bgGradient={useColorModeValue(
+                                            'radial(#0ABAB5 1px, transparent 1px)',
+                                            'radial(#0ABAB5 1px, transparent 1px)'
+                                        )}
+                                        backgroundSize="20px 20px"
+                                        opacity="0.4"
+                                        height="100%"
+                                    />
+                                </Box>
+                            </Box>
+                            <Box
+                                display="flex"
+                                flex="1"
+                                flexDirection="column"
+                                justifyContent="center"
+                                marginTop={{ base: '3', sm: '3' }}
+                                p={10}
+                            >
+                                <HStack>
+                                    <Text
+                                        fontWeight="bold"
+                                        textTransform="uppercase"
+                                        fontSize="lg"
+                                        letterSpacing="wide"
+                                        color="teal.600"
+                                    >
+                                        {/*  === Category ===  */}
+                                        {post.category}
+                                    </Text>
+                                    <BlogTags tags={post.tags!} />
+                                </HStack>
+                                <Heading marginTop="1">
+                                    <Link
+                                        textDecoration="none"
+                                        _hover={{ textDecoration: 'none' }}
+                                    >
+                                        {/* === Title === */}
+                                        {post.title}
+                                    </Link>
+                                </Heading>
+                                <Text
+                                    as="p"
+                                    marginTop="2"
+                                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                                    color={useColorModeValue(
+                                        'gray.700',
+                                        'gray.200'
+                                    )}
+                                    fontSize="lg"
+                                >
+                                    {post.content}
+                                </Text>
+                                <BlogAuthor
+                                    name={post.author!}
+                                    date={new Date('2022-09-06T19:01:27Z')}
                                 />
                             </Box>
                         </Box>
-                        <Box
-                            display="flex"
-                            flex="1"
-                            flexDirection="column"
-                            justifyContent="center"
-                            marginTop={{ base: '3', sm: '3' }}
-                            p={10}
-                        >
-                            <HStack>
-                                <Text
-                                    fontWeight="bold"
-                                    textTransform="uppercase"
-                                    fontSize="lg"
-                                    letterSpacing="wide"
-                                    color="teal.600"
-                                >
-                                    News
-                                </Text>
-                                <BlogTags tags={['Hong Kong', 'Product']} />
-                            </HStack>
-                            <Heading marginTop="1">
-                                <Link
-                                    textDecoration="none"
-                                    _hover={{ textDecoration: 'none' }}
-                                >
-                                    Building Nomader Web App
-                                </Link>
-                            </Heading>
-                            <Text
-                                as="p"
-                                marginTop="2"
-                                color={useColorModeValue(
-                                    'gray.700',
-                                    'gray.200'
-                                )}
-                                fontSize="lg"
-                            >
-                                We are building a Nomader Web App written in
-                                React and PWA ready. Bridging the portability of
-                                Web App and stability and consistency of Native
-                                App together.
-                            </Text>
-                            <BlogAuthor
-                                name="Nomad#2 WTF"
-                                date={new Date('2022-09-06T19:01:27Z')}
-                            />
-                        </Box>
-                    </Box>
+                    ))}
+
                     {/* Post */}
                     {/* Post */}
                     <Box

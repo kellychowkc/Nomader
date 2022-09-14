@@ -7,15 +7,12 @@ import {
     VStack,
     Flex,
     Table,
-    TableCaption,
-    TableContainer,
     Tbody,
     Td,
     Tfoot,
     Th,
     Thead,
     Tr,
-    Button,
     HStack,
     Circle,
 } from '@chakra-ui/react'
@@ -92,19 +89,23 @@ const Chat = () => {
                     </Text>
                     <Box
                         w="80vw"
-                        maxH="50vh"
+                        maxH="30vh"
                         scrollBehavior="smooth"
-                        overflow="scroll"
+                        overflowY="auto"
                     >
                         <Table
                             variant="striped"
                             colorScheme="teal"
                             w="100%"
-                            border="2px"
-                            borderColor="gray.100"
+                            // border="2px"
+                            // borderColor="gray.100"
                         >
-                            <TableCaption>Chat List </TableCaption>
-                            <Thead w="100%">
+                            <Thead
+                                position="sticky"
+                                top={0}
+                                bg="#FFFFFF"
+                                zIndex={10}
+                            >
                                 <Tr>
                                     <Th>Info (Avater, name)</Th>
                                     <Th>Time (Last message)</Th>

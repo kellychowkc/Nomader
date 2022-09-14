@@ -18,6 +18,7 @@ import {
     IconButton,
     FlexProps,
 } from '@chakra-ui/react'
+
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
@@ -29,6 +30,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Destinations', path: '/destination' },
     { name: 'Safety', path: '/contact' },
+    { name: 'Control Panel', path: '/control' },
 ]
 
 interface NavItemProps extends FlexProps {
@@ -51,7 +53,7 @@ const NavLink = ({ children, path, ...rest }: NavItemProps) => (
     </Link>
 )
 
-export default function Nav() {
+export default function Nav(): JSX.Element {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
@@ -88,7 +90,11 @@ export default function Nav() {
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={8} alignItems={'center'}>
-                        <Box>Nomader</Box>
+                        <Box>
+                            <Link href="/" style={{ textDecoration: 'none' }}>
+                                Nomader
+                            </Link>
+                        </Box>
                         <HStack
                             as={'nav'}
                             spacing={4}
