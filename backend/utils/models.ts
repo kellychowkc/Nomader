@@ -11,4 +11,5 @@ export interface User {
     email?: string;
     phone_num?: number;
     job?: string;
+    country?: string;
 }

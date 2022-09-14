@@ -4,9 +4,10 @@ export function loginPending() {
     };
 }
 
-export function loginSuccess() {
+export function loginSuccess(username?: string) {
     return {
         type: "@@Auth/LOGIN_SUCCESS" as const,
+        username,
     };
 }
 

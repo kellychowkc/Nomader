@@ -23,6 +23,9 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 
+import { useSelector } from 'react-redux'
+import { AuthState } from '../../../redux/state'
+
 interface LinkItemProps {
     name: string
     path: string
@@ -55,6 +58,10 @@ const NavLink = ({ children, path, ...rest }: NavItemProps) => (
 export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    //update usename from redux
+    const auth: AuthState = useSelector((state: any) => state.auth)
+
     return (
         <Flex
             w="98vw"
@@ -142,7 +149,7 @@ export default function Nav() {
                                     </Center>
                                     <br />
                                     <Center>
-                                        <p>Username</p>
+                                        <p>{auth.username}</p>
                                     </Center>
                                     <br />
                                     <MenuDivider />

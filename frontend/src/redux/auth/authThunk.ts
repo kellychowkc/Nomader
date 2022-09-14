@@ -40,7 +40,7 @@ export function loginThunk(loginForm: LoginForm, navigate: NavigateFunction) {
             const data = await postLogin(loginForm);
             console.log(data);
             window.localStorage.setItem("auth_token", data.token);
-            dispatch(loginSuccess());
+            dispatch(loginSuccess(data.username));
             navigate("/contact");
         } catch (err: any) {
             dispatch(loginFail(err.message));

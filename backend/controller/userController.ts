@@ -48,6 +48,7 @@ export class UserController {
                         success: true,
                         message: "success",
                         token: token,
+                        username: user.username,
                     });
                 }
             } else {
@@ -69,13 +70,12 @@ export class UserController {
     signUp = async (req: Request, res: Response) => {
         try {
             const newUser = await this.userService.create(req.body);
-            console.log(newUser);
             if (newUser) {
                 res.status(201).json({ success: true, message: "Created" });
             } else {
                 res.status(405).json({
                     success: false,
-                    message: "Username/email/phone number is already used.",
+                    message: "Username is already used.",
                 });
             }
         } catch (err) {

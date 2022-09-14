@@ -20,14 +20,14 @@ export interface LoginForm {
 }
 
 export interface SignUpForm {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     gender?: string;
     birthday?: string;
     username: string;
     email: string;
     password: string;
-    phoneNum: string;
+    phone_num: string;
     country?: string;
     profile?: string;
     job?: string;
@@ -46,13 +46,16 @@ export async function fetchSelfUserInfo(token: string) {
 }
 
 export async function postLogin(loginForm: LoginForm) {
-    return fetchJson<{ token: string }>(`${REACT_APP_API_SERVER}/user/login`, {
-        method: "POST",
-        headers: {
-            "content-type": "application/json",
-        },
-        body: JSON.stringify(loginForm),
-    });
+    return fetchJson<{ token: string; username: string }>(
+        `${REACT_APP_API_SERVER}/user/login`,
+        {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(loginForm),
+        }
+    );
 }
 
 export async function postSignUp(signUpForm: SignUpForm) {

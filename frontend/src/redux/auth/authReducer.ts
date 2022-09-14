@@ -23,6 +23,7 @@ export function authReducer(
                 ...state,
                 isAuthenticated: true,
                 loading: false,
+                username: action.username,
             };
         case "@@Auth/LOGIN_FAIL":
             return {

@@ -37,6 +37,7 @@ export class UserService {
             email,
             phone_num,
             job,
+            country,
         } = body;
 
         password = await hashPassword(password);
@@ -69,6 +70,7 @@ export class UserService {
                     email,
                     phone_num,
                     job,
+                    country,
                 })
                 .into("users")
                 .returning("id");

@@ -15,7 +15,6 @@ export async function isLoggedIn(
 ) {
     try {
         const token = permit.check(req);
-        console.log(req);
         if (!token) {
             return res.status(401).json({ message: "Permission Denied" });
         }
