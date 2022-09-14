@@ -23,6 +23,9 @@ import {
     MdSearch,
     MdFilterList,
     MdSecurity,
+    MdBookmarks,
+    MdLocationPin,
+    MdLocalActivity,
 } from 'react-icons/md'
 
 interface UserProfile {
@@ -120,7 +123,15 @@ const Home = () => {
                         justify="center"
                         align="center"
                     >
-                        <HStack w="80%" p="0" m="0" justify="space-between">
+                        <HStack
+                            w="80%"
+                            px="3"
+                            py="1"
+                            m="0"
+                            justify="space-between"
+                            borderRadius="10px"
+                            boxShadow="0px 0px 9px #BBBBBB"
+                        >
                             <Box w="80%">
                                 <FormControl id="search" isRequired>
                                     {/* <FormLabel>Search</FormLabel> */}
@@ -156,90 +167,97 @@ const Home = () => {
                         justify="center"
                         align="center"
                     >
-                        <HStack w="80%" p="0" mb="3" justify="space-between">
-                            <Text
-                                fontSize="1.5em"
-                                fontWeight="bold"
-                                as={'span'}
-                                position={'relative'}
-                                _after={{
-                                    content: "''",
-                                    width: 'full',
-                                    height: '30%',
-                                    position: 'absolute',
-                                    bottom: 1,
-                                    left: 0,
-                                    bg: '#0ABAB5',
-                                    zIndex: -1,
-                                }}
-                            >
-                                Category
-                            </Text>
-                            <Text>See All</Text>
+                        <HStack w="80%" p="1" mb="3" justify="space-between">
+                            <HStack>
+                                <Text
+                                    fontSize="1.5em"
+                                    fontWeight="bold"
+                                    as={'span'}
+                                    position={'relative'}
+                                    _after={{
+                                        content: "''",
+                                        width: 'full',
+                                        height: '30%',
+                                        position: 'absolute',
+                                        bottom: 1,
+                                        left: 0,
+                                        bg: '#0ABAB5',
+                                        zIndex: -1,
+                                    }}
+                                >
+                                    Category
+                                </Text>
+                                <Icon as={MdLocalActivity} />
+                            </HStack>
+
+                            <HStack>
+                                <Icon as={MdBookmarks} />
+                                <Text>See All</Text>
+                            </HStack>
                         </HStack>
                         <HStack w="80%" p="0" m="0" justify="space-around">
                             <Flex
-                                w={['fit', 'fit', 'fit', '20%', '20%']}
-                                py={['0', '0', '0', '3', '3']}
+                                w="22%"
+                                py={['3', '3', '3', '4', '5']}
                                 border="0"
-                                borderRadius="15px"
+                                borderRadius="10px"
                                 justify="center"
-                                boxShadow={[
-                                    null,
-                                    null,
-                                    null,
-                                    '0px 0px 5px #BBBBBB',
-                                ]}
+                                boxShadow="0px 0px 9px #BBBBBB"
                             >
-                                <Icon as={MdMap} h="60px" w="60px" />
+                                <Icon
+                                    as={MdMap}
+                                    h="60px"
+                                    w="60px"
+                                    color="#393939"
+                                />
                             </Flex>
                             <Divider orientation="vertical" />
                             <Flex
-                                w={['fit', 'fit', 'fit', '20%', '20%']}
-                                py={['0', '0', '0', '3', '3']}
+                                w="22%"
+                                py={['3', '3', '3', '4', '5']}
                                 border="0"
-                                borderRadius="15px"
+                                borderRadius="10px"
                                 justify="center"
-                                boxShadow={[
-                                    null,
-                                    null,
-                                    null,
-                                    '0px 0px 5px #999999',
-                                ]}
+                                boxShadow="0px 0px 9px #BBBBBB"
                             >
-                                <Icon as={MdMoney} h="60px" w="60px" />
+                                <Icon
+                                    as={MdMoney}
+                                    h="60px"
+                                    w="60px"
+                                    color="#393939"
+                                />
                             </Flex>
                             <Divider orientation="vertical" />
                             <Flex
-                                w={['fit', 'fit', 'fit', '20%', '20%']}
-                                py={['0', '0', '0', '3', '3']}
+                                w="22%"
+                                py={['3', '3', '3', '4', '5']}
                                 border="0"
-                                borderRadius="15px"
+                                borderRadius="10px"
                                 justify="center"
-                                boxShadow={[
-                                    null,
-                                    null,
-                                    null,
-                                    '0px 0px 5px #131313',
-                                ]}
+                                boxShadow="0px 0px 9px #BBBBBB"
                             >
-                                <Icon as={MdFlight} h="60px" w="60px" />
+                                <Icon
+                                    as={MdFlight}
+                                    h="60px"
+                                    w="60px"
+                                    color="#393939"
+                                />
                             </Flex>
                             <Divider orientation="vertical" />
                             <Flex
-                                w={['fit', 'fit', 'fit', '20%', '20%']}
-                                py={['0', '0', '0', '3', '3']}
+                                w="22%"
+                                py={['3', '3', '3', '4', '5']}
                                 border="0"
-                                borderRadius="15px"
+                                borderRadius="10px"
                                 justify="center"
-                                boxShadow={[
-                                    null,
-                                    null,
-                                    null,
-                                    '0px 0px 15px 5px #fff,0px 0px 20px 0px #f0f,0px 0px 25px 5px #0ff',
-                                ]}
+                                boxShadow="0px 0px 9px #BBBBBB"
                             >
-                                <Icon as={MdSecurity} h="60px" w="60px" />
+                                <Icon
+                                    as={MdSecurity}
+                                    h="60px"
+                                    w="60px"
+                                    color="#393939"
+                                />
                             </Flex>
                         </HStack>
                     </Flex>
@@ -250,26 +268,36 @@ const Home = () => {
                         justify="center"
                         align="center"
                     >
-                        <HStack w="80%" p="0" mb="3" justify="space-between">
-                            <Text
-                                fontSize="1.5em"
-                                fontWeight="bold"
-                                as={'span'}
-                                position={'relative'}
-                                _after={{
-                                    content: "''",
-                                    width: 'full',
-                                    height: '30%',
-                                    position: 'absolute',
-                                    bottom: 1,
-                                    left: 0,
-                                    bg: '#0ABAB5',
-                                    zIndex: -1,
-                                }}
-                            >
-                                Interest
-                            </Text>
-                            <Text>See All</Text>
+                        <HStack w="80%" p="1" mb="3" justify="space-between">
+                            <Box>
+                                <HStack>
+                                    <Text
+                                        fontSize="1.5em"
+                                        fontWeight="bold"
+                                        as={'span'}
+                                        position={'relative'}
+                                        _after={{
+                                            content: "''",
+                                            width: 'full',
+                                            height: '30%',
+                                            position: 'absolute',
+                                            bottom: 1,
+                                            left: 0,
+                                            bg: '#0ABAB5',
+                                            zIndex: -1,
+                                        }}
+                                    >
+                                        Interest
+                                    </Text>
+                                    <Icon as={MdLocationPin} />
+                                </HStack>
+                            </Box>
+                            <Box>
+                                <HStack>
+                                    <Text>See All</Text>
+                                    <Icon as={MdBookmarks} />
+                                </HStack>
+                            </Box>
                         </HStack>
                         <HStack justify="center" align="center">
                             <Box
