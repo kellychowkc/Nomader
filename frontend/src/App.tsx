@@ -27,6 +27,8 @@ import { useDispatch } from 'react-redux'
 import { restoreLoginThunk } from './redux/auth/authThunk'
 import { RootThunkDispatch } from './redux/store'
 import RequireAuth from './components/private/RequireAuth'
+import InterestList from './components/matching/InterestList'
+import Welcome from './components/welcome/Welcome'
 
 function App() {
     const dispatch = useDispatch<RootThunkDispatch>()
@@ -59,6 +61,8 @@ function App() {
 
                     <Route path="login" element={<Login />} />
                     <Route path="signUp" element={<SignUp />} />
+                    <Route path="interest" element={<InterestList />} />
+                    <Route path="welcome" element={<Welcome />} />
 
                     {/* <Route path="/friend" element={<Friend />} />
                         <Route path="/chat" element={<Chat />} /> */}

@@ -9,3 +9,11 @@ export interface JWTPayload {
     user_id: number;
     username: string;
 }
+
+export interface InterestItem {
+    item: string;
+}
+
+export interface InterestList {
+    selectedItem: Array<string>;
+}
