@@ -1,4 +1,5 @@
 import styles from './Login.module.css'
+import Swal from 'sweetalert2'
 import { useFormik } from 'formik'
 import {
     FormControl,
@@ -8,15 +9,36 @@ import {
     Button,
     Heading,
 } from '@chakra-ui/react'
+import { fetchSelfUserInfo } from '../../api/user'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState, RootThunkDispatch } from '../../redux/store'
+import { loginThunk } from '../../redux/auth/authThunk'
+import { useNavigate } from 'react-router'
 
 function Login() {
+    const loading = useSelector((state: RootState) => state.auth.loading)
+    const dispatch = useDispatch<RootThunkDispatch>()
+    const navigate = useNavigate()
+
     const formik = useFormik({
         initialValues: {
             username: '',
             password: '',
         },
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             alert(JSON.stringify(values, null, 2))
+            if (loading) {
+                return
+            }
+            const res = await dispatch(loginThunk(values, navigate))
+            if (res) {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Wrong Username or password',
+                    icon: 'error',
+                })
+                return
+            }
         },
     })
 

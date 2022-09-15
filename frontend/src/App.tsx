@@ -9,8 +9,9 @@ import {
     Flex,
     Center,
 } from '@chakra-ui/react'
-
+import { useEffect } from 'react'
 import React from 'react'
+
 import { Link } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -20,10 +21,16 @@ import Contact from './components/layoutSafetyContact/SafetyContact'
 import ControlPanel from './components/layoutControlPanel/ControlPanel'
 import Landing from './components/layoutLanding/Landing'
 import LayoutLogin from './components/layoutLogin/layoutLogin'
+import SignUp from './components/auth/SignUp'
 import Forum from './components/layoutForum/Forum'
 import Dock from './components/common/dock/Dock'
 import Login from './components/auth/Login'
-import SignUp from './components/auth/SignUp'
+import { useDispatch } from 'react-redux'
+import { restoreLoginThunk } from './redux/auth/authThunk'
+import { RootThunkDispatch } from './redux/store'
+import RequireAuth from './components/private/RequireAuth'
+import InterestList from './components/matching/InterestList'
+import Welcome from './components/welcome/Welcome'
 
 import { PhoneIcon } from '@chakra-ui/icons'
 import { MdForum } from 'react-icons/md'
@@ -32,7 +39,13 @@ import Profile from './components/layoutProfile/Profile'
 import Chat from './components/layoutChat/Chat'
 import Home from './components/layoutHome/Home'
 
+
 function App() {
+    const dispatch = useDispatch<RootThunkDispatch>()
+
+    useEffect(() => {
+        dispatch(restoreLoginThunk())
+    }, [])
     return (
         <Container
             h="full"
@@ -58,13 +71,26 @@ function App() {
                     </Route>
                     <Route path="landing" element={<Landing />} />
                     <Route path="layoutlogin" element={<LayoutLogin />} />
+
+                    {/* Required Auth Route */}
+                    <Route path="contact" element={<RequireAuth />}>
+                        <Route index element={<Contact />} />
+                        <Route path="forum" element={<Forum />} />
+                    </Route>
+
                     <Route path="login" element={<Login />} />
+
+                    <Route path="signUp" element={<SignUp />} />
+                    <Route path="interest" element={<InterestList />} />
+                    <Route path="welcome" element={<Welcome />} />
+
                     <Route path="signup" element={<SignUp />} />
                     <Route path="contact" element={<Contact />} />
                     <Route path="forum" element={<Forum />} />
                     <Route path="friends" element={<Friends />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="chat" element={<Chat />} />
+
 
                     <Route
                         path="*"
