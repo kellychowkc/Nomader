@@ -79,8 +79,5 @@
     background-color: transparent;
     outline: none;
     margin-top: 1.5rem;
-}
-.tick {
-    width: 80%;
-    height: 80%;
+    size: 10rem;
 }

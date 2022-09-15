@@ -1,7 +1,7 @@
 import type { Dispatch } from "react";
-import { LoginForm, postLogin, postSignUp, SignUpForm } from "../../api/auth";
+import { LoginForm, postLogin, postSignUp, SignUpForm } from "../../api/user";
 import type { RootState } from "../store";
-import { fetchSelfUserInfo } from "../../api/auth";
+import { fetchSelfUserInfo } from "../../api/user";
 import {
     AuthActions,
     loginFail,

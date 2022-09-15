@@ -23,6 +23,8 @@ app.use(
 //service and controller
 import { UserService } from "./service/userService";
 import { UserController } from "./controller/userController";
+import { GetDataController } from "./controller/getDataController";
+import { GetDataService } from "./service/getDataService";
 
 app.use(
     expressSession({
@@ -40,11 +42,15 @@ const knex = Knex(knexConfig);
 //server & controller set up
 export const userService = new UserService(knex);
 export const userController = new UserController(userService);
+export const getDataService = new GetDataService(knex);
+export const getDataController = new GetDataController(getDataService);
 
 import { logInRoutes } from "./routers/userRoutes";
+import { dataRoutes } from "./routers/getDataRoutes";
 
 //route handling
 app.use("/user", logInRoutes);
+app.use("/data", dataRoutes);
 
 const PORT = 8080;
 

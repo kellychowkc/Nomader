@@ -13,3 +13,8 @@ export interface User {
     job?: string;
     country?: string;
 }
+
+export interface Interest {
+    id: number;
+    title: string;
+}

@@ -4,7 +4,7 @@ import { logger } from "../utils/logger";
 import { checkPassword } from "../utils/hash";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
-import { User } from "../utils/models";
+import { Interest, User } from "../utils/models";
 
 export class UserController {
     constructor(private userService: UserService) {}
@@ -99,12 +99,30 @@ export class UserController {
             });
         }
     };
+
+    //Service is not finished
+    addInterest = async (req: Request, res: Response) => {
+        try {
+            // await this.userService.addInterest(req.body);
+            res.status(201).json({
+                success: true,
+                message: "Updated Interest List",
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
 }
 
 declare global {
     namespace Express {
         interface Request {
             user?: Omit<User, "password">;
+            interest?: Array<Interest>;
         }
     }
 }

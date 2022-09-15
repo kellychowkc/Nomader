@@ -1,5 +1,4 @@
 import {
-    Action,
     combineReducers,
     ThunkDispatch,
     configureStore,
@@ -7,16 +6,17 @@ import {
 
 import type { AuthState } from "./state";
 import { authReducer } from "./auth/authReducer";
+import { AuthActions } from "./auth/authAction";
 
 export interface RootState {
     auth: AuthState;
 }
 
-export type RootActions = Action<any>;
+export type RootActions = AuthActions;
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootActions>;
 
-const rootReducer = combineReducers<RootState, RootActions>({
+const rootReducer = combineReducers<RootState>({
     auth: authReducer,
 });
 

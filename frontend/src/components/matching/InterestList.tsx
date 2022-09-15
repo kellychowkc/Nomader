@@ -1,9 +1,66 @@
 import styles from './Interest.module.css'
-import { Wrap, WrapItem, Center, Icon } from '@chakra-ui/react'
+import { Wrap, Icon } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
+import { useEffect, useState } from 'react'
+import InterestItem from './InterestItem'
+import { fetchJson } from '../../api/utils'
+import Swal from 'sweetalert2'
+import { addUserInterest } from '../../api/user'
+
+const { REACT_APP_API_SERVER } = process.env
+
+export interface InterestItem {
+    id: number
+    title: string
+    isSelected?: boolean
+}
 
 function InterestList() {
-    function selectInterest() {}
+    const [interestList, setInterestList] = useState<Array<InterestItem>>([])
+
+    useEffect(() => {
+        fetchJson<Array<{ id: number; title: string }>>(
+            `${REACT_APP_API_SERVER}/data/interest`
+        ).then((data) => {
+            setInterestList(
+                data.map((item: Omit<InterestItem, 'isSelected'>) => ({
+                    ...item,
+                    isSelected: false,
+                }))
+            )
+        })
+    }, [])
+
+    function toggle(id: number) {
+        const clonedInterestList = interestList.slice()
+        const interest = clonedInterestList.find((item) => item.id === id)!
+        interest.isSelected = !interest.isSelected
+        setInterestList(clonedInterestList)
+    }
+
+    function submit() {
+        const filteredInterestList = interestList.filter(
+            (item) => item.isSelected === true
+        )
+
+        if (filteredInterestList.length > 6) {
+            Swal.fire({
+                title: "Don't be greedy!",
+                text: 'You can only pick 6.',
+                icon: 'warning',
+            })
+            return
+        }
+        const submitInterestList = filteredInterestList.map(
+            (item: InterestItem) => {
+                delete item.isSelected
+                return item
+            }
+        )
+        addUserInterest(submitInterestList).then((data) => {
+            console.log(data)
+        })
+    }
     return (
         <div className={styles.body}>
             <div className={styles.pageContainer}>
@@ -16,192 +73,19 @@ function InterestList() {
                 <div className={styles.interestContainer}>
                     <div className={styles.interestBox}>
                         <Wrap>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="red.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Hiking
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem className={styles.interest}>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Camping
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Cycling
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Foodie
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Party
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Photo Shooting
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="red.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Reading
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem className={styles.interest}>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Singing
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Busking
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Diving
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Watch Concert
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Watch Match
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="red.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Join Event
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem className={styles.interest}>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Skiing
-                                    </button>
-                                </Center>
-                            </WrapItem>
-                            <WrapItem>
-                                <Center
-                                    w="6rem"
-                                    h="6rem"
-                                    bg="green.200"
-                                    margin={1}
-                                >
-                                    <button className={styles.btn}>
-                                        Shopping
-                                    </button>
-                                </Center>
-                            </WrapItem>
+                            {interestList.map((item) => (
+                                <InterestItem
+                                    key={item.id}
+                                    {...item}
+                                    toggle={() => toggle(item.id)}
+                                />
+                            ))}
                         </Wrap>
                     </div>
                 </div>
                 <div className={styles.btnContainer}>
-                    <button className={styles.tickbtn}>
-                        <Icon as={CheckIcon} className={styles.tick} />
+                    <button className={styles.tickbtn} onClick={submit}>
+                        <Icon as={CheckIcon} w={9} h={9} />
                     </button>
                 </div>
             </div>

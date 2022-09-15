@@ -4,7 +4,6 @@ export async function fetchJson<T = unknown>(
 ) {
     const resp = await fetch(input, init);
     const data = await resp.json();
-    console.log(data);
 
     if (resp.ok) {
         return data as T;

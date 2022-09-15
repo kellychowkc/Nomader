@@ -1,3 +1,4 @@
+import type { InterestItem } from "../components/matching/InterestList";
 import { fetchJson } from "./utils";
 
 // let REACT_APP_API_SERVER: any;
@@ -65,5 +66,15 @@ export async function postSignUp(signUpForm: SignUpForm) {
             "content-type": "application/json",
         },
         body: JSON.stringify(signUpForm),
+    });
+}
+
+export async function addUserInterest(interestList: Array<InterestItem>) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/interest`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(interestList),
     });
 }

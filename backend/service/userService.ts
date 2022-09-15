@@ -51,10 +51,6 @@ export class UserService {
             .select("*")
             .from("users")
             .where("email", email);
-        // const phoneNumResult = await this.knex
-        //     .select("*")
-        //     .from("users")
-        //     .where("phone_num", phone_num);
 
         if (nameResult.length == 0 || emailResult.length == 0) {
             const createdUserId = await this.knex
@@ -76,6 +72,7 @@ export class UserService {
                 .returning("id");
             return createdUserId;
         }
+
         return;
     }
 }
