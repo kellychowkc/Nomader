@@ -14,8 +14,8 @@
 }
 
 .welcomeBox {
-    height: 120%;
-    width: 120%;
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,14 +27,12 @@
     height: 28rem;
     background: inherit;
     width: 100%;
-    -webkit-clip-path: polygon(
-        50% 0,
-        100% 25%,
-        100% 75%,
-        50% 100%,
-        0 75%,
-        0 25%
-    );
+    -webkit-clip-path: polygon(50% 0,
+            100% 25%,
+            100% 75%,
+            50% 100%,
+            0 75%,
+            0 25%);
     -moz-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     -ms-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
@@ -56,9 +54,9 @@
 
 
 .button {
-    background-color: #ffffff8e;
+    /* background: #ffffffbb; */
     margin: 1rem;
-    width:70%;
+    width: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,5 +66,5 @@
     font-weight: 500;
     border-radius: 0.5rem;
     border: 0.5rem;
-    text-decoration: none; 
+    text-decoration: none;
 }
