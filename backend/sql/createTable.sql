@@ -1,30 +1,5 @@
 CREATE DATABASE cap_project;
 
-CREATE TABLE attractions (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    description TEXT NOT NULL,
-    image TEXT,
-    tel_num TEXT,
-    address TEXT NOT NULL,
-    open_time TEXT,
-    website TEXT,
-    class TEXT
-);
-
-CREATE TABLE interests (
-    id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL
-);
-
-CREATE TABLE attreactions_type (
-    id SERIAL PRIMARY KEY,
-    attraction_id INTEGER,
-    interest_id INTEGER,
-    FOREIGN KEY (attraction_id) REFERENCES attractions(id),
-    FOREIGN KEY (interest_id) REFERENCES interests(id)
-);
-
 CREATE TABLE countries (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -55,7 +30,7 @@ CREATE TABLE currency_rates (
     year INTEGER,
     month INTEGER,
     day INTEGER
-)
+);
 
 CREATE TABLE cities (
     id SERIAL PRIMARY KEY,
@@ -66,17 +41,39 @@ CREATE TABLE cities (
     FOREIGN KEY (country_id) REFERENCES countries(id)
 );
 
-CREATE TABLE cities_attractions (
+CREATE TABLE attractions (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image TEXT,
+    tel_num TEXT,
+    address TEXT NOT NULL,
+    open_time TEXT,
+    website TEXT,
+    class TEXT,
+    city_id INTEGER,
+    FOREIGN KEY (city_id) REFERENCES cities(id)
+);
+
+CREATE TABLE interests (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL
+);
+
+CREATE TABLE attreactions_type (
     id SERIAL PRIMARY KEY,
     attraction_id INTEGER,
-    country_id INTEGER,
+    interest_id INTEGER,
     FOREIGN KEY (attraction_id) REFERENCES attractions(id),
-    FOREIGN KEY (country_id) REFERENCES countries(id)
+    FOREIGN KEY (interest_id) REFERENCES interests(id)
 );
+
 
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
+    attraction_id INTEGER,
+    FOREIGN KEY (attraction_id) REFERENCES attractions(id),
     city_id INTEGER,
     FOREIGN KEY (city_id) REFERENCES cities(id)
 );

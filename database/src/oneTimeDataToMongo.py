@@ -92,40 +92,27 @@ with sync_playwright() as p:
     
     # data from 'tripadvisor'
     attractionList = []
-    # USA
-    pageThree = browser.new_page()
     for page_num in range(0, 50) :
         if page_num == 0 :
             string = ''
         else :
             string = '-oa{}'.format(30 * page_num)
-
+        # USA
+        pageThree = browser.new_page()
         pageThree.goto('https://en.tripadvisor.com.hk/Attractions-g191-Activities{}-United_States.html'.format(string))
         attractionListOfUSA = pageThree.evaluate('[...document.querySelectorAll(".tnGGX > a")].map(a => { return a.href })')
         for i in range(len(attractionListOfUSA)) :
             attractionList.append(attractionListOfUSA[i])
 
-    # UK
-    pageFour = browser.new_page()
-    for page_num in range(0, 50) :
-        if page_num == 0 :
-            string = ''
-        else :
-            string = '-oa{}'.format(30 * page_num)
-        
+        # UK
+        pageFour = browser.new_page()
         pageFour.goto('https://en.tripadvisor.com.hk/Attractions-g186216-Activities{}-United_Kingdom.html'.format(string))
         attractionListOfUK = pageFour.evaluate('[...document.querySelectorAll(".tnGGX > a")].map(a => { return a.href })')
         for i in range(len(attractionListOfUK)) :
             attractionList.append(attractionListOfUK[i])
     
-    # HKG
-    pageFive = browser.new_page()
-    for page_num in range(0, 50) :
-        if page_num == 0 :
-            string = ''
-        else :
-            string = '-oa{}'.format(30 * page_num)
-        
+        # HKG
+        pageFive = browser.new_page()
         pageFive.goto('https://en.tripadvisor.com.hk/Attractions-g294217-Activities{}-Hong_Kong.html'.format(string))
         attractionListOfHKG = pageFive.evaluate('[...document.querySelectorAll(".tnGGX > a")].map(a => { return a.href })')
         for i in range(len(attractionListOfHKG)) :
@@ -164,8 +151,12 @@ with sync_playwright() as p:
             for i in range(len(attractionCity)) :
                 if i == 0 :
                     country = attractionCity[i]
+                    cityArrList.append(attractionCity[i])
                 elif i == len(attractionCity) - 1 :
                     pass
+                elif i == len(attractionCity) - 2 :
+                    mainCity = attractionCity[i]
+                    cityArrList.append(attractionCity[i])
                 else :
                     cityArrList.append(attractionCity[i])
             cityList = ', '.join(cityArrList)
@@ -178,8 +169,6 @@ with sync_playwright() as p:
                     tel = data
                 elif 'http://' in data :
                     website = data
-                else : 
-                    pass
 
             for i in range(len(cityLinkList)) :
                 link = cityLinkList[i]
@@ -198,7 +187,8 @@ with sync_playwright() as p:
                 'image' : attractionImg[0],
                 'tel_num' : tel,
                 'address' : location,
-                'city' : cityList,
+                'city_list' : cityList,
+                'city' : mainCity,
                 'country' : country,
                 'open_time' : openTime,
                 'website' : website,
