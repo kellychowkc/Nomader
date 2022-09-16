@@ -22,6 +22,7 @@ export class UserController {
             }
 
             const user = await this.userService.getUserByUserName(username);
+            console.log(user);
             if (!user) {
                 res.status(401).json({
                     success: false,
@@ -37,6 +38,7 @@ export class UserController {
                         username: user["username"],
                     };
 
+                    //// Add interest in jwt!!!!!
                     //jwt
                     const payload = {
                         id: user.id,
@@ -100,7 +102,7 @@ export class UserController {
         }
     };
 
-    //Service is not finished
+    //!!!!Service is not finished
     addInterest = async (req: Request, res: Response) => {
         try {
             // await this.userService.addInterest(req.body);

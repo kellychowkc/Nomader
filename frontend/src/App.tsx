@@ -30,7 +30,6 @@ import { restoreLoginThunk } from './redux/auth/authThunk'
 import { RootThunkDispatch } from './redux/store'
 import RequireAuth from './components/private/RequireAuth'
 import InterestList from './components/matching/InterestList'
-import Welcome from './components/welcome/Welcome'
 
 import { PhoneIcon } from '@chakra-ui/icons'
 import { MdForum } from 'react-icons/md'
@@ -38,7 +37,7 @@ import Friends from './components/layoutFriends/Friends'
 import Profile from './components/layoutProfile/Profile'
 import Chat from './components/layoutChat/Chat'
 import Home from './components/layoutHome/Home'
-
+import Matching from './components/matching/Matching'
 
 function App() {
     const dispatch = useDispatch<RootThunkDispatch>()
@@ -82,6 +81,7 @@ function App() {
 
                     <Route path="signUp" element={<SignUp />} />
                     <Route path="interest" element={<InterestList />} />
+                    <Route path="matching" element={<Matching />} />
                     <Route path="welcome" element={<Welcome />} />
 
                     <Route path="signup" element={<SignUp />} />
@@ -90,7 +90,6 @@ function App() {
                     <Route path="friends" element={<Friends />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="chat" element={<Chat />} />
-
 
                     <Route
                         path="*"

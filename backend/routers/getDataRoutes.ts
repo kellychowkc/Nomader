@@ -3,4 +3,5 @@ import { getDataController } from "../server";
 
 export const dataRoutes = express.Router();
 
-dataRoutes.get("/interest", getDataController.getInterest);
+dataRoutes.get("/interest", getDataController.getInterests);
+dataRoutes.get("/country", getDataController.getCountries);
