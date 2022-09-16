@@ -31,7 +31,6 @@ export function formidableMiddleware(
     res: Response,
     next: NextFunction
 ) {
-    // console.log("this is uploadDir:", uploadDir)
     form.parse(req, (err, fields, files) => {
         if (err) {
             logger.error(err.toString());

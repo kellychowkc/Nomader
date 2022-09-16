@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Image, Text } from '@chakra-ui/react'
+import { Box, Container, Flex, Image, Text, VStack } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import CallToAction from '../callToActionOnLanding/CallToAction'
 import InfiniteGrid from '../infiniteGrid/InfiniteGrid'
@@ -17,51 +17,114 @@ function Landing() {
             <Nav />
 
             {/* === Main Section - Call To Action === */}
-
-            <CallToAction />
+            <Flex w="90vw" mb="5" justify="center">
+                <CallToAction />
+            </Flex>
 
             <Flex
                 w="90vw"
                 h="auto"
-                mb="3"
                 flexDirection={['column', 'column', 'row', 'row']}
                 justify="space-between"
                 align="center"
             >
                 <Box
                     w={['100%', '100%', '30%', '30%', '30%']}
-                    h={['30vh', '25vh', '25vh', '30vh', '35vh']}
-                    border="1px"
-                    borderColor="gray.200"
+                    h={['30vh', '25vh', '20vh', '25vh', '25vh']}
+                    mb="5"
                     backgroundColor="#0ABAB5"
+                    overflow="hidden"
+                    position="relative"
                 >
-                    <Image></Image>
-                    <Text>Sub Box #1</Text>
+                    <Image
+                        src="https://naver.github.io/egjs-infinitegrid/assets/image/1.jpg"
+                        h="100%"
+                        fit="cover"
+                    ></Image>
+                    <VStack
+                        w="100%"
+                        position="absolute"
+                        bottom="0"
+                        left="100%/2"
+                        backgroundColor="#FFFFFF50"
+                    >
+                        <Text></Text>
+                        <Text fontSize="2xl">Why we do it?</Text>
+                        <Text></Text>
+                    </VStack>
                 </Box>
                 <Box
                     w={['100%', '100%', '30%', '30%', '30%']}
-                    h={['30vh', '25vh', '25vh', '30vh', '35vh']}
-                    border="1px"
-                    borderColor="gray.200"
+                    h={['30vh', '25vh', '20vh', '25vh', '25vh']}
+                    mb="5"
                     backgroundColor="#0ABAB5"
+                    overflow="hidden"
+                    position="relative"
                 >
-                    <Image></Image>
-                    <Text>Sub Box #2</Text>
+                    <Image
+                        src="https://naver.github.io/egjs-infinitegrid/assets/image/11.jpg"
+                        h="100%"
+                        fit="cover"
+                    ></Image>
+                    <VStack
+                        w="100%"
+                        position="absolute"
+                        bottom="0"
+                        left="100%/2"
+                        backgroundColor="#FFFFFF50"
+                    >
+                        <Text></Text>
+                        <Text fontSize="2xl">What do we do?</Text>
+                        <Text></Text>
+                    </VStack>
                 </Box>
                 <Box
                     w={['100%', '100%', '30%', '30%', '30%']}
-                    h={['30vh', '25vh', '25vh', '30vh', '35vh']}
-                    border="1px"
-                    borderColor="gray.200"
+                    h={['30vh', '25vh', '20vh', '25vh', '25vh']}
+                    mb="5"
                     backgroundColor="#0ABAB5"
+                    overflow="hidden"
+                    position="relative"
                 >
-                    <Image></Image>
-                    <Box>
-                        <Text>Sub Box #3</Text>
-                    </Box>
+                    <Image
+                        src="https://naver.github.io/egjs-infinitegrid/assets/image/12.jpg"
+                        h="100%"
+                        fit="cover"
+                    ></Image>
+                    <VStack
+                        w="100%"
+                        position="absolute"
+                        bottom="0"
+                        left="100%/2"
+                        backgroundColor="#FFFFFF50"
+                    >
+                        <Text></Text>
+                        <Text fontSize="2xl">How we do it?</Text>
+                        <Text></Text>
+                    </VStack>
                 </Box>
             </Flex>
             <Box w="90vw">
+                <Container mb="5" centerContent>
+                    <Text
+                        fontSize="2em"
+                        fontWeight="bold"
+                        as={'span'}
+                        position={'relative'}
+                        _after={{
+                            content: "''",
+                            width: 'full',
+                            height: '30%',
+                            position: 'absolute',
+                            bottom: 1,
+                            left: 0,
+                            bg: '#0ABAB5',
+                            zIndex: -1,
+                        }}
+                    >
+                        Explore
+                    </Text>
+                </Container>
                 <InfiniteGrid />
             </Box>
             <Dock />

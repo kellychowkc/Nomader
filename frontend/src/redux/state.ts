@@ -1,5 +1,7 @@
 export interface AuthState {
     isAuthenticated: boolean | null;
+    loading: boolean;
+    username?: string;
     error?: string;
 }
 

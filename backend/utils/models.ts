@@ -4,11 +4,17 @@ export interface User {
     password: string;
     first_name?: string;
     last_name?: string;
-    birthday?: number;
+    birthday?: string;
     gender?: string;
     information?: string;
     profile?: string;
     email?: string;
     phone_num?: number;
     job?: string;
+    country?: string;
+}
+
+export interface Interest {
+    id: number;
+    title: string;
 }

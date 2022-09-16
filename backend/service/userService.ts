@@ -24,6 +24,7 @@ export class UserService {
     }
 
     async create(body: User) {
+        console.log(body);
         let {
             username,
             password,
@@ -36,20 +37,9 @@ export class UserService {
             email,
             phone_num,
             job,
+            country,
         } = body;
-        console.log({
-            username,
-            password,
-            first_name,
-            last_name,
-            birthday,
-            gender,
-            information,
-            profile,
-            email,
-            phone_num,
-            job,
-        });
+
         password = await hashPassword(password);
 
         // check if repeated
@@ -61,16 +51,8 @@ export class UserService {
             .select("*")
             .from("users")
             .where("email", email);
-        const phoneNumResult = await this.knex
-            .select("*")
-            .from("users")
-            .where("phone_num", phone_num);
 
-        if (
-            nameResult.length == 0 ||
-            emailResult.length == 0 ||
-            phoneNumResult.length == 0
-        ) {
+        if (nameResult.length == 0 || emailResult.length == 0) {
             const createdUserId = await this.knex
                 .insert({
                     username,
@@ -84,11 +66,13 @@ export class UserService {
                     email,
                     phone_num,
                     job,
+                    country,
                 })
                 .into("users")
                 .returning("id");
             return createdUserId;
         }
+
         return;
     }
 }

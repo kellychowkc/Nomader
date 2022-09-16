@@ -33,7 +33,7 @@ import {
     FiUser,
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
-import { ReactText } from 'react'
+import { useLocation, Link as ReactRouterLink } from 'react-router-dom'
 
 interface LinkItemProps {
     name: string
@@ -41,15 +41,27 @@ interface LinkItemProps {
     path: string
 }
 const LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome, path: '/' },
-    { name: 'Dashboard', icon: FiTrendingUp, path: '/control' },
-    { name: 'Manage User', icon: FiUser, path: '/user' },
-    { name: 'Manage Forum', icon: FiStar, path: '/' },
-    { name: 'Manage Destination', icon: FiCompass, path: '/' },
+    { name: 'Dashboard', icon: FiTrendingUp, path: 'dashboard' },
+    { name: 'Manage User', icon: FiUser, path: 'user' },
+    { name: 'Manage Forum', icon: FiStar, path: 'forum' },
+    { name: 'Manage Destination', icon: FiCompass, path: 'destination' },
 ]
+
+interface UserProfile {
+    username: string
+    user_type?: string
+    avatar?: any
+}
+
+const user: UserProfile = {
+    username: 'Danny',
+    user_type: 'I am ~Admin~',
+    avatar: 'None',
+}
 
 export default function ControlPanel({ children }: { children: ReactNode }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
+
     return (
         <Box
             w="100vw"
@@ -89,6 +101,9 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+    const currentDir = useLocation()
+
+    console.log(currentDir)
     return (
         <Box
             transition="3s ease"
@@ -107,7 +122,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 justifyContent="space-between"
             >
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-                    Nomader
+                    <Link href="/">Nomader</Link>
                 </Text>
                 <CloseButton
                     display={{ base: 'flex', md: 'none' }}
@@ -115,7 +130,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon} path={link.path}>
+                <NavItem
+                    key={link.name}
+                    icon={link.icon}
+                    path={'control/' + link.path}
+                >
                     {link.name}
                 </NavItem>
             ))}
@@ -125,7 +144,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
     icon: IconType
-    children: ReactText
+    children: string | number
     path: string
 }
 const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
@@ -213,9 +232,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                         >
                             <HStack>
                                 <Avatar
-                                    size={'sm'}
+                                    size={'md'}
                                     src={
-                                        'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                                        'https://avatars.dicebear.com/api/male/username.svg'
                                     }
                                 />
                                 <VStack
@@ -224,9 +243,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                     spacing="1px"
                                     ml="2"
                                 >
-                                    <Text fontSize="sm">Nomader #1 KC</Text>
-                                    <Text fontSize="xs" color="gray.600">
-                                        Admin
+                                    {/* Profile Name */}
+                                    <Text fontSize="md">{user.username}</Text>
+                                    {/* User Type */}
+                                    <Text fontSize="s" color="gray.600">
+                                        {user.user_type}{' '}
                                     </Text>
                                 </VStack>
                                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -241,7 +262,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                 'gray.700'
                             )}
                         >
-                            <MenuItem>Profile</MenuItem>
+                            <MenuItem>
+                                <Link as={ReactRouterLink} to="/profile">
+                                    Profile
+                                </Link>
+                            </MenuItem>
                             <MenuItem>Settings</MenuItem>
                             <MenuDivider />
                             <MenuItem>Sign out</MenuItem>

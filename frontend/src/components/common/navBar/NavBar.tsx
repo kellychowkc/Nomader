@@ -1,4 +1,3 @@
-import { ReactText } from 'react'
 import {
     Box,
     Flex,
@@ -19,9 +18,13 @@ import {
     IconButton,
     FlexProps,
 } from '@chakra-ui/react'
+
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
+
+import { useSelector } from 'react-redux'
+import { AuthState } from '../../../redux/state'
 
 interface LinkItemProps {
     name: string
@@ -30,10 +33,11 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Destinations', path: '/destination' },
     { name: 'Safety', path: '/contact' },
+    { name: 'Control Panel', path: '/control' },
 ]
 
 interface NavItemProps extends FlexProps {
-    children: ReactText
+    children: string | number
     path: string
 }
 
@@ -52,9 +56,13 @@ const NavLink = ({ children, path, ...rest }: NavItemProps) => (
     </Link>
 )
 
-export default function Nav() {
+export default function Nav(): JSX.Element {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    //update usename from redux
+    const auth: AuthState = useSelector((state: any) => state.auth)
+
     return (
         <Flex
             w="98vw"
@@ -89,7 +97,11 @@ export default function Nav() {
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={8} alignItems={'center'}>
-                        <Box>Nomader</Box>
+                        <Box>
+                            <Link href="/" style={{ textDecoration: 'none' }}>
+                                Nomader
+                            </Link>
+                        </Box>
                         <HStack
                             as={'nav'}
                             spacing={4}
@@ -142,7 +154,7 @@ export default function Nav() {
                                     </Center>
                                     <br />
                                     <Center>
-                                        <p>Username</p>
+                                        <p>{auth.username}</p>
                                     </Center>
                                     <br />
                                     <MenuDivider />

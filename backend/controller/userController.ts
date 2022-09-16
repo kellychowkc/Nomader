@@ -4,6 +4,7 @@ import { logger } from "../utils/logger";
 import { checkPassword } from "../utils/hash";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
+import { Interest, User } from "../utils/models";
 
 export class UserController {
     constructor(private userService: UserService) {}
@@ -21,6 +22,7 @@ export class UserController {
             }
 
             const user = await this.userService.getUserByUserName(username);
+            console.log(user);
             if (!user) {
                 res.status(401).json({
                     success: false,
@@ -35,6 +37,9 @@ export class UserController {
                         id: user["id"],
                         username: user["username"],
                     };
+
+                    //// Add interest in jwt!!!!!
+                    //jwt
                     const payload = {
                         id: user.id,
                         username: user.username,
@@ -45,13 +50,16 @@ export class UserController {
                         success: true,
                         message: "success",
                         token: token,
+                        username: user.username,
                     });
                 }
             } else {
+                res.status(401).json({
+                    success: false,
+                    message: "No such user or wrong password",
+                });
                 return;
             }
-
-            //jwt
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
@@ -61,7 +69,7 @@ export class UserController {
         }
     };
 
-    create = async (req: Request, res: Response) => {
+    signUp = async (req: Request, res: Response) => {
         try {
             const newUser = await this.userService.create(req.body);
             if (newUser) {
@@ -69,7 +77,7 @@ export class UserController {
             } else {
                 res.status(405).json({
                     success: false,
-                    message: "Username/email/phone number is already used.",
+                    message: "Username is already used.",
                 });
             }
         } catch (err) {
@@ -80,4 +88,43 @@ export class UserController {
             });
         }
     };
+
+    getSelfInfo = async (req: Request, res: Response) => {
+        try {
+            const user = req.user!;
+            res.json(user);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    //!!!!Service is not finished
+    addInterest = async (req: Request, res: Response) => {
+        try {
+            // await this.userService.addInterest(req.body);
+            res.status(201).json({
+                success: true,
+                message: "Updated Interest List",
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+}
+
+declare global {
+    namespace Express {
+        interface Request {
+            user?: Omit<User, "password">;
+            interest?: Array<Interest>;
+        }
+    }
 }
