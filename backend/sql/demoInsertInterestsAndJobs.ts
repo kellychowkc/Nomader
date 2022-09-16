@@ -69,9 +69,9 @@ export async function seed(knex: Knex): Promise<void> {
                 information: "hi",
                 profile: "",
                 email: "danny@danny",
-                phone_num: "12345678",
-                job: "slash",
-                country: "UK",
+                phone_num: "1234",
+                job_id : jobId[1].id,
+                isAdmin : false
             },
         ])
         .returning("id");
