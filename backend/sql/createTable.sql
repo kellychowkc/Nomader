@@ -5,29 +5,11 @@ CREATE TABLE attractions (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     image TEXT,
-    tel_num INTEGER,
-    location TEXT NOT NULL,
-    open_time TIME
-);
-
-CREATE TABLE events (
-    id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL,
-    image TEXT,
-    tel_num INTEGER,
-    location TEXT NOT NULL,
-    event_date DATE NOT NULL,
-    event_time TIME NOT NULL,
-    link TEXT
-);
-
-CREATE TABLE attractions_events (
-    id SERIAL PRIMARY KEY,
-    event_id INTEGER,
-    attraction_id INTEGER,
-    FOREIGN KEY (event_id) REFERENCES events(id),
-    FOREIGN KEY (attraction_id) REFERENCES attractions(id)
+    tel_num TEXT,
+    address TEXT NOT NULL,
+    open_time TEXT,
+    website TEXT,
+    class TEXT
 );
 
 CREATE TABLE interests (
@@ -40,14 +22,6 @@ CREATE TABLE attreactions_type (
     attraction_id INTEGER,
     interest_id INTEGER,
     FOREIGN KEY (attraction_id) REFERENCES attractions(id),
-    FOREIGN KEY (interest_id) REFERENCES interests(id)
-);
-
-CREATE TABLE events_type (
-    id SERIAL PRIMARY KEY,
-    event_id INTEGER,
-    interest_id INTEGER,
-    FOREIGN KEY (event_id) REFERENCES events(id),
     FOREIGN KEY (interest_id) REFERENCES interests(id)
 );
 
@@ -115,18 +89,6 @@ CREATE TABLE posts_type (
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
-CREATE TABLE birthdays (
-    id SERIAL PRIMARY KEY,
-    year INTEGER NOT NULL,
-    month INTEGER NOT NULL,
-    day INTEGER NOT NULL
-);
-
-CREATE TABLE genders (
-    id SERIAL PRIMARY KEY,
-    status TEXT NOT NULL
-);
-
 CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
     title TEXT NOT NULL
@@ -134,12 +96,12 @@ CREATE TABLE jobs (
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL,
+    username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    birthday_id INTEGER,
-    gender_id INTEGER,
+    birthday TEXT,
+    gender TEXT,
     information TEXT,
     profile TEXT,
     email TEXT NOT NULL,
@@ -151,8 +113,6 @@ CREATE TABLE users (
     isAdmin BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (birthday_id) REFERENCES birthdays(id),
-    FOREIGN KEY (gender_id) REFERENCES genders(id),
     FOREIGN KEY (job_id) REFERENCES jobs(id),
     FOREIGN KEY (country_id) REFERENCES countries(id)
 );
@@ -178,18 +138,6 @@ CREATE TABLE users_interests (
     interest_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (interest_id) REFERENCES interests(id)
-);
-
-CREATE TABLE users_like_events (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER,
-    event_id INTEGER,
-    like_event BOOLEAN NOT NULL,
-    browse_count INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (event_id) REFERENCES events(id)
 );
 
 CREATE TABLE users_like_attractions (

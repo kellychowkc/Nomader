@@ -2,13 +2,13 @@ CREATE DATABASE project_cap;
 
 CREATE TABLE staging_emergency_datas (
     id SERIAL PRIMARY KEY,
-    country_name TEXT NOT NULL,
-    emergency_tel TEXT ARRAY,
-    police_tel TEXT ARRAY,
-    ambulance_tel TEXT ARRAY,
-    fire_tel TEXT ARRAY,
-    location_name TEXT ARRAY,
-    calling_code TEXT ARRAY,
+    country_name TEXT,
+    emergency_tel TEXT,
+    police_tel TEXT,
+    ambulance_tel TEXT,
+    fire_tel TEXT,
+    location_group TEXT,
+    calling_code TEXT,
     info TEXT
 );
 
@@ -29,7 +29,106 @@ CREATE TABLE staging_currency_rates (
     rate TEXT
 );
 
+CREATE TABLE staging_city_datas (
+    id SERIAL PRIMARY KEY,
+    city_name TEXT,
+    description TEXT,
+    image TEXT,
+    country TEXT
+);
 
+CREATE TABLE staging_attractions (
+    id SERIAL PRIMARY KEY,
+    attraction_name TEXT,
+    description TEXT,
+    image TEXT,
+    tel_num TEXT,
+    address TEXT,
+    city TEXT,
+    country TEXT,
+    open_time TEXT,
+    website TEXT,
+    class TEXT
+);
+
+
+CREATE TABLE DB_users (
+    id SERIAL PRIMARY KEY,
+    birthday TEXT,
+    gender TEXT,
+    job_id INTEGER,
+    interest_id INTEGER,
+    cuntry_id INTEGER,
+    created_year INTEGER,
+    created_month INTEGER,
+    created_day INTEGER
+);
+
+CREATE TABLE DB_jobs (
+    id SERIAL PRIMARY KEY,
+    title TEXT
+);
+
+CREATE TABLE DB_interests (
+    id SERIAL PRIMARY KEY,
+    title TEXT
+);
+
+CREATE TABLE DB_chat_rooms (
+    id SERIAL PRIMARY KEY,
+    created_year INTEGER,
+    created_month INTEGER,
+    created_day INTEGER
+);
+
+CREATE TABLE DB_users_relationship (
+    id SERIAL PRIMARY KEY,
+    created_year INTEGER,
+    created_month INTEGER,
+    created_day INTEGER
+);
+
+CREATE TABLE DB_like_attractions (
+    id SERIAL PRIMARY KEY,
+    like_attraction BOOLEAN,
+    browse_count INTEGER,
+    attraction_id INTEGER,
+    created_year INTEGER,
+    created_month INTEGER,
+    created_day INTEGER 
+);
+
+CREATE TABLE DB_posts (
+    id SERIAL PRIMARY KEY,
+    city_id INTEGER
+);
+
+CREATE TABLE DB_post_content (
+    id SERIAL PRIMARY KEY,
+    post_id INTEGER,
+    order_num INTEGER,
+    like_post BOOLEAN,
+    browse_count INTEGER,
+    created_year INTEGER,
+    created_month INTEGER,
+    created_day INTEGER
+);
+
+CREATE TABLE DB_post_type (
+    id SERIAL PRIMARY KEY,
+    post_id INTEGER,
+    interest_id INTEGER
+);
+
+
+
+CREATE TABLE dim_dates (
+    id SERIAL PRIMARY KEY,
+    year INTEGER,
+    month INTEGER,
+    day INTEGER
+);
+CREATE UNIQUE INDEX dates_unique_idx ON dim_dates(year, month, day);
 
 CREATE TABLE dim_country_names (
     id SERIAL PRIMARY KEY,
@@ -37,44 +136,53 @@ CREATE TABLE dim_country_names (
 );
 CREATE UNIQUE INDEX country_names_unique_idx ON dim_country_names(country_name);
 
-CREATE TABLE dim_locations (
-    id SERIAL PRIMARY KEY,
-    location_group TEXT
-);
-
-CREATE UNIQUE INDEX locations_unique_idx ON dim_locations(location_group);
-
 CREATE TABLE dim_currency_codes (
     id SERIAL PRIMARY KEY,
     code TEXT
 );
-
 CREATE UNIQUE INDEX currency_codes_unique_idx ON dim_currency_codes(code);
 
-CREATE TABLE dim_rate_dates (
+CREATE TABLE dim_jobs (
     id SERIAL PRIMARY KEY,
-    year INTEGER,
-    month INTEGER,
-    day INTEGER
+    title TEXT
 );
+CREATE UNIQUE INDEX jobs_unique_idx ON dim_jobs(title);
 
-CREATE UNIQUE INDEX rate_dates_unique_idx ON dim_rate_dates(year, month, day);
+CREATE TABLE dim_interests (
+    id SERIAL PRIMARY KEY,
+    title TEXT
+);
+CREATE UNIQUE INDEX interests_unique_idx ON dim_interests(title);
+
+CREATE TABLE dim_class (
+    id SERIAL PRIMARY KEY,
+    title TEXT
+);
+CREATE UNIQUE INDEX class_unique_idx ON dim_class(title);
 
 
 CREATE TABLE fact_emergency_datas (
     id SERIAL PRIMARY KEY,
     country_name_id INTEGER,
     FOREIGN KEY (country_name_id) REFERENCES dim_country_names(id),
-    emergency_tel TEXT ARRAY,
-    police_tel TEXT ARRAY,
-    ambulance_tel TEXT ARRAY,
-    fire_tel TEXT ARRAY,
-    location_id INTEGER,
-    FOREIGN KEY (location_id) REFERENCES dim_locations(id),
-    calling_code TEXT ARRAY,
+    emergency_tel TEXT,
+    police_tel TEXT,
+    ambulance_tel TEXT,
+    fire_tel TEXT,
+    location_group TEXT,
+    calling_code TEXT,
     info TEXT,
     currency_code_id INTEGER,
     FOREIGN KEY (currency_code_id) REFERENCES dim_currency_codes(id)
+);
+
+CREATE TABLE fact_city_datas (
+    id SERIAL PRIMARY KEY,
+    city_name TEXT,
+    description TEXT,
+    image TEXT,
+    country_id INTEGER,
+    FOREIGN KEY (country_id) REFERENCES dim_country_names(id)
 );
 
 CREATE TABLE fact_currency_countries (
@@ -89,7 +197,7 @@ CREATE TABLE fact_currency_names (
     id SERIAL PRIMARY KEY,
     currency_code_id INTEGER,
     FOREIGN KEY (currency_code_id) REFERENCES dim_currency_codes(id),
-    currency_names TEXT
+    currency_name TEXT
 );
 
 CREATE TABLE fact_code_rates (
@@ -99,6 +207,90 @@ CREATE TABLE fact_code_rates (
     code_to_id INTEGER,
     FOREIGN KEY (code_to_id) REFERENCES dim_currency_codes(id),
     rate INTEGER,
-    rate_date_id INTEGER,
-    FOREIGN KEY (rate_date_id) REFERENCES dim_rate_dates(id) 
+    date_id INTEGER,
+    FOREIGN KEY (date_id) REFERENCES dim_dates(id) 
+);
+
+CREATE TABLE fact_users (
+    id SERIAL PRIMARY KEY,
+    interest_id INTEGER,
+    FOREIGN KEY (interest_id) REFERENCES dim_interests(id),
+    birthday_id INTEGER,
+    FOREIGN KEY (birthday_id) REFERENCES dim_dates(id),
+    gender TEXT,
+    job_id INTEGER,
+    FOREIGN KEY (job_id) REFERENCES dim_jobs(id),
+    country_id INTEGER,
+    FOREIGN KEY (country_id) REFERENCES dim_country_names(id),
+    created_date_id INTEGER,
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+);
+
+CREATE TABLE fact_users_relationship (
+    id SERIAL PRIMARY KEY,
+    status TEXT,
+    created_date_id INTEGER,
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+);
+
+CREATE TABLE fact_chat_rooms (
+    id SERIAL PRIMARY KEY,
+    created_date_id INTEGER,
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+);
+
+CREATE TABLE fact_posts (
+    id SERIAL PRIMARY KEY,
+    city_id INTEGER,
+    FOREIGN KEY (city_id) REFERENCES fact_city_datas(id)
+);
+
+CREATE TABLE fact_post_type (
+    id SERIAL PRIMARY KEY,
+    post_id INTEGER,
+    FOREIGN KEY (post_id) REFERENCES fact_posts(id),
+    interest_id INTEGER,
+    FOREIGN KEY (interest_id) REFERENCES dim_interests(id)
+);
+
+CREATE TABLE fact_post_content (
+    id SERIAL PRIMARY KEY,
+    post_id INTEGER,
+    FOREIGN KEY (post_id) REFERENCES fact_posts(id),
+    order_num INTEGER,
+    like_post BOOLEAN,
+    browse_count INTEGER,
+    created_date_id INTEGER,
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+);
+
+CREATE TABLE fact_attractions (
+    id SERIAL PRIMARY KEY,
+    attraction_name TEXT,
+    description TEXT,
+    image TEXT,
+    tel_num TEXT,
+    address TEXT,
+    city_id INTEGER,
+    FOREIGN KEY (city_id) REFERENCES fact_city_datas(id),
+    open_time TEXT,
+    website TEXT
+);
+
+CREATE TABLE fact_attractions_class (
+    id SERIAL PRIMARY KEY,
+    attraction_id INTEGER,
+    FOREIGN KEY (attraction_id) REFERENCES fact_attractions(id),
+    class_id INTEGER,
+    FOREIGN KEY (class_id) REFERENCES dim_class(id)
+);
+
+CREATE TABLE fact_like_attractions (
+    id SERIAL PRIMARY KEY,
+    attraction_id INTEGER,
+    FOREIGN KEY (attraction_id) REFERENCES fact_attractions(id),
+    like_attraction BOOLEAN,
+    browse_count INTEGER,
+    created_date_id INTEGER,
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
 );
