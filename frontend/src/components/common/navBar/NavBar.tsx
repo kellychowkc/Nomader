@@ -17,6 +17,7 @@ import {
     HStack,
     IconButton,
     FlexProps,
+    Text,
 } from '@chakra-ui/react'
 
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
@@ -58,7 +59,7 @@ export default function Nav(): JSX.Element {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <Flex
-            w="98vw"
+            w="full"
             h="auto"
             minW="270px"
             zIndex={9999}
@@ -68,7 +69,7 @@ export default function Nav(): JSX.Element {
             p="0"
             border="0"
             position="sticky"
-            top="0"
+            top="-1"
         >
             <Box
                 w="100%"
@@ -92,7 +93,13 @@ export default function Nav(): JSX.Element {
                     <HStack spacing={8} alignItems={'center'}>
                         <Box>
                             <Link href="/" style={{ textDecoration: 'none' }}>
-                                Nomader
+                                <Text
+                                    fontSize="lg"
+                                    fontFamily="monospace"
+                                    fontWeight="bold"
+                                >
+                                    Nomader
+                                </Text>
                             </Link>
                         </Box>
                         <HStack

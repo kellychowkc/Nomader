@@ -212,6 +212,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 fontSize="2xl"
                 fontFamily="monospace"
                 fontWeight="bold"
+                textDecoration="none"
             >
                 Nomader
             </Text>

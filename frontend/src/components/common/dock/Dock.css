@@ -1,0 +1,6 @@
+.active>div>div.bar {
+    width: 90%;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #B0D8BC
+}

@@ -30,7 +30,7 @@ function Landing() {
             >
                 <Box
                     w={['100%', '100%', '30%', '30%', '30%']}
-                    h={['30vh', '25vh', '20vh', '25vh', '25vh']}
+                    h={['25vh', '25vh', '20vh', '25vh', '25vh']}
                     mb="5"
                     backgroundColor="#0ABAB5"
                     overflow="hidden"
@@ -55,7 +55,7 @@ function Landing() {
                 </Box>
                 <Box
                     w={['100%', '100%', '30%', '30%', '30%']}
-                    h={['30vh', '25vh', '20vh', '25vh', '25vh']}
+                    h={['25vh', '25vh', '20vh', '25vh', '25vh']}
                     mb="5"
                     backgroundColor="#0ABAB5"
                     overflow="hidden"
@@ -80,7 +80,7 @@ function Landing() {
                 </Box>
                 <Box
                     w={['100%', '100%', '30%', '30%', '30%']}
-                    h={['30vh', '25vh', '20vh', '25vh', '25vh']}
+                    h={['25vh', '25vh', '20vh', '25vh', '25vh']}
                     mb="5"
                     backgroundColor="#0ABAB5"
                     overflow="hidden"
