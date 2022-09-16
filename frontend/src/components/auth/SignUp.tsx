@@ -20,48 +20,54 @@ import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { FaTransgender, FaBirthdayCake } from 'react-icons/fa'
 import { BsFilePerson } from 'react-icons/bs'
+import { useDispatch } from 'react-redux'
+import { RootThunkDispatch } from '../../redux/store'
+import { useNavigate } from 'react-router'
+import { signUpThunk } from '../../redux/auth/authThunk'
 
 function SignUp() {
     const [showPassword, setShowPassword] = useState(false)
     const [nextPage, setNextPage] = useState(false)
     const [imageStore, setImageStore] = useState('')
+    const dispatch = useDispatch<RootThunkDispatch>()
+    const navigate = useNavigate()
 
     const formik = useFormik({
         initialValues: {
-            firstName: '',
-            lastName: '',
+            first_name: '',
+            last_name: '',
             gender: '',
             birthday: '',
             username: '',
             email: '',
             password: '',
-            phoneNum: '',
+            phone_num: '',
             country: '',
             profile: '',
             job: '',
             information: '',
         },
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             alert(JSON.stringify(values, null, 2))
+            const res = await dispatch(signUpThunk(values, navigate))
+            if (res.success) {
+                Swal.fire({
+                    title: 'Congrats!',
+                    text: 'Account created',
+                    icon: 'success',
+                })
+            }
         },
     })
 
     function toNextPage() {
-        console.log(
-            formik.values.firstName,
-            formik.values.lastName,
-            formik.values.username,
-            formik.values.password,
-            formik.values.email,
-            formik.values.phoneNum
-        )
         if (
-            formik.values.firstName === '' ||
-            formik.values.lastName === '' ||
+            formik.values.first_name === '' ||
+            formik.values.last_name === '' ||
             formik.values.username === '' ||
             formik.values.password === '' ||
             formik.values.email === '' ||
-            formik.values.phoneNum === ''
+            formik.values.phone_num === ''
         ) {
             Swal.fire({
                 title: 'Notice',
@@ -70,7 +76,6 @@ function SignUp() {
             })
             return
         } else {
-            console.log('ok')
             setNextPage(!nextPage)
         }
     }
@@ -119,9 +124,9 @@ function SignUp() {
                                         >
                                             <Input
                                                 id="firstName"
-                                                name="firstName"
+                                                name="first_name"
                                                 onChange={formik.handleChange}
-                                                value={formik.values.firstName}
+                                                value={formik.values.first_name}
                                                 type="text"
                                                 placeholder={'First Name'}
                                             />
@@ -135,9 +140,9 @@ function SignUp() {
                                         >
                                             <Input
                                                 id="lastName"
-                                                name="lastName"
+                                                name="last_name"
                                                 onChange={formik.handleChange}
-                                                value={formik.values.lastName}
+                                                value={formik.values.last_name}
                                                 type="text"
                                                 placeholder={'Last Name'}
                                             />
@@ -282,9 +287,9 @@ function SignUp() {
                                         >
                                             <Input
                                                 id="phoneNum"
-                                                name="phoneNum"
+                                                name="phone_num"
                                                 onChange={formik.handleChange}
-                                                value={formik.values.phoneNum}
+                                                value={formik.values.phone_num}
                                                 type="number"
                                                 placeholder={'Phone Number'}
                                             />
