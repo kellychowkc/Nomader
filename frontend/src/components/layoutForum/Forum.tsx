@@ -95,20 +95,13 @@ const featurePosts: Post[] = [
 
 const Forum = () => {
     return (
-        <Container w="full" h="full" maxW="max" p="0">
-            <Flex
-                w="full"
-                h="full"
-                direction="column"
-                justify="center"
-                align="center"
-            >
-                {/* === NavBar === */}
-                <Nav />
+        <Box w="auto" h="full">
+            {/* === NavBar === */}
+            <Nav />
+            <VStack w="auto">
                 <Heading as="h1">Nomad Forum</Heading>
                 <p></p>
-
-                <VStack w="98vw">
+                <VStack w="auto">
                     <Text
                         fontSize="2em"
                         fontWeight="bold"
@@ -676,9 +669,9 @@ const Forum = () => {
                         </Box>
                     </Box>
                 </VStack>
-                <Dock />
-            </Flex>
-        </Container>
+            </VStack>
+            <Dock />
+        </Box>
     )
 }
 

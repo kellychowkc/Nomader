@@ -2,7 +2,6 @@ import {
     Box,
     HStack,
     VStack,
-    Text,
     Flex,
     useColorModeValue,
     Icon,
@@ -34,62 +33,54 @@ function Dock() {
     ]
 
     return (
-        <>
-            <Flex
-                w="full"
-                h="80px"
-                zIndex={9999}
-                direction="column"
-                justify="center"
+        <Box w="auto" h="80px">
+            <HStack
+                w="100%"
+                h="70px"
+                px={4}
                 align="center"
+                justifyContent="space-around"
+                position="fixed"
+                bottom="0"
+                bg={useColorModeValue('gray.100', 'gray.900')}
+                borderTopRadius="20px"
+                boxShadow="0px 0px 20px #B0D8BC80"
+                zIndex={9999}
             >
-                <HStack
-                    w="100%"
-                    h="70px"
-                    px={4}
-                    align="center"
-                    justifyContent="space-around"
-                    position="fixed"
-                    bottom="0"
-                    bg={useColorModeValue('gray.100', 'gray.900')}
-                    borderTopRadius="20px"
-                    boxShadow="0px 0px 15px #B0D8BC60"
-                >
-                    {actions.map((action: Action, idx: number) => (
-                        <Flex
-                            key={idx}
-                            h="60px"
-                            w="60px"
-                            _hover={{
-                                textDecoration: 'none',
-                                color: '#FFFFFF',
-                            }}
-                            justify="center"
-                            align="flex-start"
+                {actions.map((action: Action, idx: number) => (
+                    <Flex
+                        key={idx}
+                        h="60px"
+                        w="60px"
+                        _hover={{
+                            textDecoration: 'none',
+                            color: '#FFFFFF',
+                        }}
+                        justify="center"
+                        align="flex-start"
+                    >
+                        <NavLink
+                            to={action.path}
+                            className={({ isActive }) =>
+                                isActive ? 'active' : undefined
+                            }
+                            style={({ isActive }) =>
+                                isActive
+                                    ? {
+                                          color: '#393939',
+                                      }
+                                    : { color: '#CCCCCC' }
+                            }
                         >
-                            <NavLink
-                                to={action.path}
-                                className={({ isActive }) =>
-                                    isActive ? 'active' : undefined
-                                }
-                                style={({ isActive }) =>
-                                    isActive
-                                        ? {
-                                              color: '#393939',
-                                          }
-                                        : { color: '#CCCCCC' }
-                                }
-                            >
-                                <VStack justify="center" align="center">
-                                    <Icon as={action.icon} h="35px" w="35px" />
-                                    <Box className="bar"></Box>
-                                </VStack>
-                            </NavLink>
-                        </Flex>
-                    ))}
-                </HStack>
-            </Flex>
-        </>
+                            <VStack justify="center" align="center">
+                                <Icon as={action.icon} h="35px" w="35px" />
+                                <Box className="bar"></Box>
+                            </VStack>
+                        </NavLink>
+                    </Flex>
+                ))}
+            </HStack>
+        </Box>
     )
 }
 

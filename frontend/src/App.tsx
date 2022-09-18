@@ -30,7 +30,6 @@ import { restoreLoginThunk } from './redux/auth/authThunk'
 import { RootThunkDispatch } from './redux/store'
 import RequireAuth from './components/private/RequireAuth'
 import InterestList from './components/matching/InterestList'
-import Welcome from './components/welcome/Welcome'
 
 import { PhoneIcon } from '@chakra-ui/icons'
 import { MdForum } from 'react-icons/md'
@@ -38,7 +37,7 @@ import Friends from './components/layoutFriends/Friends'
 import Profile from './components/layoutProfile/Profile'
 import Chat from './components/layoutChat/Chat'
 import Home from './components/layoutHome/Home'
-
+import ManageUser from './components/contentManageUser/ManageUser'
 
 function App() {
     const dispatch = useDispatch<RootThunkDispatch>()
@@ -47,26 +46,28 @@ function App() {
         dispatch(restoreLoginThunk())
     }, [])
     return (
-        <Container
-            h="full"
-            w="full"
-            minW="270px"
-            p="0"
-            border="0"
-            centerContent
-        >
+        <>
             <Router>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="welcome" element={<Welcome />} />
 
-                    <Route
-                        path="control/"
-                        element={<ControlPanel children={<Dashboard />} />}
-                    >
+                    <Route path="control">
+                        <Route
+                            index
+                            element={<ControlPanel children={<Dashboard />} />}
+                        />
+                        <Route
+                            path="dashboard"
+                            element={<ControlPanel children={<Dashboard />} />}
+                        />
                         <Route
                             path="user"
-                            element={<ControlPanel children={<Dashboard />} />}
+                            element={<ControlPanel children={<ManageUser />} />}
+                        />
+                        <Route
+                            path="forum"
+                            element={<ControlPanel children={<ManageUser />} />}
                         />
                     </Route>
                     <Route path="landing" element={<Landing />} />
@@ -91,7 +92,6 @@ function App() {
                     <Route path="profile" element={<Profile />} />
                     <Route path="chat" element={<Chat />} />
 
-
                     <Route
                         path="*"
                         element={
@@ -106,7 +106,7 @@ function App() {
                     />
                 </Routes>
             </Router>
-        </Container>
+        </>
     )
 }
 
