@@ -24,6 +24,7 @@ import { useDispatch } from 'react-redux'
 import { RootThunkDispatch } from '../../redux/store'
 import { useNavigate } from 'react-router'
 import { signUpThunk } from '../../redux/auth/authThunk'
+import CountryList from './CountryList'
 
 function SignUp() {
     const [showPassword, setShowPassword] = useState(false)
@@ -274,9 +275,7 @@ function SignUp() {
                                                 value={formik.values.country}
                                                 placeholder={'Country'}
                                             >
-                                                <option>US</option>
-                                                <option>UK</option>
-                                                <option>HK</option>
+                                                <CountryList />
                                             </Select>
                                         </FormControl>
                                     </Box>
@@ -365,9 +364,13 @@ function SignUp() {
                                             value={formik.values.job}
                                             placeholder={'Job'}
                                         >
+                                            <option>Student</option>
                                             <option>Slash</option>
-                                            <option>Software Engineer</option>
+                                            <option>Designer</option>
+                                            <option>Programmer</option>
                                             <option>Entrepreneur</option>
+                                            <option>Youtuber</option>
+                                            <option>Others</option>
                                         </Select>
                                     </FormControl>
                                 </HStack>

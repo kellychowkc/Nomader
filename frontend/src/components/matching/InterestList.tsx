@@ -6,6 +6,7 @@ import InterestItem from './interestItem'
 import { fetchJson } from '../../api/utils'
 import Swal from 'sweetalert2'
 import { addUserInterest } from '../../api/user'
+import { Link } from 'react-router-dom'
 
 const { REACT_APP_API_SERVER } = process.env
 export interface InterestItem {
@@ -16,8 +17,10 @@ export interface InterestItem {
 
 function InterestList() {
     const [interestList, setInterestList] = useState<Array<InterestItem>>([])
+    const [nextPage, setNextPage] = useState(false)
 
     useEffect(() => {
+        setNextPage(false)
         fetchJson<Array<{ id: number; title: string }>>(
             `${REACT_APP_API_SERVER}/data/interest`
         ).then((data) => {
@@ -41,15 +44,27 @@ function InterestList() {
         const filteredInterestList = interestList.filter(
             (item) => item.isSelected === true
         )
-
-        if (filteredInterestList.length > 6) {
+        if (filteredInterestList.length === 0) {
+            setNextPage(!nextPage)
             Swal.fire({
-                title: "Don't be greedy!",
-                text: 'You can only pick 6.',
+                title: 'Sorry',
+                text: 'You have to pick at least one.',
                 icon: 'warning',
             })
+
             return
         }
+        if (filteredInterestList.length > 6) {
+            setNextPage(!nextPage)
+            Swal.fire({
+                title: "Don't be greedy!",
+                text: 'You can only pick six.',
+                icon: 'warning',
+            })
+
+            return
+        }
+
         const submitInterestList = filteredInterestList.map(
             (item: InterestItem) => {
                 delete item.isSelected
@@ -84,7 +99,13 @@ function InterestList() {
                 </div>
                 <div className={styles.btnContainer}>
                     <button className={styles.tickbtn} onClick={submit}>
-                        <Icon as={CheckIcon} w={9} h={9} />
+                        {nextPage ? (
+                            <Link to="/matching">
+                                <Icon as={CheckIcon} w={9} h={9} />
+                            </Link>
+                        ) : (
+                            <Icon as={CheckIcon} w={9} h={9} />
+                        )}
                     </button>
                 </div>
             </div>

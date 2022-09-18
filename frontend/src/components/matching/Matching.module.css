@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.profileContainer {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.profilePic {
+    width: 26rem;
+    height: 25rem;
+}
+
+.profileInfo {
+    padding: 1rem 2.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.title {
+    font-size: 24px;
+}
+
+.subtitle {
+    font-size: 16px;
+}
+
+hr {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.bio {
+    font-size: 14px;
+}
+
+.interestBox {
+    padding-top: 0.5rem;
+}
+
+.tickbtn {
+    margin-left: 2rem;
+    height: 71%;
+    width: 15%;
+    transition: all 0.5s ease;
+    color: white;
+    background-color: transparent;
+    outline: none;
+    size: 10rem;
+    border-radius: 80%;
+    background-color: #aae5bb;
+}
+
+.crossbtn {
+    padding-top: 3px;
+    height: 71%;
+    width: 15%;
+    transition: all 0.5s ease;
+    color: #aae5bb;
+    background-color: transparent;
+    outline: none;
+    size: 10rem;
+    border-radius: 80%;
+    border: solid #aae5bb;
+}
+
+.btnBox {
+    height: 6rem;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.5rem;
+}
