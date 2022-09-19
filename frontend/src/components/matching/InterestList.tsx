@@ -8,8 +8,6 @@ import Swal from 'sweetalert2'
 import { addUserInterest } from '../../api/user'
 import { Link } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
-import { AuthState } from '../../redux/state'
-import { useSelector } from 'react-redux'
 
 const { REACT_APP_API_SERVER } = process.env
 
