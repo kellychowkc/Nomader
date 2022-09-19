@@ -20,7 +20,7 @@ function InterestItem(props: Props) {
                 border={border}
                 borderRadius="5%"
                 borderColor="#ffffff"
-                margin={1}
+                margin={0.5}
                 backdropFilter={blur}
             >
                 <button className={styles.btn} onClick={props.toggle}>
