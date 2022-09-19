@@ -11,21 +11,21 @@ export async function seed(knex: Knex): Promise<void> {
     // Inserts seed entries
     const interestId: Array<{ id: number }> = await knex("interests")
         .insert([
-            { title: "hiking" },
-            { title: "camping" },
-            { title: "cycling" },
-            { title: "foodie" },
-            { title: "party" },
-            { title: "photo shooting" },
-            { title: "reading" },
-            { title: "singing" },
-            { title: "busking" },
-            { title: "diving" },
-            { title: "watch concert" },
-            { title: "watch match" },
-            { title: "join event" },
-            { title: "skiing" },
-            { title: "shopping" },
+            { title: "hiking", image: "hiking.png" },
+            { title: "camping",image: "camping.png" },
+            { title: "cycling", image: "cycling.png" },
+            { title: "foodie", image: "foodie.png" },
+            { title: "party", image: "party.png" },
+            { title: "photo shooting", image: "photoShooting.png" },
+            { title: "reading", image: "reading.png" },
+            { title: "singing", image: "singing" },
+            { title: "busking", image: "busking.png" },
+            { title: "diving", image: "diving.png" },
+            { title: "watch concert", image: "watchConcert.png" },
+            { title: "watch match", image: "watchMatch.png" },
+            { title: "join event", image: "joinEvent.png" },
+            { title: "skiing", image: "skiing.png" },
+            { title: "shopping", image: "shopping.png" }
         ])
         .returning("id");
 
