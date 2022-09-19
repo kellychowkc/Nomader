@@ -3,27 +3,11 @@ import type { Request, Response } from "express";
 import { logger } from "../utils/logger";
 
 export class GetDataController {
-    constructor(getDataService: GetDataService) {}
+    constructor(private getDataService: GetDataService) {}
 
     getInterests = async (req: Request, res: Response) => {
         try {
-            const interestList = [
-                { id: 1, title: "Hiking" },
-                { id: 2, title: "Camping" },
-                { id: 3, title: "Cycling" },
-                { id: 4, title: "Foodie" },
-                { id: 5, title: "Party" },
-                { id: 6, title: "Photo Shooting" },
-                { id: 7, title: "Reading" },
-                { id: 8, title: "Hiking" },
-                { id: 9, title: "Singing" },
-                { id: 10, title: "Busking" },
-                { id: 11, title: "Diving" },
-                { id: 12, title: "Watch Concert" },
-                { id: 13, title: "Watch Match" },
-                { id: 14, title: "Join Event" },
-                { id: 15, title: "Shopping" },
-            ];
+            const interestList = await this.getDataService.getInterestData();
             res.json(interestList);
         } catch (err) {
             logger.error(err.toString());

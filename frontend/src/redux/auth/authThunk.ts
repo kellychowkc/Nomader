@@ -55,6 +55,7 @@ export function signUpThunk(
 ) {
     return async function (dispatch: Dispatch<AuthActions>) {
         try {
+            console.log("check thunk signupForm", signUpForm);
             const data = await postSignUp(signUpForm);
             console.log(data);
             navigate("/login");
