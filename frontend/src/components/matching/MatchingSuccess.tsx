@@ -1,5 +1,5 @@
 import { ChevronLeftIcon } from '@chakra-ui/icons'
-import { Avatar, AvatarBadge, Box, Button, Icon, Stack } from '@chakra-ui/react'
+import { Avatar, Box, Button, Icon } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'

@@ -2,14 +2,12 @@ import styles from './Interest.module.css'
 import { Wrap, Icon } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react'
-import InterestItem from './interestItem'
+import InterestItem from './InterestItem'
 import { fetchJson } from '../../api/utils'
 import Swal from 'sweetalert2'
 import { addUserInterest } from '../../api/user'
 import { Link } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
-import { AuthState } from '../../redux/state'
-import { useSelector } from 'react-redux'
 
 const { REACT_APP_API_SERVER } = process.env
 export interface InterestItem {
