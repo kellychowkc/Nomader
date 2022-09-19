@@ -38,6 +38,7 @@ import Profile from './components/layoutProfile/Profile'
 import Chat from './components/layoutChat/Chat'
 import Home from './components/layoutHome/Home'
 import Matching from './components/matching/Matching'
+import MatchingSuccess from './components/matching/MatchingSuccess'
 
 function App() {
     const dispatch = useDispatch<RootThunkDispatch>()
@@ -82,6 +83,10 @@ function App() {
                     <Route path="signUp" element={<SignUp />} />
                     <Route path="interest" element={<InterestList />} />
                     <Route path="matching" element={<Matching />} />
+                    <Route
+                        path="matchingSuccess"
+                        element={<MatchingSuccess />}
+                    />
                     <Route path="welcome" element={<Welcome />} />
 
                     <Route path="signup" element={<SignUp />} />

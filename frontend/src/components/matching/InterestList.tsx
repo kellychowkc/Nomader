@@ -7,6 +7,9 @@ import { fetchJson } from '../../api/utils'
 import Swal from 'sweetalert2'
 import { addUserInterest } from '../../api/user'
 import { Link } from 'react-router-dom'
+import Dock from '../common/dock/Dock'
+import { AuthState } from '../../redux/state'
+import { useSelector } from 'react-redux'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -18,9 +21,9 @@ export interface InterestItem {
 
 function InterestList() {
     const [interestList, setInterestList] = useState<Array<InterestItem>>([])
-    const [nextPage, setNextPage] = useState(false)
+    const [nextPage, setNextPage] = useState(true)
 
-    useEffect(() => {
+    const insertData = useEffect(() => {
         setNextPage(false)
         fetchJson<Array<{ id: number; title: string }>>(
             `${REACT_APP_API_SERVER}/data/interest`
@@ -110,6 +113,7 @@ function InterestList() {
                     </button>
                 </div>
             </div>
+            <Dock />
         </div>
     )
 }

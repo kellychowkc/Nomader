@@ -7,10 +7,15 @@
 }
 
 .pageContainer {
-    width: 86%;
-    margin: 2rem;
-    margin-top: 4.7rem;
+    width: 88%;
+    margin: 1.5rem;
+    margin-top: 3rem;
+    margin-bottom: 0;
     font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .titleContainer {
@@ -23,13 +28,13 @@
 }
 
 .title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 600;
     letter-spacing: 3px;
 }
 
 .subtitle {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 400;
 }
 
@@ -40,8 +45,9 @@
     align-items: center;
     border-radius: 4%;
     padding: 0.5rem;
-    padding-left: 0.8rem;
+    padding-left: 1rem;
     background-color: #628f88ac;
+    overflow: hidden;
 }
 
 .interestBox {

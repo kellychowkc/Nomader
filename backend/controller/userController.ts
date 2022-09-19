@@ -119,6 +119,7 @@ export class UserController {
                 success: true,
                 message: "Updated Interest List",
             });
+            console.log(req.body);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
