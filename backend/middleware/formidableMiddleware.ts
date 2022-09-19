@@ -15,7 +15,7 @@ declare global {
     }
 }
 
-const uploadDir = path.join(__dirname, "../", "public", "assets", "freeVideos");
+const uploadDir = path.join(__dirname, "../", "assets", "profile");
 
 const form = formidable({
     uploadDir,
@@ -23,7 +23,7 @@ const form = formidable({
     maxFiles: 1,
     multiples: false,
     maxFileSize: 200 * 1024 ** 2,
-    filter: (part) => part.mimetype?.startsWith("video/mp4") || false,
+    filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
 
 export function formidableMiddleware(
@@ -34,9 +34,10 @@ export function formidableMiddleware(
     form.parse(req, (err, fields, files) => {
         if (err) {
             logger.error(err.toString());
+            res.status(400).json({ success: false, message: "Fail to upload" });
+            return;
         }
         req.form = { fields, files };
-        // console.log("formidable files:", files)
         next();
     });
 }

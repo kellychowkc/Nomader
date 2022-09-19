@@ -23,16 +23,16 @@ export interface LoginForm {
 export interface SignUpForm {
     first_name: string;
     last_name: string;
-    gender?: string;
-    birthday?: string;
+    gender: string;
+    birthday: string;
     username: string;
     email: string;
     password: string;
     phone_num: string;
-    country?: string;
-    profile?: string;
-    job?: string;
-    information?: string;
+    country: string;
+    profile: Blob | File;
+    job: string;
+    information: string;
 }
 
 export async function fetchSelfUserInfo(token: string) {
@@ -60,12 +60,23 @@ export async function postLogin(loginForm: LoginForm) {
 }
 
 export async function postSignUp(signUpForm: SignUpForm) {
+    const formData = new FormData();
+    formData.append("first_name", signUpForm.first_name);
+    formData.append("last_name", signUpForm.last_name);
+    formData.append("gender", signUpForm.gender);
+    formData.append("birthday", signUpForm.birthday);
+    formData.append("username", signUpForm.username);
+    formData.append("email", signUpForm.email);
+    formData.append("password", signUpForm.password);
+    formData.append("phone_num", signUpForm.phone_num);
+    formData.append("country", signUpForm.country);
+    formData.append("job", signUpForm.job);
+    formData.append("information", signUpForm.information);
+    formData.append("profile", signUpForm.profile);
+
     return fetchJson(`${REACT_APP_API_SERVER}/user/signUp`, {
         method: "POST",
-        headers: {
-            "content-type": "application/json",
-        },
-        body: JSON.stringify(signUpForm),
+        body: formData,
     });
 }
 

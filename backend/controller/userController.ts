@@ -71,7 +71,16 @@ export class UserController {
 
     signUp = async (req: Request, res: Response) => {
         try {
-            const newUser = await this.userService.create(req.body);
+            let userData = req.form?.fields;
+            const file = req.form?.files.profile;
+            const profile = file?.["newFilename"];
+            userData!.profile = profile;
+            console.log("controller", typeof userData);
+
+            //not yet finished
+            const newUser = await this.userService.create(
+                userData as any as User
+            );
             if (newUser) {
                 res.status(201).json({ success: true, message: "Created" });
             } else {
@@ -110,6 +119,7 @@ export class UserController {
                 success: true,
                 message: "Updated Interest List",
             });
+            console.log(req.body);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
