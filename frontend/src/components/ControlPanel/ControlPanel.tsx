@@ -32,7 +32,7 @@ import {
     FiUser,
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
-import { useLocation, Link as ReactRouterLink } from 'react-router-dom'
+import { useLocation, Link as ReactRouterLink, Outlet } from 'react-router-dom'
 
 interface LinkItemProps {
     name: string
@@ -58,7 +58,7 @@ const user: UserProfile = {
     avatar: 'None',
 }
 
-export default function ControlPanel({ children }: { children: ReactNode }) {
+export default function ControlPanel() {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
@@ -89,7 +89,7 @@ export default function ControlPanel({ children }: { children: ReactNode }) {
             {/* mobilenav */}
             <MobileNav onOpen={onOpen} />
             <Box ml={{ base: 0, md: 60 }} p="4">
-                {children}
+                <Outlet />
             </Box>
         </Box>
     )
@@ -129,7 +129,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon} path={link.path}>
+                <NavItem
+                    key={link.name}
+                    icon={link.icon}
+                    path={'../' + link.path}
+                >
                     {link.name}
                 </NavItem>
             ))}
