@@ -46,10 +46,8 @@ CREATE TABLE attractions (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     image TEXT,
-    tel_num TEXT,
     address TEXT NOT NULL,
     open_time TEXT,
-    website TEXT,
     class TEXT,
     city_id INTEGER,
     FOREIGN KEY (city_id) REFERENCES cities(id)
@@ -57,7 +55,8 @@ CREATE TABLE attractions (
 
 CREATE TABLE interests (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL
+    title TEXT NOT NULL,
+    image TEXT
 );
 
 CREATE TABLE attreactions_type (

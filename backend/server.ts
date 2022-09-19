@@ -25,6 +25,8 @@ import { UserService } from "./service/userService";
 import { UserController } from "./controller/userController";
 import { GetDataController } from "./controller/getDataController";
 import { GetDataService } from "./service/getDataService";
+import { MatchService } from "./service/matchService";
+import { MatchController } from "./controller/matchController";
 
 app.use(
     expressSession({
@@ -44,6 +46,8 @@ export const userService = new UserService(knex);
 export const userController = new UserController(userService);
 export const getDataService = new GetDataService(knex);
 export const getDataController = new GetDataController(getDataService);
+export const matchService = new MatchService(knex);
+export const matchController = new MatchController(matchService);
 
 import { logInRoutes } from "./routers/userRoutes";
 import { dataRoutes } from "./routers/getDataRoutes";

@@ -62,10 +62,8 @@ export async function up(knex: Knex): Promise<void> {
             table.string("name").notNullable();
             table.string("description");
             table.string("image");
-            table.string("tel_num");
             table.string("location");
             table.string("open_time");
-            table.string("website");
             table.string("class");
             table.integer("city_id").unsigned();
             table.foreign("city_id").references("cities.id");
@@ -77,6 +75,7 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("interests", (table) => {
             table.increments();
             table.string("title").notNullable();
+            table.string("image");
         })
     }
 
