@@ -7,14 +7,13 @@
 }
 
 .pageContainer {
-    width: 88%;
-
-    margin-bottom: 0;
+    width: full;
     font-family: 'Roboto', sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0;
 }
 
 .titleContainer {
@@ -39,7 +38,8 @@
 }
 
 .interestContainer {
-    height: 34rem;
+    height: 32rem;
+    width: 88%;
     display: flex;
     justify-content: center;
     align-items: center;
