@@ -85,13 +85,13 @@ hr {
 }
 
 .container {
-    margin-top: 4rem;
     margin-bottom: 4rem;
     padding: 0 1rem;
     color: white;
 }
 
 .tab {
+    padding-top: 4rem;
     margin-bottom: 3.5rem;
     display: flex;
     flex-direction: row;
@@ -104,7 +104,7 @@ hr {
 }
 
 .titleBox {
-    margin-right: 8.5rem;
+    margin-right: 8rem;
 }
 
 .avatar {

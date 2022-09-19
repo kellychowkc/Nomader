@@ -43,15 +43,15 @@ function Dock() {
                 position="fixed"
                 bottom="0"
                 bg={useColorModeValue('gray.100', 'gray.900')}
-                borderTopRadius="20px"
+                borderTopRadius="10px"
                 boxShadow="0px 0px 20px #B0D8BC80"
                 zIndex={9999}
             >
                 {actions.map((action: Action, idx: number) => (
                     <Flex
                         key={idx}
-                        h="60px"
-                        w="60px"
+                        h="40px"
+                        w="50px"
                         _hover={{
                             textDecoration: 'none',
                             color: '#FFFFFF',
