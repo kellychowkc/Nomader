@@ -119,6 +119,7 @@ export default function Nav() {
                                     <Avatar size={'sm'} src={auth.username} />
                                 </MenuButton>
                                 <MenuList>
+                                    <MenuItem>{auth.username}</MenuItem>
                                     <MenuItem>Edit Profile</MenuItem>
                                     <MenuDivider />
                                     <MenuItem>Logout</MenuItem>
