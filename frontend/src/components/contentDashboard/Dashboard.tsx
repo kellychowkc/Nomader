@@ -11,11 +11,8 @@ import {
     StatLabel,
     StatNumber,
     useColorModeValue,
-    Text,
-    ButtonGroup,
     Button,
     VStack,
-    StatGroup,
     StatHelpText,
     StatArrow,
     HStack,
@@ -154,7 +151,7 @@ export default function Dashboard() {
                 py={10}
                 fontWeight={'bold'}
             >
-                This is the dashboard to display useful data.
+                Dashboard of useful data.
             </chakra.h1>
             <SimpleGrid
                 columns={{ base: 1, md: 3 }}
