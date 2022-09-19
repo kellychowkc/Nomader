@@ -23,7 +23,6 @@ import {
     MenuList,
 } from '@chakra-ui/react'
 import {
-    FiHome,
     FiTrendingUp,
     FiCompass,
     FiStar,
@@ -130,11 +129,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem
-                    key={link.name}
-                    icon={link.icon}
-                    path={'control/' + link.path}
-                >
+                <NavItem key={link.name} icon={link.icon} path={link.path}>
                     {link.name}
                 </NavItem>
             ))}
@@ -150,7 +145,7 @@ interface NavItemProps extends FlexProps {
 const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
     return (
         <Link
-            href={path}
+            href={'control/' + path}
             style={{ textDecoration: 'none' }}
             _focus={{ boxShadow: 'none' }}
         >
@@ -212,6 +207,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 fontSize="2xl"
                 fontFamily="monospace"
                 fontWeight="bold"
+                textDecoration="none"
             >
                 Nomader
             </Text>
@@ -232,7 +228,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                         >
                             <HStack>
                                 <Avatar
-                                    size={'md'}
+                                    size={'sm'}
                                     src={
                                         'https://avatars.dicebear.com/api/male/username.svg'
                                     }
@@ -247,7 +243,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                     <Text fontSize="md">{user.username}</Text>
                                     {/* User Type */}
                                     <Text fontSize="s" color="gray.600">
-                                        {user.user_type}{' '}
+                                        {user.user_type}
                                     </Text>
                                 </VStack>
                                 <Box display={{ base: 'none', md: 'flex' }}>

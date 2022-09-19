@@ -17,6 +17,7 @@ import {
     HStack,
     IconButton,
     FlexProps,
+    Text,
 } from '@chakra-ui/react'
 
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
@@ -25,6 +26,7 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 
 import { useSelector } from 'react-redux'
 import { AuthState } from '../../../redux/state'
+import { NavLink } from 'react-router-dom'
 
 interface LinkItemProps {
     name: string
@@ -36,55 +38,32 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Control Panel', path: '/control' },
 ]
 
-interface NavItemProps extends FlexProps {
-    children: string | number
-    path: string
-}
-
-const NavLink = ({ children, path, ...rest }: NavItemProps) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'none',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        href={path}
-    >
-        {children}
-    </Link>
+const NavLinkHover = ({ children }: { children: LinkItemProps }) => (
+    <NavLink to={children.path} key={children.name}>
+        <Box
+            px={2}
+            py={1}
+            rounded={'md'}
+            _hover={{
+                textDecoration: 'none',
+                bg: useColorModeValue('gray.200', 'gray.700'),
+            }}
+        >
+            {children.name}
+        </Box>
+    </NavLink>
 )
 
-export default function Nav(): JSX.Element {
+export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose } = useDisclosure()
-
-    //update usename from redux
+    //update username from redux
     const auth: AuthState = useSelector((state: any) => state.auth)
 
     return (
-        <Flex
-            w="98vw"
-            h="auto"
-            minW="270px"
-            zIndex={9999}
-            justify="center"
-            align="center"
-            m="0"
-            p="0"
-            border="0"
-            position="sticky"
-            top="0"
-        >
-            <Box
-                w="100%"
-                bg={useColorModeValue('gray.100', 'gray.900')}
-                px={4}
-                m="0"
-            >
+        <>
+            <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
                 <Flex
-                    w="100%"
                     h={16}
                     alignItems={'center'}
                     justifyContent={'space-between'}
@@ -99,27 +78,29 @@ export default function Nav(): JSX.Element {
                     <HStack spacing={8} alignItems={'center'}>
                         <Box>
                             <Link href="/" style={{ textDecoration: 'none' }}>
-                                Nomader
+                                <Text
+                                    fontSize="xl"
+                                    fontFamily="monospace"
+                                    fontWeight="bold"
+                                >
+                                    Nomader
+                                </Text>
                             </Link>
                         </Box>
                         <HStack
                             as={'nav'}
                             spacing={4}
-                            display={{
-                                base: 'none',
-                                md: 'flex',
-                            }}
+                            display={{ base: 'none', md: 'flex' }}
                         >
-                            {LinkItems.map((link) => (
-                                <NavLink key={link.name} path={link.path}>
+                            {LinkItems.map((link: any) => (
+                                <NavLink to={link.path} key={link.name}>
                                     {link.name}
                                 </NavLink>
                             ))}
                         </HStack>
                     </HStack>
-
                     <Flex alignItems={'center'}>
-                        <Stack direction={'row'} spacing={7}>
+                        <Stack direction={'row'} spacing={3}>
                             <Button onClick={toggleColorMode}>
                                 {colorMode === 'light' ? (
                                     <MoonIcon />
@@ -135,49 +116,30 @@ export default function Nav(): JSX.Element {
                                     cursor={'pointer'}
                                     minW={0}
                                 >
-                                    <Avatar
-                                        size={'sm'}
-                                        src={
-                                            'https://avatars.dicebear.com/api/male/username.svg'
-                                        }
-                                    />
+                                    <Avatar size={'sm'} src={auth.username} />
                                 </MenuButton>
-                                <MenuList alignItems={'center'}>
-                                    <br />
-                                    <Center>
-                                        <Avatar
-                                            size={'2xl'}
-                                            src={
-                                                'https://avatars.dicebear.com/api/male/username.svg'
-                                            }
-                                        />
-                                    </Center>
-                                    <br />
-                                    <Center>
-                                        <p>{auth.username}</p>
-                                    </Center>
-                                    <br />
+                                <MenuList>
+                                    <MenuItem>Edit Profile</MenuItem>
                                     <MenuDivider />
-                                    <MenuItem>Your Profile</MenuItem>
-                                    <MenuItem>Account Settings</MenuItem>
                                     <MenuItem>Logout</MenuItem>
                                 </MenuList>
                             </Menu>
                         </Stack>
                     </Flex>
                 </Flex>
+
                 {isOpen ? (
                     <Box pb={4} display={{ md: 'none' }}>
                         <Stack as={'nav'} spacing={4}>
                             {LinkItems.map((link) => (
-                                <NavLink key={link.name} path={link.path}>
-                                    {link.name}
-                                </NavLink>
+                                <NavLinkHover key={link.name}>
+                                    {link}
+                                </NavLinkHover>
                             ))}
                         </Stack>
                     </Box>
                 ) : null}
             </Box>
-        </Flex>
+        </>
     )
 }

@@ -37,6 +37,7 @@ import Friends from './components/layoutFriends/Friends'
 import Profile from './components/layoutProfile/Profile'
 import Chat from './components/layoutChat/Chat'
 import Home from './components/layoutHome/Home'
+import ManageUser from './components/contentManageUser/ManageUser'
 import Matching from './components/matching/Matching'
 import MatchingSuccess from './components/matching/MatchingSuccess'
 
@@ -47,26 +48,28 @@ function App() {
         dispatch(restoreLoginThunk())
     }, [])
     return (
-        <Container
-            h="full"
-            w="full"
-            minW="270px"
-            p="0"
-            border="0"
-            centerContent
-        >
+        <>
             <Router>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="welcome" element={<Welcome />} />
 
-                    <Route
-                        path="control/"
-                        element={<ControlPanel children={<Dashboard />} />}
-                    >
+                    <Route path="control">
+                        <Route
+                            index
+                            element={<ControlPanel children={<Dashboard />} />}
+                        />
+                        <Route
+                            path="dashboard"
+                            element={<ControlPanel children={<Dashboard />} />}
+                        />
                         <Route
                             path="user"
-                            element={<ControlPanel children={<Dashboard />} />}
+                            element={<ControlPanel children={<ManageUser />} />}
+                        />
+                        <Route
+                            path="forum"
+                            element={<ControlPanel children={<ManageUser />} />}
                         />
                     </Route>
                     <Route path="landing" element={<Landing />} />
@@ -110,7 +113,7 @@ function App() {
                     />
                 </Routes>
             </Router>
-        </Container>
+        </>
     )
 }
 

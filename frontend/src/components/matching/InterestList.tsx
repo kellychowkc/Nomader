@@ -2,7 +2,7 @@ import styles from './Interest.module.css'
 import { Wrap, Icon } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react'
-import InterestItem from './InterestItem'
+import InterestItem from './interestItem'
 import { fetchJson } from '../../api/utils'
 import Swal from 'sweetalert2'
 import { addUserInterest } from '../../api/user'
@@ -12,7 +12,6 @@ import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 
 const { REACT_APP_API_SERVER } = process.env
-
 export interface InterestItem {
     id: number
     title: string
