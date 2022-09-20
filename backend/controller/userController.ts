@@ -38,7 +38,6 @@ export class UserController {
                         username: user["username"],
                     };
 
-                    //// Add interest in jwt!!!!!
                     //jwt
                     const payload = {
                         id: user.id,
@@ -51,6 +50,7 @@ export class UserController {
                         message: "success",
                         token: token,
                         username: user.username,
+                        id: user.id,
                     });
                 }
             } else {
@@ -111,6 +111,23 @@ export class UserController {
         }
     };
 
+    getUserInterest = async (req: Request, res: Response) => {
+        try {
+            console.log("controller", req.body);
+            await this.userService.getInterestByUserId(req.body);
+            res.status(201).json({
+                success: true,
+                message: "Interest Found",
+            });
+            console.log(req.body);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "Interest is not found",
+            });
+        }
+    };
     //!!!!Service is not finished
     addInterest = async (req: Request, res: Response) => {
         try {
@@ -120,6 +137,27 @@ export class UserController {
                 message: "Updated Interest List",
             });
             console.log(req.body);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    //!!!!Service is not finished
+    newPost = async (req: Request, res: Response) => {
+        try {
+            let postData = req.form?.fields;
+            const file = req.form?.files.image;
+            const profile = file?.["newFilename"];
+            postData!.profile = profile;
+            // await this.userService.addInterest(req.body);
+            res.status(201).json({
+                success: true,
+                message: "New Post Created",
+            });
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
