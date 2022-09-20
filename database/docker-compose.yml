@@ -1,6 +1,13 @@
 version: '2'
 
 services:
+  run:
+    environment:
+      - POSTGRES_USERNAME: postgres
+      - POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB: cap_project
+      - POSTGRES_DW: project_cap
+      - POSTGRES_HOST: 172.1.0.20
   spark:
     image: docker.io/bitnami/spark
     user: root
@@ -71,8 +78,8 @@ services:
     environment:
         POSTGRES_USERNAME: postgres
         POSTGRES_PASSWORD: postgres
-        POSTGRES_DB: projectDB
-        POSTGRES_DW: projectDW
+        POSTGRES_DB: cap_project
+        POSTGRES_DW: project_cap
     restart: always
     networks:
       project:

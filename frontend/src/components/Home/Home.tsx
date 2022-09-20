@@ -37,6 +37,7 @@ import { useSelector } from 'react-redux'
 import { AuthState } from '../../redux/state'
 
 import './Home.css'
+import { Link } from 'react-router-dom'
 
 interface UserProfile {
     username: string
@@ -51,10 +52,10 @@ const user: UserProfile = {
 }
 
 const categories = [
-    { name: 'location', icon: MdMap },
-    { name: 'exchange', icon: MdMoney },
-    { name: 'flight', icon: MdFlight },
-    { name: 'safety', icon: MdSecurity },
+    { name: 'location', icon: MdMap, path: '' },
+    { name: 'exchange', icon: MdMoney, path: '' },
+    { name: 'flight', icon: MdFlight, path: '' },
+    { name: 'safety', icon: MdSecurity, path: 'contact' },
 ]
 
 const interestList: DisplayCardData[] = [
@@ -333,12 +334,26 @@ const Home = () => {
                                 boxShadow="0px 0px 9px #AAAAAA"
                                 bgGradient="linear(to-r, #56C3E6, #B0D8BC)"
                             >
-                                <Icon
-                                    as={category.icon}
-                                    h={['30px', '40px', '50px', '60px', '60px']}
-                                    w={['30px', '40px', '50px', '60px', '60px']}
-                                    color="#FFFFFF"
-                                />
+                                <Link to={category.path}>
+                                    <Icon
+                                        as={category.icon}
+                                        h={[
+                                            '30px',
+                                            '40px',
+                                            '50px',
+                                            '60px',
+                                            '60px',
+                                        ]}
+                                        w={[
+                                            '30px',
+                                            '40px',
+                                            '50px',
+                                            '60px',
+                                            '60px',
+                                        ]}
+                                        color="#FFFFFF"
+                                    />
+                                </Link>
                             </Flex>
                         ))}
                     </HStack>

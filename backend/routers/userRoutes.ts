@@ -8,7 +8,7 @@ export const logInRoutes = express.Router();
 
 logInRoutes.post("/login", userController.logIn);
 logInRoutes.post("/signUp", signUpMiddleware, userController.signUp);
-logInRoutes.get("/getInterest", userController.getUserInterest);
+logInRoutes.post("/getInterest", userController.getUserInterest);
 logInRoutes.post("/interest", userController.addInterest);
 logInRoutes.post("/post", postMiddleware, userController.newPost);
 logInRoutes.get("/", isLoggedIn, userController.getSelfInfo);

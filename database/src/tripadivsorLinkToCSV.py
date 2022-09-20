@@ -107,7 +107,6 @@ def get_attraction_data() :
                 attraction = ''.join(attraction)
                 attractionList.append(attraction)
 
-        attractionList = attractionList[2120:]
         for i in range(len(attractionList)) :
             page = browser.new_page()
             page.goto(attractionList[i])
@@ -167,12 +166,14 @@ def get_city_data() :
             for city in cityLink :
                 city = ''. join(city)
                 cityList.append(city)
+
         for i in range(len(cityList)) :
             pageCity = browser.new_page()
             pageCity.goto(cityList[i])
             cityName = pageCity.evaluate('[...document.querySelectorAll("h1 > span > span")].map(city => { return city.innerText })')
             cityDescription = pageCity.evaluate('[...document.querySelectorAll(".SSPMW > .GYFPJ")].map(city => { return city.innerText })')
             cityImg = pageCity.evaluate('[...document.querySelectorAll(".Gm > button > picture > img")].map(img => { return img.src })')
+            cityClass = pageCity.evaluate('[...document.querySelectorAll(".KCGqk > a")].map(a => { return a.innerText })')
 
             if len(cityDescription) == 0 :
                 description = ''
@@ -184,10 +185,16 @@ def get_city_data() :
             else :
                 image = cityImg[0]
             
+            cityArr = []
+            for i in range(len(cityClass)) :
+                cityArr.append(cityClass[i])
+            cityStr = ', '.join(cityArr)
+            
             city = {
                 'name' : cityName[1],
                 'description' : description,
-                'image' : image
+                'image' : image,
+                'city_list' : cityStr
             }
             city = json.dumps(city)
             with open('cityData.csv', 'a') as fc :
@@ -200,4 +207,3 @@ def get_city_data() :
 # filter_city_link()
 # get_attraction_data()
 # get_city_data()
-
