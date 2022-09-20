@@ -89,8 +89,11 @@ export async function postSignUp(signUpForm: SignUpForm) {
 export async function preMatching(userId: number) {
     console.log(JSON.stringify(userId));
     return fetchJson(`${REACT_APP_API_SERVER}/user/getInterest`, {
-        method: "GET",
-        body: JSON.stringify(userId),
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ uid: userId }),
     });
 }
 

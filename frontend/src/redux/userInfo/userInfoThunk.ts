@@ -1,5 +1,4 @@
 import { Dispatch } from "react";
-import { NavigateFunction } from "react-router-dom";
 import { preMatching } from "../../api/user";
 import {
     getInfoFail,
@@ -12,9 +11,11 @@ export function getUserInterest(userId: number) {
     return async function (dispatch: Dispatch<UserInfoActions>) {
         try {
             dispatch(getInfoPending());
-            const data = await preMatching(userId);
+            const data: any = await preMatching(userId);
+            const interest = data.interest;
+            dispatch(getInfoSuccess(interest));
             console.log("thunk", data);
-            // dispatch(getInfoSuccess(data.userId));
+            return data;
         } catch (err: any) {
             dispatch(getInfoFail(err.message));
             return err.message;

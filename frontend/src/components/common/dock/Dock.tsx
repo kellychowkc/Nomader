@@ -27,7 +27,7 @@ function Dock() {
     const actions: Action[] = [
         { name: 'Home', path: '/', icon: MdOutlineHome },
         { name: 'Forum', path: '/forum', icon: MdOutlineForum },
-        { name: 'Matching', path: '/matching', icon: MdOutlinePeople },
+        { name: 'Matching', path: '/matchingIndex', icon: MdOutlinePeople },
         { name: 'Chat', path: '/chat', icon: MdOutlineChat },
         { name: 'Profile', path: '/profile', icon: MdOutlinePerson },
     ]

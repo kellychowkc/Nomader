@@ -46,51 +46,44 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="welcome" element={<Welcome />} />
 
-                    <Route path="control">
-                        <Route
-                            index
-                            element={<ControlPanel children={<Dashboard />} />}
-                        />
-                        <Route
-                            path="dashboard"
-                            element={<ControlPanel children={<Dashboard />} />}
-                        />
-                        <Route
-                            path="user"
-                            element={<ControlPanel children={<ManageUser />} />}
-                        />
-                        <Route
-                            path="forum"
-                            element={<ControlPanel children={<ManageUser />} />}
-                        />
+                    <Route path="control" element={<ControlPanel />}>
+                        <Route index element={<Dashboard />} />
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="user" element={<ManageUser />} />
+                        <Route path="forum" element={<ManageUser />} />
                     </Route>
                     <Route path="landing" element={<Landing />} />
                     <Route path="layoutlogin" element={<LayoutLogin />} />
 
                     {/* Required Auth Route */}
-                    <Route path="contact" element={<RequireAuth />}>
-                        <Route index element={<Contact />} />
+                    <Route path="/" element={<RequireAuth />}>
+                        <Route path="contact" element={<Contact />} />
                         <Route path="forum" element={<Forum />} />
+                        <Route
+                            path="matchingIndex"
+                            element={<MatchingIndex />}
+                        />
+                        <Route path="interest" element={<InterestList />} />
+                        <Route path="matching" element={<Matching />} />
+                        <Route
+                            path="matchingSuccess"
+                            element={<MatchingSuccess />}
+                        />
+                        <Route path="newPost" element={<NewPost />} />
+                        <Route path="friends" element={<Friends />} />
+                        <Route path="profile" element={<Profile />} />
+                        <Route path="chat" element={<Chat />} />
                     </Route>
 
                     <Route path="login" element={<Login />} />
 
                     <Route path="signUp" element={<SignUp />} />
-                    {/* <Route path="interest" element={<InterestList />} /> */}
-                    <Route path="matching" element={<MatchingIndex />} />
-                    <Route
-                        path="matchingSuccess"
-                        element={<MatchingSuccess />}
-                    />
-                    <Route path="newPost" element={<NewPost />} />
+
                     <Route path="welcome" element={<Welcome />} />
 
                     <Route path="signup" element={<SignUp />} />
-                    <Route path="contact" element={<Contact />} />
-                    <Route path="forum" element={<Forum />} />
-                    <Route path="friends" element={<Friends />} />
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="chat" element={<Chat />} />
+                    {/* <Route path="contact" element={<Contact />} />
+                    <Route path="forum" element={<Forum />} /> */}
 
                     <Route
                         path="*"
