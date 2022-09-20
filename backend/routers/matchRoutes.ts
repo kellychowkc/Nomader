@@ -3,5 +3,5 @@ import { matchController } from "../server";
 
 export const matchRoutes = express.Router();
 
-matchRoutes.post("/", matchController.matchUser)
-matchRoutes.post("/", matchController.unlikeUser)
+matchRoutes.post("/match", matchController.matchUser)
+matchRoutes.post("/unlike", matchController.unlikeUser)

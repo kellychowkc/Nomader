@@ -49,8 +49,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("name").notNullable();
             table.string("description");
             table.string("image");
-            table.integer("country_id").unsigned();
-            table.foreign("country_id").references("countries.id");
+            table.string("city_list");
         })
     }
 
@@ -64,8 +63,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("location");
             table.string("open_time");
             table.string("class");
-            table.integer("city_id").unsigned();
-            table.foreign("city_id").references("cities.id");
+            table.string("city_list");
         })
     }
 
@@ -229,9 +227,77 @@ export async function up(knex: Knex): Promise<void> {
             table.timestamps(true, true);
         })
     }
+
+    const hasStagingEmergencyData = await knex.schema.hasTable("staging_}emergency_data");
+    if (!hasStagingEmergencyData) {
+        await knex.schema.createTable("staging_emergency_data", (table) => {
+            table.increments();
+            table.string("country_name");
+            table.string("emergency_tel");
+            table.string("police_tel");
+            table.string("ambulance_tel");
+            table.string("fire_tel");
+            table.string("location_group");
+            table.string("calling_code");
+            table.string("info");
+        })
+    }
+    
+    const hasStagingAttractions = await knex.schema.hasTable("staging_attractions");
+    if (!hasStagingAttractions) {
+        await knex.schema.createTable("staging_attractions", (table) => {
+            table.increments();
+            table.string("attraction_name");
+            table.string("description");
+            table.string("image");
+            table.string("address");
+            table.string("city_list");
+            table.string("open_time");
+            table.string("class");
+        })
+    }
+
+    const hasStagingCurrencyCodes = await knex.schema.hasTable("staging_currency_codes");
+    if (!hasStagingCurrencyCodes) {
+        await knex.schema.createTable("staging_currency_codes", (table) => {
+            table.increments();
+            table.string("code");
+            table.string("currency_name");
+            table.string("using_country");
+        })
+    }
+
+    const hasStagingCurrencyRates = await knex.schema.hasTable("staging_currency_rates");
+    if (!hasStagingCurrencyRates) {
+        await knex.schema.createTable("staging_currency_rates", (table) => {
+            table.increments();
+            table.integer("year");
+            table.integer("month");
+            table.integer("day");
+            table.string("code_base");
+            table.string("code_to");
+            table.string("rate");
+        })
+    }
+
+    const hasStagingCityData = await knex.schema.hasTable("staging_city_data");
+    if (!hasStagingCityData) {
+        await knex.schema.createTable("staging_city_data", (table) => {
+            table.increments();
+            table.string("city_name");
+            table.string("description");
+            table.string("image");
+            table.string("city_list");
+        })
+    }
 }
 
 export async function down(knex: Knex): Promise<void> {
+    await knex.schema.dropTableIfExists("staging_city_data");
+    await knex.schema.dropTableIfExists("staging_currency_rates");
+    await knex.schema.dropTableIfExists("staging_currency_codes");
+    await knex.schema.dropTableIfExists("staging_attractions");
+    await knex.schema.dropTableIfExists("staging_emergency_data");
     await knex.schema.dropTableIfExists("chats");
     await knex.schema.dropTableIfExists("chat_rooms");
     await knex.schema.dropTableIfExists("users_relationship");
