@@ -76,6 +76,8 @@ export class UserService {
         return;
     }
 
+    //add interest
+
     async getInterestByUserId(userId: number): Promise<[number]> {
         const foundInterest = await this.knex
             .select("*")
