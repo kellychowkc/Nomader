@@ -25,7 +25,7 @@ import {
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ReactNode } from 'react'
 
 import {
@@ -163,6 +163,7 @@ const permissions: Permission[] = [
 ]
 
 export default function ManageUser() {
+    useEffect(() => {}, [])
     const reduxUserList = useSelector((state: RootState) => state.manageUser)
     const [searchUser, setSearchUser] = React.useState('')
     const handleChange_searchUser = (event: any) =>

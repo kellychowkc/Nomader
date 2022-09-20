@@ -15,7 +15,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Welcome from './components/welcome/Welcome'
 import Dashboard from './components/ControlPanel/contentDashboard/Dashboard'
-import Contact from './components/layoutSafetyContact/SafetyContact'
 import ControlPanel from './components/ControlPanel/ControlPanel'
 import Landing from './components/layoutLanding/Landing'
 import SignUp from './components/auth/SignUp'
@@ -36,6 +35,7 @@ import Matching from './components/matching/Matching'
 import MatchingSuccess from './components/matching/MatchingSuccess'
 import NewPost from './components/layoutForum/NewPost'
 import MatchingIndex from './components/matching/MatchingIndex'
+import Contact from './components/layoutSafetyContact/SafetyContact'
 
 function App() {
     return (
