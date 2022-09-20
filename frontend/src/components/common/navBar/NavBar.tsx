@@ -35,7 +35,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Destinations', path: '/destination' },
     { name: 'Safety', path: '/contact' },
-    { name: 'Control Panel', path: '/control' },
+    { name: 'Control Panel', path: '/control/' },
 ]
 
 const NavLinkHover = ({ children }: { children: LinkItemProps }) => (
