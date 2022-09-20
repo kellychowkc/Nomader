@@ -67,6 +67,7 @@ export async function postLogin(loginForm: LoginForm) {
 
 export async function postSignUp(signUpForm: SignUpForm) {
     const formData = new FormData();
+    console.log("check data", signUpForm.country);
     formData.append("first_name", signUpForm.first_name);
     formData.append("last_name", signUpForm.last_name);
     formData.append("gender", signUpForm.gender);
@@ -75,8 +76,8 @@ export async function postSignUp(signUpForm: SignUpForm) {
     formData.append("email", signUpForm.email);
     formData.append("password", signUpForm.password);
     formData.append("phone_num", signUpForm.phone_num);
-    formData.append("country", signUpForm.country);
-    formData.append("job", signUpForm.job);
+    formData.append("country_id", signUpForm.country);
+    formData.append("job_id", signUpForm.job);
     formData.append("information", signUpForm.information);
     formData.append("profile", signUpForm.profile);
 

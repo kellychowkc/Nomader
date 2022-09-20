@@ -107,7 +107,12 @@ function Login() {
                         </Stack>
                     </form>
                     <Stack spacing={10} align={'center'}>
-                        <Link color={'blue.400'}>New User? Sign Up</Link>
+                        <Link
+                            color={'blue.400'}
+                            onClick={() => navigate('/signUp')}
+                        >
+                            Sign Up
+                        </Link>
                     </Stack>
                 </Stack>
             </div>

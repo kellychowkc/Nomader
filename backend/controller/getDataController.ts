@@ -20,7 +20,8 @@ export class GetDataController {
 
     getCountries = async (req: Request, res: Response) => {
         try {
-            const interestList = [
+            // const countryList = await this.getDataService.getCountryData();
+            const countryList = [
                 { id: 1, name: "US" },
                 { id: 2, name: "US" },
                 { id: 3, name: "US" },
@@ -31,7 +32,8 @@ export class GetDataController {
                 { id: 8, name: "US" },
                 { id: 9, name: "US" },
             ];
-            res.json(interestList);
+
+            res.json(countryList);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
