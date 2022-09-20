@@ -9,7 +9,6 @@ import {
     Flex,
     Center,
 } from '@chakra-ui/react'
-import { useEffect } from 'react'
 
 import { Link } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -24,9 +23,6 @@ import SignUp from './components/auth/SignUp'
 import Forum from './components/layoutForum/Forum'
 import Dock from './components/common/dock/Dock'
 import Login from './components/auth/Login'
-import { useDispatch } from 'react-redux'
-import { restoreLoginThunk } from './redux/auth/authThunk'
-import { RootThunkDispatch } from './redux/store'
 import RequireAuth from './components/private/RequireAuth'
 import InterestList from './components/matching/InterestList'
 
@@ -39,13 +35,10 @@ import Home from './components/Home/Home'
 import ManageUser from './components/contentManageUser/ManageUser'
 import Matching from './components/matching/Matching'
 import MatchingSuccess from './components/matching/MatchingSuccess'
+import NewPost from './components/layoutForum/NewPost'
+import MatchingIndex from './components/matching/MatchingIndex'
 
 function App() {
-    const dispatch = useDispatch<RootThunkDispatch>()
-
-    useEffect(() => {
-        dispatch(restoreLoginThunk())
-    }, [])
     return (
         <>
             <Router>
@@ -71,12 +64,13 @@ function App() {
                     <Route path="login" element={<Login />} />
 
                     <Route path="signUp" element={<SignUp />} />
-                    <Route path="interest" element={<InterestList />} />
-                    <Route path="matching" element={<Matching />} />
+                    {/* <Route path="interest" element={<InterestList />} /> */}
+                    <Route path="matching" element={<MatchingIndex />} />
                     <Route
                         path="matchingSuccess"
                         element={<MatchingSuccess />}
                     />
+                    <Route path="newPost" element={<NewPost />} />
                     <Route path="welcome" element={<Welcome />} />
 
                     <Route path="signup" element={<SignUp />} />

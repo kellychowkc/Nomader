@@ -19,7 +19,7 @@ import {
 import { useState } from 'react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { FaTransgender, FaBirthdayCake } from 'react-icons/fa'
-import { BsFilePerson, BsFolderSymlink } from 'react-icons/bs'
+import { BsFilePerson } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 import { RootThunkDispatch } from '../../redux/store'
 import { useNavigate } from 'react-router'

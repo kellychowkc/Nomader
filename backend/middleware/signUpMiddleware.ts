@@ -26,7 +26,7 @@ const form = formidable({
     filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
 
-export function formidableMiddleware(
+export function signUpMiddleware(
     req: Request,
     res: Response,
     next: NextFunction

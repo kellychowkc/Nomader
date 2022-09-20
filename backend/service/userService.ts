@@ -75,4 +75,13 @@ export class UserService {
 
         return;
     }
+
+    async getInterestByUserId(userId: number): Promise<[number]> {
+        const foundInterest = await this.knex
+            .select("*")
+            .from("users_interests")
+            .where("user_id", userId)
+            .first();
+        return foundInterest;
+    }
 }

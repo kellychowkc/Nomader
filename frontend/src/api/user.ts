@@ -35,6 +35,12 @@ export interface SignUpForm {
     information: string;
 }
 
+export interface PostForm {
+    title: string;
+    content: string;
+    image: Blob | File;
+}
+
 export async function fetchSelfUserInfo(token: string) {
     return (
         fetchJson<User>(`${REACT_APP_API_SERVER}/user`),
@@ -47,7 +53,7 @@ export async function fetchSelfUserInfo(token: string) {
 }
 
 export async function postLogin(loginForm: LoginForm) {
-    return fetchJson<{ token: string; username: string }>(
+    return fetchJson<{ token: string; username: string; id: number }>(
         `${REACT_APP_API_SERVER}/user/login`,
         {
             method: "POST",
@@ -80,6 +86,14 @@ export async function postSignUp(signUpForm: SignUpForm) {
     });
 }
 
+export async function preMatching(userId: number) {
+    console.log(JSON.stringify(userId));
+    return fetchJson(`${REACT_APP_API_SERVER}/user/getInterest`, {
+        method: "GET",
+        body: JSON.stringify(userId),
+    });
+}
+
 export async function addUserInterest(interestList: Array<InterestItem>) {
     return fetchJson(`${REACT_APP_API_SERVER}/user/interest`, {
         method: "POST",
@@ -87,5 +101,18 @@ export async function addUserInterest(interestList: Array<InterestItem>) {
             "content-type": "application/json",
         },
         body: JSON.stringify(interestList),
+    });
+}
+
+export async function newPost(postForm: PostForm) {
+    const formData = new FormData();
+    formData.append("title", postForm.title);
+    formData.append("content", postForm.content);
+    formData.append("image", postForm.image);
+    console.log(formData);
+
+    return fetchJson(`${REACT_APP_API_SERVER}/user/post`, {
+        method: "POST",
+        body: formData,
     });
 }
