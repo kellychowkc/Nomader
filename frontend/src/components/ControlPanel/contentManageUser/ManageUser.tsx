@@ -35,7 +35,7 @@ import {
     MdWarning,
 } from 'react-icons/md'
 import { UsersList } from './userList'
-import { RootState } from '../../redux/store'
+import { RootState } from '../../../redux/store'
 
 export interface IUser {
     fullname: string

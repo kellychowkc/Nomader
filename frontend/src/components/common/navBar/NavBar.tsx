@@ -13,10 +13,8 @@ import {
     useColorModeValue,
     Stack,
     useColorMode,
-    Center,
     HStack,
     IconButton,
-    FlexProps,
     Text,
 } from '@chakra-ui/react'
 

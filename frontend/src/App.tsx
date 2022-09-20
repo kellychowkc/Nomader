@@ -14,11 +14,10 @@ import { Link } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Welcome from './components/welcome/Welcome'
-import Dashboard from './components/contentDashboard/Dashboard'
+import Dashboard from './components/ControlPanel/contentDashboard/Dashboard'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import ControlPanel from './components/ControlPanel/ControlPanel'
 import Landing from './components/layoutLanding/Landing'
-import LayoutLogin from './components/layoutLogin/layoutLogin'
 import SignUp from './components/auth/SignUp'
 import Forum from './components/layoutForum/Forum'
 import Dock from './components/common/dock/Dock'
@@ -32,7 +31,7 @@ import Friends from './components/layoutFriends/Friends'
 import Profile from './components/layoutProfile/Profile'
 import Chat from './components/Chat/Chat'
 import Home from './components/Home/Home'
-import ManageUser from './components/contentManageUser/ManageUser'
+import ManageUser from './components/ControlPanel/contentManageUser/ManageUser'
 import Matching from './components/matching/Matching'
 import MatchingSuccess from './components/matching/MatchingSuccess'
 import NewPost from './components/layoutForum/NewPost'
@@ -53,7 +52,6 @@ function App() {
                         <Route path="forum" element={<ManageUser />} />
                     </Route>
                     <Route path="landing" element={<Landing />} />
-                    <Route path="layoutlogin" element={<LayoutLogin />} />
 
                     {/* Required Auth Route */}
                     <Route path="/" element={<RequireAuth />}>
@@ -73,6 +71,7 @@ function App() {
                         <Route path="friends" element={<Friends />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="chat" element={<Chat />} />
+                        <Route path="home" element={<Home />} />
                     </Route>
 
                     <Route path="login" element={<Login />} />
@@ -99,155 +98,6 @@ function App() {
                     />
                 </Routes>
             </Router>
-        </>
-    )
-}
-
-export function testHome() {
-    return (
-        <>
-            <Container w="full" h="full" centerContent>
-                <Flex
-                    w="auto"
-                    h="auto"
-                    direction="column"
-                    justify="center"
-                    align="center"
-                >
-                    <Flex
-                        w="full"
-                        h="auto"
-                        mb="3"
-                        direction="column"
-                        justify="center"
-                        align="center"
-                    >
-                        <Text fontSize="4xl">Nomader Home Page</Text>
-                        <p></p>
-                        <Text fontSize="2xl">
-                            Select Link Below to Redirect
-                        </Text>
-                        <p></p>
-                        <Flex
-                            w="100%"
-                            h="600px"
-                            direction="column"
-                            justify="center"
-                            align="center"
-                            m="0"
-                            border="0"
-                            p="0"
-                        >
-                            <Image
-                                w="450px"
-                                h="450px"
-                                src="/temp/pngtree-red-couplet-in-diamond-shape-png-image_7253655.png"
-                                sx={{ filter: 'blur(8px)' }}
-                                zIndex="-1"
-                                position="absolute"
-                                top="100%/2"
-                                left="100%/2"
-                                fit="contain"
-                            />
-                            <VStack>
-                                <Box
-                                    as="button"
-                                    borderRadius="md"
-                                    bg="green"
-                                    color="white"
-                                    px={4}
-                                    h={8}
-                                >
-                                    <Link to="/welcome">
-                                        Welcome (Box as Button + Link)
-                                    </Link>
-                                </Box>
-                                <p></p>
-                                <Box
-                                    as="button"
-                                    borderRadius="md"
-                                    bg="green"
-                                    color="white"
-                                    px={4}
-                                    h={8}
-                                >
-                                    <Link to="/landing">
-                                        Landing (Box as Button + Link)
-                                    </Link>
-                                </Box>
-                                <p></p>
-                                <Box
-                                    borderRadius="md"
-                                    bg="green"
-                                    color="white"
-                                    px={4}
-                                    h={8}
-                                >
-                                    <Link to="/layoutlogin">
-                                        Fake Login (Box + Link)
-                                    </Link>
-                                </Box>
-                                <p></p>
-                                <Button as="a" href="/login" fontSize="lg">
-                                    Login (Button as a)
-                                </Button>
-                                <p></p>
-                                <Button fontSize="lg">
-                                    <Link to="/signup">
-                                        Signup (Button + Link)
-                                    </Link>
-                                </Button>
-                                <p></p>
-                                <Box
-                                    as="a"
-                                    borderRadius="md"
-                                    bg="tomato"
-                                    color="white"
-                                    px={4}
-                                    h={8}
-                                    href="/control"
-                                >
-                                    Control (Box as a with href)
-                                </Box>
-                                <Center
-                                    h="80px"
-                                    w="200px"
-                                    bg="pink.700"
-                                    color="white"
-                                >
-                                    <Link to={'/contact'}>
-                                        Safety Contact <p></p>(Center + Link)
-                                        <PhoneIcon />
-                                    </Link>
-                                </Center>
-                                <Square
-                                    size="100px"
-                                    bg="purple.700"
-                                    color="white"
-                                >
-                                    <Link to={'/forum'}>
-                                        Forum <MdForum />
-                                        <p></p>(Square + Link)
-                                    </Link>
-                                </Square>
-
-                                <Box
-                                    borderRadius="md"
-                                    bg="pink"
-                                    color="white"
-                                    px={4}
-                                    h={8}
-                                >
-                                    <Link to="/friends">
-                                        Friends (Box + Link)
-                                    </Link>
-                                </Box>
-                            </VStack>
-                        </Flex>
-                    </Flex>
-                    <Dock />
-                </Flex>
-            </Container>
         </>
     )
 }

@@ -13,7 +13,7 @@ import {
     VStack,
 } from '@chakra-ui/react'
 
-import type { IUser } from '../contentManageUser/ManageUser'
+import type { IUser } from './ManageUser'
 
 export const UsersList = (props: { list: IUser[] }) => (
     <Table variant="striped" colorScheme="teal" w="100%">
