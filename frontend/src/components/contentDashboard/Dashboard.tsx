@@ -39,14 +39,17 @@ function StatsCard(props: StatsCardProps) {
             px={{ base: 2, md: 4 }}
             py={'5'}
             shadow={'xl'}
-            border={'1px solid'}
-            borderColor={useColorModeValue('gray.800', 'gray.500')}
+            // border={'1px solid'}
+            // borderColor={useColorModeValue('gray.800', 'gray.500')}
+            bg="#FFFFFF"
             rounded={'lg'}
         >
             <VStack h="full" justifyContent={'center'} alignItems={'center'}>
                 <Flex justifyContent={'space-between'}>
                     <Box pl={{ base: 2, md: 4 }}>
-                        <StatLabel fontWeight={'medium'}>{title}</StatLabel>
+                        <StatLabel fontSize={'lg'} fontWeight={'medium'}>
+                            {title}
+                        </StatLabel>
                         <StatNumber fontSize={'2xl'} fontWeight={'medium'}>
                             {stat}
                         </StatNumber>
@@ -94,14 +97,17 @@ function ActiveStatsCard(props: StatsCardProps) {
             px={{ base: 2, md: 4 }}
             py={'5'}
             shadow={'xl'}
-            border={'1px solid'}
-            borderColor={useColorModeValue('gray.800', 'gray.500')}
+            // border={'1px solid'}
+            // borderColor={useColorModeValue('gray.800', 'gray.500')}
+            bg="#FFFFFF"
             rounded={'lg'}
         >
             <VStack h="full" justifyContent={'center'} alignItems={'center'}>
                 <Flex justifyContent={'space-between'}>
                     <Box pl={{ base: 2, md: 4 }}>
-                        <StatLabel fontWeight={'medium'}>{title}</StatLabel>
+                        <StatLabel fontSize={'lg'} fontWeight={'medium'}>
+                            {title}
+                        </StatLabel>
                         <StatNumber fontSize={'2xl'} fontWeight={'medium'}>
                             {stat}
                         </StatNumber>
@@ -144,11 +150,11 @@ function ActiveStatsCard(props: StatsCardProps) {
 
 export default function Dashboard() {
     return (
-        <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
+        <Box maxW="7xl" mx={'auto'} px={{ base: 2, sm: 12, md: 17 }}>
             <chakra.h1
                 textAlign={'center'}
                 fontSize={'4xl'}
-                py={10}
+                py={1}
                 fontWeight={'bold'}
             >
                 Dashboard of useful data.
@@ -200,7 +206,9 @@ export default function Dashboard() {
                     gap={6}
                 >
                     <GridItem w="100%" colSpan={{ base: 1, sm: 2, md: 2 }}>
-                        <Heading as={'h2'}>Insights From Data</Heading>
+                        <Heading as={'h3'} size="lg">
+                            Insights From Data
+                        </Heading>
                     </GridItem>
                     <GridItem w="100%">
                         <Flex flexDirection={'column'}>

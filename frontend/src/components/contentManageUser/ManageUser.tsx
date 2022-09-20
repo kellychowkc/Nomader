@@ -1,11 +1,9 @@
+import { useDispatch, useSelector } from 'react-redux'
+
 import {
-    Avatar,
-    AvatarBadge,
     Box,
     Button,
-    Center,
     chakra,
-    Circle,
     Container,
     Flex,
     FormControl,
@@ -15,21 +13,15 @@ import {
     Heading,
     HStack,
     Icon,
-    IconButton,
+    Image,
     Input,
     SimpleGrid,
     Stack,
     Stat,
     StatLabel,
     StatNumber,
-    Table,
-    Tbody,
-    Td,
+    Switch,
     Text,
-    Textarea,
-    Th,
-    Thead,
-    Tr,
     useColorModeValue,
     VStack,
 } from '@chakra-ui/react'
@@ -37,27 +29,33 @@ import React from 'react'
 import { ReactNode } from 'react'
 
 import {
-    MdAttractions,
     MdNaturePeople,
     MdSearch,
     MdTimelapse,
+    MdWarning,
 } from 'react-icons/md'
+import { UsersList } from './userList'
+import { RootState } from '../../redux/store'
 
-interface IUser {
-    name: string
+export interface IUser {
+    fullname: string
     username: string
     avatar: string
 }
 
-const usersList = [
-    { name: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { name: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { name: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { name: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
-    { name: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { name: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { name: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { name: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
+const usersList: IUser[] = [
+    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
+    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
+    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
+    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
+    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
+    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
+    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
+    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
+    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
+    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
+    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
+    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
 ]
 
 interface IProfile {
@@ -83,7 +81,7 @@ interface IProfile {
     updated_at: string
 }
 
-const user: IProfile = {
+const demoUser: IProfile = {
     username: 'adamsishandsome',
     password: 'xxxHideMexxx',
     first_name: 'Adams',
@@ -96,6 +94,27 @@ const user: IProfile = {
     birthday: '1997-7-1',
     profile: 'purple',
 }
+
+interface IStats {
+    name: number | string
+    stats: number | string
+}
+
+const demoStats: any = {
+    activeTime: {
+        name: 'Active Time',
+        stats: '15 mins',
+    },
+    matchCount: {
+        name: 'Match Count',
+        stats: '25',
+    },
+    matchRate: {
+        name: 'Match Rate',
+        stats: '100%',
+    },
+}
+
 interface StatsCardProps {
     title: string
     stat: string
@@ -112,10 +131,10 @@ function StatsCard(props: StatsCardProps) {
             borderColor={useColorModeValue('gray.800', 'gray.500')}
             rounded={'lg'}
         >
-            <Flex justifyContent={'space-between'}>
+            <Flex justifyContent={'space-between'} minW={'100px'}>
                 <Box pl={{ base: 2, md: 4 }}>
                     <StatLabel fontWeight={'medium'}>{title}</StatLabel>
-                    <StatNumber fontSize={'2xl'} fontWeight={'medium'}>
+                    <StatNumber fontSize={'lg'} fontWeight={'medium'}>
                         {stat}
                     </StatNumber>
                 </Box>
@@ -130,36 +149,31 @@ function StatsCard(props: StatsCardProps) {
         </Stat>
     )
 }
+interface Permission {
+    name: string
+    value: string
+}
+
+const permissions: Permission[] = [
+    { name: 'Visible by others', value: '' },
+    { name: 'Matching', value: '' },
+    { name: 'Create post', value: '' },
+    { name: 'Comment', value: '' },
+    { name: 'Upload Picture', value: '' },
+]
 
 export default function ManageUser() {
-    const [username, setUsername] = React.useState(user.username)
-    const handleChange_username = (event: any) =>
-        setUsername(event.target.value)
-
-    const [phone, setPhone] = React.useState(user.phone_num)
-    const handleChange_phone = (event: any) => setPhone(event.target.value)
-
-    const [birthday, setBirthday] = React.useState(user.birthday)
-    const handleChange_birthday = (event: any) =>
-        setBirthday(event.target.value)
-
-    const [information, setInformation] = React.useState('')
-    const handleChange_information = (event: any) =>
-        setInformation(event.target.value)
-
-    const [gender, setGender] = React.useState('')
-    const handleChange_gender = (event: any) => setGender(event.target.value)
-
+    const reduxUserList = useSelector((state: RootState) => state.manageUser)
     const [searchUser, setSearchUser] = React.useState('')
     const handleChange_searchUser = (event: any) =>
         setSearchUser(event.target.value)
 
     return (
-        <Box maxW="7xl" mx={'auto'} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
+        <Box maxW="7xl" mx={'auto'} px={{ base: 2, sm: 12, md: 17 }}>
             <chakra.h1
                 textAlign={'center'}
                 fontSize={'4xl'}
-                py={10}
+                py={1}
                 fontWeight={'bold'}
             >
                 User Management
@@ -169,38 +183,39 @@ export default function ManageUser() {
                 <Grid
                     templateColumns={{
                         base: 'repeat(1, 1fr)',
-                        md: 'repeat(2, 1fr)',
+                        lg: 'repeat(2, 1fr)',
                     }}
                     gap={6}
                 >
-                    <GridItem w="100%" maxH="50%">
+                    <GridItem w="100%" h="50%" maxH="50%">
                         <Stack
                             spacing={4}
                             w={'full'}
+                            minW={'md'}
                             maxW={'xl'}
+                            h="auto"
                             bg={useColorModeValue('white', 'gray.700')}
                             rounded={'xl'}
                             boxShadow={'lg'}
                             p={6}
                         >
                             <SimpleGrid
-                                columns={{ base: 1, md: 3 }}
+                                columns={{ base: 1, lg: 2 }}
                                 spacing={{ base: 5, lg: 8 }}
                             >
                                 <StatsCard
-                                    title={'Active Time (minute/day)'}
-                                    stat={'15 minutes'}
+                                    title={demoStats.activeTime.name}
+                                    stat={demoStats.activeTime.stats}
                                     icon={<MdTimelapse size={'2em'} />}
                                 />
                                 <StatsCard
                                     title={'User Match Count/%'}
-                                    stat={'10/20%'}
+                                    stat={
+                                        demoStats.matchCount.stats +
+                                        ' / ' +
+                                        demoStats.matchRate.stats
+                                    }
                                     icon={<MdNaturePeople size={'2em'} />}
-                                />
-                                <StatsCard
-                                    title={'Activty by Category '}
-                                    stat={'7'}
-                                    icon={<MdAttractions size={'2em'} />}
                                 />
                             </SimpleGrid>
                             <Heading
@@ -210,194 +225,284 @@ export default function ManageUser() {
                                 User Profile
                             </Heading>
 
-                            <Box fontSize="sm" color="#363636">
-                                <Text>Member since: {user.created_at}</Text>
-                                <Text>Last update: {user.updated_at}</Text>
-                            </Box>
-
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="space-evenly"
+                            <SimpleGrid
+                                columns={{ base: 1, lg: 2 }}
+                                spacing={{ base: 5, lg: 8 }}
                             >
-                                {/* Remark */}
-                                <Box m={3}>
-                                    <FormControl id="userName" isRequired>
-                                        <FormLabel>User name</FormLabel>
-                                        <Input
-                                            placeholder="UserName"
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            onChange={handleChange_username}
-                                            value={username}
-                                        />
-                                    </FormControl>
-                                </Box>
-                            </Flex>
-
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="space-evenly"
-                            >
-                                {/* Remark */}
-                                <Box m={3}>
-                                    <FormControl id="first_name" isRequired>
-                                        <FormLabel>First Name</FormLabel>
-                                        <Input
-                                            placeholder="First name"
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={user.first_name}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="last_name" isRequired>
-                                        <FormLabel>Last Name</FormLabel>
-                                        <Input
-                                            placeholder="Last name"
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={user.last_name}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="email" isRequired>
-                                        <FormLabel>Email address</FormLabel>
-                                        <Input
-                                            placeholder="your-email@example.com"
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="email"
-                                            value={user.email}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    {/* Remark */}
-                                    <FormControl id="phone_num" isRequired>
-                                        <FormLabel>Phone no.</FormLabel>
-                                        <Input
-                                            placeholder="Phone no."
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            onChange={handleChange_phone}
-                                            value={phone}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="birthday">
-                                        <FormLabel>Birthday</FormLabel>
-                                        <Input
-                                            placeholder="Birthday"
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            onChange={handleChange_birthday}
-                                            value={birthday}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    {/* Remark */}
-                                    <FormControl id="gender">
-                                        <FormLabel>Gender</FormLabel>
-                                        <Input
-                                            placeholder="M/F/T..."
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            onChange={handleChange_gender}
-                                            value={gender}
-                                        />
-                                    </FormControl>
-                                </Box>
-                            </Flex>
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="center"
-                                align="center"
-                            >
-                                <Box m={3} w="90%">
-                                    {/* Remark */}
-                                    <FormControl id="information">
-                                        <FormLabel>Information</FormLabel>
-                                        <Textarea
-                                            minH="20"
+                                <Flex
+                                    className="leftBoardLeft"
+                                    w="100%"
+                                    wrap="wrap"
+                                    direction={{
+                                        base: 'row',
+                                        sm: 'column',
+                                        md: 'column',
+                                        lg: 'row',
+                                        xl: 'row',
+                                    }}
+                                    justify="center"
+                                    alignContent="flex-start"
+                                    alignItems="flex-start"
+                                >
+                                    <Box m={1} h="min-content">
+                                        <FormControl id="userName">
+                                            <FormLabel>User name</FormLabel>
+                                            <Input
+                                                placeholder="UserName"
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={demoUser.username}
+                                                readOnly
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={1} h="min-content">
+                                        <FormControl id="full_name">
+                                            <FormLabel>Full Name</FormLabel>
+                                            <Input
+                                                placeholder="Full name"
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={
+                                                    demoUser.first_name +
+                                                    ' ' +
+                                                    demoUser.last_name
+                                                }
+                                                readOnly
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={1}>
+                                        <FormControl id="birthday">
+                                            <FormLabel>Age</FormLabel>
+                                            <Input
+                                                placeholder="Birthday"
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={demoUser.birthday}
+                                                readOnly
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={1}>
+                                        <FormControl id="gender">
+                                            <FormLabel>Gender</FormLabel>
+                                            <Input
+                                                placeholder="M/F/T..."
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={demoUser.gender}
+                                                readOnly
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Stack
+                                        className="buttonGroup"
+                                        direction={'column'}
+                                        justifyContent="space-around"
+                                        alignItems="center"
+                                        alignContent={'space-around'}
+                                        h="max-content"
+                                    >
+                                        <Stack
+                                            my="3px"
+                                            p="3px"
+                                            spacing={4}
+                                            direction={['column', 'row']}
+                                        >
+                                            <Button
+                                                bg={'teal.400'}
+                                                color={'white'}
+                                                size="md"
+                                                _hover={{
+                                                    bg: 'teal.500',
+                                                }}
+                                            >
+                                                Detail
+                                            </Button>
+                                            <Button
+                                                bg={'blue.400'}
+                                                color={'white'}
+                                                size="md"
+                                                _hover={{
+                                                    bg: 'blue.500',
+                                                }}
+                                            >
+                                                Friends
+                                            </Button>
+                                        </Stack>
+                                        <Stack
+                                            my="3px"
+                                            p="3px"
+                                            spacing={4}
+                                            direction={['column', 'row']}
+                                        >
+                                            <Button
+                                                bg={'orange.400'}
+                                                color={'white'}
+                                                size="md"
+                                                _hover={{
+                                                    bg: 'orange.500',
+                                                }}
+                                            >
+                                                Suspend
+                                            </Button>
+                                            <Button
+                                                bg={'red.400'}
+                                                color={'white'}
+                                                size="md"
+                                                _hover={{
+                                                    bg: 'red.500',
+                                                }}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </Stack>
+                                    </Stack>
+                                </Flex>
+                                <Flex className="leftBoardRight">
+                                    <VStack>
+                                        <Box
+                                            className="profileHistory"
+                                            fontSize="sm"
+                                            color="#363636"
+                                        >
+                                            <Text>
+                                                Member since:
+                                                {demoUser.created_at}
+                                            </Text>
+                                            <Text>
+                                                Last update:
+                                                {demoUser.updated_at}
+                                            </Text>
+                                        </Box>
+                                        <HStack
+                                            className="profilePictures"
+                                            spacing={0}
+                                        >
+                                            <Box bg="teal" w="66%">
+                                                <Image src="https://avatars.dicebear.com/api/male/username.svg" />
+                                            </Box>
+                                            <Box w="33%">
+                                                <VStack w="100%" spacing={0}>
+                                                    <Box bg="red">
+                                                        <Image src="https://avatars.dicebear.com/api/male/username.svg" />
+                                                    </Box>
+                                                    <Box bg="green">
+                                                        <Image src="https://avatars.dicebear.com/api/male/username.svg" />
+                                                    </Box>
+                                                </VStack>
+                                            </Box>
+                                        </HStack>
+                                        <VStack
+                                            className="profileComplains"
                                             w="100%"
-                                            placeholder="About you."
-                                            _placeholder={{ color: 'gray.500' }}
-                                            onChange={handleChange_information}
-                                            value={information}
-                                        />
-                                    </FormControl>
-                                </Box>
-                            </Flex>
+                                            spacing={0}
+                                            p="3px"
+                                            shadow={'xl'}
+                                            border={'1px solid'}
+                                            borderColor={useColorModeValue(
+                                                'gray.800',
+                                                'gray.500'
+                                            )}
+                                            rounded={'lg'}
+                                        >
+                                            <Text
+                                                fontSize={'lg'}
+                                                fontWeight={'bold'}
+                                            >
+                                                Complain <Icon as={MdWarning} />
+                                            </Text>
+                                            <HStack
+                                                w="100%"
+                                                spacing={0}
+                                                justifyContent="space-evenly"
+                                            >
+                                                <Box>Submitted: {'#'}</Box>
+                                                <Box>Received: {'#'}</Box>
+                                            </HStack>
+                                        </VStack>
+                                        <VStack
+                                            className="profilePermissionSetting"
+                                            w="100%"
+                                            spacing={0}
+                                            p="3px"
+                                            shadow={'xl'}
+                                            border={'1px solid'}
+                                            borderColor={useColorModeValue(
+                                                'gray.800',
+                                                'gray.500'
+                                            )}
+                                            rounded={'lg'}
+                                        >
+                                            <Text
+                                                fontSize={'lg'}
+                                                fontWeight={'bold'}
+                                            >
+                                                Permission Setting
+                                            </Text>
 
-                            <Stack spacing={6} direction={['column', 'row']}>
-                                <Button
-                                    bg={'red.400'}
-                                    color={'white'}
-                                    w="full"
-                                    _hover={{
-                                        bg: 'red.500',
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-                                    bg={'blue.400'}
-                                    color={'white'}
-                                    w="full"
-                                    _hover={{
-                                        bg: 'blue.500',
-                                    }}
-                                >
-                                    Submit
-                                </Button>
-                            </Stack>
+                                            {permissions.map(
+                                                (
+                                                    permission: Permission,
+                                                    idx: number
+                                                ) => (
+                                                    <HStack
+                                                        key={idx}
+                                                        w="90%"
+                                                        px="5px"
+                                                        py="3px"
+                                                    >
+                                                        <FormControl
+                                                            display="flex"
+                                                            justifyContent={
+                                                                'space-between'
+                                                            }
+                                                        >
+                                                            <FormLabel
+                                                                htmlFor="visibleByOthers"
+                                                                mb="0"
+                                                            >
+                                                                {
+                                                                    permission.name
+                                                                }
+                                                            </FormLabel>
+                                                            <Switch
+                                                                id={
+                                                                    permission.value
+                                                                }
+                                                                colorScheme="teal"
+                                                                size="md"
+                                                            />
+                                                        </FormControl>
+                                                    </HStack>
+                                                )
+                                            )}
+                                        </VStack>
+                                    </VStack>
+                                </Flex>
+                            </SimpleGrid>
                         </Stack>
                     </GridItem>
-                    <GridItem w="100%" maxH="50%">
-                        {/* ============== */}
+                    <GridItem w="100%" h="50%" maxH="50%">
                         <Stack
                             spacing={4}
                             w={'full'}
+                            minW={'md'}
                             maxW={'xl'}
                             bg={useColorModeValue('white', 'gray.700')}
                             rounded={'xl'}
                             boxShadow={'lg'}
                             p={6}
                         >
-                            <Heading
-                                lineHeight={1.1}
-                                fontSize={{ base: '2xl', sm: '3xl' }}
-                            >
-                                User List
-                            </Heading>
-
                             <Flex
                                 w="100%"
                                 wrap="wrap"
@@ -410,13 +515,14 @@ export default function ManageUser() {
                                 }}
                                 justify="space-evenly"
                             >
-                                {/* Remark */}
                                 <Box
+                                    className="searchUser"
                                     w="90%"
                                     m={3}
                                     px="5px"
                                     bg="gray.200"
                                     rounded={'15px'}
+                                    boxShadow={'lg'}
                                 >
                                     <HStack>
                                         <FormControl id="searchUser">
@@ -443,94 +549,16 @@ export default function ManageUser() {
                                 <Box
                                     w="90%"
                                     m={3}
-                                    px="5px"
-                                    bg="gray.100"
+                                    bg="#FFFFFF"
                                     rounded={'15px'}
-                                    overflowY="auto"
-                                    maxH="60vh"
+                                    scrollBehavior="smooth"
+                                    overflowY="scroll"
+                                    overflowX={'hidden'}
+                                    maxH="550px"
                                 >
-                                    <VStack>
-                                        <Table
-                                            variant="striped"
-                                            colorScheme="teal"
-                                            w="100%"
-                                            // border="2px"
-                                            // borderColor="gray.100"
-                                        >
-                                            <Thead
-                                                position="sticky"
-                                                top={0}
-                                                bg="#FFFFFF"
-                                                zIndex={10}
-                                            >
-                                                <Tr>
-                                                    <Th>Info (Avater, name)</Th>
-                                                    <Th>
-                                                        View User Detail Profile
-                                                    </Th>
-                                                </Tr>
-                                            </Thead>
-
-                                            <Tbody>
-                                                {usersList.map(
-                                                    (
-                                                        user: IUser,
-                                                        idx: number
-                                                    ) => (
-                                                        <Tr key={idx}>
-                                                            <Td>
-                                                                <HStack>
-                                                                    <Box className="friendAvatar">
-                                                                        <Circle
-                                                                            size="30px"
-                                                                            bg={
-                                                                                user.avatar
-                                                                            }
-                                                                        />
-                                                                    </Box>
-                                                                    <VStack align="left">
-                                                                        <Text
-                                                                            className="nickname"
-                                                                            fontWeight="bold"
-                                                                        >
-                                                                            {
-                                                                                user.name
-                                                                            }
-                                                                        </Text>
-                                                                        <Text className="username">
-                                                                            {
-                                                                                user.username
-                                                                            }
-                                                                        </Text>
-                                                                    </VStack>
-                                                                </HStack>
-                                                            </Td>
-                                                            <Td>
-                                                                <Button m="1">
-                                                                    Detail
-                                                                </Button>
-                                                            </Td>
-                                                        </Tr>
-                                                    )
-                                                )}
-                                            </Tbody>
-                                        </Table>
-                                    </VStack>
+                                    <UsersList list={usersList} />
                                 </Box>
                             </Flex>
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="center"
-                                align="center"
-                            ></Flex>
                         </Stack>
                     </GridItem>
                 </Grid>

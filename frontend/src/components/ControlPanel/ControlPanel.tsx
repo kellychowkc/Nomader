@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react'
 import {
     IconButton,
     Avatar,
@@ -32,7 +31,7 @@ import {
     FiUser,
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
-import { useLocation, Link as ReactRouterLink, Outlet } from 'react-router-dom'
+import { Link as ReactRouterLink, Outlet } from 'react-router-dom'
 
 interface LinkItemProps {
     name: string
@@ -63,7 +62,7 @@ export default function ControlPanel() {
 
     return (
         <Box
-            w="100vw"
+            w="full"
             h="auto"
             minH="100vh"
             bg={useColorModeValue('gray.100', 'gray.900')}
@@ -100,9 +99,6 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-    const currentDir = useLocation()
-
-    console.log(currentDir)
     return (
         <Box
             transition="3s ease"
@@ -121,7 +117,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 justifyContent="space-between"
             >
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-                    <Link href="/">Nomader</Link>
+                    <Link href="/" _hover={{ textDecoration: 'none' }}>
+                        Nomader
+                    </Link>
                 </Text>
                 <CloseButton
                     display={{ base: 'flex', md: 'none' }}
