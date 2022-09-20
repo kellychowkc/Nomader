@@ -327,7 +327,10 @@ function SignUp() {
                                     </Button>
                                 </Stack>
                                 <Stack spacing={10} align={'center'}>
-                                    <Link color={'blue.400'}>
+                                    <Link
+                                        onClick={() => navigate('/login')}
+                                        color={'blue.400'}
+                                    >
                                         Already user? Login
                                     </Link>
                                 </Stack>
@@ -378,13 +381,17 @@ function SignUp() {
                                             value={formik.values.job}
                                             placeholder={'Job'}
                                         >
-                                            <option>student</option>
-                                            <option>slash</option>
-                                            <option>designer</option>
-                                            <option>programmer</option>
-                                            <option>entrepreneur</option>
-                                            <option>youtuber</option>
-                                            <option>others</option>
+                                            <option value={1}>student</option>
+                                            <option value={2}>slash</option>
+                                            <option value={3}>designer</option>
+                                            <option value={4}>
+                                                programmer
+                                            </option>
+                                            <option value={5}>
+                                                entrepreneur
+                                            </option>
+                                            <option value={6}>youtuber</option>
+                                            <option value={7}>others</option>
                                         </Select>
                                     </FormControl>
                                 </HStack>

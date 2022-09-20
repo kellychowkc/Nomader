@@ -36,8 +36,8 @@ export class UserService {
             profile,
             email,
             phone_num,
-            job,
-            country,
+            job_id,
+            country_id,
         } = body;
 
         password = await hashPassword(password);
@@ -65,8 +65,9 @@ export class UserService {
                     profile,
                     email,
                     phone_num,
-                    job,
-                    country,
+                    job_id,
+                    country_id,
+                    isAdmin: false,
                 })
                 .into("users")
                 .returning("id");

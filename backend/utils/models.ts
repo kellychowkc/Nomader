@@ -10,8 +10,8 @@ export interface User {
     profile?: string;
     email?: string;
     phone_num?: number;
-    job?: string;
-    country?: string;
+    job_id?: number;
+    country_id?: number;
 }
 
 export interface Interest {
