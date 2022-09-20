@@ -113,18 +113,29 @@ export class UserController {
 
     getUserInterest = async (req: Request, res: Response) => {
         try {
-            console.log("controller", req.body);
-            await this.userService.getInterestByUserId(req.body);
+            const user_id = req.body.uid;
+            console.log("user", user_id);
+            const foundInterest = await this.userService.getInterestByUserId(
+                req.body.uid
+            );
+            console.log(foundInterest);
+            if (!foundInterest) {
+                res.status(401).json({
+                    success: false,
+                    message: "No interest",
+                });
+                return;
+            }
             res.status(201).json({
                 success: true,
                 message: "Interest Found",
+                interest: foundInterest,
             });
-            console.log(req.body);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
                 success: false,
-                message: "Interest is not found",
+                message: "internal server error",
             });
         }
     };
