@@ -31,7 +31,7 @@ export type RootThunkDispatch = ThunkDispatch<RootState, null, RootActions>;
 
 const rootReducer = combineReducers<RootState>({
     auth: authReducer,
-    manageUser: manageUserReducer
+    manageUser: manageUserReducer,
     userInfo: userInfoReducer,
 });
 
