@@ -68,7 +68,7 @@ with sync_playwright() as p:
                 'currency_name' : code[i][1]['description']
             }
             codeArr.append(record)
-    
+
         # data from 'worlddata.info'
         pageTwo = browser.new_page()
         pageTwo.goto('https://www.worlddata.info/currencies/')
@@ -76,26 +76,39 @@ with sync_playwright() as p:
 
         countryArr = []
         for i in range(len(dataFromWorlddata)) :
-            data = dataFromWorlddata[i].split('\t')
-            record = {
-                'code' : data[0],
-                'using_country' : data[2]
-            }
-            countryArr.append(record)
+            if i > 0 :
+                data = dataFromWorlddata[i].split('\t')
+                usingCountryArr = data[2].split(', ')
+                for country in usingCountryArr :
+                    record = {
+                        'code' : data[0],
+                        'using_country' : country
+                    }
+                    countryArr.append(record)
+            else :
+                pass
 
         # combine currency code and country
         for i in range(len(codeArr)) :
-            code = codeArr[i]['code']
             for j in range(len(countryArr)) :
-                if code == countryArr[j]['code'] :
-                    codeArr[i].update({'using_country' : countryArr[j]['using_country']})
+                if countryArr[j]['code'] == codeArr[i]['code'] :
+                    countryArr[j].update({'currency_name' : codeArr[i]['currency_name']})
+        
+        codeOfCountryUsing = []
+        for i in range(len(countryArr)) :
+            codeOfCountryUsing.append(countryArr[i]['code'])
+
+        codeOfCountryUsing = set(codeOfCountryUsing)
+        codeArr = list(filter(lambda code : code['code'] not in codeOfCountryUsing, codeArr))
         for i in range(len(codeArr)) :
-            db.currencyCodeCountry.insert_one(codeArr[i])
+            codeArr[i].update({'using_country' : ''})
+        countryArr.extend(codeArr)
+        for i in range(len(countryArr)) :
+            db.currencyCode.insert_one(countryArr[i])
 
     
     # data from 'tripadvisor'
     def get_attraction_data() :
-        attractionList = []
         with open('attractionData.csv', 'r') as f :
             attractionLink = csv.reader(f)
             for attraction in attractionLink : 
@@ -117,5 +130,5 @@ with sync_playwright() as p:
     # get_attraction_data()
     # get_city_data()
 
-
     browser.close()
+

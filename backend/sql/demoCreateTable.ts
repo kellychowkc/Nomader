@@ -1,4 +1,3 @@
-
 import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
@@ -50,8 +49,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("name").notNullable();
             table.string("description");
             table.string("image");
-            table.integer("country_id").unsigned();
-            table.foreign("country_id").references("countries.id");
+            table.string("city_list");
         })
     }
 
@@ -65,8 +63,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("location");
             table.string("open_time");
             table.string("class");
-            table.integer("city_id").unsigned();
-            table.foreign("city_id").references("cities.id");
+            table.string("city_list");
         })
     }
 

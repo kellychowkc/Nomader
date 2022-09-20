@@ -37,8 +37,7 @@ CREATE TABLE cities (
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     image TEXT,
-    country_id INTEGER,
-    FOREIGN KEY (country_id) REFERENCES countries(id)
+    city_list TEXT
 );
 
 CREATE TABLE attractions (
@@ -49,8 +48,7 @@ CREATE TABLE attractions (
     address TEXT NOT NULL,
     open_time TEXT,
     class TEXT,
-    city_id INTEGER,
-    FOREIGN KEY (city_id) REFERENCES cities(id)
+    city_list TEXT
 );
 
 CREATE TABLE interests (
@@ -145,7 +143,7 @@ CREATE TABLE users_like_attractions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (attraction_id) REFERENCES attracions(id)
+    FOREIGN KEY (attraction_id) REFERENCES attractions(id)
 );
 
 CREATE TABLE users_relationship (

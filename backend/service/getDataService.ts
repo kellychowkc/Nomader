@@ -11,7 +11,7 @@ export class GetDataService {
     }
 
     async getCountryData() {
-        const countries = await this.knex.select("*").from("countries");
+        const countries : Array<{ id : number, name: string }> = await this.knex.select("id", "name").from("countries");
 
         return countries;
     }
