@@ -14,8 +14,7 @@ import { Link } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Welcome from './components/welcome/Welcome'
-import Dashboard from './components/contentDashboard/Dashboard'
-import Contact from './components/layoutSafetyContact/SafetyContact'
+import Dashboard from './components/ControlPanel/contentDashboard/Dashboard'
 import ControlPanel from './components/ControlPanel/ControlPanel'
 import Landing from './components/layoutLanding/Landing'
 import LayoutLogin from './components/layoutLogin/layoutLogin'
@@ -32,11 +31,12 @@ import Friends from './components/layoutFriends/Friends'
 import Profile from './components/layoutProfile/Profile'
 import Chat from './components/Chat/Chat'
 import Home from './components/Home/Home'
-import ManageUser from './components/contentManageUser/ManageUser'
+import ManageUser from './components/ControlPanel/contentManageUser/ManageUser'
 import Matching from './components/matching/Matching'
 import MatchingSuccess from './components/matching/MatchingSuccess'
 import NewPost from './components/layoutForum/NewPost'
 import MatchingIndex from './components/matching/MatchingIndex'
+import Contact from './components/layoutSafetyContact/SafetyContact'
 
 function App() {
     return (
