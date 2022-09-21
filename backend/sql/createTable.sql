@@ -1,21 +1,20 @@
 CREATE TABLE currency_codes (
     id SERIAL PRIMARY KEY,
-    code TEXT NOT NULL,
-    currency_name TEXT NULL
+    code TEXT,
+    currency_name TEXT,
+    using_country TEXT
 );
 
 CREATE TABLE countries (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    tel_code TEXT NOT NULL,
-    location_group TEXT NOT NULL,
+    tel_code TEXT,
+    location_group TEXT,
     emergency_tel TEXT,
     police_tel TEXT,
     ambulance_tel TEXT,
     fire_tel TEXT,
-    info TEXT,
-    currency_code_id INTEGER,
-    FOREIGN KEY (currency_code_id) REFERENCES currency_codes(id)
+    info TEXT
 );
 
 CREATE TABLE currency_rates (
@@ -231,5 +230,7 @@ CREATE TABLE staging_attractions (
     open_time TEXT,
     class TEXT
 );
+
+
 
 
