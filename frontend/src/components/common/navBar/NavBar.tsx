@@ -33,8 +33,12 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Destinations', path: '/destination' },
     { name: 'Safety', path: '/contact' },
-    { name: 'Control Panel', path: '/control/' },
 ]
+
+const controlPanelLink: LinkItemProps = {
+    name: 'Control Panel',
+    path: '/control/',
+}
 
 const NavLinkHover = ({ children }: { children: LinkItemProps }) => (
     <NavLink to={children.path} key={children.name}>
@@ -57,6 +61,8 @@ export default function Nav() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     //update username from redux
     const auth: AuthState = useSelector((state: any) => state.auth)
+
+    console.log(auth)
 
     return (
         <>
@@ -95,6 +101,16 @@ export default function Nav() {
                                     {link.name}
                                 </NavLink>
                             ))}
+                            {auth.isAdmin ? (
+                                <NavLink
+                                    className="controlPanel"
+                                    to={'/control/'}
+                                >
+                                    Control Panel
+                                </NavLink>
+                            ) : (
+                                <></>
+                            )}
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
@@ -135,6 +151,11 @@ export default function Nav() {
                                     {link}
                                 </NavLinkHover>
                             ))}
+                            {auth.isAdmin ? (
+                                <NavLinkHover>{controlPanelLink}</NavLinkHover>
+                            ) : (
+                                <></>
+                            )}
                         </Stack>
                     </Box>
                 ) : null}

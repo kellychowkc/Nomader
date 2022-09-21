@@ -4,11 +4,13 @@ export function loginPending() {
     };
 }
 
-export function loginSuccess(username?: string, id?: number) {
+export function loginSuccess(username?: string, id?: number, isAdmin?: boolean, profile?: string) {
     return {
         type: "@@Auth/LOGIN_SUCCESS" as const,
         username,
         id,
+        isAdmin,
+        profile
     };
 }
 

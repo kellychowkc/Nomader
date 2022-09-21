@@ -53,7 +53,7 @@ export async function fetchSelfUserInfo(token: string) {
 }
 
 export async function postLogin(loginForm: LoginForm) {
-    return fetchJson<{ token: string; username: string; id: number }>(
+    return fetchJson<{ token: string; username: string; id: number; isAdmin: boolean }>(
         `${REACT_APP_API_SERVER}/user/login`,
         {
             method: "POST",

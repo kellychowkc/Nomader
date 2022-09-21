@@ -4,6 +4,8 @@ export interface AuthState {
     username?: string;
     id?: number;
     error?: string;
+    // Added by danny
+    isAdmin?: boolean;
 }
 
 export interface JWTPayload {
