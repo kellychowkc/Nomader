@@ -124,3 +124,10 @@ export async function newPost(postForm: PostForm) {
         body: formData,
     });
 }
+
+export async function getAllUsers() {
+
+    return fetchJson(`${REACT_APP_API_SERVER}/user/getAllUsers`, {
+        method: "GET",
+    });
+}

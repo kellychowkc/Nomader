@@ -3,7 +3,7 @@ import { Post, User } from "../utils/models";
 import { hashPassword } from "../utils/hash";
 
 export class UserService {
-    constructor(private knex: Knex) {}
+    constructor(private knex: Knex) { }
 
     async getUserByUserName(username: string): Promise<User> {
         const user = await this.knex
@@ -99,9 +99,9 @@ export class UserService {
         return foundInterest;
     }
 
-    async getAllUser() {
-        const allUsers = await this.knex.select("*").from("users");
-        return allUsers;
+    async getAllUsersData() {
+        const allUsersData = await this.knex.select("*").from("users");
+        return allUsersData;
     }
 
     async addPost(postData: Post) {
