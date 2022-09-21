@@ -317,8 +317,8 @@ export async function down(knex: Knex): Promise<void> {
     await knex.schema.dropTableIfExists("users_relationship");
     await knex.schema.dropTableIfExists("users_like_attractions");
     await knex.schema.dropTableIfExists("users_interests");
-    await knex.schema.dropTableIfExists("users_browse_posts");
     await knex.schema.dropTableIfExists("posts_type");
+    await knex.schema.dropTableIfExists("users_browse_posts");
     await knex.schema.dropTableIfExists("posts");
     await knex.schema.dropTableIfExists("users");
     await knex.schema.dropTableIfExists("jobs");

@@ -9,9 +9,13 @@ import {
     Tag,
     SpaceProps,
     useColorModeValue,
-    Container,
     VStack,
     Flex,
+    Tabs,
+    TabList,
+    TabPanels,
+    Tab,
+    TabPanel,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'

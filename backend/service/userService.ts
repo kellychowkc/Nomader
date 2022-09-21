@@ -107,6 +107,7 @@ export class UserService {
     async addPost(postData: Post) {
         postData.user_id = Number(postData.user_id);
 
+        console.log(postData);
         const createdPost = await this.knex
             .insert(postData)
             .into("posts")
