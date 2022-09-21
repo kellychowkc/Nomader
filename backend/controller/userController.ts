@@ -7,7 +7,7 @@ import jwt from "../utils/jwt";
 import { Interest, User } from "../utils/models";
 
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService) { }
 
     logIn = async (req: Request, res: Response) => {
         try {
@@ -176,6 +176,25 @@ export class UserController {
             res.status(201).json({
                 success: true,
                 message: "New Post Created",
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    //Danny
+    allUser = async (req: Request, res: Response) => {
+        try {
+
+            const result = await this.userService.getAllUser();
+            res.status(201).json({
+                success: true,
+                message: "Success getting all users",
+                payload: result
             });
         } catch (err) {
             logger.error(err.toString());
