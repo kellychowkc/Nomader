@@ -14,8 +14,7 @@ import {
     Heading,
     Stack,
     useColorModeValue,
-    Badge,
-    Circle,
+    Button,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
@@ -37,7 +36,7 @@ import { useSelector } from 'react-redux'
 import { AuthState } from '../../redux/state'
 
 import './Home.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 interface UserProfile {
     username: string
@@ -95,6 +94,24 @@ const interestList: DisplayCardData[] = [
         like: true,
         rating: '-',
     },
+    {
+        name: 'Interest #5',
+        location: 'Location',
+        city: 'City',
+        country: 'Country',
+        picture: 'pic/toronto-skyline.jpeg',
+        like: true,
+        rating: '-',
+    },
+    {
+        name: 'Interest #6',
+        location: 'Location',
+        city: 'City',
+        country: 'Country',
+        picture: 'pic/canada3.jpeg',
+        like: true,
+        rating: '-',
+    },
 ]
 
 interface DisplayCardData {
@@ -107,29 +124,24 @@ interface DisplayCardData {
     rating: string
 }
 
-type DisplayProps = {
-    data: DisplayCardData
-    color: string
-}
-
-const DisplayCard = (props: DisplayProps) => (
-    <Center py={5} mx={5} w="auto">
+const DisplayCard = (props: { data: DisplayCardData }) => (
+    <Center py={5} mx={'10px'} w="auto">
         <Box
             role={'group'}
             p={6}
             maxW={'400px'}
-            w={['40vw', '40vw', '35vw', '35vw', '35vw']}
-            bg={props.color}
-            boxShadow={'xl'}
+            w={{ base: '50vw', sm: '45vw', md: '45vw' }}
+            // bg={useColorModeValue('gray.100','gray.100')}
+            boxShadow={'lg'}
             rounded={'lg'}
             pos={'relative'}
             zIndex={1}
         >
             <Box
                 rounded={'lg'}
-                mt={-5}
+                mt={'-10px'}
                 pos={'relative'}
-                height={'230px'}
+                height={'200px'}
                 _after={{
                     transition: 'all .3s ease',
                     content: '""',
@@ -139,44 +151,47 @@ const DisplayCard = (props: DisplayProps) => (
                     top: 1,
                     left: 0,
                     backgroundImage: `url(${props.data.picture})`,
-                    filter: 'blur(10px)',
+                    filter: 'blur(8px)',
                     zIndex: -1,
                 }}
                 _groupHover={{
                     _after: {
-                        filter: 'blur(15px)',
+                        filter: 'blur(12px)',
                     },
                 }}
             >
                 <Image
                     rounded={'lg'}
-                    height={230}
+                    height={200}
                     width={'full'}
                     objectFit={'cover'}
                     src={props.data.picture}
                 />
             </Box>
-            <Stack pt={5} align={'flex-start'} position="relative">
+            <Stack pt="10px" align={'flex-start'} position="relative">
                 <Icon
                     as={FaHeart}
                     position="absolute"
-                    top="7"
-                    right="2"
-                    size="2em"
+                    top="20px"
+                    right="3px"
+                    boxSize={'1.5em'}
+                    color={'#BBBBBB'}
+                    _hover={{ color: '#FF0000' }}
+                    _focus={{ color: '#FF0000' }}
                 />
                 <Heading
+                    className="interestTitle"
                     fontSize={'xl'}
-                    fontFamily={'body'}
                     fontWeight={'bold'}
                 >
                     {props.data.name}
                 </Heading>
-                <Stack direction={'row'} align={'center'}>
-                    <Text color={'gray.600'}>
+                <HStack className="interestLocation" align={'center'}>
+                    <Text>
                         {props.data.location},{props.data.city},
                         {props.data.country}
                     </Text>
-                </Stack>
+                </HStack>
             </Stack>
         </Box>
     </Center>
@@ -189,7 +204,7 @@ const Home = () => {
 
     const auth: AuthState = useSelector((state: any) => state.auth)
 
-    const interestColor = useColorModeValue('white', 'gray.800')
+    const navigate = useNavigate()
 
     return (
         <Box
@@ -204,37 +219,57 @@ const Home = () => {
 
             <VStack w="100%">
                 <Flex
-                    className="Top"
+                    className="greeting"
                     w="80vw"
                     mb="3"
                     direction="column"
                     justify="center"
                     align="center"
                 >
-                    <HStack w="80%" py="5" m="0" justify="space-around">
-                        <VStack px="5" mx="0" align="flex-start">
-                            <HStack color="#B0D8BC">
-                                <Text fontSize="2em" fontWeight="bold">
+                    <HStack
+                        w="100%"
+                        pt="15px"
+                        m="0"
+                        spacing={10}
+                        justify={{ base: 'space-around', lg: 'center' }}
+                    >
+                        <VStack
+                            className="displayName"
+                            px="5px"
+                            mx="0"
+                            align="flex-start"
+                        >
+                            <HStack color="#B0D8BC" align={'baseline'}>
+                                <Text
+                                    fontSize={{ base: '2em', lg: '2.5em' }}
+                                    fontWeight="bold"
+                                >
                                     Hello,
                                 </Text>
-                                <Text fontSize="2.5em" fontWeight="bold">
+                                <Text
+                                    fontSize={{ base: '2.5em', lg: '3em' }}
+                                    fontWeight="bolder"
+                                    letterSpacing={'wide'}
+                                    textTransform={'uppercase'}
+                                >
                                     {auth.username}
                                 </Text>
                             </HStack>
 
-                            <Text fontSize="md">Where are you heading?</Text>
+                            <Text
+                                fontSize={{ base: '1em', lg: '1.2em' }}
+                                fontWeight="medium"
+                                letterSpacing={'wide'}
+                                whiteSpace={'nowrap'}
+                            >
+                                Where are you heading?
+                            </Text>
                         </VStack>
-                        <Box p="5" mx="0">
+                        <Box className="avatar" p="10px" mx="0">
                             <Avatar
-                                className="avatar"
-                                size="lg"
+                                size={{ base: 'lg', lg: 'xl' }}
                                 src={user.avatar}
-                                // boxShadow={[
-                                //     '0px 0px 5px #FFF',
-                                //     '0px 0px 10px #F0F',
-                                //     '0px 0px 15px #0FF',
-                                //     '0px 0px 20px #FF0',
-                                // ]}
+                                boxShadow={'0px 0px 6px #AAAAAA'}
                             ></Avatar>
                         </Box>
                     </HStack>
@@ -247,9 +282,16 @@ const Home = () => {
                     justify="center"
                     align="center"
                 >
-                    <HStack w="95%" m="0" justify="space-between">
+                    <HStack
+                        w="100%"
+                        m="0"
+                        spacing={{ base: 3, lg: 5 }}
+                        justify="center"
+                    >
                         <Flex
+                            className="serachBar"
                             w="85%"
+                            maxW={'2xl'}
                             h="50px"
                             px="3"
                             py="1"
@@ -265,30 +307,36 @@ const Home = () => {
                                         placeholder="Search..."
                                         _placeholder={{
                                             color: 'gray.900',
-                                            fontSize: 'md',
                                         }}
                                         type="text"
                                         value={search}
                                         onChange={handleChange_search}
                                         border="0"
+                                        fontSize={{ base: 'md', lg: 'lg' }}
                                         _focus={{
                                             outline: 'none',
                                             border: '0px',
                                         }}
                                     />
                                 </FormControl>
-                                <Icon as={MdSearch} h="30px" w="30px" />
+                                <Icon
+                                    as={MdSearch}
+                                    h={{ base: '30px', lg: '35px' }}
+                                    w={{ base: '30px', lg: '35px' }}
+                                    _hover={{ cursor: 'pointer' }}
+                                />
                             </HStack>
                         </Flex>
-                        <Flex
+                        <Button
+                            className="serachFilter"
                             w="55px"
                             h="55px"
                             px="3"
                             py="1"
                             borderRadius="10px"
                             bg={useColorModeValue('#B0D8BC', '#56C3E6')}
-                            align={'center'}
-                            justify={'center'}
+                            alignItems={'center'}
+                            justifyContent={'center'}
                             boxShadow="0px 0px 9px 0px #BBBBBB"
                         >
                             <Icon
@@ -297,20 +345,30 @@ const Home = () => {
                                 w="30px"
                                 color={useColorModeValue('#FFFFFF', 'gray.100')}
                             />
-                        </Flex>
+                        </Button>
                     </HStack>
                 </Flex>
                 <Flex
                     className="Category"
                     w="80vw"
-                    mb="5"
+                    pt={'10px'}
                     direction="column"
                     justify="center"
                     align="center"
                 >
-                    <HStack w="100%" p="1" mb="3" justify="space-between">
+                    <HStack
+                        w="100%"
+                        maxW="container.lg"
+                        p="0"
+                        mb="3"
+                        justify="space-between"
+                    >
                         <HStack>
-                            <Text fontSize="1.5em" fontWeight="bold">
+                            <Text
+                                fontSize="1.5em"
+                                fontWeight="bold"
+                                letterSpacing={'wide'}
+                            >
                                 Category
                             </Text>
                             <Icon as={MdLocalActivity} w="30px" h="30px" />
@@ -318,21 +376,29 @@ const Home = () => {
 
                         <HStack>
                             <Icon as={MdBookmarks} />
-                            <Text>See All</Text>
+                            <Text fontWeight={'semibold'}>See All</Text>
                         </HStack>
                     </HStack>
 
-                    <HStack w="100%" p="0" m="0" justify="space-around">
+                    <HStack
+                        w="100%"
+                        maxW="container.lg"
+                        p="0"
+                        mb="5"
+                        justify="space-around"
+                    >
                         {categories.map((category: any, idx: number) => (
-                            <Flex
+                            <Button
                                 key={idx}
                                 w="22%"
-                                py={['3', '3', '3', '4', '5']}
+                                h="fit-content"
+                                py={['3', '3', '3', '4', '4']}
                                 border="0"
                                 borderRadius="10px"
-                                justify="center"
+                                justifyContent="center"
                                 boxShadow="0px 0px 9px #AAAAAA"
                                 bgGradient="linear(to-r, #56C3E6, #B0D8BC)"
+                                onClick={() => navigate(category.path)}
                             >
                                 <Link to={category.path}>
                                     <Icon
@@ -342,19 +408,19 @@ const Home = () => {
                                             '40px',
                                             '50px',
                                             '60px',
-                                            '60px',
+                                            '65px',
                                         ]}
                                         w={[
                                             '30px',
                                             '40px',
                                             '50px',
                                             '60px',
-                                            '60px',
+                                            '65px',
                                         ]}
                                         color="#FFFFFF"
                                     />
                                 </Link>
-                            </Flex>
+                            </Button>
                         ))}
                     </HStack>
                 </Flex>
@@ -365,10 +431,20 @@ const Home = () => {
                     justify="center"
                     align="center"
                 >
-                    <HStack w="100%" p="1" mb="3" justify="space-between">
+                    <HStack
+                        w="100%"
+                        maxW="container.lg"
+                        p="0"
+                        mb="0"
+                        justify="space-between"
+                    >
                         <Box>
                             <HStack>
-                                <Text fontSize="1.5em" fontWeight="bold">
+                                <Text
+                                    fontSize="1.5em"
+                                    fontWeight="bold"
+                                    letterSpacing={'wide'}
+                                >
                                     Interest
                                 </Text>
                                 <Icon as={MdLocationPin} w="30px" h="30px" />
@@ -377,13 +453,15 @@ const Home = () => {
                         <Box>
                             <HStack>
                                 <Icon as={MdBookmarks} />
-                                <Text>See All</Text>
+                                <Text fontWeight={'semibold'}>See All</Text>
                             </HStack>
                         </Box>
                     </HStack>
 
                     <HStack
-                        w="100%"
+                        className="carousel"
+                        w={{ base: '97vw', lg: '98vw' }}
+                        // maxW="container.lg"
                         p="0"
                         m="0"
                         justify="center"
@@ -391,18 +469,17 @@ const Home = () => {
                         overflow={'visible'}
                     >
                         <Carousel
-                            show={width / 350}
-                            slide={width / (350 * 0.9)}
+                            infinite={true}
+                            show={Math.max(1.5, width / 400)}
+                            slide={2.5}
                             swiping={true}
                             responsive={true}
                         >
-                            {interestList.map((item, idx: any) => (
-                                <DisplayCard
-                                    key={idx}
-                                    data={item}
-                                    color={interestColor}
-                                />
-                            ))}
+                            {interestList.map(
+                                (item: DisplayCardData, idx: any) => (
+                                    <DisplayCard key={idx} data={item} />
+                                )
+                            )}
                         </Carousel>
                     </HStack>
                 </Flex>

@@ -36,6 +36,7 @@ export interface SignUpForm {
 }
 
 export interface PostForm {
+    user_id: string;
     title: string;
     content: string;
     image: Blob | File;
@@ -67,6 +68,7 @@ export async function postLogin(loginForm: LoginForm) {
 
 export async function postSignUp(signUpForm: SignUpForm) {
     const formData = new FormData();
+    console.log("check data", signUpForm.country);
     formData.append("first_name", signUpForm.first_name);
     formData.append("last_name", signUpForm.last_name);
     formData.append("gender", signUpForm.gender);
@@ -75,8 +77,8 @@ export async function postSignUp(signUpForm: SignUpForm) {
     formData.append("email", signUpForm.email);
     formData.append("password", signUpForm.password);
     formData.append("phone_num", signUpForm.phone_num);
-    formData.append("country", signUpForm.country);
-    formData.append("job", signUpForm.job);
+    formData.append("country_id", signUpForm.country);
+    formData.append("job_id", signUpForm.job);
     formData.append("information", signUpForm.information);
     formData.append("profile", signUpForm.profile);
 
@@ -97,22 +99,25 @@ export async function preMatching(userId: number) {
     });
 }
 
-export async function addUserInterest(interestList: Array<InterestItem>) {
+export async function addUserInterest(
+    interestList: Array<InterestItem>,
+    user_id: number
+) {
     return fetchJson(`${REACT_APP_API_SERVER}/user/interest`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(interestList),
+        body: JSON.stringify({ interestList, user_id }),
     });
 }
 
 export async function newPost(postForm: PostForm) {
     const formData = new FormData();
+    formData.append("user_id", postForm.user_id);
     formData.append("title", postForm.title);
     formData.append("content", postForm.content);
     formData.append("image", postForm.image);
-    console.log(formData);
 
     return fetchJson(`${REACT_APP_API_SERVER}/user/post`, {
         method: "POST",

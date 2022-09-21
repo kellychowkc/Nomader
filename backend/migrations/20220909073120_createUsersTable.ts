@@ -6,24 +6,8 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("currency_codes", (table) => {
             table.increments();
             table.string("code").notNullable();
-            table.string("currency_name");
-            table.string("using_country");
-        })
-    }
-    
-    const hasCurrencyRates = await knex.schema.hasTable("currency_rates");
-    if (!hasCurrencyRates) {
-        await knex.schema.createTable("currency_rates", (table) => {
-            table.increments();
-            table.integer("code_base_id").unsigned();
-            table.foreign("code_base_id").references("currency_codes.id").onUpdate("CASCADE").onDelete("CASCADE");
-            table.integer("rate");
-            table.integer("code_to_id").unsigned();
-            table.foreign("code_to_id").references("currency_codes.id").onUpdate("CASCADE").onDelete("CASCADE");
-            table.integer("year");
-            table.integer("month");
-            table.integer("day");
-        })
+            table.string("currency_name").notNullable();
+        });
     }
 
     const hasCountries = await knex.schema.hasTable("countries");
@@ -38,9 +22,26 @@ export async function up(knex: Knex): Promise<void> {
             table.string("fire_tel");
             table.string("ambulance_tel");
             table.string("info");
-        })
+            table.integer("currency_code_id").unsigned();
+            table.foreign("currency_code_id").references("currency_codes.id");
+        });
     }
-    
+
+    const hasCurrencyRates = await knex.schema.hasTable("currency_rates");
+    if (!hasCurrencyRates) {
+        await knex.schema.createTable("currency_rates", (table) => {
+            table.increments();
+            table.integer("code_base_id").unsigned();
+            table.foreign("code_base_id").references("currency_codes.id");
+            table.integer("rate");
+            table.integer("code_to_id").unsigned();
+            table.foreign("code_to_id").references("currency_codes.id");
+            table.integer("year");
+            table.integer("month");
+            table.integer("day");
+        });
+    }
+
     const hasCities = await knex.schema.hasTable("cities");
     if (!hasCities) {
         await knex.schema.createTable("cities", (table) => {
@@ -49,7 +50,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("description");
             table.string("image");
             table.string("city_list");
-        })
+        });
     }
 
     const hasAttractions = await knex.schema.hasTable("attractions");
@@ -63,7 +64,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("open_time");
             table.string("class");
             table.string("city_list");
-        })
+        });
     }
 
     const hasInterests = await knex.schema.hasTable("interests");
@@ -72,7 +73,7 @@ export async function up(knex: Knex): Promise<void> {
             table.increments();
             table.string("title").notNullable();
             table.string("image");
-        })
+        });
     }
 
     const hasAttractionsType = await knex.schema.hasTable("attractions_type");
@@ -80,10 +81,18 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("attractions_type", (table) => {
             table.increments();
             table.integer("attraction_id").unsigned();
-            table.foreign("attraction_id").references("attractions.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("attraction_id")
+                .references("attractions.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("interest_id").unsigned();
-            table.foreign("interest_id").references("interests.id").onUpdate("CASCADE").onDelete("CASCADE");
-        })
+            table
+                .foreign("interest_id")
+                .references("interests.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
+        });
     }
 
     const hasJobs = await knex.schema.hasTable("jobs");
@@ -91,9 +100,9 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("jobs", (table) => {
             table.increments();
             table.string("title").notNullable();
-        })
+        });
     }
-    
+
     const hasUsers = await knex.schema.hasTable("users");
     if (!hasUsers) {
         await knex.schema.createTable("users", (table) => {
@@ -109,93 +118,158 @@ export async function up(knex: Knex): Promise<void> {
             table.string("email").notNullable();
             table.integer("phone_num").notNullable();
             table.integer("job_id").unsigned();
-            table.foreign("job_id").references("jobs.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("job_id")
+                .references("jobs.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.string("emergency_contact_person");
             table.integer("emergency_contact_num");
             table.integer("country_id").unsigned();
-            table.foreign("country_id").references("countries.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("country_id")
+                .references("countries.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.boolean("isAdmin").notNullable();
             table.timestamps(true, true);
-        })
+        });
     }
-    
+
     const hasPostsContent = await knex.schema.hasTable("posts");
     if (!hasPostsContent) {
         await knex.schema.createTable("posts", (table) => {
             table.increments();
             table.integer("user_id").unsigned();
-            table.foreign("user_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.string("title").notNullable();
             table.string("content").notNullable();
             table.string("image");
             table.integer("attraction_id").unsigned();
-            table.foreign("attraction_id").references("attractions.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("attraction_id")
+                .references("attractions.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("city_id").unsigned();
-            table.foreign("city_id").references("cities.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("city_id")
+                .references("cities.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.timestamps(true, true);
-        })
+        });
     }
-    
+
     const hasPostsType = await knex.schema.hasTable("posts_type");
     if (!hasPostsType) {
         await knex.schema.createTable("posts_type", (table) => {
             table.increments();
             table.integer("post_id").unsigned();
-            table.foreign("post_id").references("posts.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("post_id")
+                .references("posts.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("interest_id").unsigned();
-            table.foreign("interest_id").references("interests.id").onUpdate("CASCADE").onDelete("CASCADE");
-        })
+            table
+                .foreign("interest_id")
+                .references("interests.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
+        });
     }
-    
-    const hasUsersBrowsePosts = await knex.schema.hasTable("users_browse_posts");
+
+    const hasUsersBrowsePosts = await knex.schema.hasTable(
+        "users_browse_posts"
+    );
     if (!hasUsersBrowsePosts) {
         await knex.schema.createTable("users_browse_posts", (table) => {
             table.increments();
             table.integer("user_id").unsigned();
-            table.foreign("user_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("browse_count");
             table.integer("post_id").unsigned();
-            table.foreign("post_id").references("posts.id").onUpdate("CASCADE").onDelete("CASCADE");
-        })
+            table
+                .foreign("post_id")
+                .references("posts.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
+        });
     }
-
 
     const hasUsersInterests = await knex.schema.hasTable("users_interests");
     if (!hasUsersInterests) {
         await knex.schema.createTable("users_interests", (table) => {
             table.increments();
             table.integer("user_id").unsigned();
-            table.foreign("user_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("interest_id").unsigned();
-            table.foreign("interest_id").references("interests.id").onUpdate("CASCADE").onDelete("CASCADE");
-        })
+            table
+                .foreign("interest_id")
+                .references("interests.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
+        });
     }
 
-    const hasUsersLikeAttractions = await knex.schema.hasTable("users_like_attractions");
+    const hasUsersLikeAttractions = await knex.schema.hasTable(
+        "users_like_attractions"
+    );
     if (!hasUsersLikeAttractions) {
         await knex.schema.createTable("users_like_attractions", (table) => {
             table.increments();
             table.integer("user_id").unsigned();
-            table.foreign("user_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("attraction_id").unsigned();
-            table.foreign("attraction_id").references("attractions.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("attraction_id")
+                .references("attractions.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.boolean("like_attraction").notNullable();
             table.integer("browse_count").notNullable();
             table.timestamps(true, true);
-        })
+        });
     }
 
-    const hasUsersRelationship = await knex.schema.hasTable("users_relationship");
+    const hasUsersRelationship = await knex.schema.hasTable(
+        "users_relationship"
+    );
     if (!hasUsersRelationship) {
         await knex.schema.createTable("users_relationship", (table) => {
             table.increments();
             table.integer("user1_id").unsigned();
-            table.foreign("user1_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user1_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.string("status").notNullable();
             table.integer("user2_id").unsigned();
-            table.foreign("user2_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user2_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.timestamps(true, true);
-        })
+        });
     }
 
     const hasChatRooms = await knex.schema.hasTable("chat_rooms");
@@ -204,11 +278,19 @@ export async function up(knex: Knex): Promise<void> {
             table.increments();
             table.string("room_title").notNullable();
             table.integer("user_manager_id").unsigned();
-            table.foreign("user_manager_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_manager_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("user_member_id").unsigned();
-            table.foreign("user_member_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_member_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.timestamps(true, true);
-        })
+        });
     }
 
     const hasChats = await knex.schema.hasTable("chats");
@@ -216,19 +298,33 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("chats", (table) => {
             table.increments();
             table.integer("chat_room_id").unsigned();
-            table.foreign("chat_room_id").references("chat_rooms.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("chat_room_id")
+                .references("chat_rooms.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.integer("user_speech_id").unsigned();
-            table.foreign("user_speech_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_speech_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.string("content");
             table.string("image");
             table.string("voice");
             table.integer("user_listen_id").unsigned();
-            table.foreign("user_listen_id").references("users.id").onUpdate("CASCADE").onDelete("CASCADE");
+            table
+                .foreign("user_listen_id")
+                .references("users.id")
+                .onUpdate("CASCADE")
+                .onDelete("CASCADE");
             table.timestamps(true, true);
-        })
+        });
     }
 
-    const hasStagingEmergencyData = await knex.schema.hasTable("staging_emergency_data");
+    const hasStagingEmergencyData = await knex.schema.hasTable(
+        "staging_emergency_data"
+    );
     if (!hasStagingEmergencyData) {
         await knex.schema.createTable("staging_emergency_data", (table) => {
             table.increments();
@@ -240,10 +336,12 @@ export async function up(knex: Knex): Promise<void> {
             table.string("location_group");
             table.string("calling_code");
             table.string("info");
-        })
+        });
     }
-    
-    const hasStagingAttractions = await knex.schema.hasTable("staging_attractions");
+
+    const hasStagingAttractions = await knex.schema.hasTable(
+        "staging_attractions"
+    );
     if (!hasStagingAttractions) {
         await knex.schema.createTable("staging_attractions", (table) => {
             table.increments();
@@ -254,20 +352,24 @@ export async function up(knex: Knex): Promise<void> {
             table.string("city_list");
             table.string("open_time");
             table.string("class");
-        })
+        });
     }
 
-    const hasStagingCurrencyCodes = await knex.schema.hasTable("staging_currency_codes");
+    const hasStagingCurrencyCodes = await knex.schema.hasTable(
+        "staging_currency_codes"
+    );
     if (!hasStagingCurrencyCodes) {
         await knex.schema.createTable("staging_currency_codes", (table) => {
             table.increments();
             table.string("code");
             table.string("currency_name");
             table.string("using_country");
-        })
+        });
     }
 
-    const hasStagingCurrencyRates = await knex.schema.hasTable("staging_currency_rates");
+    const hasStagingCurrencyRates = await knex.schema.hasTable(
+        "staging_currency_rates"
+    );
     if (!hasStagingCurrencyRates) {
         await knex.schema.createTable("staging_currency_rates", (table) => {
             table.increments();
@@ -277,7 +379,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("code_base");
             table.string("code_to");
             table.string("rate");
-        })
+        });
     }
 
     const hasStagingCityData = await knex.schema.hasTable("staging_city_data");
@@ -288,7 +390,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("description");
             table.string("image");
             table.string("city_list");
-        })
+        });
     }
 }
 

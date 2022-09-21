@@ -8,6 +8,8 @@ import Swal from 'sweetalert2'
 import { addUserInterest } from '../../api/user'
 import { useNavigate } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
+import { AuthState } from '../../redux/state'
+import { useSelector } from 'react-redux'
 
 const { REACT_APP_API_SERVER } = process.env
 export interface InterestItem {
@@ -18,6 +20,8 @@ export interface InterestItem {
 
 function InterestList() {
     const [interestList, setInterestList] = useState<Array<InterestItem>>([])
+    const auth: AuthState = useSelector((state: any) => state.auth)
+    const user_id = auth.id
 
     const navigate = useNavigate()
     const insertData = useEffect(() => {
@@ -69,10 +73,12 @@ function InterestList() {
                     return item
                 }
             )
-            addUserInterest(submitInterestList).then((data) => {
-                console.log(data)
-                navigate('/matching')
-            })
+            addUserInterest(submitInterestList, user_id as any as number).then(
+                (data) => {
+                    console.log(data)
+                    navigate('/matching')
+                }
+            )
         }
     }
     return (

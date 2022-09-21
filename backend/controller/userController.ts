@@ -4,7 +4,7 @@ import { logger } from "../utils/logger";
 import { checkPassword } from "../utils/hash";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
-import { Interest, User } from "../utils/models";
+import { Interest, Post, User } from "../utils/models";
 
 export class UserController {
     constructor(private userService: UserService) {}
@@ -75,9 +75,11 @@ export class UserController {
             const file = req.form?.files.profile;
             const profile = file?.["newFilename"];
             userData!.profile = profile;
+
+            console.log(userData);
+
             console.log("controller", typeof userData);
 
-            //not yet finished
             const newUser = await this.userService.create(
                 userData as any as User
             );
@@ -139,10 +141,15 @@ export class UserController {
             });
         }
     };
-    //!!!!Service is not finished
+
     addInterest = async (req: Request, res: Response) => {
         try {
-            // await this.userService.addInterest(req.body);
+            const user_id: number = req.body.user_id;
+            let interestIdList: number[] = [];
+            req.body.interestList.forEach((element: any) => {
+                interestIdList.push(element.id);
+            });
+            await this.userService.addInterest(user_id, interestIdList);
             res.status(201).json({
                 success: true,
                 message: "Updated Interest List",
@@ -162,12 +169,34 @@ export class UserController {
         try {
             let postData = req.form?.fields;
             const file = req.form?.files.image;
-            const profile = file?.["newFilename"];
-            postData!.profile = profile;
-            // await this.userService.addInterest(req.body);
+            const image = file?.["newFilename"];
+            postData!.image = image;
+
+            const resp = await this.userService.addPost(
+                postData as any as Post
+            );
+            console.log(resp);
             res.status(201).json({
                 success: true,
                 message: "New Post Created",
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    //Danny
+    allUser = async (req: Request, res: Response) => {
+        try {
+            const result = await this.userService.getAllUser();
+            res.status(201).json({
+                success: true,
+                message: "Success getting all users",
+                payload: result,
             });
         } catch (err) {
             logger.error(err.toString());

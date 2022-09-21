@@ -3,7 +3,7 @@ import { fetchJson } from "./utils";
 export interface OtherUser {
     id: number;
     username: string;
-    country: string;
+    country_id: string;
     job: string;
     information: string;
     interest: string;

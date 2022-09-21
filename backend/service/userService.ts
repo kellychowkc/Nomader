@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { User } from "../utils/models";
+import { Post, User } from "../utils/models";
 import { hashPassword } from "../utils/hash";
 
 export class UserService {
@@ -36,8 +36,8 @@ export class UserService {
             profile,
             email,
             phone_num,
-            job,
-            country,
+            job_id,
+            country_id,
         } = body;
 
         password = await hashPassword(password);
@@ -65,8 +65,9 @@ export class UserService {
                     profile,
                     email,
                     phone_num,
-                    job,
-                    country,
+                    job_id,
+                    country_id,
+                    isAdmin: false,
                 })
                 .into("users")
                 .returning("id");
@@ -76,6 +77,19 @@ export class UserService {
         return;
     }
 
+    async addInterest(userId: number, interestIdList: number[]) {
+        const insertInterest = interestIdList.map((interestId) => ({
+            user_id: userId,
+            interest_id: interestId,
+        }));
+
+        const createdInterest = await this.knex
+            .insert(insertInterest)
+            .into("users_interests")
+            .returning("id");
+        return createdInterest;
+    }
+
     async getInterestByUserId(userId: number): Promise<[number]> {
         const foundInterest = await this.knex
             .select("*")
@@ -83,5 +97,21 @@ export class UserService {
             .where("user_id", userId)
             .first();
         return foundInterest;
+    }
+
+    async getAllUser() {
+        const allUsers = await this.knex.select("*").from("users");
+        return allUsers;
+    }
+
+    async addPost(postData: Post) {
+        postData.user_id = Number(postData.user_id);
+
+        console.log(postData);
+        const createdPost = await this.knex
+            .insert(postData)
+            .into("posts")
+            .returning("id");
+        return createdPost;
     }
 }

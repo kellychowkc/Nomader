@@ -10,11 +10,18 @@ export interface User {
     profile?: string;
     email?: string;
     phone_num?: number;
-    job?: string;
-    country?: string;
+    job_id?: number;
+    country_id?: number;
 }
 
 export interface Interest {
     id: number;
     title: string;
+}
+
+export interface Post {
+    user_id: number;
+    title: string;
+    content: string;
+    image: string;
 }
