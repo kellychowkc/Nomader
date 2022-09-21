@@ -131,4 +131,3 @@ with sync_playwright() as p:
     # get_city_data()
 
     browser.close()
-
