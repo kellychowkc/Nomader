@@ -11,6 +11,18 @@ export interface JWTPayload {
     username: string;
 }
 
+export interface ManageUserState {
+    loading: boolean;
+    userList?: Array<UserListState | null>
+    error?: string;
+}
+
+export interface UserListState {
+    username: string;
+    fullname: string;
+    avatar: string;
+}
+
 export interface UserInfoState {
     loading: boolean;
     interest?: number | null;
