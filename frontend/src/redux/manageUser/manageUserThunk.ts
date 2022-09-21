@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-// import { getAllUsers } from "../../api/user";
+import { getAllUsers } from "../../api/user";
 import { loadUserListPending, loadUserListSuccess, loadUserListFail, ManageUserActions } from "./manageUserAction";
 
 export function getAllUsersList() {
