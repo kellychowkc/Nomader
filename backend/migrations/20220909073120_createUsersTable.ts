@@ -1,6 +1,15 @@
 import { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
+    const hasCurrencyCodes = await knex.schema.hasTable("currency_codes");
+    if (!hasCurrencyCodes) {
+        await knex.schema.createTable("currency_codes", (table) => {
+            table.increments();
+            table.string("code").notNullable();
+            table.string("currency_name").notNullable();
+        })
+    }
+
     const hasCountries = await knex.schema.hasTable("countries");
     if (!hasCountries) {
         await knex.schema.createTable("countries", (table) => {
@@ -13,20 +22,11 @@ export async function up(knex: Knex): Promise<void> {
             table.string("fire_tel");
             table.string("ambulance_tel");
             table.string("info");
+            table.integer("currency_code_id").unsigned();
+            table.foreign("currency_code_id").references("currency_codes.id");
         })
     }
-
-    const hasCurrencyCodes = await knex.schema.hasTable("currency_codes");
-    if (!hasCurrencyCodes) {
-        await knex.schema.createTable("currency_codes", (table) => {
-            table.increments();
-            table.string("code").notNullable();
-            table.string("currency_name").notNullable();
-            table.integer("country_id").unsigned();
-            table.foreign("country_id").references("countries.id");
-        })
-    }
-
+    
     const hasCurrencyRates = await knex.schema.hasTable("currency_rates");
     if (!hasCurrencyRates) {
         await knex.schema.createTable("currency_rates", (table) => {
@@ -87,29 +87,6 @@ export async function up(knex: Knex): Promise<void> {
         })
     }
 
-    const hasPosts = await knex.schema.hasTable("posts");
-    if (!hasPosts) {
-        await knex.schema.createTable("posts", (table) => {
-            table.increments();
-            table.string("title").notNullable();
-            table.integer("attraction_id").unsigned();
-            table.foreign("attraction_id").references("attractions.id");
-            table.integer("city_id").unsigned();
-            table.foreign("city_id").references("cities.id");
-        })
-    }
-
-    const hasPostsType = await knex.schema.hasTable("posts_type");
-    if (!hasPostsType) {
-        await knex.schema.createTable("posts_type", (table) => {
-            table.increments();
-            table.integer("post_id").unsigned();
-            table.foreign("post_id").references("posts.id");
-            table.integer("interest_id").unsigned();
-            table.foreign("interest_id").references("interests.id");
-        })
-    }
-
     const hasJobs = await knex.schema.hasTable("jobs");
     if (!hasJobs) {
         await knex.schema.createTable("jobs", (table) => {
@@ -117,7 +94,7 @@ export async function up(knex: Knex): Promise<void> {
             table.string("title").notNullable();
         })
     }
-
+    
     const hasUsers = await knex.schema.hasTable("users");
     if (!hasUsers) {
         await knex.schema.createTable("users", (table) => {
@@ -142,23 +119,47 @@ export async function up(knex: Knex): Promise<void> {
             table.timestamps(true, true);
         })
     }
-
-    const hasPostsContent = await knex.schema.hasTable("posts_content");
+    
+    const hasPostsContent = await knex.schema.hasTable("posts");
     if (!hasPostsContent) {
         await knex.schema.createTable("posts_content", (table) => {
             table.increments();
             table.integer("user_id").unsigned();
             table.foreign("user_id").references("users.id");
-            table.integer("order_num").notNullable();
+            table.string("title").notNullable();
             table.string("content").notNullable();
             table.string("image");
-            table.boolean("like_post").notNullable();
-            table.integer("browse_count").notNullable();
-            table.integer("post_id").unsigned();
-            table.foreign("post_id").references("posts.id");
+            table.integer("attraction_id").unsigned();
+            table.foreign("attraction_id").references("attractions.id");
+            table.integer("city_id").unsigned();
+            table.foreign("city_id").references("cities.id");
             table.timestamps(true, true);
         })
     }
+    
+    const hasPostsType = await knex.schema.hasTable("posts_type");
+    if (!hasPostsType) {
+        await knex.schema.createTable("posts_type", (table) => {
+            table.increments();
+            table.integer("post_id").unsigned();
+            table.foreign("post_id").references("posts.id");
+            table.integer("interest_id").unsigned();
+            table.foreign("interest_id").references("interests.id");
+        })
+    }
+    
+    const hasUsersBrowsePosts = await knex.schema.hasTable("users_browse_posts");
+    if (!hasUsersBrowsePosts) {
+        await knex.schema.createTable("users_browse_posts", (table) => {
+            table.increments();
+            table.integer("user_id").unsigned();
+            table.foreign("user_id").references("users.id");
+            table.integer("browse_count");
+            table.integer("post_id").unsigned();
+            table.foreign("post_id").references("posts.id");
+        })
+    }
+
 
     const hasUsersInterests = await knex.schema.hasTable("users_interests");
     if (!hasUsersInterests) {
@@ -303,16 +304,15 @@ export async function down(knex: Knex): Promise<void> {
     await knex.schema.dropTableIfExists("users_relationship");
     await knex.schema.dropTableIfExists("users_like_attractions");
     await knex.schema.dropTableIfExists("users_interests");
-    await knex.schema.dropTableIfExists("posts_content");
-    await knex.schema.dropTableIfExists("users");
-    await knex.schema.dropTableIfExists("jobs");
     await knex.schema.dropTableIfExists("posts_type");
     await knex.schema.dropTableIfExists("posts");
+    await knex.schema.dropTableIfExists("users");
+    await knex.schema.dropTableIfExists("jobs");
     await knex.schema.dropTableIfExists("attractions_type");
     await knex.schema.dropTableIfExists("interests");
     await knex.schema.dropTableIfExists("attractions");
     await knex.schema.dropTableIfExists("cities");
     await knex.schema.dropTableIfExists("currency_rates");
-    await knex.schema.dropTableIfExists("currency_codes");
     await knex.schema.dropTableIfExists("countries");
+    await knex.schema.dropTableIfExists("currency_codes");
 }

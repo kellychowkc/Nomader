@@ -10,9 +10,11 @@ class Config :
     AWS_ACCESS_KEY : str = os.getenv('AWS_ACCESS_KEY')
     AWS_SECRET_KEY : str = os.getenv('AWS_SECRET_KEY')
     POSTGRES_DB : str = os.getenv('POSTGRES_DB')
-    POSTGRES_USERNAME : str = os.getenv("POSTGRES_USERNAME")
+    POSTGRES_DW : str = os.getenv('POSTGRES_DW')
+    POSTGRES_USER : str = os.getenv("POSTGRES_USER")
     POSTGRES_PASSWORD : str = os.getenv("POSTGRES_PASSWORD")
-    POSTGRES_HOST : str = os.getenv("POSTGRES_HOST")
+    POSTGRES_DB_HOST : str = os.getenv("POSTGRES_DB_HOST")
+    POSTGRES_DW_HOST : str = os.getenv("POSTGRES_DW_HOST")
     MASTER_SPARK : str = os.getenv('MASTER_SPARK')
     MONGODB : str = os.getenv('MONGODB')
 

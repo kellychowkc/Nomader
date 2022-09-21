@@ -11,8 +11,6 @@ def import_install(package) :
 import_install('palywright')
 import_install('pymongo')
 import_install('pyspark')
-# import_install('sseclient')
 import_install('python-dotenv')
 import_install('pandas')
 import_install('schedule')
-# import_install('geopy')
