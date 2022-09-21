@@ -12,6 +12,9 @@ export interface User {
     phone_num?: number;
     job_id?: number;
     country_id?: number;
+    isAdmin?: boolean;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface Interest {
