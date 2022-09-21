@@ -7,7 +7,7 @@ import jwt from "../utils/jwt";
 import { Interest, User } from "../utils/models";
 
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService) { }
 
     logIn = async (req: Request, res: Response) => {
         try {
