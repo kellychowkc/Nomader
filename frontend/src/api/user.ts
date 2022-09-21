@@ -36,6 +36,7 @@ export interface SignUpForm {
 }
 
 export interface PostForm {
+    user_id: string;
     title: string;
     content: string;
     image: Blob | File;
@@ -113,6 +114,7 @@ export async function addUserInterest(
 
 export async function newPost(postForm: PostForm) {
     const formData = new FormData();
+    formData.append("user_id", postForm.user_id);
     formData.append("title", postForm.title);
     formData.append("content", postForm.content);
     formData.append("image", postForm.image);

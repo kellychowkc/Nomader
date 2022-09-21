@@ -18,3 +18,10 @@ export interface Interest {
     id: number;
     title: string;
 }
+
+export interface Post {
+    user_id: number;
+    title: string;
+    content: string;
+    image: string;
+}

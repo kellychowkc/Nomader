@@ -6,15 +6,19 @@ import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
 import styles from './Forum.module.css'
-import { useDispatch } from 'react-redux'
-import { RootThunkDispatch } from '../../redux/store'
 import { newPost } from '../../api/user'
+import { AuthState } from '../../redux/state'
+import { useSelector } from 'react-redux'
 
 function NewPost() {
     const [imageStore, setImageStore] = useState('')
+    const navigate = useNavigate()
+    const auth: AuthState = useSelector((state: any) => state.auth)
+    const user_id = auth.id
 
     const formik = useFormik({
         initialValues: {
+            user_id: user_id as any as string,
             title: '',
             content: '',
             image: new File([''], ''),
@@ -44,6 +48,7 @@ function NewPost() {
                         })
                     }
                 })
+                navigate('/forum')
             }
         },
     })

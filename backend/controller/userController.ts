@@ -4,10 +4,10 @@ import { logger } from "../utils/logger";
 import { checkPassword } from "../utils/hash";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
-import { Interest, User } from "../utils/models";
+import { Interest, Post, User } from "../utils/models";
 
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {}
 
     logIn = async (req: Request, res: Response) => {
         try {
@@ -171,8 +171,11 @@ export class UserController {
             const file = req.form?.files.image;
             const image = file?.["newFilename"];
             postData!.image = image;
-            console.log(postData);
-            // await this.userService.addInterest(req.body);
+
+            const resp = await this.userService.addPost(
+                postData as any as Post
+            );
+            console.log(resp);
             res.status(201).json({
                 success: true,
                 message: "New Post Created",
@@ -189,12 +192,11 @@ export class UserController {
     //Danny
     allUser = async (req: Request, res: Response) => {
         try {
-
             const result = await this.userService.getAllUser();
             res.status(201).json({
                 success: true,
                 message: "Success getting all users",
-                payload: result
+                payload: result,
             });
         } catch (err) {
             logger.error(err.toString());
