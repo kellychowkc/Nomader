@@ -20,10 +20,14 @@ function NewPost() {
             image: new File([''], ''),
         },
         onSubmit: async (values) => {
-            if (formik.values.title === '' || formik.values.title === '') {
+            if (
+                formik.values.title === '' ||
+                formik.values.content === '' ||
+                formik.values.image.name === ''
+            ) {
                 Swal.fire({
                     title: 'Notice',
-                    text: 'Please input the title or content',
+                    text: 'Users would like to know everything!',
                     icon: 'warning',
                 })
                 return
@@ -31,6 +35,7 @@ function NewPost() {
                 console.log(values)
                 newPost(values).then((data: any) => {
                     const res = data.success
+                    console.log(res)
                     if (res) {
                         Swal.fire({
                             title: 'Congrats!',

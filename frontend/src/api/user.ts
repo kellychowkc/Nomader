@@ -98,13 +98,16 @@ export async function preMatching(userId: number) {
     });
 }
 
-export async function addUserInterest(interestList: Array<InterestItem>) {
+export async function addUserInterest(
+    interestList: Array<InterestItem>,
+    user_id: number
+) {
     return fetchJson(`${REACT_APP_API_SERVER}/user/interest`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(interestList),
+        body: JSON.stringify({ interestList, user_id }),
     });
 }
 
@@ -113,7 +116,6 @@ export async function newPost(postForm: PostForm) {
     formData.append("title", postForm.title);
     formData.append("content", postForm.content);
     formData.append("image", postForm.image);
-    console.log(formData);
 
     return fetchJson(`${REACT_APP_API_SERVER}/user/post`, {
         method: "POST",

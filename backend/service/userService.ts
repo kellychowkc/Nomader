@@ -77,7 +77,18 @@ export class UserService {
         return;
     }
 
-    //add interest
+    async addInterest(userId: number, interestIdList: number[]) {
+        const insertInterest = interestIdList.map((interestId) => ({
+            user_id: userId,
+            interest_id: interestId,
+        }));
+
+        const createdInterest = await this.knex
+            .insert(insertInterest)
+            .into("users_interests")
+            .returning("id");
+        return createdInterest;
+    }
 
     async getInterestByUserId(userId: number): Promise<[number]> {
         const foundInterest = await this.knex

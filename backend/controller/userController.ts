@@ -141,10 +141,15 @@ export class UserController {
             });
         }
     };
-    //!!!!Service is not finished
+
     addInterest = async (req: Request, res: Response) => {
         try {
-            // await this.userService.addInterest(req.body);
+            const user_id: number = req.body.user_id;
+            let interestIdList: number[] = [];
+            req.body.interestList.forEach((element: any) => {
+                interestIdList.push(element.id);
+            });
+            await this.userService.addInterest(user_id, interestIdList);
             res.status(201).json({
                 success: true,
                 message: "Updated Interest List",
@@ -164,8 +169,9 @@ export class UserController {
         try {
             let postData = req.form?.fields;
             const file = req.form?.files.image;
-            const profile = file?.["newFilename"];
-            postData!.profile = profile;
+            const image = file?.["newFilename"];
+            postData!.image = image;
+            console.log(postData);
             // await this.userService.addInterest(req.body);
             res.status(201).json({
                 success: true,
