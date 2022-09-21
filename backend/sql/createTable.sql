@@ -1,23 +1,21 @@
-CREATE DATABASE cap_project;
+CREATE TABLE currency_codes (
+    id SERIAL PRIMARY KEY,
+    code TEXT NOT NULL,
+    currency_name TEXT NULL
+);
 
 CREATE TABLE countries (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     tel_code TEXT NOT NULL,
-    location TEXT NOT NULL,
+    location_group TEXT NOT NULL,
     emergency_tel TEXT,
     police_tel TEXT,
     ambulance_tel TEXT,
     fire_tel TEXT,
-    info TEXT
-);
-
-CREATE TABLE currency_codes (
-    id SERIAL PRIMARY KEY,
-    code TEXT NOT NULL,
-    currency_name TEXT NULL,
-    country_id INTEGER,
-    FOREIGN KEY (country_id) REFERENCES countries(id)
+    info TEXT,
+    currency_code_id INTEGER,
+    FOREIGN KEY (currency_code_id) REFERENCES currency_codes(id)
 );
 
 CREATE TABLE currency_rates (
@@ -66,22 +64,6 @@ CREATE TABLE attreactions_type (
 );
 
 
-CREATE TABLE posts (
-    id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
-    attraction_id INTEGER,
-    FOREIGN KEY (attraction_id) REFERENCES attractions(id),
-    city_id INTEGER,
-    FOREIGN KEY (city_id) REFERENCES cities(id)
-);
-
-CREATE TABLE posts_type (
-    id SERIAL PRIMARY KEY,
-    interest_id INTEGER,
-    post_id INTEGER,
-    FOREIGN KEY (interest_id) REFERENCES interests(id),
-    FOREIGN KEY (post_id) REFERENCES posts(id)
-);
 
 CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
@@ -111,17 +93,34 @@ CREATE TABLE users (
     FOREIGN KEY (country_id) REFERENCES countries(id)
 );
 
-CREATE TABLE posts_content (
+CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
-    order_num INTEGER NOT NULL,
+    title TEXT NOT NULL,
     content TEXT NOT NULL,
     image TEXT,
-    like_post BOOLEAN NOT NULL,
-    browse_count INTEGER NOT NULL,
-    post_id INTEGER,
+    attraction_id INTEGER,
+    city_id INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (attraction_id) REFERENCES attractions(id),
+    FOREIGN KEY (city_id) REFERENCES cities(id)
+);
+
+CREATE TABLE posts_type (
+    id SERIAL PRIMARY KEY,
+    interest_id INTEGER,
+    post_id INTEGER,
+    FOREIGN KEY (interest_id) REFERENCES interests(id),
+    FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+CREATE TABLE users_browse_posts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER,
+    browse_count INTEGER,
+    post_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (post_id) REFERENCES posts(id)
 );
@@ -181,3 +180,56 @@ CREATE TABLE chats (
     FOREIGN KEY (user_speech_id) REFERENCES users(id),
     FOREIGN KEY (user_listen_id) REFERENCES users(id)
 );
+
+
+
+
+CREATE TABLE staging_emergency_data (
+    id SERIAL PRIMARY KEY,
+    country_name TEXT,
+    emergency_tel TEXT,
+    police_tel TEXT,
+    ambulance_tel TEXT,
+    fire_tel TEXT,
+    location_group TEXT,
+    calling_code TEXT,
+    info TEXT
+);
+
+CREATE TABLE staging_currency_codes (
+    id SERIAL PRIMARY KEY,
+    code TEXT,
+    currency_name TEXT,
+    using_country TEXT
+);
+
+CREATE TABLE staging_currency_rates (
+    id SERIAL PRIMARY KEY,
+    year INTEGER,
+    month INTEGER,
+    day INTEGER,
+    code_base TEXT,
+    code_to TEXT,
+    rate TEXT
+);
+
+CREATE TABLE staging_city_data (
+    id SERIAL PRIMARY KEY,
+    city_name TEXT,
+    description TEXT,
+    image TEXT,
+    city_list TEXT
+);
+
+CREATE TABLE staging_attractions (
+    id SERIAL PRIMARY KEY,
+    attraction_name TEXT,
+    description TEXT,
+    image TEXT,
+    address TEXT,
+    city_list TEXT,
+    open_time TEXT,
+    class TEXT
+);
+
+
