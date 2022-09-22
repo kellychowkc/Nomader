@@ -7,7 +7,7 @@ import jwt from "../utils/jwt";
 import { Interest, Post, User } from "../utils/models";
 
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService) { }
 
     logIn = async (req: Request, res: Response) => {
         try {
@@ -207,13 +207,14 @@ export class UserController {
     };
 
     //Danny
-    allUser = async (req: Request, res: Response) => {
+    getAllUsers = async (req: Request, res: Response) => {
         try {
-            const result = await this.userService.getAllUser();
+            const result = await this.userService.getAllUsersData();
+
             res.status(201).json({
                 success: true,
                 message: "Success getting all users",
-                payload: result,
+                userList: result,
             });
         } catch (err) {
             logger.error(err.toString());
@@ -223,6 +224,35 @@ export class UserController {
             });
         }
     };
+
+    getUserProfile = async (req: Request, res: Response) => {
+        try {
+
+            const username = req.body.username;
+
+            if (!username) {
+                res.status(401).json({
+                    success: false,
+                    message: "No username provided",
+                });
+                return;
+            }
+            const result = await this.userService.getUserProfileData(username);
+
+            res.status(201).json({
+                success: true,
+                message: "Success getting user profile",
+                userProfile: result,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
 }
 
 declare global {

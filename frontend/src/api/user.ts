@@ -1,4 +1,5 @@
 import type { InterestItem } from "../components/matching/InterestList";
+import { ManageUserState } from "../redux/state";
 import { fetchJson } from "./utils";
 
 // let REACT_APP_API_SERVER: any;
@@ -125,12 +126,31 @@ export async function newPost(postForm: PostForm) {
     });
 }
 
+
+export async function getAllUsers() {
+
+    return fetchJson<ManageUserState>(`${REACT_APP_API_SERVER}/user/getAllUsers`, {
+        method: "GET",
+    });
+}
+
+
+export async function getUserProfile(username: string) {
+
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserProfile`, {
+    
+            body: JSON.stringify({ username: username }),
+    });
+}
+
 export async function addBrowseCount(post_id: number, user_id: number) {
     return fetchJson(`${REACT_APP_API_SERVER}/user/browsePost`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
+
         body: JSON.stringify({ post_id, user_id }),
     });
 }
+
