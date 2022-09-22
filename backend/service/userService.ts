@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { User } from "../utils/models";
+import { BrowseCount, Post, User } from "../utils/models";
 import { hashPassword } from "../utils/hash";
 
 export class UserService {
@@ -77,7 +77,18 @@ export class UserService {
         return;
     }
 
-    //add interest
+    async addInterest(userId: number, interestIdList: number[]) {
+        const insertInterest = interestIdList.map((interestId) => ({
+            user_id: userId,
+            interest_id: interestId,
+        }));
+
+        const createdInterest = await this.knex
+            .insert(insertInterest)
+            .into("users_interests")
+            .returning("id");
+        return createdInterest;
+    }
 
     async getInterestByUserId(userId: number): Promise<[number]> {
         const foundInterest = await this.knex
@@ -88,12 +99,44 @@ export class UserService {
         return foundInterest;
     }
 
-    async getAllUser() {
-        const allUsers = await this.knex
-            .select("*")
-            .from("users")
-        return allUsers;
+    async getAllUsersData() {
+        const allUsersData = await this.knex
+            .select("id", "username", "first_name", "last_name", "profile")
+            .from("users");
+        return allUsersData;
     }
 
+    async getUserProfileData(username: string) {
+        const userProfileData = await this.knex
+            .select("*")
+            .from("users")
+            .where("username", username)
+            .first();
+        return userProfileData;
+    }
 
+    async addPost(postData: Post) {
+        postData.user_id = +postData.user_id;
+        console.log(postData);
+        const createdPost = await this.knex
+            .insert(postData)
+            .into("posts")
+            .returning("id");
+        return createdPost;
+    }
+
+    async addUserBrowsePost(body: BrowseCount) {
+        let { user_id, post_id } = body;
+
+        console.log(user_id, post_id);
+        const browseId = await this.knex
+            .insert({
+                user_id,
+                post_id,
+                browse_count: 1,
+            })
+            .into("users_browse_posts")
+            .returning("id");
+        return browseId;
+    }
 }

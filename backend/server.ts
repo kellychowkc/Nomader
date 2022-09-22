@@ -57,7 +57,7 @@ import { dataRoutes } from "./routers/getDataRoutes";
 //route handling
 app.use("/user", logInRoutes);
 app.use("/data", dataRoutes);
-
+app.use(express.static("assets"));
 const PORT = 8080;
 
 const server = http.createServer(app);

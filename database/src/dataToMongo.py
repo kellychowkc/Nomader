@@ -3,6 +3,8 @@ import requests
 import numpy as np
 import csv
 import json
+import time
+import schedule
 from pymongo import MongoClient
 from playwright.sync_api import sync_playwright
 
@@ -10,15 +12,14 @@ client = MongoClient('localhost', 27017)
 db = client.project
 
 
-with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
-    
+def get_emergency_data() : 
     # data from 'adducation.info'
-    def get_emergency_data() : 
-        pageOne = browser.new_page()
-        pageOne.goto('https://www.adducation.info/general-knowledge-travel-and-transport/emergency-numbers/')
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        page.goto('https://www.adducation.info/general-knowledge-travel-and-transport/emergency-numbers/')
 
-        dataFromAdducationInfo = pageOne.evaluate('[...document.querySelectorAll("tbody > tr")].map(tr => { return tr.innerText })')
+        dataFromAdducationInfo = page.evaluate('[...document.querySelectorAll("tbody > tr")].map(tr => { return tr.innerText })')
 
         for i in range(len(dataFromAdducationInfo)) :
             eachRecordInData = dataFromAdducationInfo[i].split('\t')
@@ -48,15 +49,17 @@ with sync_playwright() as p:
                 'info' : eachRecordInData[7]
             }
             db.emergencyData.insert_one(record)
+        browser.close()
     
 
 
-
-    def get_currency_data() :
-        #  data from 'exchangerate.host'
-        urlOne='https://api.exchangerate.host/symbols'
+def get_currency_data() :
+    #  data from 'exchangerate.host'
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        url='https://api.exchangerate.host/symbols'
     
-        response = requests.get(urlOne)
+        response = requests.get(url)
         data = response.json()
         symbols = data['symbols'].items()
         codeList = list(symbols)
@@ -70,21 +73,19 @@ with sync_playwright() as p:
             codeArr.append(record)
 
         # data from 'worlddata.info'
-        pageTwo = browser.new_page()
-        pageTwo.goto('https://www.worlddata.info/currencies/')
-        dataFromWorlddata = pageTwo.evaluate('[...document.querySelectorAll("tbody > tr")].map(tr => { return tr.innerText })')
+        page = browser.new_page()
+        page.goto('https://www.worlddata.info/currencies/')
+        dataFromWorlddata = page.evaluate('[...document.querySelectorAll("tbody > tr")].map(tr => { return tr.innerText })')
 
         countryArr = []
         for i in range(len(dataFromWorlddata)) :
             if i > 0 :
                 data = dataFromWorlddata[i].split('\t')
-                usingCountryArr = data[2].split(', ')
-                for country in usingCountryArr :
-                    record = {
-                        'code' : data[0],
-                        'using_country' : country
-                    }
-                    countryArr.append(record)
+                record = {
+                    'code' : data[0],
+                    'using_country' : data[2]
+                }
+                countryArr.append(record)
             else :
                 pass
 
@@ -104,31 +105,73 @@ with sync_playwright() as p:
             codeArr[i].update({'using_country' : ''})
         countryArr.extend(codeArr)
         for i in range(len(countryArr)) :
-            db.currencyCode.insert_one(countryArr[i])
+            db.currencyCodes.insert_one(countryArr[i])
+
+        browser.close()
 
     
     # data from 'tripadvisor'
-    def get_attraction_data() :
-        with open('attractionData.csv', 'r') as f :
-            attractionLink = csv.reader(f)
-            for attraction in attractionLink : 
-                attraction = ', '.join(attraction)
-                attraction = json.loads(attraction)
-                db.attractionData.insert_one(attraction)
+def get_attraction_data() :
+    with open('attractionData.csv', 'r') as f :
+        attractionLink = csv.reader(f)
+        for attraction in attractionLink : 
+            attraction = ', '.join(attraction)
+            attraction = json.loads(attraction)
+            db.attractionData.insert_one(attraction)
 
-    def get_city_data() :
-        with open('cityData.csv', 'r') as f :
-            cityLink = csv.reader(f)
-            for city in cityLink :
-                city = ', '.join(city)
-                city = json.loads(city)
-                db.cityData.insert_one(city)
+def get_city_data() :
+    with open('cityData.csv', 'r') as f :
+        cityLink = csv.reader(f)
+        for city in cityLink :
+            city = ', '.join(city)
+            city = json.loads(city)
+            db.cityData.insert_one(city)
 
 
-    # get_emergency_data()
-    # get_currency_data()
-    # get_attraction_data()
-    # get_city_data()
 
-    browser.close()
+def daily_currency() :
+    #  data from 'exchangerate.host'
+    url='https://api.exchangerate.host/symbols'
 
+    response = requests.get(url)
+    data = response.json()
+    symbols = data['symbols'].items()
+    codeList = list(symbols)
+    code = np.array(codeList)
+    codeArr = []
+    for i in range(len(code)) :
+        codeArr.append(code[i][0])
+
+    for i in range(len(codeArr)) :
+        currencyURL = 'https://api.exchangerate.host/latest?base={}'.format(codeArr[i])
+        response = requests.get(currencyURL)
+        data = response.json()
+        rates = data['rates'].items()
+        ratesList = list(rates)
+        rate = np.array(ratesList)
+        for j in range(len(rate)) :
+            currencyData = {
+                'date' : data['date'],
+                'code_base' : data['base'],
+                'code_to' : rate[j][0],
+                'rates' : rate[j][1]
+            }
+            db.currencyRates.insert_one(currencyData)
+
+
+
+def main() :
+    get_emergency_data()
+    get_currency_data()
+    get_attraction_data()
+    get_city_data()
+
+
+if __name__ == '__main__' :
+    main()
+    daily_currency()
+
+    # schedule.every().day.at('06:30').do(daily_currency)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)

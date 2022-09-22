@@ -6,24 +6,32 @@ import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
 import styles from './Forum.module.css'
-import { useDispatch } from 'react-redux'
-import { RootThunkDispatch } from '../../redux/store'
 import { newPost } from '../../api/user'
+import { AuthState } from '../../redux/state'
+import { useSelector } from 'react-redux'
 
 function NewPost() {
     const [imageStore, setImageStore] = useState('')
+    const navigate = useNavigate()
+    const auth: AuthState = useSelector((state: any) => state.auth)
+    const user_id = auth.id
 
     const formik = useFormik({
         initialValues: {
+            user_id: user_id as any as string,
             title: '',
             content: '',
             image: new File([''], ''),
         },
         onSubmit: async (values) => {
-            if (formik.values.title === '' || formik.values.title === '') {
+            if (
+                formik.values.title === '' ||
+                formik.values.content === '' ||
+                formik.values.image.name === ''
+            ) {
                 Swal.fire({
                     title: 'Notice',
-                    text: 'Please input the title or content',
+                    text: 'Users would like to know everything!',
                     icon: 'warning',
                 })
                 return
@@ -31,6 +39,7 @@ function NewPost() {
                 console.log(values)
                 newPost(values).then((data: any) => {
                     const res = data.success
+                    console.log(res)
                     if (res) {
                         Swal.fire({
                             title: 'Congrats!',
@@ -39,6 +48,7 @@ function NewPost() {
                         })
                     }
                 })
+                navigate('/forum')
             }
         },
     })

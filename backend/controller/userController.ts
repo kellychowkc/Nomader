@@ -4,7 +4,7 @@ import { logger } from "../utils/logger";
 import { checkPassword } from "../utils/hash";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
-import { Interest, User } from "../utils/models";
+import { Interest, Post, User } from "../utils/models";
 
 export class UserController {
     constructor(private userService: UserService) { }
@@ -144,10 +144,15 @@ export class UserController {
             });
         }
     };
-    //!!!!Service is not finished
+
     addInterest = async (req: Request, res: Response) => {
         try {
-            // await this.userService.addInterest(req.body);
+            const user_id: number = req.body.user_id;
+            let interestIdList: number[] = [];
+            req.body.interestList.forEach((element: any) => {
+                interestIdList.push(element.id);
+            });
+            await this.userService.addInterest(user_id, interestIdList);
             res.status(201).json({
                 success: true,
                 message: "Updated Interest List",
@@ -167,9 +172,13 @@ export class UserController {
         try {
             let postData = req.form?.fields;
             const file = req.form?.files.image;
-            const profile = file?.["newFilename"];
-            postData!.profile = profile;
-            // await this.userService.addInterest(req.body);
+            const image = file?.["newFilename"];
+            postData!.image = image;
+
+            const resp = await this.userService.addPost(
+                postData as any as Post
+            );
+            console.log(resp);
             res.status(201).json({
                 success: true,
                 message: "New Post Created",
@@ -183,15 +192,13 @@ export class UserController {
         }
     };
 
-    //Danny
-    allUser = async (req: Request, res: Response) => {
+    userBrowsePost = async (req: Request, res: Response) => {
         try {
-
-            const result = await this.userService.getAllUser();
+            console.log(req.body);
+            await this.userService.addUserBrowsePost(req.body);
             res.status(201).json({
                 success: true,
-                message: "Success getting all users",
-                payload: result
+                message: "Success count",
             });
         } catch (err) {
             logger.error(err.toString());
@@ -201,6 +208,54 @@ export class UserController {
             });
         }
     };
+
+    //Danny
+    getAllUsers = async (req: Request, res: Response) => {
+        try {
+            const result = await this.userService.getAllUsersData();
+
+            res.status(201).json({
+                success: true,
+                message: "Success getting all users",
+                userList: result,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    getUserProfile = async (req: Request, res: Response) => {
+        try {
+
+            const username = req.body.username;
+
+            if (!username) {
+                res.status(401).json({
+                    success: false,
+                    message: "No username provided",
+                });
+                return;
+            }
+            const result = await this.userService.getUserProfileData(username);
+
+            res.status(201).json({
+                success: true,
+                message: "Success getting user profile",
+                userProfile: result,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
 }
 
 declare global {

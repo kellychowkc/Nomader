@@ -1,4 +1,5 @@
 import type { InterestItem } from "../components/matching/InterestList";
+import { ManageUserState } from "../redux/state";
 import { fetchJson } from "./utils";
 
 // let REACT_APP_API_SERVER: any;
@@ -36,6 +37,7 @@ export interface SignUpForm {
 }
 
 export interface PostForm {
+    user_id: string;
     title: string;
     content: string;
     image: Blob | File;
@@ -98,25 +100,57 @@ export async function preMatching(userId: number) {
     });
 }
 
-export async function addUserInterest(interestList: Array<InterestItem>) {
+export async function addUserInterest(
+    interestList: Array<InterestItem>,
+    user_id: number
+) {
     return fetchJson(`${REACT_APP_API_SERVER}/user/interest`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(interestList),
+        body: JSON.stringify({ interestList, user_id }),
     });
 }
 
 export async function newPost(postForm: PostForm) {
     const formData = new FormData();
+    formData.append("user_id", postForm.user_id);
     formData.append("title", postForm.title);
     formData.append("content", postForm.content);
     formData.append("image", postForm.image);
-    console.log(formData);
 
     return fetchJson(`${REACT_APP_API_SERVER}/user/post`, {
         method: "POST",
         body: formData,
     });
 }
+
+
+export async function getAllUsers() {
+
+    return fetchJson<ManageUserState>(`${REACT_APP_API_SERVER}/user/getAllUsers`, {
+        method: "GET",
+    });
+}
+
+
+export async function getUserProfile(username: string) {
+
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserProfile`, {
+    
+            body: JSON.stringify({ username: username }),
+    });
+}
+
+export async function addBrowseCount(post_id: number, user_id: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/browsePost`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+
+        body: JSON.stringify({ post_id, user_id }),
+    });
+}
+

@@ -11,6 +11,12 @@ logInRoutes.post("/signUp", signUpMiddleware, userController.signUp);
 logInRoutes.post("/getInterest", userController.getUserInterest);
 logInRoutes.post("/interest", userController.addInterest);
 logInRoutes.post("/post", postMiddleware, userController.newPost);
+logInRoutes.post("/browsePost", userController.userBrowsePost);
 logInRoutes.get("/", isLoggedIn, userController.getSelfInfo);
 
-logInRoutes.get("/getAllUser", isLoggedIn, userController.allUser)
+
+logInRoutes.get("/getAllUsers", userController.getAllUsers)
+logInRoutes.post("/getUserProfile", userController.getUserProfile)
+
+
+
