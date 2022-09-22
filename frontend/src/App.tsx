@@ -45,12 +45,6 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="welcome" element={<Welcome />} />
 
-                    <Route path="control" element={<ControlPanel />}>
-                        <Route index element={<Dashboard />} />
-                        <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="user" element={<ManageUser />} />
-                        <Route path="forum" element={<ManageUser />} />
-                    </Route>
                     <Route path="landing" element={<Landing />} />
 
                     {/* Required Auth Route */}
@@ -72,6 +66,12 @@ function App() {
                         <Route path="profile" element={<Profile />} />
                         <Route path="chat" element={<Chat />} />
                         <Route path="home" element={<Home />} />
+                        <Route path="control" element={<ControlPanel />}>
+                            <Route index element={<Dashboard />} />
+                            <Route path="dashboard" element={<Dashboard />} />
+                            <Route path="user" element={<ManageUser />} />
+                            <Route path="forum" element={<ManageUser />} />
+                        </Route>
                     </Route>
 
                     <Route path="login" element={<Login />} />

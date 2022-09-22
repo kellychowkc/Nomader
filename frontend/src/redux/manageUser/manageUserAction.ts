@@ -1,10 +1,12 @@
+import { UserListState } from "../state"
+
 export function loadUserListPending() {
     return {
         type: '@@ManageUser/LOAD_USER_LIST_PENDING' as const,
     }
 }
 
-export function loadUserListSuccess(userList?: any[]) {
+export function loadUserListSuccess(userList?: Array<UserListState> | undefined) {
     return {
         type: '@@ManageUser/LOAD_USER_LIST_SUCCESS' as const,
         userList,

@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import {
     Box,
@@ -15,17 +15,24 @@ import {
     Icon,
     Image,
     Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     SimpleGrid,
     Stack,
     Stat,
     StatLabel,
     StatNumber,
-    Switch,
     Text,
     useColorModeValue,
+    useDisclosure,
     VStack,
 } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ReactNode } from 'react'
 
 import {
@@ -35,30 +42,20 @@ import {
     MdWarning,
 } from 'react-icons/md'
 import { UsersList } from './userList'
-import { RootState } from '../../../redux/store'
-
+import { RootState, RootThunkDispatch } from '../../../redux/store'
+import { getAllUsersList } from '../../../redux/manageUser/manageUserThunk'
+import { getUserProfile } from '../../../api/user'
+import PermissionSetting from './permissionSetting'
+import DetailProfile from './detailProfile'
+import { profile } from 'console'
 export interface IUser {
-    fullname: string
+    first_name: string
+    last_name: string
     username: string
-    avatar: string
+    profile: string
 }
 
-const usersList: IUser[] = [
-    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
-    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
-    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
-]
-
-interface IProfile {
+export interface IProfile {
     username: string
     password: string
     first_name: string
@@ -80,26 +77,24 @@ interface IProfile {
     created_at: string
     updated_at: string
 }
-
 const demoUser: IProfile = {
-    username: 'adamsishandsome',
-    password: 'xxxHideMexxx',
-    first_name: 'Adams',
-    last_name: 'Ip',
-    email: 'adamsip@tecky.io',
-    phone_num: '173173173',
-    created_at: '2022-09-13',
-    updated_at: '2022-09-13',
+    username: '',
+    password: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_num: '',
+    created_at: '',
+    updated_at: '',
 
-    birthday: '1997-7-1',
-    profile: 'purple',
+    birthday: '',
+    profile: '',
 }
 
 interface IStats {
     name: number | string
     stats: number | string
 }
-
 const demoStats: any = {
     activeTime: {
         name: 'Active Time',
@@ -149,25 +144,139 @@ function StatsCard(props: StatsCardProps) {
         </Stat>
     )
 }
-interface Permission {
+
+export interface Permission {
+    displayName: string
     name: string
-    value: string
+    value: boolean
 }
 
-const permissions: Permission[] = [
-    { name: 'Visible by others', value: '' },
-    { name: 'Matching', value: '' },
-    { name: 'Create post', value: '' },
-    { name: 'Comment', value: '' },
-    { name: 'Upload Picture', value: '' },
-]
-
 export default function ManageUser() {
-    useEffect(() => {}, [])
-    const reduxUserList = useSelector((state: RootState) => state.manageUser)
+    const dispatch = useDispatch<RootThunkDispatch>()
+
+    //Get all users list
+    useEffect(() => {
+        const result = dispatch(getAllUsersList()).then((data) => {
+            // console.log(data)
+            if (data.success) {
+                console.log('<getAllUserList> Dispatch Success')
+            } else {
+                console.log('<getAllUserList> Dispatch Fail')
+            }
+        })
+    }, [])
+
+    const [viewUser, setViewUser] = React.useState<string>('')
+    const [userProfile, setUserProfile] = React.useState<IProfile>(demoUser)
+
+    // view selected user profile & permission setting
+    useEffect(() => {
+        if (viewUser) {
+            const result = getUserProfile(viewUser).then((data) => {
+                console.log('View user data = ', data)
+                if (data.success) {
+                    console.log('<getUserProfile> Fetch Success')
+                } else {
+                    console.log('<getUserProfile> Fetch Fail')
+                }
+                setUserProfile(data.userProfile)
+                setPermission_post(data.userProfile.isAdmin)
+            })
+
+            // permissions.map((permission: Permission) => {
+            //     // `setPermission_${permission.name}(${permission.value})`
+            //     if (permission.name === 'visible') {
+            //         setPermission_visible(permission.value)
+            //     } else if (permission.name === 'matching') {
+            //         setPermission_matching(permission.value)
+            //     } else if (permission.name === 'post') {
+            //         setPermission_post(permission.value)
+            //     } else if (permission.name === 'comment') {
+            //         setPermission_comment(permission.value)
+            //     } else if (permission.name === 'upload') {
+            //         setPermission_upload(permission.value)
+            //     }
+            // })
+        }
+    }, [viewUser])
+
+    const [permission_visible, setPermission_visible] =
+        useState<Permission['value']>(false)
+    const [permission_matching, setPermission_matching] =
+        useState<Permission['value']>(false)
+    const [permission_post, setPermission_post] =
+        useState<Permission['value']>(false)
+    const [permission_comment, setPermission_comment] =
+        useState<Permission['value']>(false)
+    const [permission_upload, setPermission_upload] =
+        useState<Permission['value']>(false)
+
+    const permissions: Permission[] = [
+        {
+            displayName: 'Visible by others',
+            name: 'visible',
+            value: permission_visible,
+        },
+        {
+            displayName: 'Matching',
+            name: 'matching',
+            value: permission_matching,
+        },
+        { displayName: 'Create post', name: 'post', value: permission_post },
+        { displayName: 'Comment', name: 'comment', value: permission_comment },
+        {
+            displayName: 'Upload Picture',
+            name: 'upload',
+            value: permission_upload,
+        },
+    ]
+
+    const handleChange_permission = (name: any) => {
+        // `setPermission_${name}(!permission_${name})`
+        console.log('handleChange_permission is pressed')
+        if (name === 'visible') {
+            setPermission_visible(!permission_visible)
+        } else if (name === 'matching') {
+            setPermission_matching(!permission_matching)
+        } else if (name === 'post') {
+            setPermission_post(!permission_post)
+        } else if (name === 'comment') {
+            setPermission_comment(!permission_comment)
+        } else if (name === 'upload') {
+            setPermission_upload(!permission_upload)
+        }
+    }
+
+    // user permission
+    useEffect(() => {
+        console.log('Permission had been changed!!!')
+
+        console.log(
+            permission_visible,
+            permission_matching,
+            permission_post,
+            permission_comment,
+            permission_upload
+        )
+    }, [
+        permission_visible,
+        permission_matching,
+        permission_post,
+        permission_comment,
+        permission_upload,
+    ])
+
+    const reduxUserListData = useSelector(
+        (state: RootState) => state.manageUser
+    )
+    // console.log('REDUX User List Data = ', reduxUserListData)
+
     const [searchUser, setSearchUser] = React.useState('')
     const handleChange_searchUser = (event: any) =>
         setSearchUser(event.target.value)
+
+    // Detail profile popup modal
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
         <Box maxW="7xl" mx={'auto'} px={{ base: 2, sm: 12, md: 17 }}>
@@ -242,42 +351,41 @@ export default function ManageUser() {
                                         xl: 'row',
                                     }}
                                     justify="center"
-                                    alignContent="flex-start"
-                                    alignItems="flex-start"
+                                    alignContent="center"
+                                    alignItems="center"
                                 >
-                                    <Box m={1} h="min-content">
+                                    <Box m={1} h="min-content" w="90%">
                                         <FormControl id="userName">
-                                            <FormLabel>User name</FormLabel>
+                                            <FormLabel>User Name</FormLabel>
                                             <Input
-                                                placeholder="UserName"
+                                                placeholder="Username"
                                                 _placeholder={{
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
-                                                value={demoUser.username}
+                                                value={userProfile.username}
                                                 readOnly
                                             />
                                         </FormControl>
                                     </Box>
-                                    <Box m={1} h="min-content">
+                                    <Box m={1} h="min-content" w="90%">
                                         <FormControl id="full_name">
                                             <FormLabel>Full Name</FormLabel>
                                             <Input
-                                                placeholder="Full name"
+                                                placeholder="Full Name"
                                                 _placeholder={{
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
                                                 value={
-                                                    demoUser.first_name +
-                                                    ' ' +
-                                                    demoUser.last_name
+                                                    userProfile.first_name +
+                                                    userProfile.last_name
                                                 }
                                                 readOnly
                                             />
                                         </FormControl>
                                     </Box>
-                                    <Box m={1}>
+                                    <Box m={1} h="min-content" w="90%">
                                         <FormControl id="birthday">
                                             <FormLabel>Age</FormLabel>
                                             <Input
@@ -286,12 +394,12 @@ export default function ManageUser() {
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
-                                                value={demoUser.birthday}
+                                                value={userProfile.birthday}
                                                 readOnly
                                             />
                                         </FormControl>
                                     </Box>
-                                    <Box m={1}>
+                                    <Box m={1} h="min-content" w="90%">
                                         <FormControl id="gender">
                                             <FormLabel>Gender</FormLabel>
                                             <Input
@@ -300,7 +408,7 @@ export default function ManageUser() {
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
-                                                value={demoUser.gender}
+                                                value={userProfile.gender}
                                                 readOnly
                                             />
                                         </FormControl>
@@ -326,9 +434,163 @@ export default function ManageUser() {
                                                 _hover={{
                                                     bg: 'teal.500',
                                                 }}
+                                                onClick={onOpen}
                                             >
                                                 Detail
                                             </Button>
+                                            <Modal
+                                                isOpen={isOpen}
+                                                onClose={onClose}
+                                            >
+                                                <ModalOverlay />
+                                                <ModalContent>
+                                                    <ModalHeader>
+                                                        User Profile Detail
+                                                    </ModalHeader>
+                                                    <ModalCloseButton />
+                                                    <ModalBody>
+                                                        <Grid templateColumns="repeat(2, 1fr)">
+                                                            <GridItem>
+                                                                s{' '}
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="userName">
+                                                                        <FormLabel>
+                                                                            User
+                                                                            Name
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="Username"
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.username
+                                                                            }
+                                                                            readOnly
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+                                                            <GridItem>
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="first_name">
+                                                                        <FormLabel>
+                                                                            First
+                                                                            Name
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="First Name"
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.first_name
+                                                                            }
+                                                                            readOnly
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+                                                            <GridItem>
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="last_name">
+                                                                        <FormLabel>
+                                                                            Last
+                                                                            Name
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="Last Name"
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.last_name
+                                                                            }
+                                                                            readOnly
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+                                                            <GridItem>
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="birthday">
+                                                                        <FormLabel>
+                                                                            Age
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="Birthday"
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.birthday
+                                                                            }
+                                                                            readOnly
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+                                                            <GridItem>
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="gender">
+                                                                        <FormLabel>
+                                                                            Gender
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="M/F/T..."
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.gender
+                                                                            }
+                                                                            readOnly
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+                                                        </Grid>
+                                                    </ModalBody>
+
+                                                    <ModalFooter>
+                                                        <Button
+                                                            colorScheme="blue"
+                                                            mr={3}
+                                                            onClick={onClose}
+                                                        >
+                                                            Close
+                                                        </Button>
+                                                        <Button colorScheme="yellow">
+                                                            Update
+                                                        </Button>
+                                                    </ModalFooter>
+                                                </ModalContent>
+                                            </Modal>
                                             <Button
                                                 bg={'blue.400'}
                                                 color={'white'}
@@ -378,11 +640,11 @@ export default function ManageUser() {
                                         >
                                             <Text>
                                                 Member since:
-                                                {demoUser.created_at}
+                                                {userProfile.created_at}
                                             </Text>
                                             <Text>
                                                 Last update:
-                                                {demoUser.updated_at}
+                                                {userProfile.updated_at}
                                             </Text>
                                         </Box>
                                         <HStack
@@ -450,43 +712,16 @@ export default function ManageUser() {
                                             >
                                                 Permission Setting
                                             </Text>
-
-                                            {permissions.map(
-                                                (
-                                                    permission: Permission,
-                                                    idx: number
-                                                ) => (
-                                                    <HStack
-                                                        key={idx}
-                                                        w="90%"
-                                                        px="5px"
-                                                        py="3px"
-                                                    >
-                                                        <FormControl
-                                                            display="flex"
-                                                            justifyContent={
-                                                                'space-between'
-                                                            }
-                                                        >
-                                                            <FormLabel
-                                                                htmlFor="visibleByOthers"
-                                                                mb="0"
-                                                            >
-                                                                {
-                                                                    permission.name
-                                                                }
-                                                            </FormLabel>
-                                                            <Switch
-                                                                id={
-                                                                    permission.value
-                                                                }
-                                                                colorScheme="teal"
-                                                                size="md"
-                                                            />
-                                                        </FormControl>
-                                                    </HStack>
-                                                )
-                                            )}
+                                            <PermissionSetting
+                                                permissions={permissions}
+                                                changePermission={(
+                                                    name: string
+                                                ) => {
+                                                    handleChange_permission(
+                                                        name
+                                                    )
+                                                }}
+                                            />
                                         </VStack>
                                     </VStack>
                                 </Flex>
@@ -507,13 +742,7 @@ export default function ManageUser() {
                             <Flex
                                 w="100%"
                                 wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
+                                direction={'column'}
                                 justify="space-evenly"
                             >
                                 <Box
@@ -556,8 +785,16 @@ export default function ManageUser() {
                                     overflowY="scroll"
                                     overflowX={'hidden'}
                                     maxH="550px"
+                                    h={'400px'}
                                 >
-                                    <UsersList list={usersList} />
+                                    <UsersList
+                                        list={
+                                            reduxUserListData.userList as IUser[]
+                                        }
+                                        viewUser={(username: string) => {
+                                            setViewUser(username)
+                                        }}
+                                    />
                                 </Box>
                             </Flex>
                         </Stack>
