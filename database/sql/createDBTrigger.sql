@@ -12,7 +12,7 @@ AS $$
 $$;
 
 CREATE TRIGGER trigger_insert_emergency_data
-AFTER INSERT ON staging_emergency_data
+AFTER INSERT ON db_emergency_data
 FOR EACH ROW EXECUTE PROCEDURE insert_emergency_data();
 
 
@@ -32,7 +32,7 @@ AS $$
 $$;
 
 CREATE TRIGGER trigger_insert_city_data
-AFTER INSERT ON staging_city_data
+AFTER INSERT ON db_city_data
 FOR EACH ROW EXECUTE PROCEDURE insert_city_data();
 
 
@@ -52,7 +52,7 @@ AS $$
 $$;
 
 CREATE TRIGGER trigger_insert_attraction_data
-AFTER INSERT ON staging_attractions
+AFTER INSERT ON db_attractions
 FOR EACH ROW EXECUTE PROCEDURE insert_attraction_data();
 
 
@@ -72,7 +72,7 @@ AS $$
 $$;
 
 CREATE TRIGGER trigger_insert_cuurency_codes
-AFTER INSERT ON staging_currency_codes
+AFTER INSERT ON db_currency_codes
 FOR EACH ROW EXECUTE PROCEDURE insert_currency_codes();
 
 
@@ -82,23 +82,21 @@ CREATE OR REPLACE FUNCTION insert_currency_rates()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
-    DECLARE
-        code_base_id INTEGER;
-        code_to_id INTEGER;
     BEGIN
-        SELECT id AS code_base_id
-            FROM currency_codes
-            WHERE code = NEW.code_base;
-        SELECT id AS code_to_id
-            FROM currency_codes
-            WHERE code = NEW.code_to;
         INSERT INTO currency_rates
-            (code_base_id, rate, code_to_id, year, month, day)
-            VALUES (code_base_id, NEW.rate, code_to_id, NEW.year, NEW.month, NEW.day);
+            (code_base_id, code_to_id, rate, year, month, day)
+            VALUES (
+                ( SELECT id FROM currency_codes WHERE code = NEW.code_base LIMIT 1 ), 
+                ( SELECT id FROM currency_codes WHERE code = NEW.code_to LIMIT 1 ), 
+                NEW.rate, 
+                NEW.year, 
+                NEW.month, 
+                NEW.day
+            );
         RETURN NEW;
     END
 $$;
 
 CREATE TRIGGER trigger_insert_currency_rates
-AFTER INSERT ON staging_currency_rates
+AFTER INSERT ON db_currency_rates
 FOR EACH ROW EXECUTE PROCEDURE insert_currency_rates();

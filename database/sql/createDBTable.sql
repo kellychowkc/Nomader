@@ -230,7 +230,3 @@ CREATE TABLE staging_attractions (
     open_time TEXT,
     class TEXT
 );
-
-
-
-
