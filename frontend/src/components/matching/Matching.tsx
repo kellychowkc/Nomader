@@ -1,5 +1,6 @@
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { Box, Center, Icon, Image, Wrap, WrapItem } from '@chakra-ui/react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'

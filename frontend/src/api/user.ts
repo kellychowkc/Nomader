@@ -42,6 +42,29 @@ export interface PostForm {
     image: Blob | File;
 }
 
+export interface UserProfile {
+    username: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+
+    email: string;
+    phone_num: string;
+
+    birthday?: string;
+    gender?: string;
+
+    information?: string;
+    profile?: Blob | File | string;
+    newProfile?: Blob | File;
+    job?: string;
+    emergency_contact_person?: string;
+    emergency_contact_num?: number | null;
+    country?: string;
+    created_at?: string;
+    updated_at?: string;
+}
+
 export async function fetchSelfUserInfo(token: string) {
     return (
         fetchJson<User>(`${REACT_APP_API_SERVER}/user`),
@@ -89,7 +112,6 @@ export async function postSignUp(signUpForm: SignUpForm) {
 }
 
 export async function preMatching(userId: number) {
-    console.log(JSON.stringify(userId));
     return fetchJson(`${REACT_APP_API_SERVER}/user/getInterest`, {
         method: "POST",
         headers: {
@@ -132,5 +154,15 @@ export async function addBrowseCount(post_id: number, user_id: number) {
             "content-type": "application/json",
         },
         body: JSON.stringify({ post_id, user_id }),
+    });
+}
+
+export async function fetchSelfUserProfile(userId: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/profile`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ uid: userId }),
     });
 }

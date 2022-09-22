@@ -50,14 +50,13 @@ export async function seed(knex: Knex): Promise<void> {
             { title: "other" },
         ])
         .returning("id");
-    
 
     let randomUser = [];
     let userData = {};
-    let nameArr : Array<string> = [];
-    for (let i = 0; i < 150 ; i++) {
-        switch ( i ) {
-            case 0 : 
+    let nameArr: Array<string> = [];
+    for (let i = 0; i < 150; i++) {
+        switch (i) {
+            case 0:
                 userData = {
                     username: "kc",
                     password: (await hashPassword("1234")).toString(),
@@ -66,15 +65,15 @@ export async function seed(knex: Knex): Promise<void> {
                     birthday: "1234",
                     gender: "Female",
                     information: "hi",
-                    profile: "",
+                    profile: "profile.jpeg",
                     email: "kc@kc",
                     phone_num: "1234",
                     job_id: jobId[1].id,
                     isAdmin: true,
-                }
+                };
                 nameArr.push(userData["username"]);
                 break;
-            case 1 :
+            case 1:
                 userData = {
                     username: "danny",
                     password: (await hashPassword("1234")).toString(),
@@ -83,15 +82,15 @@ export async function seed(knex: Knex): Promise<void> {
                     birthday: "1234",
                     gender: "Male",
                     information: "hi",
-                    profile: "",
+                    profile: "Sea1.JPG",
                     email: "danny@danny",
                     phone_num: "12345678",
                     job_id: jobId[2].id,
                     isAdmin: true,
-                }
+                };
                 nameArr.push(userData["username"]);
                 break;
-            case 2 : 
+            case 2:
                 userData = {
                     username: "sam",
                     password: (await hashPassword("1234")).toString(),
@@ -100,15 +99,16 @@ export async function seed(knex: Knex): Promise<void> {
                     birthday: "1234",
                     gender: "Male",
                     information: "hi",
-                    profile: "",
+                    profile: "logoWithName.jpg",
                     email: "sam@sam",
                     phone_num: "12345678",
                     job_id: jobId[2].id,
                     isAdmin: true,
-                }
-                nameArr.push(userData["username"]);``
+                };
+                nameArr.push(userData["username"]);
+                ``;
                 break;
-            default : 
+            default:
                 do {
                     userData = {
                         username: chance.first(),
@@ -117,12 +117,17 @@ export async function seed(knex: Knex): Promise<void> {
                         last_name: chance.last(),
                         birthday: chance.birthday({ string: true }) as string,
                         gender: chance.gender(),
-                        information: chance.sentence(),
+                        information: chance.word(),
                         profile: "",
                         email: chance.email(),
-                        phone_num: chance.integer({ min: 10000000, max: 99999999 }),
-                        job_id: jobId[chance.integer({ min: 0, max: jobId.length - 1 })]["id"],
-                        isAdmin: false
+                        phone_num: chance.integer({
+                            min: 10000000,
+                            max: 99999999,
+                        }),
+                        job_id: jobId[
+                            chance.integer({ min: 0, max: jobId.length - 1 })
+                        ]["id"],
+                        isAdmin: false,
                     };
                 } while (nameArr.includes(userData["username"]));
 
@@ -136,14 +141,16 @@ export async function seed(knex: Knex): Promise<void> {
         .insert(randomUser)
         .returning("id");
 
-    
     let randomUserInterest = [];
     for (let user of userId) {
-        let randomInterestNum = chance.integer({ min: 1, max: 6});
+        let randomInterestNum = chance.integer({ min: 1, max: 6 });
         for (let i = 0; i < randomInterestNum; i++) {
             let usersInterestsData = {
                 user_id: user["id"],
-                interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
+                interest_id:
+                    interestId[
+                        chance.integer({ min: 0, max: interestId.length - 1 })
+                    ]["id"],
             };
             randomUserInterest.push(usersInterestsData);
         }
@@ -151,19 +158,21 @@ export async function seed(knex: Knex): Promise<void> {
 
     await knex("users_interests").insert(randomUserInterest);
 
-
     let randomUsersRelationship = [];
     let usersRelationshipData = {};
     let matchedIdData: Array<[number, number]> = [];
     let friendIdData: Array<[number, number]> = [];
     for (let i = 0; i < userId.length; i++) {
         let randomMatchNum = chance.integer({ min: 0, max: userId.length - 1 });
-        let friendId : Array<number> = [];
-        let matchUserId : number;
+        let friendId: Array<number> = [];
+        let matchUserId: number;
         for (let j = 0; j < randomMatchNum; j++) {
             do {
                 do {
-                    matchUserId = chance.integer({ min: 0, max: userId.length - 1 });
+                    matchUserId = chance.integer({
+                        min: 0,
+                        max: userId.length - 1,
+                    });
                 } while (matchUserId === i);
             } while (friendId.includes(matchUserId));
             friendId.push(matchUserId);
@@ -171,13 +180,16 @@ export async function seed(knex: Knex): Promise<void> {
             usersRelationshipData = {
                 user1_id: userId[i]["id"],
                 status: "friend",
-                user2_id: userId[matchUserId]["id"]
+                user2_id: userId[matchUserId]["id"],
             };
             let matchedUserId: number = usersRelationshipData["user2_id"];
 
             matchedIdData.push([userId[i]["id"], matchedUserId]);
             for (let match of matchedIdData) {
-                if (match[0] === matchedUserId && match[1] === userId[i]["id"]) {
+                if (
+                    match[0] === matchedUserId &&
+                    match[1] === userId[i]["id"]
+                ) {
                     friendIdData.push([userId[i]["id"], matchedUserId]);
                 }
             }
@@ -186,26 +198,29 @@ export async function seed(knex: Knex): Promise<void> {
     }
 
     await knex("users_relationship").insert(randomUsersRelationship);
-    
 
     let randomChatRoom = [];
     for (let friendUser of friendIdData) {
         let chatRoomData = {
             room_title: chance.word(),
             user_manager_id: friendUser[0],
-            user_member_id: friendUser[1]
-        }
+            user_member_id: friendUser[1],
+        };
         randomChatRoom.push(chatRoomData);
     }
-    const chatRoomId: Array<{ id: number }> = await knex("chat_rooms").insert(randomChatRoom).returning("id");
-
+    const chatRoomId: Array<{ id: number }> = await knex("chat_rooms")
+        .insert(randomChatRoom)
+        .returning("id");
 
     let randomChats = [];
     for (let room of chatRoomId) {
-        const roomData: Array<{ user_manager_id: number, user_member_id: number }> = await knex("chat_rooms")
+        const roomData: Array<{
+            user_manager_id: number;
+            user_member_id: number;
+        }> = await knex("chat_rooms")
             .select("user_manager_id", "user_member_id")
             .where("id", room["id"]);
-        let randomChatNum = chance.integer({min: 0, max: 10 });
+        let randomChatNum = chance.integer({ min: 0, max: 10 });
         for (let i = 0; i < randomChatNum; i++) {
             let chatUser = chance.bool();
             let speechUser = 0;
@@ -221,14 +236,13 @@ export async function seed(knex: Knex): Promise<void> {
                 chat_room_id: room["id"],
                 user_speech_id: speechUser,
                 content: chance.sentence(),
-                user_listen_id: listenUser
-            }
+                user_listen_id: listenUser,
+            };
             randomChats.push(chatData);
         }
     }
 
     await knex("chats").insert(randomChats);
-
 
     let randomPosts = [];
     for (let i = 0; i < 200; i++) {
@@ -236,27 +250,32 @@ export async function seed(knex: Knex): Promise<void> {
         let postData = {
             user_id: userId[writer]["id"],
             title: chance.sentence(),
-            content: chance.paragraph()
-        }
+            content: chance.paragraph(),
+            image: "e7c26c4b30fae86f020b76a00.jpeg 16-57-51-116.jpeg",
+        };
         randomPosts.push(postData);
     }
-    
-    const postId : Array<{ id: number }> = await knex("posts").insert(randomPosts).returning("id");
-    
+
+    const postId: Array<{ id: number }> = await knex("posts")
+        .insert(randomPosts)
+        .returning("id");
+
     let randomPostType = [];
     for (let post of postId) {
-        let randomInterestNum = chance.integer({ min: 1, max: 3});
+        let randomInterestNum = chance.integer({ min: 1, max: 3 });
         for (let i = 0; i < randomInterestNum; i++) {
             let postsTypeData = {
                 post_id: post["id"],
-                interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
+                interest_id:
+                    interestId[
+                        chance.integer({ min: 0, max: interestId.length - 1 })
+                    ]["id"],
             };
             randomPostType.push(postsTypeData);
         }
     }
 
     await knex("posts_type").insert(randomPostType);
-
 
     let randomBrowsePosts = [];
     for (let post of postId) {
@@ -266,12 +285,11 @@ export async function seed(knex: Knex): Promise<void> {
             let browseData = {
                 user_id: userId[reader]["id"],
                 browse_count: chance.integer({ min: 1, max: 100 }),
-                post_id: post["id"]
-            }
-            randomBrowsePosts.push(browseData)
+                post_id: post["id"],
+            };
+            randomBrowsePosts.push(browseData);
         }
     }
 
     await knex("users_browse_posts").insert(randomBrowsePosts);
-
 }
