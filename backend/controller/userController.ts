@@ -167,7 +167,6 @@ export class UserController {
         }
     };
 
-    //!!!!Service is not finished
     newPost = async (req: Request, res: Response) => {
         try {
             let postData = req.form?.fields;
@@ -205,6 +204,25 @@ export class UserController {
             res.status(500).json({
                 success: false,
                 message: "internal server error",
+            });
+        }
+    };
+
+    getPersonalInfo = async (req: Request, res: Response) => {
+        try {
+            const user_id = req.body.uid;
+            const user = await this.userService.getUserByUserId(user_id);
+            console.log("controller", user);
+            res.status(200).json({
+                success: true,
+                message: "success",
+                userDetail: user,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "Internal server error",
             });
         }
     };

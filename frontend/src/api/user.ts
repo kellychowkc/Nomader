@@ -43,6 +43,29 @@ export interface PostForm {
     image: Blob | File;
 }
 
+export interface UserProfile {
+    username: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+
+    email: string;
+    phone_num: string;
+
+    birthday?: string;
+    gender?: string;
+
+    information?: string;
+    profile?: Blob | File | string;
+    newProfile?: Blob | File;
+    job?: string;
+    emergency_contact_person?: string;
+    emergency_contact_num?: number | null;
+    country?: string;
+    created_at?: string;
+    updated_at?: string;
+}
+
 export async function fetchSelfUserInfo(token: string) {
     return (
         fetchJson<User>(`${REACT_APP_API_SERVER}/user`),
@@ -55,16 +78,18 @@ export async function fetchSelfUserInfo(token: string) {
 }
 
 export async function postLogin(loginForm: LoginForm) {
-    return fetchJson<{ token: string; username: string; id: number; isAdmin: boolean }>(
-        `${REACT_APP_API_SERVER}/user/login`,
-        {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify(loginForm),
-        }
-    );
+    return fetchJson<{
+        token: string;
+        username: string;
+        id: number;
+        isAdmin: boolean;
+    }>(`${REACT_APP_API_SERVER}/user/login`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(loginForm),
+    });
 }
 
 export async function postSignUp(signUpForm: SignUpForm) {
@@ -90,7 +115,6 @@ export async function postSignUp(signUpForm: SignUpForm) {
 }
 
 export async function preMatching(userId: number) {
-    console.log(JSON.stringify(userId));
     return fetchJson(`${REACT_APP_API_SERVER}/user/getInterest`, {
         method: "POST",
         headers: {
@@ -126,17 +150,16 @@ export async function newPost(postForm: PostForm) {
     });
 }
 
-
 export async function getAllUsers() {
-
-    return fetchJson<ManageUserState>(`${REACT_APP_API_SERVER}/user/getAllUsers`, {
-        method: "GET",
-    });
+    return fetchJson<ManageUserState>(
+        `${REACT_APP_API_SERVER}/user/getAllUsers`,
+        {
+            method: "GET",
+        }
+    );
 }
 
-
 export async function getUserProfile(username: string) {
-
     return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserProfile`, {
         method: "POST",
         headers: {
@@ -157,3 +180,12 @@ export async function addBrowseCount(post_id: number, user_id: number) {
     });
 }
 
+export async function fetchSelfUserProfile(userId: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/profile`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ uid: userId }),
+    });
+}
