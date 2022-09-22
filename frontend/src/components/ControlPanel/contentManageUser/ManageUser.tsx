@@ -441,6 +441,7 @@ export default function ManageUser() {
                                             <Modal
                                                 isOpen={isOpen}
                                                 onClose={onClose}
+                                                size="xl"
                                             >
                                                 <ModalOverlay />
                                                 <ModalContent>
@@ -451,7 +452,6 @@ export default function ManageUser() {
                                                     <ModalBody>
                                                         <Grid templateColumns="repeat(2, 1fr)">
                                                             <GridItem>
-                                                                s{' '}
                                                                 <Box
                                                                     m={1}
                                                                     h="min-content"
@@ -471,7 +471,6 @@ export default function ManageUser() {
                                                                             value={
                                                                                 userProfile.username
                                                                             }
-                                                                            readOnly
                                                                         />
                                                                     </FormControl>
                                                                 </Box>
@@ -496,7 +495,6 @@ export default function ManageUser() {
                                                                             value={
                                                                                 userProfile.first_name
                                                                             }
-                                                                            readOnly
                                                                         />
                                                                     </FormControl>
                                                                 </Box>
@@ -521,7 +519,6 @@ export default function ManageUser() {
                                                                             value={
                                                                                 userProfile.last_name
                                                                             }
-                                                                            readOnly
                                                                         />
                                                                     </FormControl>
                                                                 </Box>
@@ -534,7 +531,7 @@ export default function ManageUser() {
                                                                 >
                                                                     <FormControl id="birthday">
                                                                         <FormLabel>
-                                                                            Age
+                                                                            Birthday
                                                                         </FormLabel>
                                                                         <Input
                                                                             placeholder="Birthday"
@@ -545,7 +542,6 @@ export default function ManageUser() {
                                                                             value={
                                                                                 userProfile.birthday
                                                                             }
-                                                                            readOnly
                                                                         />
                                                                     </FormControl>
                                                                 </Box>
@@ -569,7 +565,80 @@ export default function ManageUser() {
                                                                             value={
                                                                                 userProfile.gender
                                                                             }
-                                                                            readOnly
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+                                                            <GridItem>
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="job_id">
+                                                                        <FormLabel>
+                                                                            Occupation
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="Job Title"
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.job_id
+                                                                            }
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+                                                            <GridItem>
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="emergency_contact_person">
+                                                                        <FormLabel>
+                                                                            Emergency
+                                                                            Contact
+                                                                            Person
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="Person Name"
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.emergency_contact_person
+                                                                            }
+                                                                        />
+                                                                    </FormControl>
+                                                                </Box>
+                                                            </GridItem>
+
+                                                            <GridItem>
+                                                                <Box
+                                                                    m={1}
+                                                                    h="min-content"
+                                                                    w="90%"
+                                                                >
+                                                                    <FormControl id="emergency_contact_number">
+                                                                        <FormLabel>
+                                                                            Emergency
+                                                                            Contact
+                                                                            Number
+                                                                        </FormLabel>
+                                                                        <Input
+                                                                            placeholder="Contact Number"
+                                                                            _placeholder={{
+                                                                                color: 'gray.500',
+                                                                            }}
+                                                                            type="text"
+                                                                            value={
+                                                                                userProfile.emergency_contact_person
+                                                                            }
                                                                         />
                                                                     </FormControl>
                                                                 </Box>
@@ -640,11 +709,17 @@ export default function ManageUser() {
                                         >
                                             <Text>
                                                 Member since:
-                                                {userProfile.created_at}
+                                                {userProfile.created_at.split(
+                                                    'T',
+                                                    0
+                                                )}
                                             </Text>
                                             <Text>
                                                 Last update:
-                                                {userProfile.updated_at}
+                                                {userProfile.updated_at.split(
+                                                    'T',
+                                                    0
+                                                )}
                                             </Text>
                                         </Box>
                                         <HStack

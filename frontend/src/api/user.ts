@@ -138,8 +138,11 @@ export async function getAllUsers() {
 export async function getUserProfile(username: string) {
 
     return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserProfile`, {
-    
-            body: JSON.stringify({ username: username }),
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ username: username }),
     });
 }
 
