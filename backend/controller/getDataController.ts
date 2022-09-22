@@ -20,20 +20,53 @@ export class GetDataController {
 
     getCountries = async (req: Request, res: Response) => {
         try {
-            // const countryList = await this.getDataService.getCountryData();
-            const countryList = [
-                { id: 1, name: "US" },
-                { id: 2, name: "US" },
-                { id: 3, name: "US" },
-                { id: 4, name: "US" },
-                { id: 5, name: "US" },
-                { id: 6, name: "US" },
-                { id: 7, name: "US" },
-                { id: 8, name: "US" },
-                { id: 9, name: "US" },
-            ];
+            const countryList = await this.getDataService.getCountryData();
+            // const countryList = [
+            //     { id: 1, name: "US" },
+            //     { id: 2, name: "US" },
+            //     { id: 3, name: "US" },
+            //     { id: 4, name: "US" },
+            //     { id: 5, name: "US" },
+            //     { id: 6, name: "US" },
+            //     { id: 7, name: "US" },
+            //     { id: 8, name: "US" },
+            //     { id: 9, name: "US" },
+            // ];
 
             res.json(countryList);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    getPosts = async (req: Request, res: Response) => {
+        try {
+            const postList = await this.getDataService.getPostData();
+            const latestPostList = postList.slice(
+                Math.max(postList.length - 20, 0)
+            );
+
+            res.json(latestPostList);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    getHotPosts = async (req: Request, res: Response) => {
+        try {
+            const postList = await this.getDataService.getHotPostData();
+            const hotPostList = postList.slice(
+                Math.max(postList.length - 20, 0)
+            );
+            res.json(hotPostList);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({

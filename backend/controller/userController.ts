@@ -189,6 +189,23 @@ export class UserController {
         }
     };
 
+    userBrowsePost = async (req: Request, res: Response) => {
+        try {
+            console.log(req.body);
+            await this.userService.addUserBrowsePost(req.body);
+            res.status(201).json({
+                success: true,
+                message: "Success count",
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
     //Danny
     getAllUsers = async (req: Request, res: Response) => {
         try {

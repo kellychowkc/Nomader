@@ -1,8 +1,20 @@
 CREATE TABLE currency_codes (
     id SERIAL PRIMARY KEY,
-    code TEXT,
+    code TEXT NOT NULL,
     currency_name TEXT,
     using_country TEXT
+);
+
+CREATE TABLE currency_rates (
+    id SERIAL PRIMARY KEY,
+    code_base_id INTEGER,
+    FOREIGN KEY (code_base_id) REFERENCES currency_codes(id),
+    rate FLOAT,
+    code_to_id INTEGER,
+    FOREIGN KEY (code_to_id) REFERENCES currency_codes(id),
+    year INTEGER,
+    month INTEGER,
+    day INTEGER
 );
 
 CREATE TABLE countries (
@@ -17,17 +29,6 @@ CREATE TABLE countries (
     info TEXT
 );
 
-CREATE TABLE currency_rates (
-    id SERIAL PRIMARY KEY,
-    code_base_id INTEGER,
-    FOREIGN KEY (code_base_id) REFERENCES currency_codes(id),
-    rate INTEGER,
-    code_to_id INTEGER,
-    FOREIGN KEY (code_to_id) REFERENCES currency_codes(id),
-    year INTEGER,
-    month INTEGER,
-    day INTEGER
-);
 
 CREATE TABLE cities (
     id SERIAL PRIMARY KEY,
@@ -61,8 +62,6 @@ CREATE TABLE attreactions_type (
     FOREIGN KEY (attraction_id) REFERENCES attractions(id),
     FOREIGN KEY (interest_id) REFERENCES interests(id)
 );
-
-
 
 CREATE TABLE jobs (
     id SERIAL PRIMARY KEY,
@@ -183,7 +182,7 @@ CREATE TABLE chats (
 
 
 
-CREATE TABLE staging_emergency_data (
+CREATE TABLE db_emergency_data (
     id SERIAL PRIMARY KEY,
     country_name TEXT,
     emergency_tel TEXT,
@@ -195,24 +194,14 @@ CREATE TABLE staging_emergency_data (
     info TEXT
 );
 
-CREATE TABLE staging_currency_codes (
+CREATE TABLE db_currency_codes (
     id SERIAL PRIMARY KEY,
     code TEXT,
     currency_name TEXT,
     using_country TEXT
 );
 
-CREATE TABLE staging_currency_rates (
-    id SERIAL PRIMARY KEY,
-    year INTEGER,
-    month INTEGER,
-    day INTEGER,
-    code_base TEXT,
-    code_to TEXT,
-    rate TEXT
-);
-
-CREATE TABLE staging_city_data (
+CREATE TABLE db_city_data (
     id SERIAL PRIMARY KEY,
     city_name TEXT,
     description TEXT,
@@ -220,7 +209,7 @@ CREATE TABLE staging_city_data (
     city_list TEXT
 );
 
-CREATE TABLE staging_attractions (
+CREATE TABLE db_attractions (
     id SERIAL PRIMARY KEY,
     attraction_name TEXT,
     description TEXT,
@@ -231,6 +220,13 @@ CREATE TABLE staging_attractions (
     class TEXT
 );
 
-
-
+CREATE TABLE db_currency_rates (
+    id SERIAL PRIMARY KEY,
+    year INTEGER,
+    month INTEGER,
+    day INTEGER,
+    code_base TEXT,
+    code_to TEXT,
+    rate FLOAT
+);
 
