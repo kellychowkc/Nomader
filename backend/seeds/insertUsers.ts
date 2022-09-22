@@ -7,12 +7,13 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("users").del();
     await knex("jobs").del();
     await knex("interests").del();
+    await knex("posts").del();
 
     // Inserts seed entries
     const interestId: Array<{ id: number }> = await knex("interests")
         .insert([
             { title: "hiking", image: "hiking.png" },
-            { title: "camping",image: "camping.png" },
+            { title: "camping", image: "camping.png" },
             { title: "cycling", image: "cycling.png" },
             { title: "foodie", image: "foodie.png" },
             { title: "party", image: "party.png" },
@@ -25,7 +26,7 @@ export async function seed(knex: Knex): Promise<void> {
             { title: "watch match", image: "watchMatch.png" },
             { title: "join event", image: "joinEvent.png" },
             { title: "skiing", image: "skiing.png" },
-            { title: "shopping", image: "shopping.png" }
+            { title: "shopping", image: "shopping.png" },
         ])
         .returning("id");
 
@@ -51,7 +52,7 @@ export async function seed(knex: Knex): Promise<void> {
                 birthday: "1234",
                 gender: "Female",
                 information: "hi",
-                profile: "",
+                profile: "e7c26c4b30fae86f020b76a00.jpeg 16-57-51-116.jpeg",
                 email: "kc@kc",
                 phone_num: "1234",
                 job_id: jobId[1].id,
@@ -65,7 +66,7 @@ export async function seed(knex: Knex): Promise<void> {
                 birthday: "1234",
                 gender: "Male",
                 information: "hi",
-                profile: "",
+                profile: "e7c26c4b30fae86f020b76a00.jpeg 16-57-51-116.jpeg",
                 email: "danny@danny",
                 phone_num: "12345678",
                 job_id: jobId[2].id,
@@ -79,5 +80,36 @@ export async function seed(knex: Knex): Promise<void> {
         { user_id: userId[0].id, interest_id: interestId[6].id },
         { user_id: userId[1].id, interest_id: interestId[9].id },
         { user_id: userId[1].id, interest_id: interestId[12].id },
+    ]);
+
+    await knex("posts").insert([
+        {
+            user_id: userId[0].id,
+            title: "Finding a decent place to work for your new business in Toronto.",
+            content:
+                "Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers.",
+            image: "4a1e563704ab7904f1d21d700.26.08 PM.png",
+        },
+        {
+            user_id: userId[1].id,
+            title: "Finding a decent place to work for your new business in Toronto.",
+            content:
+                "Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers.Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers.",
+            image: "4a1e563704ab7904f1d21d700.26.08 PM.png",
+        },
+        {
+            user_id: userId[0].id,
+            title: "Finding a decent place to work for your new business in Toronto.",
+            content:
+                "Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers.",
+            image: "4a1e563704ab7904f1d21d700.26.08 PM.png",
+        },
+        {
+            user_id: userId[1].id,
+            title: "Finding a decent place to work for your new business in Toronto.",
+            content:
+                "Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers.",
+            image: "4a1e563704ab7904f1d21d700.26.08 PM.png",
+        },
     ]);
 }
