@@ -451,6 +451,7 @@ export default function ManageUser() {
                                                     <ModalBody>
                                                         <Grid templateColumns="repeat(2, 1fr)">
                                                             <GridItem>
+                                                                s{' '}
                                                                 <Box
                                                                     m={1}
                                                                     h="min-content"
