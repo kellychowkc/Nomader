@@ -11,6 +11,7 @@ import {
     Tr,
     VStack,
     Avatar,
+    useColorModeValue,
 } from '@chakra-ui/react'
 
 import type { IUser } from './ManageUser'
@@ -22,8 +23,18 @@ type Props = {
 
 export function UsersList(props: Props) {
     return (
-        <Table variant="striped" colorScheme="teal" w="100%">
-            <Thead position="sticky" top={0} bg="#FFFFFF" zIndex={10}>
+        <Table
+            variant="striped"
+            colorScheme="teal"
+            bg={useColorModeValue('white', 'gray.600')}
+            w="100%"
+        >
+            <Thead
+                position="sticky"
+                top={0}
+                bg={useColorModeValue('white', 'gray.600')}
+                zIndex={10}
+            >
                 <Tr>
                     <Th pl={8} fontSize={'md'} fontWeight={'bold'}>
                         User

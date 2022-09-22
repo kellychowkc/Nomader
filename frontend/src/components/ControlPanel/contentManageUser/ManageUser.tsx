@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState, ReactNode } from 'react'
 
 import {
     Box,
@@ -32,8 +32,6 @@ import {
     useDisclosure,
     VStack,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
-import { ReactNode } from 'react'
 
 import {
     MdNaturePeople,
@@ -41,13 +39,15 @@ import {
     MdTimelapse,
     MdWarning,
 } from 'react-icons/md'
-import { UsersList } from './userList'
+
+import { AuthState } from '../../../redux/state'
 import { RootState, RootThunkDispatch } from '../../../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsersList } from '../../../redux/manageUser/manageUserThunk'
 import { getUserProfile } from '../../../api/user'
-import PermissionSetting from './permissionSetting'
-import DetailProfile from './detailProfile'
-import { profile } from 'console'
+import PermissionSetting from './PermissionSetting'
+import { UsersList } from './UserList'
+
 export interface IUser {
     first_name: string
     last_name: string
@@ -121,7 +121,7 @@ function StatsCard(props: StatsCardProps) {
         <Stat
             px={{ base: 2, md: 4 }}
             py={'5'}
-            shadow={'xl'}
+            shadow={'lg'}
             border={'1px solid'}
             borderColor={useColorModeValue('gray.800', 'gray.500')}
             rounded={'lg'}
@@ -152,6 +152,7 @@ export interface Permission {
 }
 
 export default function ManageUser() {
+    const auth: AuthState = useSelector((state: any) => state.auth)
     const dispatch = useDispatch<RootThunkDispatch>()
 
     //Get all users list
@@ -369,22 +370,33 @@ export default function ManageUser() {
                                         </FormControl>
                                     </Box>
                                     <Box m={1} h="min-content" w="90%">
-                                        <FormControl id="full_name">
-                                            <FormLabel>Full Name</FormLabel>
+                                        <FormControl id="first_name">
+                                            <FormLabel>First Name</FormLabel>
                                             <Input
-                                                placeholder="Full Name"
+                                                placeholder="First Name"
                                                 _placeholder={{
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
-                                                value={
-                                                    userProfile.first_name +
-                                                    userProfile.last_name
-                                                }
-                                                readOnly
+                                                value={userProfile.first_name}
                                             />
                                         </FormControl>
                                     </Box>
+
+                                    <Box m={1} h="min-content" w="90%">
+                                        <FormControl id="last_name">
+                                            <FormLabel>Last Name</FormLabel>
+                                            <Input
+                                                placeholder="Last Name"
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={userProfile.last_name}
+                                            />
+                                        </FormControl>
+                                    </Box>
+
                                     <Box m={1} h="min-content" w="90%">
                                         <FormControl id="birthday">
                                             <FormLabel>Age</FormLabel>
@@ -399,20 +411,7 @@ export default function ManageUser() {
                                             />
                                         </FormControl>
                                     </Box>
-                                    <Box m={1} h="min-content" w="90%">
-                                        <FormControl id="gender">
-                                            <FormLabel>Gender</FormLabel>
-                                            <Input
-                                                placeholder="M/F/T..."
-                                                _placeholder={{
-                                                    color: 'gray.500',
-                                                }}
-                                                type="text"
-                                                value={userProfile.gender}
-                                                readOnly
-                                            />
-                                        </FormControl>
-                                    </Box>
+
                                     <Stack
                                         className="buttonGroup"
                                         direction={'column'}
@@ -705,21 +704,28 @@ export default function ManageUser() {
                                         <Box
                                             className="profileHistory"
                                             fontSize="sm"
-                                            color="#363636"
                                         >
-                                            <Text>
-                                                Member since:
-                                                {userProfile.created_at.split(
-                                                    'T',
-                                                    0
-                                                )}
+                                            <Text
+                                                fontSize={'sm'}
+                                                fontWeight={'semibold'}
+                                            >
+                                                Member Since:
+                                                {' ' +
+                                                    userProfile.created_at.split(
+                                                        'T',
+                                                        1
+                                                    )}
                                             </Text>
-                                            <Text>
-                                                Last update:
-                                                {userProfile.updated_at.split(
-                                                    'T',
-                                                    0
-                                                )}
+                                            <Text
+                                                fontSize={'sm'}
+                                                fontWeight={'semibold'}
+                                            >
+                                                Last Update:
+                                                {' ' +
+                                                    userProfile.updated_at.split(
+                                                        'T',
+                                                        1
+                                                    )}
                                             </Text>
                                         </Box>
                                         <HStack
@@ -727,7 +733,13 @@ export default function ManageUser() {
                                             spacing={0}
                                         >
                                             <Box bg="teal" w="66%">
-                                                <Image src="https://avatars.dicebear.com/api/male/username.svg" />
+                                                <Image
+                                                    src={
+                                                        auth.profile
+                                                            ? auth.profile
+                                                            : 'https://avatars.dicebear.com/api/male/username.svg'
+                                                    }
+                                                />
                                             </Box>
                                             <Box w="33%">
                                                 <VStack w="100%" spacing={0}>
@@ -745,7 +757,7 @@ export default function ManageUser() {
                                             w="100%"
                                             spacing={0}
                                             p="3px"
-                                            shadow={'xl'}
+                                            shadow={'lg'}
                                             border={'1px solid'}
                                             borderColor={useColorModeValue(
                                                 'gray.800',
@@ -773,7 +785,7 @@ export default function ManageUser() {
                                             w="100%"
                                             spacing={0}
                                             p="3px"
-                                            shadow={'xl'}
+                                            shadow={'lg'}
                                             border={'1px solid'}
                                             borderColor={useColorModeValue(
                                                 'gray.800',
@@ -854,7 +866,7 @@ export default function ManageUser() {
                                 <Box
                                     w="90%"
                                     m={3}
-                                    bg="#FFFFFF"
+                                    bg={useColorModeValue('white', 'gray.400')}
                                     rounded={'15px'}
                                     scrollBehavior="smooth"
                                     overflowY="scroll"
