@@ -16,12 +16,13 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("users").del();
     await knex("jobs").del();
     await knex("interests").del();
+    await knex("posts").del();
 
     // Inserts seed entries
     const interestId: Array<{ id: number }> = await knex("interests")
         .insert([
             { title: "hiking", image: "hiking.png" },
-            { title: "camping",image: "camping.png" },
+            { title: "camping", image: "camping.png" },
             { title: "cycling", image: "cycling.png" },
             { title: "foodie", image: "foodie.png" },
             { title: "party", image: "party.png" },
@@ -34,7 +35,7 @@ export async function seed(knex: Knex): Promise<void> {
             { title: "watch match", image: "watchMatch.png" },
             { title: "join event", image: "joinEvent.png" },
             { title: "skiing", image: "skiing.png" },
-            { title: "shopping", image: "shopping.png" }
+            { title: "shopping", image: "shopping.png" },
         ])
         .returning("id");
 

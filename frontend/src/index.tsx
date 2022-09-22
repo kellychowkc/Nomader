@@ -10,13 +10,11 @@ import { store } from './redux/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-    <React.StrictMode>
-        <ChakraProvider cssVarsRoot="#app">
-            <Provider store={store}>
-                <App />
-            </Provider>
-        </ChakraProvider>
-    </React.StrictMode>
+    <ChakraProvider cssVarsRoot="#app">
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </ChakraProvider>
 )
 
 // If you want to start measuring performance in your app, pass a function
