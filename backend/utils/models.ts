@@ -20,8 +20,17 @@ export interface Interest {
 }
 
 export interface Post {
+    username?: string;
+    profile?: string;
+    id?: number;
     user_id: number;
     title: string;
     content: string;
     image: string;
+    created_at?: string;
+}
+
+export interface BrowseCount {
+    user_id: number;
+    post_id: number;
 }

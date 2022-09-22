@@ -124,3 +124,13 @@ export async function newPost(postForm: PostForm) {
         body: formData,
     });
 }
+
+export async function addBrowseCount(post_id: number, user_id: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/browsePost`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ post_id, user_id }),
+    });
+}
