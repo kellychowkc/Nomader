@@ -7,6 +7,7 @@ const config: { [key: string]: Knex.Config } = {
     development: {
         client: "postgresql",
         connection: {
+
             // database: process.env.DB_NAME,
             // user: process.env.DB_USERNAME,
             // password: process.env.DB_PASSWORD,
@@ -14,6 +15,7 @@ const config: { [key: string]: Knex.Config } = {
             database: "cap_project",
             user: "postgres",
             password: "postgres"
+
         },
         pool: {
             min: 2,

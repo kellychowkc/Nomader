@@ -230,7 +230,7 @@ const Home = () => {
                         w="100%"
                         pt="15px"
                         m="0"
-                        spacing={10}
+                        spacing={8}
                         justify={{ base: 'space-around', lg: 'center' }}
                     >
                         <VStack
@@ -241,16 +241,16 @@ const Home = () => {
                         >
                             <HStack color="#B0D8BC" align={'baseline'}>
                                 <Text
-                                    fontSize={{ base: '2em', lg: '2.5em' }}
+                                    fontSize={{ base: '1.5em', lg: '2.5em' }}
                                     fontWeight="bold"
                                 >
                                     Hello,
                                 </Text>
                                 <Text
-                                    fontSize={{ base: '2.5em', lg: '3em' }}
+                                    fontSize={{ base: '2em', lg: '3em' }}
                                     fontWeight="bolder"
-                                    letterSpacing={'wide'}
                                     textTransform={'uppercase'}
+                                    whiteSpace={'break-spaces'}
                                 >
                                     {auth.username}
                                 </Text>

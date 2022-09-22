@@ -25,6 +25,7 @@ export function authReducer(
                 loading: false,
                 username: action.username,
                 id: action.id,
+                isAdmin: action.isAdmin,
             };
         case "@@Auth/LOGIN_FAIL":
             return {

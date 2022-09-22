@@ -44,6 +44,7 @@ export class UserController {
                         username: user.username,
                     };
                     const token = jwtSimple.encode(payload, jwt.jwtSecret);
+                    console.log("isAdmin = " + user.isAdmin)
 
                     res.status(200).json({
                         success: true,
@@ -51,6 +52,8 @@ export class UserController {
                         token: token,
                         username: user.username,
                         id: user.id,
+                        // additional user information needed - danny
+                        isAdmin: user.isAdmin,
                     });
                 }
             } else {
