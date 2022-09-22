@@ -13,4 +13,8 @@ logInRoutes.post("/interest", userController.addInterest);
 logInRoutes.post("/post", postMiddleware, userController.newPost);
 logInRoutes.get("/", isLoggedIn, userController.getSelfInfo);
 
-logInRoutes.get("/getAllUsers", isLoggedIn, userController.allUsers)
+logInRoutes.get("/getAllUsers", userController.getAllUsers)
+logInRoutes.post("/getUserProfile", userController.getUserProfile)
+
+
+

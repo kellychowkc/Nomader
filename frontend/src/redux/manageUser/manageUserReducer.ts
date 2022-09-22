@@ -23,6 +23,7 @@ export function manageUserReducer(
                 ...state,
                 loading: false,
                 userList: action.userList,
+                error: undefined,
             }
         case '@@ManageUser/LOAD_USER_LIST_FAIL':
             return {

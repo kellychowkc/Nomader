@@ -19,7 +19,7 @@ import logger from "redux-logger";
 
 export interface RootState {
     auth: AuthState;
-    manageUser: ManageUserState
+    manageUser: ManageUserState;
     userInfo: UserInfoState;
 }
 

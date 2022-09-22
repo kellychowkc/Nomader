@@ -100,8 +100,19 @@ export class UserService {
     }
 
     async getAllUsersData() {
-        const allUsersData = await this.knex.select("*").from("users");
+        const allUsersData = await this.knex
+            .select("id", "username", "first_name", "last_name", "profile")
+            .from("users");
         return allUsersData;
+    }
+
+    async getUserProfileData(username: string) {
+        const userProfileData = await this.knex
+            .select("*")
+            .from("users")
+            .where("username", username)
+            .first();
+        return userProfileData;
     }
 
     async addPost(postData: Post) {
