@@ -8,11 +8,10 @@ config = Config()
 spark = setup_spark(config)
 
 import pyspark.sql.functions as F
-from pyspark.sql.types import DateType
 
 def extract_data(spark, config, table) :
     return spark.read.format('jdbc')\
-            .option("url", "jdbc:postgresql://{}/{}".format(config.POSTGRES_DB_HOST, config.POSTGRES_DB))\
+            .option("url", "jdbc:postgresql://{}/{}".format(config.POSTGRES_HOST, config.POSTGRES_DB))\
             .option("dbtable", "countries".format(table))\
             .option("user", config.POSTGRES_USER)\
             .option("password", config.POSTGRES_PASSWORD)\
@@ -21,7 +20,7 @@ def extract_data(spark, config, table) :
 
 def load_data(df, config, table):
     df.write.format('jdbc')\
-        .option("url", "jdbc:postgresql://{}/{}".format(config.POSTGRES_DW_HOST, config.POSTGRES_DW))\
+        .option("url", "jdbc:postgresql://{}/{}".format(config.POSTGRES_HOST, config.POSTGRES_DW))\
         .option("dbtable", "{}".format(table))\
         .option("user", config.POSTGRES_USER)\
         .option("password", config.POSTGRES_PASSWORD)\
@@ -87,6 +86,7 @@ def transform_table_users(df) :
     df = df.drop('phone_num')
     df = df.drop('emergency_contact_person')
     df = df.drop('emergency_contact_num')
+    from pyspark.sql.types import DateType
     df = df.withColumn('birthday', F('birthday').cast(DateType()))
     df = df.withCloumn('brithday_year', F.year(df['birthday']))
     df = df.withCloumn('birthday_month', F.month(df['birthday']))
@@ -172,7 +172,7 @@ def main() :
 
 
 if __name__ == '__main__' :
-    schedule.every().day.at('06:30').do(main())
+    schedule.every().day.at('06:30').do(main)
 
     while True:
         schedule.run_pending()

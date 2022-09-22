@@ -1,9 +1,9 @@
 import { MatchService } from "../service/matchService";
 import { Request, Response } from "express";
 import { logger } from "../utils/logger";
-import jwtSimple from 'jwt-simple';
-import jwt from '../utils/jwt';
-import { Bearer } from 'permit';
+// import jwtSimple from 'jwt-simple';
+// import jwt from '../utils/jwt';
+// import { Bearer } from 'permit';
 
 
 export class MatchController {
@@ -11,13 +11,13 @@ export class MatchController {
 
     matchUser = async (req : Request, res : Response) => {
         try {
-            const permit = new Bearer({
-                query: "access_token"
-            })
-            const token = permit.check(req);
-            const payload = jwtSimple.decode(token, jwt.jwtSecret);
-            const userId = payload.id as number;
-
+            // const permit = new Bearer({
+            //     query: "access_token"
+            // })
+            // const token = permit.check(req);
+            // const payload = jwtSimple.decode(token, jwt.jwtSecret);
+            // const userId = payload.id as number;
+            const userId = req.body.user_id as number;
             const waitingList = []
             const waitingUserId = await this.matchService.getUserIdWhoWaitMatchYou(userId);
             if (waitingUserId.length > 0) {

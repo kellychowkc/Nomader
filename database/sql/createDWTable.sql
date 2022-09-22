@@ -1,6 +1,5 @@
-CREATE DATABASE project_cap;
 
-CREATE TABLE DB_users (
+CREATE TABLE staging_users (
     id SERIAL PRIMARY KEY,
     birthday_year INTEGER,
     birthday_month INTEGER,
@@ -13,30 +12,30 @@ CREATE TABLE DB_users (
     created_day INTEGER
 );
 
-CREATE TABLE DB_jobs (
+CREATE TABLE staging_jobs (
     id SERIAL PRIMARY KEY,
     title TEXT
 ); 
 
-CREATE TABLE DB_interests (
+CREATE TABLE staging_interests (
     id SERIAL PRIMARY KEY,
     title TEXT
 );
 
-CREATE TABLE DB_users_interests (
+CREATE TABLE staging_users_interests (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     interest_id INTEGER
 );
 
-CREATE TABLE DB_chat_rooms (
+CREATE TABLE staging_chat_rooms (
     id SERIAL PRIMARY KEY,
     created_year INTEGER,
     created_month INTEGER,
     created_day INTEGER
 );
 
-CREATE TABLE DB_chats (
+CREATE TABLE staging_chats (
     id SERIAL PRIMARY KEY,
     chat_room_id INTEGER,
     created_year INTEGER,
@@ -44,7 +43,7 @@ CREATE TABLE DB_chats (
     created_day INTEGER
 );
 
-CREATE TABLE DB_users_relationship (
+CREATE TABLE staging_users_relationship (
     id SERIAL PRIMARY KEY,
     user1_id INTEGER,
     user2_id INTEGER,
@@ -53,10 +52,9 @@ CREATE TABLE DB_users_relationship (
     created_day INTEGER
 );
 
-CREATE TABLE DB_like_attractions (
+CREATE TABLE staging_browse_attractions (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
-    like_attraction BOOLEAN,
     browse_count INTEGER,
     attraction_id INTEGER,
     created_year INTEGER,
@@ -64,24 +62,24 @@ CREATE TABLE DB_like_attractions (
     created_day INTEGER 
 );
 
-CREATE TABLE DB_countries (
+CREATE TABLE staging_countries (
     id SERIAL PRIMARY KEY,
     name TEXT
 );
 
-CREATE TABLE DB_cities (
+CREATE TABLE staging_cities (
     id SERIAL PRIMARY KEY,
     name TEXT,
     city_list TEXT
 );
 
-CREATE TABLE DB_attractions (
+CREATE TABLE staging_attractions (
     id SERIAL PRIMARY KEY,
     name TEXT,
     city_list TEXT
 );
 
-CREATE TABLE DB_posts (
+CREATE TABLE staging_posts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     city_id INTEGER,
@@ -91,14 +89,14 @@ CREATE TABLE DB_posts (
     created_day INTEGER
 );
 
-CREATE TABLE DB_users_browse_posts (
+CREATE TABLE staging_browse_posts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     browse_count INTEGER,
-    post_id INTEGER,
+    post_id INTEGER
 );
 
-CREATE TABLE DB_posts_type (
+CREATE TABLE staging_posts_type (
     id SERIAL PRIMARY KEY,
     post_id INTEGER,
     interest_id INTEGER
@@ -208,13 +206,12 @@ CREATE TABLE fact_users_relactionship (
     FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
 );
 
-CREATE TABLE fact_like_attractions (
+CREATE TABLE fact_browse_attractions (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES fact_users(id),
     attraction_id INTEGER,
     FOREIGN KEY (attraction_id) REFERENCES dim_attractions(id),
-    like_attraction BOOLEAN,
     browse_count INTEGER,
     created_date_id INTEGER,
     FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
@@ -232,7 +229,7 @@ CREATE TABLE fact_posts (
     FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
 );
 
-CREATE TABLE fact_users_browse_posts (
+CREATE TABLE fact_browse_posts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES fact_users(id),
