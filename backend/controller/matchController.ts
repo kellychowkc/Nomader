@@ -157,8 +157,9 @@ export class MatchController {
                     const userPortfolio = {
                         id: id,
                         username: userInfo["username"],
-                        jobTitle: userInfo["jobTitle"],
+                        jobTitle: userInfo["title"],
                         profile: userInfo["profile"],
+                        information: userInfo["information"],
                         interests: interestArr,
                         // country : userInfo["country"]
                     };

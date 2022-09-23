@@ -56,7 +56,7 @@ export class MatchService {
             .where("users_interests.user_id", id);
         const userData: Array<{
             username: string;
-            jobTitle: string;
+            title: string;
             information: string;
             profile: string;
         }> = await this.knex("users")

@@ -34,7 +34,7 @@ import Swal from 'sweetalert2'
 const { REACT_APP_API_SERVER } = process.env
 
 const Profile = () => {
-    const [showPassword, setShowPassword] = React.useState(false)
+    const [showPassword, setShowPassword] = useState(false)
     const [imageStore, setImageStore] = useState('')
 
     // show existing info
