@@ -17,6 +17,7 @@ import {
     Text,
     Icon,
     LinkOverlay,
+    LinkBox,
 } from '@chakra-ui/react'
 
 import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons'
@@ -90,37 +91,47 @@ export default function Nav() {
                                             </Text>
                                         </HStack>
                                     </Box>
-                                    <MenuItem>
-                                        <LinkOverlay
-                                            href="/editProfile"
-                                            style={{ textDecoration: 'none' }}
-                                        >
-                                            Edit Profile
-                                        </LinkOverlay>
-                                    </MenuItem>
+                                    <LinkBox>
+                                        <MenuItem>
+                                            <LinkOverlay
+                                                href="/editProfile"
+                                                style={{
+                                                    textDecoration: 'none',
+                                                }}
+                                            >
+                                                Edit Profile
+                                            </LinkOverlay>
+                                        </MenuItem>
+                                    </LinkBox>
 
                                     {auth.isAdmin ? (
-                                        <MenuItem>
-                                            <NavLink
-                                                className="controlPanel"
-                                                to={'/control/'}
-                                            >
-                                                Control Panel
-                                            </NavLink>
-                                        </MenuItem>
+                                        <LinkBox>
+                                            <MenuItem>
+                                                <NavLink
+                                                    className="controlPanel"
+                                                    to={'/control/'}
+                                                >
+                                                    Control Panel
+                                                </NavLink>
+                                            </MenuItem>
+                                        </LinkBox>
                                     ) : (
                                         <></>
                                     )}
 
                                     <MenuDivider />
-                                    <MenuItem>
-                                        <LinkOverlay
-                                            href="/logout"
-                                            style={{ textDecoration: 'none' }}
-                                        >
-                                            Logout
-                                        </LinkOverlay>
-                                    </MenuItem>
+                                    <LinkBox>
+                                        <MenuItem>
+                                            <LinkOverlay
+                                                href="/logout"
+                                                style={{
+                                                    textDecoration: 'none',
+                                                }}
+                                            >
+                                                Logout
+                                            </LinkOverlay>
+                                        </MenuItem>
+                                    </LinkBox>
                                 </MenuList>
                             </Menu>
                         </Stack>
