@@ -50,18 +50,6 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Manage Destination', icon: FiCompass, path: 'destination' },
 ]
 
-interface UserProfile {
-    username: string
-    user_type?: string
-    avatar?: any
-}
-
-const user: UserProfile = {
-    username: 'Danny',
-    user_type: 'I am ~Admin~',
-    avatar: 'None',
-}
-
 export default function ControlPanel() {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -240,9 +228,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <HStack>
                                 <Avatar
                                     size={'sm'}
-                                    src={
-                                        'https://avatars.dicebear.com/api/male/username.svg'
-                                    }
+                                    src={auth.profile ? auth.profile : ''}
                                 />
                                 <VStack
                                     display={{ base: 'none', md: 'flex' }}
@@ -251,10 +237,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                     ml="2"
                                 >
                                     {/* Profile Name */}
-                                    <Text fontSize="md">{user.username}</Text>
+                                    <Text fontSize="md">{auth.username}</Text>
                                     {/* User Type */}
                                     <Text fontSize="s" color="gray.600">
-                                        {user.user_type}
+                                        {auth.isAdmin
+                                            ? 'I am Admin'
+                                            : 'I am User'}
                                     </Text>
                                 </VStack>
                                 <Box display={{ base: 'none', md: 'flex' }}>
