@@ -45,7 +45,7 @@ import { UsersList } from './userList'
 import { RootState, RootThunkDispatch } from '../../../redux/store'
 import { getAllUsersList } from '../../../redux/manageUser/manageUserThunk'
 import { getUserProfile } from '../../../api/user'
-import PermissionSetting from './permissionSetting'
+import PermissionSetting from './PermissionSetting'
 import DetailProfile from './detailProfile'
 import { profile } from 'console'
 export interface IUser {
