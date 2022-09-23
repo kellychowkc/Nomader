@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    Circle,
     HStack,
     Table,
     Text,
@@ -11,44 +10,82 @@ import {
     Thead,
     Tr,
     VStack,
+    Avatar,
+    useColorModeValue,
 } from '@chakra-ui/react'
 
 import type { IUser } from './ManageUser'
 
-export const UsersList = (props: { list: IUser[] }) => (
-    <Table variant="striped" colorScheme="teal" w="100%">
-        <Thead position="sticky" top={0} bg="#FFFFFF" zIndex={10}>
-            <Tr>
-                <Th>User</Th>
-                <Th>View Detail</Th>
-            </Tr>
-        </Thead>
+type Props = {
+    list: IUser[]
+    viewUser: (username: string) => void
+}
 
-        <Tbody>
-            {props.list.map((user: IUser, idx: number) => (
-                <Tr key={idx}>
-                    <Td py="5px">
-                        <HStack>
-                            <Box className="friendAvatar">
-                                <Circle size="30px" bg={user.avatar} />
-                            </Box>
-                            <VStack align="left">
-                                <Text className="nickname" fontWeight="bold">
-                                    {user.fullname}
-                                </Text>
-                                <Text className="username">
-                                    {user.username}
-                                </Text>
-                            </VStack>
-                        </HStack>
-                    </Td>
-                    <Td py="5px">
-                        <Button m="1" size="md">
-                            Detail
-                        </Button>
-                    </Td>
+export function UsersList(props: Props) {
+    return (
+        <Table
+            variant="striped"
+            colorScheme="teal"
+            bg={useColorModeValue('white', 'gray.600')}
+            w="100%"
+        >
+            <Thead
+                position="sticky"
+                top={0}
+                bg={useColorModeValue('white', 'gray.600')}
+                zIndex={10}
+            >
+                <Tr>
+                    <Th pl={8} fontSize={'md'} fontWeight={'bold'}>
+                        User
+                    </Th>
+                    <Th fontSize={'md'} fontWeight={'bold'}>
+                        Detail
+                    </Th>
                 </Tr>
-            ))}
-        </Tbody>
-    </Table>
-)
+            </Thead>
+
+            <Tbody>
+                {props.list.map((user: IUser, idx: number) => (
+                    <Tr key={idx}>
+                        <Td py="5px">
+                            <HStack>
+                                <Box className="friendAvatar">
+                                    <Avatar
+                                        size="sm"
+                                        name={
+                                            user.first_name +
+                                            ' ' +
+                                            user.last_name
+                                        }
+                                        src={user.profile}
+                                    />
+                                </Box>
+                                <VStack align="left">
+                                    <Text
+                                        className="nickname"
+                                        fontWeight="bold"
+                                    >
+                                        {user.first_name + ' ' + user.last_name}
+                                    </Text>
+                                    <Text className="username">
+                                        {user.username}
+                                    </Text>
+                                </VStack>
+                            </HStack>
+                        </Td>
+                        <Td py="5px">
+                            <Button
+                                m="1"
+                                size="md"
+                                onClick={() => props.viewUser(user.username)}
+                            >
+                                View
+                            </Button>
+                        </Td>
+                    </Tr>
+                ))}
+            </Tbody>
+        </Table>
+    )
+}

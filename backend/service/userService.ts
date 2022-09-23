@@ -15,11 +15,10 @@ export class UserService {
     }
 
     async getUserByUserId(userId: number): Promise<User> {
-        const foundUser = await this.knex
-            .select("*")
-            .from("users")
-            .where("id", userId)
-            .first();
+        const foundUser = await this.knex.raw(
+            `select * from users join jobs on jobs.id = users.job_id where users.id = ${userId};`
+        );
+
         return foundUser;
     }
 
@@ -99,9 +98,20 @@ export class UserService {
         return foundInterest;
     }
 
-    async getAllUser() {
-        const allUsers = await this.knex.select("*").from("users");
-        return allUsers;
+    async getAllUsersData() {
+        const allUsersData = await this.knex
+            .select("id", "username", "first_name", "last_name", "profile")
+            .from("users");
+        return allUsersData;
+    }
+
+    async getUserProfileData(username: string) {
+        const userProfileData = await this.knex
+            .select("*")
+            .from("users")
+            .where("username", username)
+            .first();
+        return userProfileData;
     }
 
     async addPost(postData: Post) {
@@ -127,5 +137,59 @@ export class UserService {
             .into("users_browse_posts")
             .returning("id");
         return browseId;
+    }
+
+
+    async getUserFriends(user_id: number) {
+        const userFriends = await this.knex
+            .select("*")
+            .from("users_relationship")
+            .where("user1_id", user_id)
+        return userFriends;
+    }
+
+    async updateUserPermission(username: string, permissions: any[]) {
+
+        // const permission_visible = permissions[0]
+        // const permission_matching = permissions[1]
+        // const permission_post = permissions[2]
+        // const permission_comment = permissions[3]
+        // const permission_upload = permissions[4]
+
+        // const userPermission = await this.knex("users")
+        //     .update({
+        //         isVisible: permission_visible,
+        //         allowPost: permission_post,
+        //         allowComment: permission_comment,
+        //         allowUpload: permission_upload,
+        //         allowMatch: permission_matching,
+        //     })
+        //     .where("username", username)
+
+        const userPermission = "Update Permission"
+
+        return userPermission;
+
+    async update(body: User) {
+        let user_id = body.id;
+        delete body["id"];
+        Object.keys(body).forEach((key) => {
+            if (body[key] === "" || body[key] === undefined) {
+                delete body[key];
+            }
+        });
+
+        if (body.password) {
+            body.password = await hashPassword(body.password);
+        }
+
+        console.log(body);
+        const updated = await this.knex("users")
+            .update(body)
+            .where("id", user_id)
+            .returning("id");
+
+        return updated;
+
     }
 }

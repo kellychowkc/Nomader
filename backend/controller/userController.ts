@@ -44,6 +44,7 @@ export class UserController {
                         username: user.username,
                     };
                     const token = jwtSimple.encode(payload, jwt.jwtSecret);
+                    console.log("isAdmin = " + user.isAdmin);
 
                     res.status(200).json({
                         success: true,
@@ -51,6 +52,8 @@ export class UserController {
                         token: token,
                         username: user.username,
                         id: user.id,
+                        // additional user information needed - danny
+                        isAdmin: user.isAdmin,
                     });
                 }
             } else {
@@ -77,8 +80,6 @@ export class UserController {
             userData!.profile = profile;
 
             console.log(userData);
-
-            console.log("controller", typeof userData);
 
             const newUser = await this.userService.create(
                 userData as any as User
@@ -164,7 +165,6 @@ export class UserController {
         }
     };
 
-    //!!!!Service is not finished
     newPost = async (req: Request, res: Response) => {
         try {
             let postData = req.form?.fields;
@@ -206,14 +206,34 @@ export class UserController {
         }
     };
 
-    //Danny
-    allUser = async (req: Request, res: Response) => {
+    getPersonalInfo = async (req: Request, res: Response) => {
         try {
-            const result = await this.userService.getAllUser();
+            const user_id = req.body.uid;
+            const user = await this.userService.getUserByUserId(user_id);
+            // console.log("controller", user);
+            res.status(200).json({
+                success: true,
+                message: "success",
+                userDetail: user,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "Internal server error",
+            });
+        }
+    };
+
+    //Danny
+    getAllUsers = async (req: Request, res: Response) => {
+        try {
+            const result = await this.userService.getAllUsersData();
+
             res.status(201).json({
                 success: true,
                 message: "Success getting all users",
-                payload: result,
+                userList: result,
             });
         } catch (err) {
             logger.error(err.toString());
@@ -223,6 +243,121 @@ export class UserController {
             });
         }
     };
+
+    getUserProfile = async (req: Request, res: Response) => {
+        try {
+            const username = req.body.username;
+
+            if (!username) {
+                res.status(401).json({
+                    success: false,
+                    message: "No username provided",
+                });
+                return;
+            }
+            const result = await this.userService.getUserProfileData(username);
+
+            console.log("check", result);
+            res.status(201).json({
+                success: true,
+                message: "Success getting user profile",
+                userProfile: result,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+
+    getUserFriends = async (req: Request, res: Response) => {
+        try {
+
+            const user_id = req.body.user_id;
+            if (!user_id) {
+                res.status(401).json({
+                    success: false,
+                    message: "No username provided",
+                });
+                return;
+            }
+
+            const result = await this.userService.getUserFriends(user_id);
+
+            console.log('<Controller - User Freinds>', result)
+
+            res.status(201).json({
+                success: true,
+                message: "Success getting user friends",
+                userFriends: result,
+            });
+                    } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    updateUserProfile = async (req: Request, res: Response) => {
+        try {
+            let userData = req.form?.fields;
+            const file = req.form?.files.profile;
+            const profile = file?.["newFilename"];
+            userData!.profile = profile;
+
+            console.log(userData);
+            await this.userService.update(userData as any as User);
+
+            res.status(201).json({ success: true, message: "Updated" });
+
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+
+    updateUserPermission = async (req: Request, res: Response) => {
+        try {
+
+            const username = req.body.username;
+            const permissions = req.body.permissions;
+            if (!username) {
+                res.status(401).json({
+                    success: false,
+                    message: "No username provided",
+                });
+                return;
+            }
+
+            const result = await this.userService.updateUserPermission(username, permissions);
+
+            console.log('<Controller - Update User Permission>', result)
+
+            res.status(201).json({
+                success: true,
+                message: "Success Update User Permission",
+                result: result,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+
+
 }
 
 declare global {

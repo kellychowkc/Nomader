@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState, ReactNode } from 'react'
 
 import {
     Box,
@@ -15,18 +15,18 @@ import {
     Icon,
     Image,
     Input,
+    Modal,
+    ModalOverlay,
     SimpleGrid,
     Stack,
     Stat,
     StatLabel,
     StatNumber,
-    Switch,
     Text,
     useColorModeValue,
+    useDisclosure,
     VStack,
 } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
-import { ReactNode } from 'react'
 
 import {
     MdNaturePeople,
@@ -34,72 +34,46 @@ import {
     MdTimelapse,
     MdWarning,
 } from 'react-icons/md'
+
+import { AuthState } from '../../../redux/state'
+import { RootState, RootThunkDispatch } from '../../../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllUsersList } from '../../../redux/manageUser/manageUserThunk'
+import {
+    getUserFriends,
+    getUserProfile,
+    updateUserPermission,
+    UserProfile,
+} from '../../../api/user'
+import PermissionSetting from './PermissionSetting'
 import { UsersList } from './userList'
-import { RootState } from '../../../redux/store'
+import { ModalUserFriends, ModalUserProfileDetail } from './ModalManageUser'
 
 export interface IUser {
-    fullname: string
-    username: string
-    avatar: string
-}
-
-const usersList: IUser[] = [
-    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
-    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
-    { fullname: 'Adams', username: 'adamsishandsome', avatar: 'green' },
-    { fullname: 'Jason', username: 'jasonishandsome', avatar: 'blue' },
-    { fullname: 'Bruce', username: 'bruceishandsome', avatar: 'yellow' },
-    { fullname: 'Lin', username: 'linisgoodlooking', avatar: 'purple' },
-]
-
-interface IProfile {
-    username: string
-    password: string
     first_name: string
     last_name: string
-
-    email: string
-    phone_num: string
-
-    birthday?: string
-    gender?: string
-
-    information?: string
-    profile?: string
-    job_id?: number
-    emergency_contact_person?: string
-    emergency_contact_num?: number
-    original_city_id?: number
-    country_id?: number
-    created_at: string
-    updated_at: string
+    username: string
+    profile: string
 }
 
-const demoUser: IProfile = {
-    username: 'adamsishandsome',
-    password: 'xxxHideMexxx',
-    first_name: 'Adams',
-    last_name: 'Ip',
-    email: 'adamsip@tecky.io',
-    phone_num: '173173173',
-    created_at: '2022-09-13',
-    updated_at: '2022-09-13',
+const demoUser: UserProfile = {
+    username: '',
+    password: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_num: '',
+    created_at: '',
+    updated_at: '',
 
-    birthday: '1997-7-1',
-    profile: 'purple',
+    birthday: '',
+    profile: '',
 }
 
 interface IStats {
     name: number | string
     stats: number | string
 }
-
 const demoStats: any = {
     activeTime: {
         name: 'Active Time',
@@ -126,7 +100,7 @@ function StatsCard(props: StatsCardProps) {
         <Stat
             px={{ base: 2, md: 4 }}
             py={'5'}
-            shadow={'xl'}
+            shadow={'lg'}
             border={'1px solid'}
             borderColor={useColorModeValue('gray.800', 'gray.500')}
             rounded={'lg'}
@@ -149,25 +123,182 @@ function StatsCard(props: StatsCardProps) {
         </Stat>
     )
 }
-interface Permission {
+
+export interface Permission {
+    displayName: string
     name: string
-    value: string
+    value: boolean
 }
 
-const permissions: Permission[] = [
-    { name: 'Visible by others', value: '' },
-    { name: 'Matching', value: '' },
-    { name: 'Create post', value: '' },
-    { name: 'Comment', value: '' },
-    { name: 'Upload Picture', value: '' },
-]
-
 export default function ManageUser() {
-    useEffect(() => {}, [])
-    const reduxUserList = useSelector((state: RootState) => state.manageUser)
+    const auth: AuthState = useSelector((state: any) => state.auth)
+    const dispatch = useDispatch<RootThunkDispatch>()
+
+    //Get all users list
+    useEffect(() => {
+        const result = dispatch(getAllUsersList()).then((data) => {
+            // console.log(data)
+            if (data.success) {
+                console.log('<getAllUserList> Dispatch Success')
+            } else {
+                console.log('<getAllUserList> Dispatch Fail')
+            }
+        })
+    }, [])
+
+    const [viewUser, setViewUser] = React.useState<string>('')
+    const [userProfile, setUserProfile] = React.useState<UserProfile>(demoUser)
+
+    // view selected user profile & permission setting
+    useEffect(() => {
+        if (viewUser) {
+            const result = getUserProfile(viewUser).then((data) => {
+                console.log('View user data = ', data)
+                if (data.success) {
+                    console.log('<getUserProfile> Fetch Success')
+                    setUserProfile(data.userProfile)
+                    setPermission_post(data.userProfile.isAdmin)
+                } else {
+                    console.log('<getUserProfile> Fetch Fail')
+                }
+            })
+
+            // permissions.map((permission: Permission) => {
+            //     // `setPermission_${permission.name}(${permission.value})`
+            //     if (permission.name === 'visible') {
+            //         setPermission_visible(permission.value)
+            //     } else if (permission.name === 'matching') {
+            //         setPermission_matching(permission.value)
+            //     } else if (permission.name === 'post') {
+            //         setPermission_post(permission.value)
+            //     } else if (permission.name === 'comment') {
+            //         setPermission_comment(permission.value)
+            //     } else if (permission.name === 'upload') {
+            //         setPermission_upload(permission.value)
+            //     }
+            // })
+        }
+    }, [viewUser])
+
+    const [permission_visible, setPermission_visible] =
+        useState<Permission['value']>(false)
+    const [permission_matching, setPermission_matching] =
+        useState<Permission['value']>(false)
+    const [permission_post, setPermission_post] =
+        useState<Permission['value']>(false)
+    const [permission_comment, setPermission_comment] =
+        useState<Permission['value']>(false)
+    const [permission_upload, setPermission_upload] =
+        useState<Permission['value']>(false)
+
+    const permissions: Permission[] = [
+        {
+            displayName: 'Visible by others',
+            name: 'visible',
+            value: permission_visible,
+        },
+        {
+            displayName: 'Matching',
+            name: 'matching',
+            value: permission_matching,
+        },
+        { displayName: 'Create post', name: 'post', value: permission_post },
+        { displayName: 'Comment', name: 'comment', value: permission_comment },
+        {
+            displayName: 'Upload Picture',
+            name: 'upload',
+            value: permission_upload,
+        },
+    ]
+
+    const handleChange_permission = (name: any) => {
+        // `setPermission_${name}(!permission_${name})`
+        console.log('handleChange_permission is pressed')
+        if (name === 'visible') {
+            setPermission_visible(!permission_visible)
+        } else if (name === 'matching') {
+            setPermission_matching(!permission_matching)
+        } else if (name === 'post') {
+            setPermission_post(!permission_post)
+        } else if (name === 'comment') {
+            setPermission_comment(!permission_comment)
+        } else if (name === 'upload') {
+            setPermission_upload(!permission_upload)
+        }
+    }
+
+    // user permission
+    useEffect(() => {
+        console.log('Permission had been changed!!!')
+
+        console.log(
+            permission_visible,
+            permission_matching,
+            permission_post,
+            permission_comment,
+            permission_upload
+        )
+
+        const permissionUpdates = [
+            permission_visible,
+            permission_matching,
+            permission_post,
+            permission_comment,
+            permission_upload,
+        ]
+        if (viewUser) {
+            const result = updateUserPermission(
+                viewUser,
+                permissionUpdates
+            ).then((data) => {
+                // console.log('Set user permissions = ', data)
+
+                if (data.success) {
+                    console.log('<updateUserPermission> Fetch Success')
+                    console.log(data.result)
+                } else {
+                    console.log('<updateUserPermission> Fetch Fail')
+                }
+            })
+        }
+    }, [
+        permission_visible,
+        permission_matching,
+        permission_post,
+        permission_comment,
+        permission_upload,
+    ])
+
+    const reduxUserListData = useSelector(
+        (state: RootState) => state.manageUser
+    )
+
     const [searchUser, setSearchUser] = React.useState('')
     const handleChange_searchUser = (event: any) =>
         setSearchUser(event.target.value)
+
+    // Modal popup for showing user profile detail and friends
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [modalType, setModalType] = useState<string>('')
+
+    const [viewFriendsById, setViewFriendsById] = useState<number | undefined>(
+        undefined
+    )
+    const [userFriends, setUserFriends] = useState<Array<any>>([])
+
+    useEffect(() => {
+        if (viewFriendsById) {
+            const result = getUserFriends(viewFriendsById).then((data) => {
+                console.log('View user friends = ', data)
+                if (data.success) {
+                    console.log('<getUserFriends> Fetch Success')
+                } else {
+                    console.log('<getUserFriends> Fetch Fail')
+                }
+                setUserFriends(data.userFriends)
+            })
+        }
+    }, [viewFriendsById])
 
     return (
         <Box maxW="7xl" mx={'auto'} px={{ base: 2, sm: 12, md: 17 }}>
@@ -242,69 +373,66 @@ export default function ManageUser() {
                                         xl: 'row',
                                     }}
                                     justify="center"
-                                    alignContent="flex-start"
-                                    alignItems="flex-start"
+                                    alignContent="center"
+                                    alignItems="center"
                                 >
-                                    <Box m={1} h="min-content">
+                                    <Box m={1} h="min-content" w="90%">
                                         <FormControl id="userName">
-                                            <FormLabel>User name</FormLabel>
+                                            <FormLabel>User Name</FormLabel>
                                             <Input
-                                                placeholder="UserName"
+                                                placeholder="Username"
                                                 _placeholder={{
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
-                                                value={demoUser.username}
+                                                value={userProfile.username}
                                                 readOnly
                                             />
                                         </FormControl>
                                     </Box>
-                                    <Box m={1} h="min-content">
-                                        <FormControl id="full_name">
-                                            <FormLabel>Full Name</FormLabel>
+                                    <Box m={1} h="min-content" w="90%">
+                                        <FormControl id="first_name">
+                                            <FormLabel>First Name</FormLabel>
                                             <Input
-                                                placeholder="Full name"
+                                                placeholder="First Name"
                                                 _placeholder={{
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
-                                                value={
-                                                    demoUser.first_name +
-                                                    ' ' +
-                                                    demoUser.last_name
-                                                }
-                                                readOnly
+                                                value={userProfile.first_name}
                                             />
                                         </FormControl>
                                     </Box>
-                                    <Box m={1}>
+
+                                    <Box m={1} h="min-content" w="90%">
+                                        <FormControl id="last_name">
+                                            <FormLabel>Last Name</FormLabel>
+                                            <Input
+                                                placeholder="Last Name"
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={userProfile.last_name}
+                                            />
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box m={1} h="min-content" w="90%">
                                         <FormControl id="birthday">
-                                            <FormLabel>Age</FormLabel>
+                                            <FormLabel>Birthday</FormLabel>
                                             <Input
                                                 placeholder="Birthday"
                                                 _placeholder={{
                                                     color: 'gray.500',
                                                 }}
                                                 type="text"
-                                                value={demoUser.birthday}
+                                                value={userProfile.birthday}
                                                 readOnly
                                             />
                                         </FormControl>
                                     </Box>
-                                    <Box m={1}>
-                                        <FormControl id="gender">
-                                            <FormLabel>Gender</FormLabel>
-                                            <Input
-                                                placeholder="M/F/T..."
-                                                _placeholder={{
-                                                    color: 'gray.500',
-                                                }}
-                                                type="text"
-                                                value={demoUser.gender}
-                                                readOnly
-                                            />
-                                        </FormControl>
-                                    </Box>
+
                                     <Stack
                                         className="buttonGroup"
                                         direction={'column'}
@@ -320,25 +448,75 @@ export default function ManageUser() {
                                             direction={['column', 'row']}
                                         >
                                             <Button
+                                                id="button_UserProfileDetail"
                                                 bg={'teal.400'}
                                                 color={'white'}
                                                 size="md"
                                                 _hover={{
                                                     bg: 'teal.500',
                                                 }}
+                                                onClick={() => {
+                                                    setModalType('profile')
+                                                    onOpen()
+                                                }}
                                             >
                                                 Detail
                                             </Button>
                                             <Button
+                                                id="button_UserFriends"
                                                 bg={'blue.400'}
                                                 color={'white'}
                                                 size="md"
                                                 _hover={{
                                                     bg: 'blue.500',
                                                 }}
+                                                onClick={() => {
+                                                    setViewFriendsById(
+                                                        userProfile.id
+                                                    )
+                                                    setModalType('friends')
+                                                    onOpen()
+                                                }}
                                             >
                                                 Friends
                                             </Button>
+                                            <Modal
+                                                id="modal_ManageUser"
+                                                isOpen={isOpen}
+                                                onClose={onClose}
+                                                size="xl"
+                                            >
+                                                <ModalOverlay />
+                                                {modalType === 'profile' ? (
+                                                    <ModalUserProfileDetail
+                                                        userProfile={
+                                                            userProfile
+                                                        }
+                                                        userFriends={
+                                                            userFriends
+                                                        }
+                                                        disclosure={{
+                                                            onOpen,
+                                                            isOpen,
+                                                            onClose,
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <ModalUserFriends
+                                                        userProfile={
+                                                            userProfile
+                                                        }
+                                                        userFriends={
+                                                            userFriends
+                                                        }
+                                                        disclosure={{
+                                                            onOpen,
+                                                            isOpen,
+                                                            onClose,
+                                                        }}
+                                                    />
+                                                )}
+                                            </Modal>
                                         </Stack>
                                         <Stack
                                             my="3px"
@@ -352,6 +530,15 @@ export default function ManageUser() {
                                                 size="md"
                                                 _hover={{
                                                     bg: 'orange.500',
+                                                }}
+                                                onClick={() => {
+                                                    setPermission_comment(false)
+                                                    setPermission_matching(
+                                                        false
+                                                    )
+                                                    setPermission_post(false)
+                                                    setPermission_upload(false)
+                                                    setPermission_visible(false)
                                                 }}
                                             >
                                                 Suspend
@@ -374,15 +561,28 @@ export default function ManageUser() {
                                         <Box
                                             className="profileHistory"
                                             fontSize="sm"
-                                            color="#363636"
                                         >
-                                            <Text>
-                                                Member since:
-                                                {demoUser.created_at}
+                                            <Text
+                                                fontSize={'sm'}
+                                                fontWeight={'semibold'}
+                                            >
+                                                Member Since:
+                                                {' ' +
+                                                    userProfile.created_at!.split(
+                                                        'T',
+                                                        1
+                                                    )}
                                             </Text>
-                                            <Text>
-                                                Last update:
-                                                {demoUser.updated_at}
+                                            <Text
+                                                fontSize={'sm'}
+                                                fontWeight={'semibold'}
+                                            >
+                                                Last Update:
+                                                {' ' +
+                                                    userProfile.updated_at!.split(
+                                                        'T',
+                                                        1
+                                                    )}
                                             </Text>
                                         </Box>
                                         <HStack
@@ -390,7 +590,13 @@ export default function ManageUser() {
                                             spacing={0}
                                         >
                                             <Box bg="teal" w="66%">
-                                                <Image src="https://avatars.dicebear.com/api/male/username.svg" />
+                                                <Image
+                                                    src={
+                                                        auth.profile
+                                                            ? auth.profile
+                                                            : 'https://avatars.dicebear.com/api/male/username.svg'
+                                                    }
+                                                />
                                             </Box>
                                             <Box w="33%">
                                                 <VStack w="100%" spacing={0}>
@@ -408,7 +614,7 @@ export default function ManageUser() {
                                             w="100%"
                                             spacing={0}
                                             p="3px"
-                                            shadow={'xl'}
+                                            shadow={'lg'}
                                             border={'1px solid'}
                                             borderColor={useColorModeValue(
                                                 'gray.800',
@@ -436,7 +642,7 @@ export default function ManageUser() {
                                             w="100%"
                                             spacing={0}
                                             p="3px"
-                                            shadow={'xl'}
+                                            shadow={'lg'}
                                             border={'1px solid'}
                                             borderColor={useColorModeValue(
                                                 'gray.800',
@@ -450,43 +656,16 @@ export default function ManageUser() {
                                             >
                                                 Permission Setting
                                             </Text>
-
-                                            {permissions.map(
-                                                (
-                                                    permission: Permission,
-                                                    idx: number
-                                                ) => (
-                                                    <HStack
-                                                        key={idx}
-                                                        w="90%"
-                                                        px="5px"
-                                                        py="3px"
-                                                    >
-                                                        <FormControl
-                                                            display="flex"
-                                                            justifyContent={
-                                                                'space-between'
-                                                            }
-                                                        >
-                                                            <FormLabel
-                                                                htmlFor="visibleByOthers"
-                                                                mb="0"
-                                                            >
-                                                                {
-                                                                    permission.name
-                                                                }
-                                                            </FormLabel>
-                                                            <Switch
-                                                                id={
-                                                                    permission.value
-                                                                }
-                                                                colorScheme="teal"
-                                                                size="md"
-                                                            />
-                                                        </FormControl>
-                                                    </HStack>
-                                                )
-                                            )}
+                                            <PermissionSetting
+                                                permissions={permissions}
+                                                changePermission={(
+                                                    name: string
+                                                ) => {
+                                                    handleChange_permission(
+                                                        name
+                                                    )
+                                                }}
+                                            />
                                         </VStack>
                                     </VStack>
                                 </Flex>
@@ -507,13 +686,7 @@ export default function ManageUser() {
                             <Flex
                                 w="100%"
                                 wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
+                                direction={'column'}
                                 justify="space-evenly"
                             >
                                 <Box
@@ -550,14 +723,22 @@ export default function ManageUser() {
                                 <Box
                                     w="90%"
                                     m={3}
-                                    bg="#FFFFFF"
+                                    bg={useColorModeValue('white', 'gray.400')}
                                     rounded={'15px'}
                                     scrollBehavior="smooth"
                                     overflowY="scroll"
                                     overflowX={'hidden'}
                                     maxH="550px"
+                                    h={'400px'}
                                 >
-                                    <UsersList list={usersList} />
+                                    <UsersList
+                                        list={
+                                            reduxUserListData.userList as IUser[]
+                                        }
+                                        viewUser={(username: string) => {
+                                            setViewUser(username)
+                                        }}
+                                    />
                                 </Box>
                             </Flex>
                         </Stack>

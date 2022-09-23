@@ -1,5 +1,5 @@
 export interface User {
-    id: number;
+    id?: number;
     username: string;
     password: string;
     first_name?: string;
@@ -12,6 +12,9 @@ export interface User {
     phone_num?: number;
     job_id?: number;
     country_id?: number;
+    isAdmin?: boolean;
+    created_at?: string;
+    updated_at?: string;
 }
 
 export interface Interest {

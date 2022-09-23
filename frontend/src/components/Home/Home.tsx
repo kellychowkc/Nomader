@@ -5,19 +5,13 @@ import {
     VStack,
     Flex,
     HStack,
-    Image,
     Icon,
     FormControl,
     Input,
     Avatar,
-    Center,
-    Heading,
-    Stack,
     useColorModeValue,
     Button,
 } from '@chakra-ui/react'
-import Nav from '../common/navBar/NavBar'
-import Dock from '../common/dock/Dock'
 
 import {
     MdFlight,
@@ -29,26 +23,19 @@ import {
     MdLocationPin,
     MdLocalActivity,
 } from 'react-icons/md'
-import { FaHeart, FaSlidersH } from 'react-icons/fa'
+import { FaSlidersH } from 'react-icons/fa'
+
 import { Carousel } from '@trendyol-js/react-carousel'
-import useWindowDimensions from '../windowDimension/WindowDimension'
-import { useSelector } from 'react-redux'
-import { AuthState } from '../../redux/state'
+
+import Nav from '../common/navBar/NavBar'
+import Dock from '../common/dock/Dock'
 
 import './Home.css'
+
 import { Link, useNavigate } from 'react-router-dom'
-
-interface UserProfile {
-    username: string
-    user_type?: string
-    avatar?: any
-}
-
-const user: UserProfile = {
-    username: 'Danny',
-    user_type: 'I am ~Admin~',
-    avatar: 'https://avatars.dicebear.com/api/male/username.svg',
-}
+import { useSelector } from 'react-redux'
+import { AuthState } from '../../redux/state'
+import InterestCard, { InterestCardData } from './interestCard'
 
 const categories = [
     { name: 'location', icon: MdMap, path: '' },
@@ -57,7 +44,7 @@ const categories = [
     { name: 'safety', icon: MdSecurity, path: 'contact' },
 ]
 
-const interestList: DisplayCardData[] = [
+const interestList: InterestCardData[] = [
     {
         name: 'Interest #1',
         location: 'Location',
@@ -114,93 +101,10 @@ const interestList: DisplayCardData[] = [
     },
 ]
 
-interface DisplayCardData {
-    name: string
-    location: string
-    city: string
-    country: string
-    picture: string
-    like: boolean
-    rating: string
-}
-
-const DisplayCard = (props: { data: DisplayCardData }) => (
-    <Center py={5} mx={'10px'} w="auto">
-        <Box
-            role={'group'}
-            p={6}
-            maxW={'400px'}
-            w={{ base: '50vw', sm: '45vw', md: '45vw' }}
-            // bg={useColorModeValue('gray.100','gray.100')}
-            boxShadow={'lg'}
-            rounded={'lg'}
-            pos={'relative'}
-            zIndex={1}
-        >
-            <Box
-                rounded={'lg'}
-                mt={'-10px'}
-                pos={'relative'}
-                height={'200px'}
-                _after={{
-                    transition: 'all .3s ease',
-                    content: '""',
-                    w: 'full',
-                    h: 'full',
-                    pos: 'absolute',
-                    top: 1,
-                    left: 0,
-                    backgroundImage: `url(${props.data.picture})`,
-                    filter: 'blur(8px)',
-                    zIndex: -1,
-                }}
-                _groupHover={{
-                    _after: {
-                        filter: 'blur(12px)',
-                    },
-                }}
-            >
-                <Image
-                    rounded={'lg'}
-                    height={200}
-                    width={'full'}
-                    objectFit={'cover'}
-                    src={props.data.picture}
-                />
-            </Box>
-            <Stack pt="10px" align={'flex-start'} position="relative">
-                <Icon
-                    as={FaHeart}
-                    position="absolute"
-                    top="20px"
-                    right="3px"
-                    boxSize={'1.5em'}
-                    color={'#BBBBBB'}
-                    _hover={{ color: '#FF0000' }}
-                    _focus={{ color: '#FF0000' }}
-                />
-                <Heading
-                    className="interestTitle"
-                    fontSize={'xl'}
-                    fontWeight={'bold'}
-                >
-                    {props.data.name}
-                </Heading>
-                <HStack className="interestLocation" align={'center'}>
-                    <Text>
-                        {props.data.location},{props.data.city},
-                        {props.data.country}
-                    </Text>
-                </HStack>
-            </Stack>
-        </Box>
-    </Center>
-)
-
 const Home = () => {
     const [search, setSearch] = React.useState('')
     const handleChange_search = (event: any) => setSearch(event.target.value)
-    const { height, width } = useWindowDimensions()
+    const windowWidth = window.innerWidth
 
     const auth: AuthState = useSelector((state: any) => state.auth)
 
@@ -230,7 +134,7 @@ const Home = () => {
                         w="100%"
                         pt="15px"
                         m="0"
-                        spacing={10}
+                        spacing={8}
                         justify={{ base: 'space-around', lg: 'center' }}
                     >
                         <VStack
@@ -241,16 +145,16 @@ const Home = () => {
                         >
                             <HStack color="#B0D8BC" align={'baseline'}>
                                 <Text
-                                    fontSize={{ base: '2em', lg: '2.5em' }}
+                                    fontSize={{ base: '1.5em', lg: '2.5em' }}
                                     fontWeight="bold"
                                 >
                                     Hello,
                                 </Text>
                                 <Text
-                                    fontSize={{ base: '2.5em', lg: '3em' }}
+                                    fontSize={{ base: '2em', lg: '3em' }}
                                     fontWeight="bolder"
-                                    letterSpacing={'wide'}
                                     textTransform={'uppercase'}
+                                    whiteSpace={'break-spaces'}
                                 >
                                     {auth.username}
                                 </Text>
@@ -268,7 +172,7 @@ const Home = () => {
                         <Box className="avatar" p="10px" mx="0">
                             <Avatar
                                 size={{ base: 'lg', lg: 'xl' }}
-                                src={user.avatar}
+                                src={auth.profile}
                                 boxShadow={'0px 0px 6px #AAAAAA'}
                             ></Avatar>
                         </Box>
@@ -470,14 +374,14 @@ const Home = () => {
                     >
                         <Carousel
                             infinite={true}
-                            show={Math.max(1.5, width / 400)}
+                            show={Math.max(1.5, windowWidth / 400)}
                             slide={2.5}
                             swiping={true}
                             responsive={true}
                         >
                             {interestList.map(
-                                (item: DisplayCardData, idx: any) => (
-                                    <DisplayCard key={idx} data={item} />
+                                (item: InterestCardData, idx: any) => (
+                                    <InterestCard key={idx} data={item} />
                                 )
                             )}
                         </Carousel>

@@ -39,7 +39,7 @@ export function loginThunk(loginForm: LoginForm, navigate: NavigateFunction) {
             dispatch(loginPending());
             const data = await postLogin(loginForm);
             window.localStorage.setItem("auth_token", data.token);
-            dispatch(loginSuccess(data.username, data.id));
+            dispatch(loginSuccess(data.username, data.id, data.isAdmin));
             navigate("/");
         } catch (err: any) {
             dispatch(loginFail(err.message));

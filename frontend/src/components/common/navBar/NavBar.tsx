@@ -14,48 +14,21 @@ import {
     Stack,
     useColorMode,
     HStack,
-    IconButton,
     Text,
+    Icon,
+    LinkOverlay,
+    LinkBox,
 } from '@chakra-ui/react'
 
-import { MoonIcon, SunIcon } from '@chakra-ui/icons'
-
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
+import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons'
 
 import { useSelector } from 'react-redux'
 import { AuthState } from '../../../redux/state'
 import { NavLink } from 'react-router-dom'
 
-interface LinkItemProps {
-    name: string
-    path: string
-}
-const LinkItems: Array<LinkItemProps> = [
-    { name: 'Destinations', path: '/destination' },
-    { name: 'Safety', path: '/contact' },
-    { name: 'Control Panel', path: '/control/' },
-]
-
-const NavLinkHover = ({ children }: { children: LinkItemProps }) => (
-    <NavLink to={children.path} key={children.name}>
-        <Box
-            px={2}
-            py={1}
-            rounded={'md'}
-            _hover={{
-                textDecoration: 'none',
-                bg: useColorModeValue('gray.200', 'gray.700'),
-            }}
-        >
-            {children.name}
-        </Box>
-    </NavLink>
-)
-
 export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    //update username from redux
+
     const auth: AuthState = useSelector((state: any) => state.auth)
 
     return (
@@ -66,36 +39,21 @@ export default function Nav() {
                     alignItems={'center'}
                     justifyContent={'space-between'}
                 >
-                    <IconButton
-                        size={'md'}
-                        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-                        aria-label={'Open Menu'}
-                        display={{ md: 'none' }}
-                        onClick={isOpen ? onClose : onOpen}
-                    />
-                    <HStack spacing={8} alignItems={'center'}>
-                        <Box>
-                            <Link href="/" style={{ textDecoration: 'none' }}>
-                                <Text
-                                    fontSize="xl"
-                                    fontFamily="monospace"
-                                    fontWeight="bold"
-                                >
-                                    Nomader
-                                </Text>
-                            </Link>
-                        </Box>
-                        <HStack
-                            as={'nav'}
-                            spacing={4}
-                            display={{ base: 'none', md: 'flex' }}
-                        >
-                            {LinkItems.map((link: any) => (
-                                <NavLink to={link.path} key={link.name}>
-                                    {link.name}
-                                </NavLink>
-                            ))}
-                        </HStack>
+                    <HStack
+                        w={'full'}
+                        spacing={8}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                    >
+                        <Link href="/" style={{ textDecoration: 'none' }}>
+                            <Text
+                                fontSize="xl"
+                                fontFamily="monospace"
+                                fontWeight="bold"
+                            >
+                                Nomader
+                            </Text>
+                        </Link>
                     </HStack>
                     <Flex alignItems={'center'}>
                         <Stack direction={'row'} spacing={3}>
@@ -114,30 +72,71 @@ export default function Nav() {
                                     cursor={'pointer'}
                                     minW={0}
                                 >
-                                    <Avatar size={'sm'} src={auth.username} />
+                                    <Icon as={HamburgerIcon} boxSize="1.5em" />
                                 </MenuButton>
                                 <MenuList>
-                                    <MenuItem>{auth.username}</MenuItem>
-                                    <MenuItem>Edit Profile</MenuItem>
+                                    <Box py={1} px={2}>
+                                        <HStack justifyContent={'space-around'}>
+                                            <Avatar
+                                                size={'md'}
+                                                name={auth.username}
+                                                src={auth.profile}
+                                            />
+                                            <Text
+                                                fontSize={'lg'}
+                                                fontWeight={'semibold'}
+                                                textAlign={'center'}
+                                            >
+                                                {auth.username}
+                                            </Text>
+                                        </HStack>
+                                    </Box>
+                                    <LinkBox>
+                                        <MenuItem>
+                                            <LinkOverlay
+                                                href="/editProfile"
+                                                style={{
+                                                    textDecoration: 'none',
+                                                }}
+                                            >
+                                                Edit Profile
+                                            </LinkOverlay>
+                                        </MenuItem>
+                                    </LinkBox>
+
+                                    {auth.isAdmin ? (
+                                        <LinkBox>
+                                            <MenuItem>
+                                                <NavLink
+                                                    className="controlPanel"
+                                                    to={'/control/'}
+                                                >
+                                                    Control Panel
+                                                </NavLink>
+                                            </MenuItem>
+                                        </LinkBox>
+                                    ) : (
+                                        <></>
+                                    )}
+
                                     <MenuDivider />
-                                    <MenuItem>Logout</MenuItem>
+                                    <LinkBox>
+                                        <MenuItem>
+                                            <LinkOverlay
+                                                href="/logout"
+                                                style={{
+                                                    textDecoration: 'none',
+                                                }}
+                                            >
+                                                Logout
+                                            </LinkOverlay>
+                                        </MenuItem>
+                                    </LinkBox>
                                 </MenuList>
                             </Menu>
                         </Stack>
                     </Flex>
                 </Flex>
-
-                {isOpen ? (
-                    <Box pb={4} display={{ md: 'none' }}>
-                        <Stack as={'nav'} spacing={4}>
-                            {LinkItems.map((link) => (
-                                <NavLinkHover key={link.name}>
-                                    {link}
-                                </NavLinkHover>
-                            ))}
-                        </Stack>
-                    </Box>
-                ) : null}
             </Box>
         </>
     )

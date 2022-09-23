@@ -5,11 +5,10 @@ import { logger } from "../utils/logger";
 // import jwt from '../utils/jwt';
 // import { Bearer } from 'permit';
 
-
 export class MatchController {
     constructor(private matchService: MatchService) {}
 
-    matchUser = async (req : Request, res : Response) => {
+    matchUser = async (req: Request, res: Response) => {
         try {
             // const permit = new Bearer({
             //     query: "access_token"
@@ -24,8 +23,9 @@ export class MatchController {
             if (waitingUserId.length > 0) {
                 for (let waitingUser of waitingUserId) {
                     const alreadyMatched = await this.matchService.checkAlreadyMatchedUser(userId, waitingUser["user1_id"]);
+
                     if (alreadyMatched == false) {
-                        waitingList.push(waitingUser)
+                        waitingList.push(waitingUser);
                     }
                 }
             }
@@ -50,14 +50,14 @@ export class MatchController {
                     randomWaitingId[0] = waitingList[0]["user1_id"];
                     randomWaitingId[1] = waitingList[1]["user1_id"];
                     break;
-                default :
+                default:
                     while (randomWaitingId[0] == randomWaitingId[1]) {
                         randomWaitingId[0] = waitingList[Math.floor(Math.random() * waitingList.length)]["user1_id"];
                         randomWaitingId[1] = waitingList[Math.floor(Math.random() * waitingList.length)]["user1_id"];
                     }
                     break;
             }
-            
+
             let randomId = [0, 0, 0];
             switch (allUserId.length) {
                 case 0 :
@@ -79,6 +79,7 @@ export class MatchController {
                         randomId[0] = allUserId[Math.floor(Math.random() * allUserId.length)]["id"];
                         randomId[1] = allUserId[Math.floor(Math.random() * allUserId.length)]["id"];
                         randomId[2] = allUserId[Math.floor(Math.random() * allUserId.length)]["id"];
+
                     }
                     break;
             }
@@ -94,9 +95,10 @@ export class MatchController {
                 } while ((randomId.filter(num => num === randomWaitingId[1])).length > 0);
             } 
             
+
             const idArr = randomWaitingId.concat(randomId);
-            const matchIdArr = idArr.filter(id => id !== 0);
-            const matchUserData = []
+            const matchIdArr = idArr.filter((id) => id !== 0);
+            const matchUserData = [];
             for (let id of matchIdArr) {
                 const userData = await this.matchService.getUserInfo(id);
                 if (userData) {
@@ -115,6 +117,7 @@ export class MatchController {
                         profile : userInfo["profile"],
                         interests : interestArr,
                         // country : userInfo["country"]
+
                     };
                     matchUserData.push(userPortfolio);
                 }
@@ -123,18 +126,17 @@ export class MatchController {
             return;
         } catch (err) {
             logger.error(err.toString());
-            res.status(401).json({ message: 'match failed' })
+            res.status(401).json({ message: "match failed" });
             return;
         }
-    }
+    };
 
-    unlikeUser = async ( req : Request, res : Response ) => {
+    unlikeUser = async (req: Request, res: Response) => {
         try {
-            
         } catch (err) {
             logger.error(err.toString());
-            res.status(401).json({ message: 'match failed' })
+            res.status(401).json({ message: "match failed" });
             return;
         }
-    }
+    };
 }

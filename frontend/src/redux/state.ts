@@ -4,6 +4,9 @@ export interface AuthState {
     username?: string;
     id?: number;
     error?: string;
+    // Added by danny
+    isAdmin?: boolean;
+    profile?: string;
 }
 
 export interface JWTPayload {
@@ -13,14 +16,15 @@ export interface JWTPayload {
 
 export interface ManageUserState {
     loading: boolean;
-    userList?: Array<UserListState | null>
+    userList: Array<UserListState> | undefined;
     error?: string;
 }
 
 export interface UserListState {
+    first_name: string;
+    last_name: string;
     username: string;
-    fullname: string;
-    avatar: string;
+    profile?: string;
 }
 
 export interface UserInfoState {
