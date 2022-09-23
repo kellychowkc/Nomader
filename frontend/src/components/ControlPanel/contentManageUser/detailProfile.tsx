@@ -12,10 +12,10 @@ import {
     ModalOverlay,
     useDisclosure,
 } from '@chakra-ui/react'
-import { IProfile } from './ManageUser'
+import { UserProfile } from '../../../api/user'
 
 type Props = {
-    profile: IProfile
+    profile: UserProfile
 }
 
 export default function DetailProfileTesting(props: Props) {

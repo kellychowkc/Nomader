@@ -64,6 +64,15 @@ export interface UserProfile {
     country?: string;
     created_at?: string;
     updated_at?: string;
+
+    // added by danny - start
+    id?: number
+    isAdmin?: boolean
+    allowPost?: boolean
+    allowComment?: boolean
+    allowUpload?: boolean
+    allowMatch?: boolean
+    // added by danny - end
 }
 
 export async function fetchSelfUserInfo(token: string) {
@@ -187,5 +196,28 @@ export async function fetchSelfUserProfile(userId: number) {
             "content-type": "application/json",
         },
         body: JSON.stringify({ uid: userId }),
+    });
+}
+
+
+
+export async function getUserFriends(user_id: number) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriends`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id }),
+    });
+}
+
+
+export async function updateUserPermission(username: string, permissions: any[]) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/updateUserPermission`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ username: username, permissions: permissions }),
     });
 }
