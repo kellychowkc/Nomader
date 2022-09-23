@@ -14,7 +14,7 @@ import RequireAuth from './components/auth/RequireAuth'
 import InterestList from './components/matching/InterestList'
 
 import Friends from './components/layoutFriends/Friends'
-import Profile from './components/layoutProfile/Profile'
+import Profile from './components/profile/profile'
 import Chat from './components/Chat/Chat'
 import Home from './components/Home/Home'
 import ManageUser from './components/ControlPanel/contentManageUser/ManageUser'
@@ -24,7 +24,7 @@ import NewPost from './components/layoutForum/NewPost'
 import MatchingIndex from './components/matching/MatchingIndex'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
-import EditProfile from './components/layoutProfile/EditProfile'
+import EditProfile from './components/profile/editProfile'
 
 function App() {
     return (
