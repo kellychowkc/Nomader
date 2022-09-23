@@ -132,6 +132,11 @@ export async function up(knex: Knex): Promise<void> {
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
             table.boolean("isAdmin").notNullable();
+            table.boolean("isVisible").notNullable();
+            table.boolean("allow_post").notNullable();
+            table.boolean("allow_comment").notNullable();
+            table.boolean("allow_upload").notNullable();
+            table.boolean("allow_match").notNullable();
             table.timestamps(true, true);
         });
     }

@@ -46,11 +46,14 @@ export class MatchController {
             }
 
             let randomWaitingId = [0, 0];
+            let message = 2;
             switch (waitingList.length) {
                 case 0:
+                    message = 0;
                     break;
                 case 1:
                     randomWaitingId[0] = waitingList[0]["user1_id"];
+                    message = 1;
                     break;
                 case 2:
                     randomWaitingId[0] = waitingList[0]["user1_id"];
@@ -157,14 +160,15 @@ export class MatchController {
                         jobTitle: userInfo["jobTitle"],
                         profile: userInfo["profile"],
                         interests: interestArr,
-                        // country: userInfo["country"],
+                        // country : userInfo["country"]
                     };
                     matchUserData.push(userPortfolio);
                 }
             }
-            console.log(matchUserData);
-            res.status(200).json({ success: true, message: matchUserData });
-
+            res.status(200).json({
+                success: true,
+                message: { waitMatchNum: message, user: matchUserData },
+            });
             return;
         } catch (err) {
             logger.error(err.toString());

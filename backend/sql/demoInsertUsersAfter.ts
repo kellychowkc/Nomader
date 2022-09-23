@@ -20,7 +20,7 @@ export async function seed(knex: Knex): Promise<void> {
     }
     
     let randomAttractionsType = [];
-    for (let i = 0; i < 2195; i++) {
+    for (let i = 0; i < 2196; i++) {
         let randomInterestNum = chance.integer({ min: 1, max: 3});
         for (let i = 0; i < randomInterestNum; i++) {
             let attractionTypeData = {
@@ -35,7 +35,7 @@ export async function seed(knex: Knex): Promise<void> {
 
 
     let randomLikeAttractions = [];
-    for (let i = 0; i < 2195; i++) {
+    for (let i = 0; i < 2196; i++) {
         let readerNum = chance.integer({ min: 0, max: userId.length });
         for (let j = 0; j < readerNum; j++) {
             let reader = chance.integer({ min: 0, max: userId.length - 1 });
