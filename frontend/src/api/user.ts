@@ -1,5 +1,5 @@
 import type { InterestItem } from "../components/matching/InterestList";
-import { ManageUserState } from "../redux/state";
+import type { ManageUserState } from "../redux/state";
 import { fetchJson } from "./utils";
 
 // let REACT_APP_API_SERVER: any;
@@ -44,23 +44,18 @@ export interface PostForm {
 }
 
 export interface UserProfile {
-    username: string;
-    password: string;
-    first_name: string;
-    last_name: string;
-
-    email: string;
-    phone_num: string;
-
+    username?: string;
+    password?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    phone_num?: string;
     birthday?: string;
     gender?: string;
-
     information?: string;
     profile?: Blob | File | string;
     newProfile?: Blob | File;
     job?: string;
-    emergency_contact_person?: string;
-    emergency_contact_num?: number | null;
     country?: string;
     created_at?: string;
     updated_at?: string;
@@ -183,5 +178,26 @@ export async function fetchSelfUserProfile(userId: number) {
             "content-type": "application/json",
         },
         body: JSON.stringify({ uid: userId }),
+    });
+}
+
+export async function updateProfile(updateForm: UserProfile, userId: string) {
+    const formData = new FormData();
+    formData.append("id", userId);
+    formData.append("first_name", updateForm.first_name as any as string);
+    formData.append("last_name", updateForm.last_name as any as string);
+    formData.append("gender", updateForm.gender as any as string);
+    formData.append("birthday", updateForm.birthday as any as string);
+    formData.append("username", updateForm.username as any as string);
+    formData.append("email", updateForm.email as any as string);
+    formData.append("password", updateForm.password as any as string);
+    formData.append("phone_num", updateForm.phone_num as any as string);
+    formData.append("job_id", updateForm.job as any as string);
+    formData.append("information", updateForm.information as any as string);
+    formData.append("profile", updateForm.newProfile as any as string);
+
+    return fetchJson(`${REACT_APP_API_SERVER}/user/updateProfile`, {
+        method: "POST",
+        body: formData,
     });
 }
