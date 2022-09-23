@@ -20,5 +20,8 @@ logInRoutes.post(
 logInRoutes.post("/browsePost", userController.userBrowsePost);
 logInRoutes.get("/", isLoggedIn, userController.getSelfInfo);
 
-logInRoutes.get("/getAllUsers", userController.getAllUsers);
-logInRoutes.post("/getUserProfile", userController.getUserProfile);
+logInRoutes.get("/getAllUsers", userController.getAllUsers)
+logInRoutes.post("/getUserProfile", userController.getUserProfile)
+logInRoutes.post("/getUserFriends", userController.getUserFriends)
+logInRoutes.post("/updateUserPermission", userController.updateUserPermission)
+

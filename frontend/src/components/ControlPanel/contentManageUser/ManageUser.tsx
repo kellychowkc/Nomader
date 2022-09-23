@@ -16,11 +16,6 @@ import {
     Image,
     Input,
     Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
     ModalOverlay,
     SimpleGrid,
     Stack,
@@ -44,9 +39,15 @@ import { AuthState } from '../../../redux/state'
 import { RootState, RootThunkDispatch } from '../../../redux/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsersList } from '../../../redux/manageUser/manageUserThunk'
-import { getUserProfile } from '../../../api/user'
-import PermissionSetting from './permissionSetting'
+import {
+    getUserFriends,
+    getUserProfile,
+    updateUserPermission,
+    UserProfile,
+} from '../../../api/user'
+import PermissionSetting from './PermissionSetting'
 import { UsersList } from './userList'
+import { ModalUserFriends, ModalUserProfileDetail } from './ModalManageUser'
 
 export interface IUser {
     first_name: string
@@ -55,29 +56,7 @@ export interface IUser {
     profile: string
 }
 
-export interface IProfile {
-    username: string
-    password: string
-    first_name: string
-    last_name: string
-
-    email: string
-    phone_num: string
-
-    birthday?: string
-    gender?: string
-
-    information?: string
-    profile?: string
-    job_id?: number
-    emergency_contact_person?: string
-    emergency_contact_num?: number
-    original_city_id?: number
-    country_id?: number
-    created_at: string
-    updated_at: string
-}
-const demoUser: IProfile = {
+const demoUser: UserProfile = {
     username: '',
     password: '',
     first_name: '',
@@ -168,7 +147,7 @@ export default function ManageUser() {
     }, [])
 
     const [viewUser, setViewUser] = React.useState<string>('')
-    const [userProfile, setUserProfile] = React.useState<IProfile>(demoUser)
+    const [userProfile, setUserProfile] = React.useState<UserProfile>(demoUser)
 
     // view selected user profile & permission setting
     useEffect(() => {
@@ -177,11 +156,11 @@ export default function ManageUser() {
                 console.log('View user data = ', data)
                 if (data.success) {
                     console.log('<getUserProfile> Fetch Success')
+                    setUserProfile(data.userProfile)
+                    setPermission_post(data.userProfile.isAdmin)
                 } else {
                     console.log('<getUserProfile> Fetch Fail')
                 }
-                setUserProfile(data.userProfile)
-                setPermission_post(data.userProfile.isAdmin)
             })
 
             // permissions.map((permission: Permission) => {
@@ -259,6 +238,29 @@ export default function ManageUser() {
             permission_comment,
             permission_upload
         )
+
+        const permissionUpdates = [
+            permission_visible,
+            permission_matching,
+            permission_post,
+            permission_comment,
+            permission_upload,
+        ]
+        if (viewUser) {
+            const result = updateUserPermission(
+                viewUser,
+                permissionUpdates
+            ).then((data) => {
+                // console.log('Set user permissions = ', data)
+
+                if (data.success) {
+                    console.log('<updateUserPermission> Fetch Success')
+                    console.log(data.result)
+                } else {
+                    console.log('<updateUserPermission> Fetch Fail')
+                }
+            })
+        }
     }, [
         permission_visible,
         permission_matching,
@@ -270,14 +272,33 @@ export default function ManageUser() {
     const reduxUserListData = useSelector(
         (state: RootState) => state.manageUser
     )
-    // console.log('REDUX User List Data = ', reduxUserListData)
 
     const [searchUser, setSearchUser] = React.useState('')
     const handleChange_searchUser = (event: any) =>
         setSearchUser(event.target.value)
 
-    // Detail profile popup modal
+    // Modal popup for showing user profile detail and friends
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [modalType, setModalType] = useState<string>('')
+
+    const [viewFriendsById, setViewFriendsById] = useState<number | undefined>(
+        undefined
+    )
+    const [userFriends, setUserFriends] = useState<Array<any>>([])
+
+    useEffect(() => {
+        if (viewFriendsById) {
+            const result = getUserFriends(viewFriendsById).then((data) => {
+                console.log('View user friends = ', data)
+                if (data.success) {
+                    console.log('<getUserFriends> Fetch Success')
+                } else {
+                    console.log('<getUserFriends> Fetch Fail')
+                }
+                setUserFriends(data.userFriends)
+            })
+        }
+    }, [viewFriendsById])
 
     return (
         <Box maxW="7xl" mx={'auto'} px={{ base: 2, sm: 12, md: 17 }}>
@@ -399,7 +420,7 @@ export default function ManageUser() {
 
                                     <Box m={1} h="min-content" w="90%">
                                         <FormControl id="birthday">
-                                            <FormLabel>Age</FormLabel>
+                                            <FormLabel>Birthday</FormLabel>
                                             <Input
                                                 placeholder="Birthday"
                                                 _placeholder={{
@@ -427,248 +448,75 @@ export default function ManageUser() {
                                             direction={['column', 'row']}
                                         >
                                             <Button
+                                                id="button_UserProfileDetail"
                                                 bg={'teal.400'}
                                                 color={'white'}
                                                 size="md"
                                                 _hover={{
                                                     bg: 'teal.500',
                                                 }}
-                                                onClick={onOpen}
+                                                onClick={() => {
+                                                    setModalType('profile')
+                                                    onOpen()
+                                                }}
                                             >
                                                 Detail
                                             </Button>
-                                            <Modal
-                                                isOpen={isOpen}
-                                                onClose={onClose}
-                                                size="xl"
-                                            >
-                                                <ModalOverlay />
-                                                <ModalContent>
-                                                    <ModalHeader>
-                                                        User Profile Detail
-                                                    </ModalHeader>
-                                                    <ModalCloseButton />
-                                                    <ModalBody>
-                                                        <Grid templateColumns="repeat(2, 1fr)">
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="userName">
-                                                                        <FormLabel>
-                                                                            User
-                                                                            Name
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="Username"
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.username
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="first_name">
-                                                                        <FormLabel>
-                                                                            First
-                                                                            Name
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="First Name"
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.first_name
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="last_name">
-                                                                        <FormLabel>
-                                                                            Last
-                                                                            Name
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="Last Name"
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.last_name
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="birthday">
-                                                                        <FormLabel>
-                                                                            Birthday
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="Birthday"
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.birthday
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="gender">
-                                                                        <FormLabel>
-                                                                            Gender
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="M/F/T..."
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.gender
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="job_id">
-                                                                        <FormLabel>
-                                                                            Occupation
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="Job Title"
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.job_id
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="emergency_contact_person">
-                                                                        <FormLabel>
-                                                                            Emergency
-                                                                            Contact
-                                                                            Person
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="Person Name"
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.emergency_contact_person
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-
-                                                            <GridItem>
-                                                                <Box
-                                                                    m={1}
-                                                                    h="min-content"
-                                                                    w="90%"
-                                                                >
-                                                                    <FormControl id="emergency_contact_number">
-                                                                        <FormLabel>
-                                                                            Emergency
-                                                                            Contact
-                                                                            Number
-                                                                        </FormLabel>
-                                                                        <Input
-                                                                            placeholder="Contact Number"
-                                                                            _placeholder={{
-                                                                                color: 'gray.500',
-                                                                            }}
-                                                                            type="text"
-                                                                            value={
-                                                                                userProfile.emergency_contact_person
-                                                                            }
-                                                                        />
-                                                                    </FormControl>
-                                                                </Box>
-                                                            </GridItem>
-                                                        </Grid>
-                                                    </ModalBody>
-
-                                                    <ModalFooter>
-                                                        <Button
-                                                            colorScheme="blue"
-                                                            mr={3}
-                                                            onClick={onClose}
-                                                        >
-                                                            Close
-                                                        </Button>
-                                                        <Button colorScheme="yellow">
-                                                            Update
-                                                        </Button>
-                                                    </ModalFooter>
-                                                </ModalContent>
-                                            </Modal>
                                             <Button
+                                                id="button_UserFriends"
                                                 bg={'blue.400'}
                                                 color={'white'}
                                                 size="md"
                                                 _hover={{
                                                     bg: 'blue.500',
                                                 }}
+                                                onClick={() => {
+                                                    setViewFriendsById(
+                                                        userProfile.id
+                                                    )
+                                                    setModalType('friends')
+                                                    onOpen()
+                                                }}
                                             >
                                                 Friends
                                             </Button>
+                                            <Modal
+                                                id="modal_ManageUser"
+                                                isOpen={isOpen}
+                                                onClose={onClose}
+                                                size="xl"
+                                            >
+                                                <ModalOverlay />
+                                                {modalType === 'profile' ? (
+                                                    <ModalUserProfileDetail
+                                                        userProfile={
+                                                            userProfile
+                                                        }
+                                                        userFriends={
+                                                            userFriends
+                                                        }
+                                                        disclosure={{
+                                                            onOpen,
+                                                            isOpen,
+                                                            onClose,
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <ModalUserFriends
+                                                        userProfile={
+                                                            userProfile
+                                                        }
+                                                        userFriends={
+                                                            userFriends
+                                                        }
+                                                        disclosure={{
+                                                            onOpen,
+                                                            isOpen,
+                                                            onClose,
+                                                        }}
+                                                    />
+                                                )}
+                                            </Modal>
                                         </Stack>
                                         <Stack
                                             my="3px"
@@ -682,6 +530,15 @@ export default function ManageUser() {
                                                 size="md"
                                                 _hover={{
                                                     bg: 'orange.500',
+                                                }}
+                                                onClick={() => {
+                                                    setPermission_comment(false)
+                                                    setPermission_matching(
+                                                        false
+                                                    )
+                                                    setPermission_post(false)
+                                                    setPermission_upload(false)
+                                                    setPermission_visible(false)
                                                 }}
                                             >
                                                 Suspend
@@ -711,7 +568,7 @@ export default function ManageUser() {
                                             >
                                                 Member Since:
                                                 {' ' +
-                                                    userProfile.created_at.split(
+                                                    userProfile.created_at!.split(
                                                         'T',
                                                         1
                                                     )}
@@ -722,7 +579,7 @@ export default function ManageUser() {
                                             >
                                                 Last Update:
                                                 {' ' +
-                                                    userProfile.updated_at.split(
+                                                    userProfile.updated_at!.split(
                                                         'T',
                                                         1
                                                     )}

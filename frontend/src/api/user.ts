@@ -59,6 +59,18 @@ export interface UserProfile {
     country?: string;
     created_at?: string;
     updated_at?: string;
+
+    // added by danny - start
+    id?: number;
+    isAdmin?: boolean;
+    allowPost?: boolean;
+    allowComment?: boolean;
+    allowUpload?: boolean;
+    allowMatch?: boolean;
+    emergency_contact_person?: string;
+    emergency_contact_num?: number;
+
+    // added by danny - end
 }
 
 export async function fetchSelfUserInfo(token: string) {
@@ -185,6 +197,29 @@ export async function fetchSelfUserProfile(userId: number) {
     });
 }
 
+
+
+export async function getUserFriends(user_id: number) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriends`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id }),
+    });
+}
+
+
+export async function updateUserPermission(username: string, permissions: any[]) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/updateUserPermission`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ username: username, permissions: permissions }),
+    });
+}
+
 export async function updateProfile(updateForm: UserProfile, userId: string) {
     const formData = new FormData();
     formData.append("id", userId);
@@ -205,3 +240,4 @@ export async function updateProfile(updateForm: UserProfile, userId: string) {
         body: formData,
     });
 }
+
