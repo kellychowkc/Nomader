@@ -14,7 +14,6 @@ export async function seed(knex: Knex): Promise<void> {
     // const citiesId: Array<{ id: number, name: string }> = await knex("cities").select("id", "name");
     // const countryId: Array<{ id: number }> = await knex("countries").select("id");
     // const attractionId: Array<{ id: number }> = await knex("attractions").select("id");
-
     // for (let user of userId) {
     //     await knex("users")
     //         .where("id", user["id"])
@@ -62,3 +61,4 @@ export async function seed(knex: Knex): Promise<void> {
     // }
 
 };
+

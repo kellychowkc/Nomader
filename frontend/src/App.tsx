@@ -1,14 +1,4 @@
-import {
-    Box,
-    Button,
-    Container,
-    Square,
-    Text,
-    VStack,
-    Image,
-    Flex,
-    Center,
-} from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 
 import { Link } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
@@ -16,16 +6,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Welcome from './components/welcome/Welcome'
 import Dashboard from './components/ControlPanel/contentDashboard/Dashboard'
 import ControlPanel from './components/ControlPanel/ControlPanel'
-import Landing from './components/layoutLanding/Landing'
+import Landing from './components/Landing/Landing'
 import SignUp from './components/auth/SignUp'
 import Forum from './components/layoutForum/Forum'
-import Dock from './components/common/dock/Dock'
 import Login from './components/auth/Login'
 import RequireAuth from './components/private/RequireAuth'
 import InterestList from './components/matching/InterestList'
 
-import { PhoneIcon } from '@chakra-ui/icons'
-import { MdForum } from 'react-icons/md'
 import Friends from './components/layoutFriends/Friends'
 import Profile from './components/layoutProfile/Profile'
 import Chat from './components/Chat/Chat'
@@ -45,12 +32,6 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="welcome" element={<Welcome />} />
 
-                    <Route path="control" element={<ControlPanel />}>
-                        <Route index element={<Dashboard />} />
-                        <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="user" element={<ManageUser />} />
-                        <Route path="forum" element={<ManageUser />} />
-                    </Route>
                     <Route path="landing" element={<Landing />} />
 
                     {/* Required Auth Route */}
@@ -72,6 +53,12 @@ function App() {
                         <Route path="profile" element={<Profile />} />
                         <Route path="chat" element={<Chat />} />
                         <Route path="home" element={<Home />} />
+                        <Route path="control" element={<ControlPanel />}>
+                            <Route index element={<Dashboard />} />
+                            <Route path="dashboard" element={<Dashboard />} />
+                            <Route path="user" element={<ManageUser />} />
+                            <Route path="forum" element={<ManageUser />} />
+                        </Route>
                     </Route>
 
                     <Route path="login" element={<Login />} />

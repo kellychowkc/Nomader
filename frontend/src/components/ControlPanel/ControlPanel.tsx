@@ -20,6 +20,8 @@ import {
     MenuDivider,
     MenuItem,
     MenuList,
+    useColorMode,
+    Button,
 } from '@chakra-ui/react'
 import {
     FiTrendingUp,
@@ -32,6 +34,9 @@ import {
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { Link as ReactRouterLink, Outlet } from 'react-router-dom'
+import { AuthState } from '../../redux/state'
+import { useSelector } from 'react-redux'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 
 interface LinkItemProps {
     name: string
@@ -44,18 +49,6 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Manage Forum', icon: FiStar, path: 'forum' },
     { name: 'Manage Destination', icon: FiCompass, path: 'destination' },
 ]
-
-interface UserProfile {
-    username: string
-    user_type?: string
-    avatar?: any
-}
-
-const user: UserProfile = {
-    username: 'Danny',
-    user_type: 'I am ~Admin~',
-    avatar: 'None',
-}
 
 export default function ControlPanel() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -184,6 +177,10 @@ interface MobileProps extends FlexProps {
     onOpen: () => void
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+    const { colorMode, toggleColorMode } = useColorMode()
+
+    const auth: AuthState = useSelector((state: any) => state.auth)
+
     return (
         <Flex
             ml={{ base: 0, md: 60 }}
@@ -215,12 +212,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             </Text>
 
             <HStack spacing={{ base: '0', md: '6' }}>
-                <IconButton
-                    size="lg"
-                    variant="ghost"
-                    aria-label="open menu"
-                    icon={<FiBell />}
-                />
+                <Button variant="ghost" aria-label="open menu" px="1">
+                    <FiBell />
+                </Button>
+                <Button variant="ghost" onClick={toggleColorMode} px="1">
+                    {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                </Button>
                 <Flex alignItems={'center'}>
                     <Menu>
                         <MenuButton
@@ -231,9 +228,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <HStack>
                                 <Avatar
                                     size={'sm'}
-                                    src={
-                                        'https://avatars.dicebear.com/api/male/username.svg'
-                                    }
+                                    src={auth.profile ? auth.profile : ''}
                                 />
                                 <VStack
                                     display={{ base: 'none', md: 'flex' }}
@@ -242,10 +237,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                     ml="2"
                                 >
                                     {/* Profile Name */}
-                                    <Text fontSize="md">{user.username}</Text>
+                                    <Text fontSize="md">{auth.username}</Text>
                                     {/* User Type */}
                                     <Text fontSize="s" color="gray.600">
-                                        {user.user_type}
+                                        {auth.isAdmin
+                                            ? 'I am Admin'
+                                            : 'I am User'}
                                     </Text>
                                 </VStack>
                                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -260,14 +257,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                                 'gray.700'
                             )}
                         >
+                            <MenuItem>{auth.username}</MenuItem>
                             <MenuItem>
                                 <Link as={ReactRouterLink} to="/profile">
-                                    Profile
+                                    Edit Profile
                                 </Link>
                             </MenuItem>
-                            <MenuItem>Settings</MenuItem>
                             <MenuDivider />
-                            <MenuItem>Sign out</MenuItem>
+                            <MenuItem>Logout</MenuItem>
                         </MenuList>
                     </Menu>
                 </Flex>

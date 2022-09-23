@@ -3,6 +3,7 @@ export async function fetchJson<T = unknown>(
     init?: RequestInit
 ) {
     const resp = await fetch(input, init);
+
     const data = await resp.json();
 
     if (resp.ok) {

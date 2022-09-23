@@ -19,11 +19,11 @@ import logger from "redux-logger";
 
 export interface RootState {
     auth: AuthState;
-    manageUser: ManageUserState
+    manageUser: ManageUserState;
     userInfo: UserInfoState;
 }
 
-export type RootActions = AuthActions | UserInfoActions;
+export type RootActions = AuthActions | UserInfoActions | ManageUserActions;
 
 export type IRootActions = AuthActions | ManageUserActions
 

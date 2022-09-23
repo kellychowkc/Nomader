@@ -53,10 +53,12 @@ export const matchController = new MatchController(matchService);
 
 import { logInRoutes } from "./routers/userRoutes";
 import { dataRoutes } from "./routers/getDataRoutes";
+import { matchRoutes } from "./routers/matchRoutes";
 
 //route handling
 app.use("/user", logInRoutes);
 app.use("/data", dataRoutes);
+app.use("/match", matchRoutes);
 app.use(express.static("assets"));
 const PORT = 8080;
 
