@@ -24,6 +24,7 @@ import NewPost from './components/layoutForum/NewPost'
 import MatchingIndex from './components/matching/MatchingIndex'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
+import EditProfile from './components/layoutProfile/EditProfile'
 
 function App() {
     return (
@@ -54,6 +55,7 @@ function App() {
                         <Route path="newPost" element={<NewPost />} />
                         <Route path="friends" element={<Friends />} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="editProfile" element={<EditProfile />} />
                         <Route path="chat" element={<Chat />} />
                         <Route path="home" element={<Home />} />
                         <Route path="control" element={<ControlPanel />}>

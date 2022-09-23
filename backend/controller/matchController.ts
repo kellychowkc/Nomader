@@ -16,8 +16,10 @@ export class MatchController {
             // const token = permit.check(req);
             // const payload = jwtSimple.decode(token, jwt.jwtSecret);
             // const userId = payload.id as number;
+
+            console.log(req.body);
             const userId = req.body.user_id as number;
-            const waitingList = [];
+            const waitingList: Array<{ user1_id: number }> = [];
             const waitingUserId =
                 await this.matchService.getUserIdWhoWaitMatchYou(userId);
             if (waitingUserId.length > 0) {
@@ -25,61 +27,64 @@ export class MatchController {
                     const alreadyMatched =
                         await this.matchService.checkAlreadyMatchedUser(
                             userId,
-                            waitingUser["id"]
+                            waitingUser["user1_id"]
                         );
+
                     if (alreadyMatched == false) {
                         waitingList.push(waitingUser);
                     }
                 }
             }
 
-            const allUserId = await this.matchService.getAllUserId(userId);
+            let allUserId = await this.matchService.getAllUserId(userId);
             const wantMatchUserId =
                 await this.matchService.geUserIdWhoYouWantToMatch(userId);
-            let userIdList = allUserId.filter((id) => {
-                return wantMatchUserId.indexOf(id) < 0;
-            });
+            for (let wantUser of wantMatchUserId) {
+                allUserId = allUserId.filter((id) => {
+                    return id["id"] !== wantUser["user2_id"];
+                });
+            }
 
             let randomWaitingId = [0, 0];
             switch (waitingList.length) {
                 case 0:
                     break;
                 case 1:
-                    randomWaitingId[0] = waitingList[0]["id"];
+                    randomWaitingId[0] = waitingList[0]["user1_id"];
                     break;
                 case 2:
-                    randomWaitingId[0] = waitingList[0]["id"];
-                    randomWaitingId[1] = waitingList[1]["id"];
+                    randomWaitingId[0] = waitingList[0]["user1_id"];
+                    randomWaitingId[1] = waitingList[1]["user1_id"];
                     break;
                 default:
                     while (randomWaitingId[0] == randomWaitingId[1]) {
                         randomWaitingId[0] =
                             waitingList[
                                 Math.floor(Math.random() * waitingList.length)
-                            ]["id"];
+                            ]["user1_id"];
                         randomWaitingId[1] =
                             waitingList[
                                 Math.floor(Math.random() * waitingList.length)
-                            ]["id"];
+                            ]["user1_id"];
                     }
                     break;
             }
 
             let randomId = [0, 0, 0];
-            switch (userIdList.length) {
+            switch (allUserId.length) {
                 case 0:
                     break;
                 case 1:
-                    randomId[0] = userIdList[0]["id"];
+                    randomId[0] = allUserId[0]["id"];
                     break;
                 case 2:
-                    randomId[0] = userIdList[0]["id"];
-                    randomId[1] = userIdList[1]["id"];
+                    randomId[0] = allUserId[0]["id"];
+                    randomId[1] = allUserId[1]["id"];
                     break;
                 case 3:
-                    randomId[0] = userIdList[0]["id"];
-                    randomId[1] = userIdList[1]["id"];
-                    randomId[2] = userIdList[2]["id"];
+                    randomId[0] = allUserId[0]["id"];
+                    randomId[1] = allUserId[1]["id"];
+                    randomId[2] = allUserId[2]["id"];
                     break;
                 default:
                     while (
@@ -88,16 +93,16 @@ export class MatchController {
                         randomId[1] == randomId[2]
                     ) {
                         randomId[0] =
-                            userIdList[
-                                Math.floor(Math.random() * userIdList.length)
+                            allUserId[
+                                Math.floor(Math.random() * allUserId.length)
                             ]["id"];
                         randomId[1] =
-                            userIdList[
-                                Math.floor(Math.random() * userIdList.length)
+                            allUserId[
+                                Math.floor(Math.random() * allUserId.length)
                             ]["id"];
                         randomId[2] =
-                            userIdList[
-                                Math.floor(Math.random() * userIdList.length)
+                            allUserId[
+                                Math.floor(Math.random() * allUserId.length)
                             ]["id"];
                     }
                     break;
@@ -106,13 +111,13 @@ export class MatchController {
             if (randomWaitingId[0] == 0 && randomId.length > 4) {
                 do {
                     randomWaitingId[0] =
-                        userIdList[
-                            Math.floor(Math.random() * userIdList.length)
-                        ]["id"];
+                        allUserId[Math.floor(Math.random() * allUserId.length)][
+                            "id"
+                        ];
                     randomWaitingId[1] =
-                        userIdList[
-                            Math.floor(Math.random() * userIdList.length)
-                        ]["id"];
+                        allUserId[Math.floor(Math.random() * allUserId.length)][
+                            "id"
+                        ];
                 } while (
                     randomId.filter((num) => num === randomWaitingId[0])
                         .length > 0 ||
@@ -122,9 +127,9 @@ export class MatchController {
             } else if (randomWaitingId[1] == 0 && randomId.length > 3) {
                 do {
                     randomWaitingId[1] =
-                        userIdList[
-                            Math.floor(Math.random() * userIdList.length)
-                        ]["id"];
+                        allUserId[Math.floor(Math.random() * allUserId.length)][
+                            "id"
+                        ];
                 } while (
                     randomId.filter((num) => num === randomWaitingId[1])
                         .length > 0
@@ -137,11 +142,12 @@ export class MatchController {
             for (let id of matchIdArr) {
                 const userData = await this.matchService.getUserInfo(id);
                 if (userData) {
-                    const interestList = userData["interestIdList"];
-                    let interestStr = "";
+                    const interestList: Array<{ title: string }> =
+                        userData["interestIdList"];
+                    let interestArr = [];
                     if (interestList.length > 0) {
                         for (let interest of interestList) {
-                            interestStr += interest["title"];
+                            interestArr.push(interest["title"]);
                         }
                     }
                     const userInfo = userData["userData"][0];
@@ -150,13 +156,15 @@ export class MatchController {
                         username: userInfo["username"],
                         jobTitle: userInfo["jobTitle"],
                         profile: userInfo["profile"],
-                        interests: interestStr,
-                        country: userInfo["country"],
+                        interests: interestArr,
+                        // country: userInfo["country"],
                     };
                     matchUserData.push(userPortfolio);
                 }
             }
+            console.log(matchUserData);
             res.status(200).json({ success: true, message: matchUserData });
+
             return;
         } catch (err) {
             logger.error(err.toString());
