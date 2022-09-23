@@ -3,7 +3,7 @@ import { BrowseCount, Post, User } from "../utils/models";
 import { hashPassword } from "../utils/hash";
 
 export class UserService {
-    constructor(private knex: Knex) { }
+    constructor(private knex: Knex) {}
 
     async getUserByUserName(username: string): Promise<User> {
         const user = await this.knex
@@ -15,11 +15,10 @@ export class UserService {
     }
 
     async getUserByUserId(userId: number): Promise<User> {
-        const foundUser = await this.knex
-            .select("*")
-            .from("users")
-            .where("id", userId)
-            .first();
+        const foundUser = await this.knex.raw(
+            `select * from users join jobs on jobs.id = users.job_id where users.id = ${userId};`
+        );
+
         return foundUser;
     }
 
@@ -140,6 +139,7 @@ export class UserService {
         return browseId;
     }
 
+
     async getUserFriends(user_id: number) {
         const userFriends = await this.knex
             .select("*")
@@ -169,5 +169,27 @@ export class UserService {
         const userPermission = "Update Permission"
 
         return userPermission;
+
+    async update(body: User) {
+        let user_id = body.id;
+        delete body["id"];
+        Object.keys(body).forEach((key) => {
+            if (body[key] === "" || body[key] === undefined) {
+                delete body[key];
+            }
+        });
+
+        if (body.password) {
+            body.password = await hashPassword(body.password);
+        }
+
+        console.log(body);
+        const updated = await this.knex("users")
+            .update(body)
+            .where("id", user_id)
+            .returning("id");
+
+        return updated;
+
     }
 }

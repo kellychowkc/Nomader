@@ -7,7 +7,7 @@ import jwt from "../utils/jwt";
 import { Interest, Post, User } from "../utils/models";
 
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {}
 
     logIn = async (req: Request, res: Response) => {
         try {
@@ -44,7 +44,7 @@ export class UserController {
                         username: user.username,
                     };
                     const token = jwtSimple.encode(payload, jwt.jwtSecret);
-                    console.log("isAdmin = " + user.isAdmin)
+                    console.log("isAdmin = " + user.isAdmin);
 
                     res.status(200).json({
                         success: true,
@@ -80,8 +80,6 @@ export class UserController {
             userData!.profile = profile;
 
             console.log(userData);
-
-            console.log("controller", typeof userData);
 
             const newUser = await this.userService.create(
                 userData as any as User
@@ -212,7 +210,7 @@ export class UserController {
         try {
             const user_id = req.body.uid;
             const user = await this.userService.getUserByUserId(user_id);
-            console.log("controller", user);
+            // console.log("controller", user);
             res.status(200).json({
                 success: true,
                 message: "success",
@@ -248,7 +246,6 @@ export class UserController {
 
     getUserProfile = async (req: Request, res: Response) => {
         try {
-
             const username = req.body.username;
 
             if (!username) {
@@ -260,6 +257,7 @@ export class UserController {
             }
             const result = await this.userService.getUserProfileData(username);
 
+            console.log("check", result);
             res.status(201).json({
                 success: true,
                 message: "Success getting user profile",
@@ -273,6 +271,7 @@ export class UserController {
             });
         }
     };
+
 
     getUserFriends = async (req: Request, res: Response) => {
         try {
@@ -295,6 +294,27 @@ export class UserController {
                 message: "Success getting user friends",
                 userFriends: result,
             });
+                    } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    updateUserProfile = async (req: Request, res: Response) => {
+        try {
+            let userData = req.form?.fields;
+            const file = req.form?.files.profile;
+            const profile = file?.["newFilename"];
+            userData!.profile = profile;
+
+            console.log(userData);
+            await this.userService.update(userData as any as User);
+
+            res.status(201).json({ success: true, message: "Updated" });
+
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
@@ -303,6 +323,7 @@ export class UserController {
             });
         }
     };
+
 
     updateUserPermission = async (req: Request, res: Response) => {
         try {
