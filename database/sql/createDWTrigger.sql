@@ -172,8 +172,8 @@ AS $$
             RETURNING id
             INTO created_date_id;
         INSERT INTO fact_users_data 
-            (country_id, interest_id, birthday_id, created_date_id, job_id, gender_id)
-            VALUES (NEW.country_id, NEW.interest_id, birthday_id, created_date_id, NEW.job_id, gender_id);
+            (country_id, interest_id, birthday_id, created_date_id, job_id, gender_id, isAdmin)
+            VALUES (NEW.country_id, NEW.interest_id, birthday_id, created_date_id, NEW.job_id, gender_id, NEW.isAdmin);
         RETURN NEW;
     END
 $$;
@@ -260,7 +260,7 @@ FOR EACH ROW EXECUTE PROCEDURE insert_staging_users_interests();
 
 
 
-CREATE OR REPLACE FUNCTION insert_db_posts()
+CREATE OR REPLACE FUNCTION insert_staging_posts()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
@@ -277,7 +277,7 @@ AS $$
         INSERT INTO fact_posts
             (user_id, city_id, attraction_id, created_date_id)
             VALUES (NEW.user_id, NEW.city_id, NEW.attraction_id, created_date_id);
-        RETURN NEstaging
+        RETURN NEW;
     END
 $$;
 

@@ -62,7 +62,7 @@ export async function seed(knex: Knex): Promise<void> {
                     password: (await hashPassword("1234")).toString(),
                     first_name: "kc",
                     last_name: "kc",
-                    birthday: "1234",
+                    birthday: "29/2/2000",
                     gender: "Female",
                     information: "hi",
                     profile: "",
@@ -70,6 +70,11 @@ export async function seed(knex: Knex): Promise<void> {
                     phone_num: "1234",
                     job_id: jobId[1].id,
                     isAdmin: true,
+                    isVisible: true,
+                    allow_post: true,
+                    allow_comment: true,
+                    allow_upload: true,
+                    allow_match: true
                 }
                 nameArr.push(userData["username"]);
                 break;
@@ -79,7 +84,7 @@ export async function seed(knex: Knex): Promise<void> {
                     password: (await hashPassword("1234")).toString(),
                     first_name: "danny",
                     last_name: "danny",
-                    birthday: "1234",
+                    birthday: "29/2/2000",
                     gender: "Male",
                     information: "hi",
                     profile: "",
@@ -87,6 +92,11 @@ export async function seed(knex: Knex): Promise<void> {
                     phone_num: "12345678",
                     job_id: jobId[2].id,
                     isAdmin: true,
+                    isVisible: true,
+                    allow_post: true,
+                    allow_comment: true,
+                    allow_upload: true,
+                    allow_match: true
                 }
                 nameArr.push(userData["username"]);
                 break;
@@ -96,7 +106,7 @@ export async function seed(knex: Knex): Promise<void> {
                     password: (await hashPassword("1234")).toString(),
                     first_name: "sam",
                     last_name: "sam",
-                    birthday: "1234",
+                    birthday: "29/2/2000",
                     gender: "Male",
                     information: "hi",
                     profile: "",
@@ -104,6 +114,11 @@ export async function seed(knex: Knex): Promise<void> {
                     phone_num: "12345678",
                     job_id: jobId[2].id,
                     isAdmin: true,
+                    isVisible: true,
+                    allow_post: true,
+                    allow_comment: true,
+                    allow_upload: true,
+                    allow_match: true
                 }
                 nameArr.push(userData["username"]);``
                 break;
@@ -114,14 +129,19 @@ export async function seed(knex: Knex): Promise<void> {
                         password: (await hashPassword("1234")).toString(),
                         first_name: chance.first(),
                         last_name: chance.last(),
-                        birthday: chance.birthday({ string: true }) as string,
+                        birthday: chance.birthday({ string: true, american: false }) as string,
                         gender: chance.gender(),
-                        information: chance.sentence(),
+                        information: chance.word(),
                         profile: "",
                         email: chance.email(),
                         phone_num: chance.integer({ min: 10000000, max: 99999999 }),
                         job_id: jobId[chance.integer({ min: 0, max: jobId.length - 1 })]["id"],
-                        isAdmin: false
+                        isAdmin: false,
+                        isVisible: chance.bool(),
+                        allow_post: chance.bool(),
+                        allow_comment: chance.bool(),
+                        allow_upload: chance.bool(),
+                        allow_match: chance.bool()
                     };
                 } while (nameArr.includes(userData["username"]));
 
