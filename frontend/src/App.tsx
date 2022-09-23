@@ -14,7 +14,7 @@ import RequireAuth from './components/auth/RequireAuth'
 import InterestList from './components/matching/InterestList'
 
 import Friends from './components/layoutFriends/Friends'
-import Profile from './components/layoutProfile/Profile'
+import Profile from './components/profile/profile'
 import Chat from './components/Chat/Chat'
 import Home from './components/Home/Home'
 import ManageUser from './components/ControlPanel/contentManageUser/ManageUser'
