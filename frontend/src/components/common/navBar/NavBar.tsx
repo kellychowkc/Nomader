@@ -31,8 +31,8 @@ interface LinkItemProps {
     path: string
 }
 const LinkItems: Array<LinkItemProps> = [
-    { name: 'Destinations', path: '/destination' },
-    { name: 'Safety', path: '/contact' },
+    // { name: 'Destinations', path: '/destination' },
+    // { name: 'Safety', path: '/contact' },
 ]
 
 const controlPanelLink: LinkItemProps = {
