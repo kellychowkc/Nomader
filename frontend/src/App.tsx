@@ -10,7 +10,7 @@ import Landing from './components/Landing/Landing'
 import SignUp from './components/auth/SignUp'
 import Forum from './components/layoutForum/Forum'
 import Login from './components/auth/Login'
-import RequireAuth from './components/private/RequireAuth'
+import RequireAuth from './components/auth/RequireAuth'
 import InterestList from './components/matching/InterestList'
 
 import Friends from './components/layoutFriends/Friends'
@@ -23,19 +23,22 @@ import MatchingSuccess from './components/matching/MatchingSuccess'
 import NewPost from './components/layoutForum/NewPost'
 import MatchingIndex from './components/matching/MatchingIndex'
 import Contact from './components/layoutSafetyContact/SafetyContact'
+import Skyscanner from './components/Home/Skyscanner'
 
 function App() {
     return (
         <>
             <Router>
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Landing />} />
                     <Route path="welcome" element={<Welcome />} />
-
-                    <Route path="landing" element={<Landing />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="signUp" element={<SignUp />} />
 
                     {/* Required Auth Route */}
                     <Route path="/" element={<RequireAuth />}>
+                        <Route path="home" element={<Home />} />
+                        <Route path="airline" element={<Skyscanner />} />
                         <Route path="contact" element={<Contact />} />
                         <Route path="forum" element={<Forum />} />
                         <Route
@@ -61,13 +64,6 @@ function App() {
                         </Route>
                     </Route>
 
-                    <Route path="login" element={<Login />} />
-
-                    <Route path="signUp" element={<SignUp />} />
-
-                    <Route path="welcome" element={<Welcome />} />
-
-                    <Route path="signup" element={<SignUp />} />
                     {/* <Route path="contact" element={<Contact />} />
                     <Route path="forum" element={<Forum />} /> */}
 

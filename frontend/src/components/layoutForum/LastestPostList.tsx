@@ -1,5 +1,5 @@
 import styles from './Forum.module.css'
-import { Box, Image, HStack, Text } from '@chakra-ui/react'
+import { Box, Image, HStack, Text, Avatar } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { fetchJson } from '../../api/utils'
 import { Post } from './Forum'
@@ -71,9 +71,8 @@ function PostList() {
                         </HStack>
                         <Box className={styles.infoBox}>
                             <div className={styles.usernameBox}>
-                                <Image
-                                    borderRadius="full"
-                                    boxSize="40px"
+                                <Avatar
+                                    name="profile"
                                     src={post.profile}
                                     className={styles.profile}
                                 />

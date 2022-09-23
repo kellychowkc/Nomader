@@ -45,8 +45,8 @@ import { RootState, RootThunkDispatch } from '../../../redux/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsersList } from '../../../redux/manageUser/manageUserThunk'
 import { getUserProfile } from '../../../api/user'
-import PermissionSetting from './PermissionSetting'
-import { UsersList } from './UserList'
+import PermissionSetting from './permissionSetting'
+import { UsersList } from './userList'
 
 export interface IUser {
     first_name: string

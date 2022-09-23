@@ -24,7 +24,7 @@ import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 
 import { useSelector } from 'react-redux'
 import { AuthState } from '../../../redux/state'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 interface LinkItemProps {
     name: string
@@ -59,10 +59,15 @@ const NavLinkHover = ({ children }: { children: LinkItemProps }) => (
 export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const navigate = useNavigate()
+
     //update username from redux
     const auth: AuthState = useSelector((state: any) => state.auth)
 
-    console.log(auth)
+    function logOut() {
+        localStorage.removeItem('auth_token')
+        navigate('/welcome')
+    }
 
     return (
         <>
@@ -136,7 +141,7 @@ export default function Nav() {
                                     <MenuItem>{auth.username}</MenuItem>
                                     <MenuItem>Edit Profile</MenuItem>
                                     <MenuDivider />
-                                    <MenuItem>Logout</MenuItem>
+                                    <MenuItem onClick={logOut}>Logout</MenuItem>
                                 </MenuList>
                             </Menu>
                         </Stack>

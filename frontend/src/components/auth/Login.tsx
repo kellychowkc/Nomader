@@ -9,7 +9,6 @@ import {
     Button,
     Heading,
 } from '@chakra-ui/react'
-// import { fetchSelfUserInfo } from '../../api/user'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, RootThunkDispatch } from '../../redux/store'
 import { loginThunk } from '../../redux/auth/authThunk'
@@ -39,6 +38,7 @@ function Login() {
                 })
                 return
             }
+            navigate('/home')
         },
     })
 

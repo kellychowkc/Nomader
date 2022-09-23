@@ -29,51 +29,6 @@ import HotPostList from './HotPost'
 
 const { REACT_APP_API_SERVER } = process.env
 
-interface IBlogTags {
-    tags: Array<string>
-    marginTop?: SpaceProps['marginTop']
-}
-
-const BlogTags: React.FC<IBlogTags> = (props) => {
-    return (
-        <HStack spacing={2} marginTop={props.marginTop}>
-            {props.tags.map((tag) => {
-                return (
-                    <Tag
-                        size={'md'}
-                        variant="solid"
-                        backgroundColor="#0ABAB5"
-                        key={tag}
-                    >
-                        {tag}
-                    </Tag>
-                )
-            })}
-        </HStack>
-    )
-}
-
-interface BlogAuthorProps {
-    date: Date
-    name: string
-}
-
-export const BlogAuthor: React.FC<BlogAuthorProps> = (props) => {
-    return (
-        <HStack marginTop="2" spacing="2" display="flex" alignItems="center">
-            <Image
-                borderRadius="full"
-                boxSize="40px"
-                src="https://100k-faces.glitch.me/random-image"
-                alt={`Avatar of ${props.name}`}
-            />
-            <Text fontWeight="medium">{props.name}</Text>
-            <Text>—</Text>
-            <Text>{props.date.toLocaleDateString()}</Text>
-        </HStack>
-    )
-}
-
 export interface Post {
     id?: number
     title: string
@@ -85,33 +40,13 @@ export interface Post {
     image?: string
 }
 
-const featurePosts: Post[] = [
-    {
-        title: 'Post #1',
-        content:
-            'Converting posting into object, with title, content, category, tag, author and dates....',
-        category: 'Tecky',
-        username: 'Danny',
-        created_at: '2022-01-01',
-        profile: 'pic/logo.JPG',
-    },
-    {
-        title: 'Post #2',
-        content: 'Testing... cat is the best. LOL',
-        category: 'Meme',
-        username: 'Danny',
-        created_at: '2022-01-01',
-        profile: 'pic/logo.JPG',
-    },
-]
-
 const Forum = () => {
     const navigate = useNavigate()
 
     //fetch data
 
     return (
-        <Box w="auto" h="full">
+        <Box w="full" h="full">
             {/* === NavBar === */}
             <Nav />
             <VStack w="auto" margin={6}>

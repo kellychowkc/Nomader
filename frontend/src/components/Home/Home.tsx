@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Box,
     Text,
@@ -23,7 +23,6 @@ import {
     MdLocationPin,
     MdLocalActivity,
 } from 'react-icons/md'
-import { FaSlidersH } from 'react-icons/fa'
 
 import { Carousel } from '@trendyol-js/react-carousel'
 
@@ -36,12 +35,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { AuthState } from '../../redux/state'
 import InterestCard, { InterestCardData } from './interestCard'
+import { fetchSelfUserProfile } from '../../api/user'
+
+const { REACT_APP_API_SERVER } = process.env
 
 const categories = [
     { name: 'location', icon: MdMap, path: '' },
     { name: 'exchange', icon: MdMoney, path: '' },
-    { name: 'flight', icon: MdFlight, path: '' },
-    { name: 'safety', icon: MdSecurity, path: 'contact' },
+    { name: 'flight', icon: MdFlight, path: '/airline' },
+    { name: 'safety', icon: MdSecurity, path: '/contact' },
 ]
 
 const interestList: InterestCardData[] = [
@@ -103,12 +105,22 @@ const interestList: InterestCardData[] = [
 
 const Home = () => {
     const [search, setSearch] = React.useState('')
+    const [profilePic, setProfilePic] = React.useState<string>()
     const handleChange_search = (event: any) => setSearch(event.target.value)
     const windowWidth = window.innerWidth
 
     const auth: AuthState = useSelector((state: any) => state.auth)
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchSelfUserProfile(auth.id as any as number).then((data: any) => {
+            const dataDetail = data.userDetail.rows[0]
+            const profile = dataDetail.profile
+            const profilePath = `${REACT_APP_API_SERVER}/profile/` + profile
+            setProfilePic(profilePath)
+        })
+    }, [])
 
     return (
         <Box
@@ -171,8 +183,9 @@ const Home = () => {
                         </VStack>
                         <Box className="avatar" p="10px" mx="0">
                             <Avatar
-                                size={{ base: 'lg', lg: 'xl' }}
-                                src={auth.profile}
+                                name={auth.username}
+                                size={{ base: 'xl', lg: 'xl' }}
+                                src={profilePic as any as string}
                                 boxShadow={'0px 0px 6px #AAAAAA'}
                             ></Avatar>
                         </Box>
@@ -231,25 +244,6 @@ const Home = () => {
                                 />
                             </HStack>
                         </Flex>
-                        <Button
-                            className="serachFilter"
-                            w="55px"
-                            h="55px"
-                            px="3"
-                            py="1"
-                            borderRadius="10px"
-                            bg={useColorModeValue('#B0D8BC', '#56C3E6')}
-                            alignItems={'center'}
-                            justifyContent={'center'}
-                            boxShadow="0px 0px 9px 0px #BBBBBB"
-                        >
-                            <Icon
-                                as={FaSlidersH}
-                                h="30px"
-                                w="30px"
-                                color={useColorModeValue('#FFFFFF', 'gray.100')}
-                            />
-                        </Button>
                     </HStack>
                 </Flex>
                 <Flex
@@ -276,11 +270,6 @@ const Home = () => {
                                 Category
                             </Text>
                             <Icon as={MdLocalActivity} w="30px" h="30px" />
-                        </HStack>
-
-                        <HStack>
-                            <Icon as={MdBookmarks} />
-                            <Text fontWeight={'semibold'}>See All</Text>
                         </HStack>
                     </HStack>
 
@@ -349,15 +338,9 @@ const Home = () => {
                                     fontWeight="bold"
                                     letterSpacing={'wide'}
                                 >
-                                    Interest
+                                    Features
                                 </Text>
                                 <Icon as={MdLocationPin} w="30px" h="30px" />
-                            </HStack>
-                        </Box>
-                        <Box>
-                            <HStack>
-                                <Icon as={MdBookmarks} />
-                                <Text fontWeight={'semibold'}>See All</Text>
                             </HStack>
                         </Box>
                     </HStack>
