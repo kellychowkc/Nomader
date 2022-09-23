@@ -272,6 +272,37 @@ export class UserController {
         }
     };
 
+
+    getUserFriends = async (req: Request, res: Response) => {
+        try {
+
+            const user_id = req.body.user_id;
+            if (!user_id) {
+                res.status(401).json({
+                    success: false,
+                    message: "No username provided",
+                });
+                return;
+            }
+
+            const result = await this.userService.getUserFriends(user_id);
+
+            console.log('<Controller - User Freinds>', result)
+
+            res.status(201).json({
+                success: true,
+                message: "Success getting user friends",
+                userFriends: result,
+            });
+                    } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
     updateUserProfile = async (req: Request, res: Response) => {
         try {
             let userData = req.form?.fields;
@@ -283,6 +314,7 @@ export class UserController {
             await this.userService.update(userData as any as User);
 
             res.status(201).json({ success: true, message: "Updated" });
+
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
@@ -291,6 +323,41 @@ export class UserController {
             });
         }
     };
+
+
+    updateUserPermission = async (req: Request, res: Response) => {
+        try {
+
+            const username = req.body.username;
+            const permissions = req.body.permissions;
+            if (!username) {
+                res.status(401).json({
+                    success: false,
+                    message: "No username provided",
+                });
+                return;
+            }
+
+            const result = await this.userService.updateUserPermission(username, permissions);
+
+            console.log('<Controller - Update User Permission>', result)
+
+            res.status(201).json({
+                success: true,
+                message: "Success Update User Permission",
+                result: result,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+
+
 }
 
 declare global {
