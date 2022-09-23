@@ -66,7 +66,7 @@ const EditProfile = () => {
             newProfile: new File([''], ''),
             job: '',
             emergency_contact_person: '',
-            emergency_contact_num: null,
+            emergency_contact_num: undefined,
             country: '',
         },
         onSubmit: async (values: UserProfile) => {

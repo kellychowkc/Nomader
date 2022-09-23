@@ -61,12 +61,15 @@ export interface UserProfile {
     updated_at?: string;
 
     // added by danny - start
-    id?: number
-    isAdmin?: boolean
-    allowPost?: boolean
-    allowComment?: boolean
-    allowUpload?: boolean
-    allowMatch?: boolean
+    id?: number;
+    isAdmin?: boolean;
+    allowPost?: boolean;
+    allowComment?: boolean;
+    allowUpload?: boolean;
+    allowMatch?: boolean;
+    emergency_contact_person?: string;
+    emergency_contact_num?: number;
+
     // added by danny - end
 }
 

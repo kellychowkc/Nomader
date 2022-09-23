@@ -159,8 +159,7 @@ export function ModalUserProfileDetail(props: Props) {
                                     }}
                                     type="text"
                                     value={
-                                        props.userProfile
-                                            .emergency_contact_person
+                                        props.userProfile.emergency_contact_num
                                     }
                                 />
                             </FormControl>
