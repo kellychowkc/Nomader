@@ -16,13 +16,12 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("users").del();
     await knex("jobs").del();
     await knex("interests").del();
-    await knex("posts").del();
 
     // Inserts seed entries
     const interestId: Array<{ id: number }> = await knex("interests")
         .insert([
             { title: "hiking", image: "hiking.png" },
-            { title: "camping", image: "camping.png" },
+            { title: "camping",image: "camping.png" },
             { title: "cycling", image: "cycling.png" },
             { title: "foodie", image: "foodie.png" },
             { title: "party", image: "party.png" },
@@ -35,7 +34,7 @@ export async function seed(knex: Knex): Promise<void> {
             { title: "watch match", image: "watchMatch.png" },
             { title: "join event", image: "joinEvent.png" },
             { title: "skiing", image: "skiing.png" },
-            { title: "shopping", image: "shopping.png" },
+            { title: "shopping", image: "shopping.png" }
         ])
         .returning("id");
 
@@ -104,9 +103,8 @@ export async function seed(knex: Knex): Promise<void> {
                     phone_num: "12345678",
                     job_id: jobId[2].id,
                     isAdmin: true,
-                };
+                }
                 nameArr.push(userData["username"]);
-                ``;
                 break;
             default:
                 do {
@@ -140,8 +138,8 @@ export async function seed(knex: Knex): Promise<void> {
     const userId: Array<{ id: number }> = await knex("users")
         .insert(randomUser)
         .returning("id");
+    
 
-    let randomUserInterest = [];
     for (let user of userId) {
         let randomInterestNum = chance.integer({ min: 1, max: 6 });
         for (let i = 0; i < randomInterestNum; i++) {
@@ -152,13 +150,11 @@ export async function seed(knex: Knex): Promise<void> {
                         chance.integer({ min: 0, max: interestId.length - 1 })
                     ]["id"],
             };
-            randomUserInterest.push(usersInterestsData);
+            await knex("users_interests").insert(usersInterestsData);
         }
     }
 
-    await knex("users_interests").insert(randomUserInterest);
 
-    let randomUsersRelationship = [];
     let usersRelationshipData = {};
     let matchedIdData: Array<[number, number]> = [];
     let friendIdData: Array<[number, number]> = [];
@@ -193,26 +189,22 @@ export async function seed(knex: Knex): Promise<void> {
                     friendIdData.push([userId[i]["id"], matchedUserId]);
                 }
             }
-            randomUsersRelationship.push(usersRelationshipData);
+            await knex("users_relationship").insert(usersRelationshipData);
         }
     }
 
-    await knex("users_relationship").insert(randomUsersRelationship);
 
-    let randomChatRoom = [];
     for (let friendUser of friendIdData) {
         let chatRoomData = {
             room_title: chance.word(),
             user_manager_id: friendUser[0],
-            user_member_id: friendUser[1],
-        };
-        randomChatRoom.push(chatRoomData);
+            user_member_id: friendUser[1]
+        }
+        await knex("chat_rooms").insert(chatRoomData);
     }
-    const chatRoomId: Array<{ id: number }> = await knex("chat_rooms")
-        .insert(randomChatRoom)
-        .returning("id");
 
-    let randomChats = [];
+
+    const chatRoomId: Array<{ id: number }> = await knex("chat_rooms").select("id");
     for (let room of chatRoomId) {
         const roomData: Array<{
             user_manager_id: number;
@@ -236,31 +228,26 @@ export async function seed(knex: Knex): Promise<void> {
                 chat_room_id: room["id"],
                 user_speech_id: speechUser,
                 content: chance.sentence(),
-                user_listen_id: listenUser,
-            };
-            randomChats.push(chatData);
+                user_listen_id: listenUser
+            }
+            await knex("chats").insert(chatData);
         }
     }
 
-    await knex("chats").insert(randomChats);
 
-    let randomPosts = [];
     for (let i = 0; i < 200; i++) {
         let writer = chance.integer({ min: 0, max: userId.length - 1 });
         let postData = {
             user_id: userId[writer]["id"],
             title: chance.sentence(),
-            content: chance.paragraph(),
-            image: "e7c26c4b30fae86f020b76a00.jpeg 16-57-51-116.jpeg",
-        };
-        randomPosts.push(postData);
+            content: chance.paragraph()
+        }
+        await knex("posts").insert(postData);
     }
-
-    const postId: Array<{ id: number }> = await knex("posts")
-        .insert(randomPosts)
-        .returning("id");
-
-    let randomPostType = [];
+    
+    
+    const postId : Array<{ id: number }> = await knex("posts").select("id");
+    
     for (let post of postId) {
         let randomInterestNum = chance.integer({ min: 1, max: 3 });
         for (let i = 0; i < randomInterestNum; i++) {
@@ -271,13 +258,11 @@ export async function seed(knex: Knex): Promise<void> {
                         chance.integer({ min: 0, max: interestId.length - 1 })
                     ]["id"],
             };
-            randomPostType.push(postsTypeData);
+            await knex("posts_type").insert(postsTypeData);
         }
     }
 
-    await knex("posts_type").insert(randomPostType);
 
-    let randomBrowsePosts = [];
     for (let post of postId) {
         let readerNum = chance.integer({ min: 0, max: userId.length });
         for (let i = 0; i < readerNum; i++) {
@@ -285,11 +270,10 @@ export async function seed(knex: Knex): Promise<void> {
             let browseData = {
                 user_id: userId[reader]["id"],
                 browse_count: chance.integer({ min: 1, max: 100 }),
-                post_id: post["id"],
-            };
-            randomBrowsePosts.push(browseData);
+                post_id: post["id"]
+            }
+            await knex("users_browse_posts").insert(browseData);
         }
     }
 
-    await knex("users_browse_posts").insert(randomBrowsePosts);
 }

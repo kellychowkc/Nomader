@@ -6,6 +6,7 @@ CREATE TABLE staging_users (
     birthday_day INTEGER,
     gender TEXT,
     job_id INTEGER,
+    isAdmin BOOLEAN,
     cuntry_id INTEGER,
     created_year INTEGER,
     created_month INTEGER,
@@ -185,7 +186,8 @@ CREATE TABLE fact_users (
     job_id INTEGER,
     FOREIGN KEY (job_id) REFERENCES dim_jobs(id),
     gender_id INTEGER,
-    FOREIGN KEY (gender_id) REFERENCES dim_genders(id)
+    FOREIGN KEY (gender_id) REFERENCES dim_genders(id),
+    isAdmin BOOLEAN
 );
 
 CREATE TABLE fact_users_interests (

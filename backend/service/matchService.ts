@@ -12,14 +12,14 @@ export class MatchService {
     }
 
     async geUserIdWhoYouWantToMatch( id : number ) {
-        const userId : Array<{ id : number }> = await this.knex("users_relationship")
+        const userId : Array<{ user2_id : number }> = await this.knex("users_relationship")
             .select("user2_id")
             .where("user1_id", id);
         return userId;
     }
 
     async getUserIdWhoWaitMatchYou( id : number ) {
-        const userId : Array<{ id : number }> = await this.knex("users_relationship")
+        const userId : Array<{ user1_id : number }> = await this.knex("users_relationship")
             .select("user1_id")
             .where("user2_id", id);
         return userId;
@@ -42,12 +42,12 @@ export class MatchService {
             .select("interests.title")
             .innerJoin("interests", "users_interests.interest_id", "interests.id")
             .where("users_interests.user_id", id);
-        const userData : Array<{ username : string, jobTitle :string, profile : string, country : string }> = await this.knex("users")
-            .select("users.username", "jobs.title", "users.information", "users.profile", "countries.name")
+        const userData : Array<{ username : string, jobTitle :string, information: string, profile : string }> = await this.knex("users")
+            .select("users.username", "jobs.title", "users.information", "users.profile")
             .innerJoin("jobs", "users.job_id", "jobs.id")
-            .innerJoin("countries", "users.country_id", "countries.id")
+            // .innerJoin("countries", "users.country_id", "countries.id")
             .where("users.id", id);
-        return { interestIdList , userData };
+        return {interestIdList, userData } ;
     }
 
     async unlikeWaitingMatchUser(id : number, userId : number) {
