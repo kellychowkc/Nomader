@@ -24,7 +24,7 @@ import NewPost from './components/layoutForum/NewPost'
 import MatchingIndex from './components/matching/MatchingIndex'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
-import EditProfile from './components/layoutProfile/EditProfile'
+import EditProfile from './components/profile/editProfile'
 
 function App() {
     return (
