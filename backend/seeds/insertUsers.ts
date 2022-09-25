@@ -273,13 +273,11 @@ export async function seed(knex: Knex): Promise<void> {
     for (let post of postId) {
         let readerNum = chance.integer({ min: 0, max: userId.length });
         for (let i = 0; i < readerNum; i++) {
-            let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664582400 });
             let reader = chance.integer({ min: 0, max: userId.length - 1 });
             let browseData = {
                 user_id: userId[reader]["id"],
                 browse_count: chance.integer({ min: 1, max: 100 }),
-                post_id: post["id"],
-                created_at: new Date(randomCreatedTime)
+                post_id: post["id"]
             }
             await knex("users_browse_posts").insert(browseData);
         }
