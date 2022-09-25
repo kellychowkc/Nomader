@@ -1,6 +1,6 @@
 import installPackage
-import schedule
-import time
+# import schedule
+# import time
 from config import Config
 from sparkSetting import setup_spark
 
@@ -33,8 +33,6 @@ def transfomr_table_attractions(df) :
 
 def transform_data_currencyRates(df) :
     import pyspark.sql.functions as F
-    print('df before transform - rate:')
-    df.show()
     df = df.withColumnRenamed('rates','rate')
     df = df.withColumn('rate', df['rate'].cast('float'))
     df = df.withColumn('date', df['date'].cast('date'))
@@ -42,30 +40,28 @@ def transform_data_currencyRates(df) :
     df = df.withColumn('month', F.month(df['date']))
     df = df.withColumn('day', F.dayofmonth(df['date']))
     df = df.drop('date')
-    print('df')
-    df.show()
     return df
 
 def main() :
     df_emergency = data_from_mongodb(config, spark, 'emergencyData')
-    data_to_psql(config, df_emergency, 'staging_emergency_data')
+    data_to_psql(config, df_emergency, 'db_emergency_data')
 
     df_city = data_from_mongodb(config, spark, 'cityData')
     df_city = transform_table_cities(df_city)
-    data_to_psql(config, df_city, 'staging_city_data')
+    data_to_psql(config, df_city, 'db_city_data')
 
     df_attraction = data_from_mongodb(config, spark, 'attractionData')
     df_attraction = transfomr_table_attractions(df_attraction)
-    data_to_psql(config, df_attraction, 'staging_attractions')
+    data_to_psql(config, df_attraction, 'db_attractions')
 
     df_currency = data_from_mongodb(config, spark, 'currencyCodes')
-    data_to_psql (config, df_currency, 'staging_currency_codes')
+    data_to_psql (config, df_currency, 'db_currency_codes')
 
 
 def currencyRates() :
     df = data_from_mongodb(config, spark, 'currencyRates')
     df = transform_data_currencyRates(df)
-    data_to_psql(config, df, 'staging_currency_rates')
+    data_to_psql(config, df, 'db_currency_rates')
 
 
 if __name__ == '__main__' :

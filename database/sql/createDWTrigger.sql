@@ -1,10 +1,11 @@
+
 CREATE OR REPLACE FUNCTION insert_staging_countries()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
     BEGIN
         INSERT INTO dim_countries
-            (country_name)
+            (name)
             VALUES (NEW.name);
         RETURN NEW;
     END
@@ -22,7 +23,7 @@ LANGUAGE plpgsql
 AS $$
     BEGIN
         INSERT INTO dim_cities
-            (city_name, city_list)
+            (name, city_list)
             VALUES (NEW.name, NEW.city_list);
         RETURN NEW;
     END
@@ -40,7 +41,7 @@ LANGUAGE plpgsql
 AS $$
     BEGIN
         INSERT INTO dim_attractions
-            (attraction_name, city_list)
+            (name, city_list)
             VALUES (NEW.name, NEW.city_list);
         RETURN NEW;
     END
@@ -84,7 +85,7 @@ $$;
 
 CREATE TRIGGER trigger_insert_staging_jobs
 AFTER INSERT ON staging_jobs
-FOR EACH ROW EXECUTE PROCEDURE insert_staging_attractions();
+FOR EACH ROW EXECUTE PROCEDURE insert_staging_jobs();
 
 
 CREATE OR REPLACE FUNCTION insert_staging_chat_rooms()
@@ -98,7 +99,7 @@ AS $$
             (year, month, day)
             VALUES (NEW.created_year, NEW.created_month, NEW.created_day)
             ON CONFLICT(year, month, day)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO created_date_id;
         INSERT INTO fact_chat_rooms
@@ -125,12 +126,15 @@ AS $$
             (year, month, day)
             VALUES (NEW.created_year, NEW.created_month, NEW.created_day)
             ON CONFLICT(year, month, day)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO created_date_id;
         INSERT INTO fact_chats
             (chat_room_id, created_date_id)
-            VALUES (NEW.chat_room_id, created_date_id);
+            VALUES (
+                (SELECT id FROM fact_chat_rooms WHERE id = NEW.chat_room_id), 
+                created_date_id
+                );
         RETURN NEW;
     END
 $$;
@@ -154,26 +158,33 @@ AS $$
             (status)
             VALUES (NEW.gender)
             ON CONFLICT(status)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO gender_id;
         INSERT INTO dim_dates
             (year, month, day)
             VALUES (NEW.birthday_year, NEW.birthday_month, NEW.birthday_day)
             ON CONFLICT(year, month, day)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO birthday_id;
         INSERT INTO dim_dates
             (year, month, day)
             VALUES (NEW.created_year, NEW.created_month, NEW.created_day)
             ON CONFLICT(year, month, day)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO created_date_id;
-        INSERT INTO fact_users_data 
-            (country_id, interest_id, birthday_id, created_date_id, job_id, gender_id, isAdmin)
-            VALUES (NEW.country_id, NEW.interest_id, birthday_id, created_date_id, NEW.job_id, gender_id, NEW.isAdmin);
+        INSERT INTO fact_users
+            (country_id, birthday_id, created_date_id, job_id, gender_id, isAdmin)
+            VALUES (
+                (SELECT id FROM dim_countries WHERE id = NEW.country_id), 
+                birthday_id, 
+                created_date_id, 
+                (SELECT id FROM dim_jobs WHERE id = NEW.job_id), 
+                gender_id, 
+                NEW.isAdmin
+                );
         RETURN NEW;
     END
 $$;
@@ -196,12 +207,16 @@ AS $$
             (year, month, day)
             VALUES (NEW.created_year, NEW.created_month, NEW.created_day)
             ON CONFLICT(year, month, day)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO created_date_id;
         INSERT INTO fact_users_relactionship
             (user1_id, user2_id, created_date_id)
-            VALUES (NEW.user1_id, NEW.user2_id, created_date_id);
+            VALUES (
+                (SELECT id FROM fact_users WHERE id = NEW.user1_id), 
+                (SELECT id FROM fact_users WHERE id = NEW.user2_id), 
+                created_date_id
+                );
         RETURN NEW;
     END
 $$;
@@ -224,12 +239,17 @@ AS $$
             (year, month, day)
             VALUES (NEW.created_year, NEW.created_month, NEW.created_day)
             ON CONFLICT(year, month, day)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO created_date_id;
         INSERT INTO fact_browse_attractions
             (user_id, attraction_id, browse_count, created_date_id)
-            VALUES (NEW.user_id, NEW.attraction_id, NEW.browse_count, created_date_id);
+            VALUES (
+                (SELECT id FROM fact_users WHERE id = NEW.user_id), 
+                (SELECT id FROM dim_attractions WHERE id = NEW.attraction_id), 
+                NEW.browse_count, 
+                created_date_id
+                );
         RETURN NEW;
     END
 $$;
@@ -248,7 +268,10 @@ AS $$
     BEGIN
         INSERT INTO fact_users_interests
             (user_id, interest_id)
-            VALUES (NEW.user_id, NEW.interest_id);
+            VALUES (
+                (SELECT id FROM fact_users WHERE id = NEW.user_id), 
+                (SELECT id FROM dim_interests WHERE id = NEW.interest_id)
+                );
         RETURN NEW;
     END
 $$;
@@ -271,12 +294,17 @@ AS $$
             (year, month, day)
             VALUES (NEW.created_year, NEW.created_month, NEW.created_day)
             ON CONFLICT(year, month, day)
-            DO NOTHING
+            DO UPDATE set updated_at = NOW()
             RETURNING id
             INTO created_date_id;
         INSERT INTO fact_posts
             (user_id, city_id, attraction_id, created_date_id)
-            VALUES (NEW.user_id, NEW.city_id, NEW.attraction_id, created_date_id);
+            VALUES (
+                (SELECT id FROM fact_users WHERE id = NEW.user_id), 
+                (SELECT id FROM dim_cities WHERE id = NEW.city_id), 
+                (SELECT id FROM dim_attractions WHERE id = NEW.attraction_id), 
+                created_date_id
+                );
         RETURN NEW;
     END
 $$;
@@ -292,10 +320,24 @@ CREATE OR REPLACE FUNCTION insert_staging_browse_posts()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
+    DECLARE
+        created_date_id INTEGER;
     BEGIN
+        INSERT INTO dim_dates
+            (year, month, day)
+            VALUES (NEW.created_year, NEW.created_month, NEW.created_day)
+            ON CONFLICT(year, month, day)
+            DO UPDATE set updated_at = NOW()
+            RETURNING id
+            INTO created_date_id;
         INSERT INTO fact_browse_posts
-            (user_id, post_id, browse_count)
-            VALUES (NEW.user_id, NEW.post_id, NEW.browse_count);
+            (user_id, post_id, browse_count, created_date_id)
+            VALUES (
+                (SELECT id FROM fact_users WHERE id = NEW.user_id), 
+                (SELECT id FROM fact_posts WHERE id = NEW.post_id), 
+                NEW.browse_count,
+                created_date_id
+                );
         RETURN NEW;
     END
 $$;
@@ -315,7 +357,10 @@ AS $$
     BEGIN
         INSERT INTO fact_posts_type
             (interest_id, post_id)
-            VALUES (NEW.interest_id, NEW.post_id);
+            VALUES (
+                (SELECT id FROM dim_interests WHERE id = NEW.interest_id), 
+                (SELECT id FROM fact_posts WHERE id = NEW.post_id)
+                );
         RETURN NEW;
     END
 $$;

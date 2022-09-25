@@ -6,7 +6,8 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("currency_codes", (table) => {
             table.increments();
             table.string("code").notNullable();
-            table.string("currency_name").notNullable();
+            table.string("currency_name");
+            table.specificType("using_country", "varchar");
         });
     }
     
@@ -37,8 +38,6 @@ export async function up(knex: Knex): Promise<void> {
             table.string("fire_tel");
             table.string("ambulance_tel");
             table.string("info");
-            table.integer("currency_code_id").unsigned();
-            table.foreign("currency_code_id").references("currency_codes.id");
         });
     }
 
@@ -47,9 +46,9 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("cities", (table) => {
             table.increments();
             table.string("name").notNullable();
-            table.text("description");
-            table.text("image");
-            table.text("city_list");
+            table.specificType("description", "varchar");
+            table.specificType("image", "varchar");
+            table.specificType("city_list", "varchar");
         });
     }
 
@@ -58,12 +57,12 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("attractions", (table) => {
             table.increments();
             table.string("name").notNullable();
-            table.text("description");
-            table.text("image");
-            table.text("location");
-            table.string("open_time");
-            table.text("class");
-            table.text("city_list");
+            table.specificType("description", "varchar");
+            table.specificType("image", "varchar");
+            table.specificType("address", "varchar");
+            table.specificType("open_time", "varchar");
+            table.specificType("class", "varchar");
+            table.specificType("city_list", "varchar");
         });
     }
 
@@ -113,8 +112,8 @@ export async function up(knex: Knex): Promise<void> {
             table.string("last_name").notNullable();
             table.string("birthday");
             table.string("gender");
-            table.text("information");
-            table.text("profile");
+            table.specificType("information", "varchar");
+            table.specificType("profile", "varchar");
             table.string("email").notNullable();
             table.integer("phone_num").notNullable();
             table.integer("job_id").unsigned();
@@ -152,8 +151,8 @@ export async function up(knex: Knex): Promise<void> {
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
             table.string("title").notNullable();
-            table.text("content").notNullable();
-            table.text("image");
+            table.specificType("content", "varchar").notNullable();
+            table.specificType("image", "varchar");
             table.integer("attraction_id").unsigned();
             table
                 .foreign("attraction_id")
@@ -208,6 +207,7 @@ export async function up(knex: Knex): Promise<void> {
                 .references("posts.id")
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
+            table.timestamps(true, true);
         });
     }
 
@@ -248,7 +248,6 @@ export async function up(knex: Knex): Promise<void> {
                 .references("attractions.id")
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
-            table.boolean("like_attraction").notNullable();
             table.integer("browse_count").notNullable();
             table.timestamps(true, true);
         });
@@ -314,9 +313,9 @@ export async function up(knex: Knex): Promise<void> {
                 .references("users.id")
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
-            table.text("content");
-            table.text("image");
-            table.text("voice");
+            table.specificType("content", "varchar");
+            table.specificType("image", "varchar");
+            table.specificType("voice", "varchar");
             table.integer("user_listen_id").unsigned();
             table
                 .foreign("user_listen_id")
@@ -351,12 +350,12 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("db_attractions", (table) => {
             table.increments();
             table.string("attraction_name");
-            table.text("description");
-            table.text("image");
-            table.text("address");
-            table.text("city_list");
-            table.string("open_time");
-            table.text("class");
+            table.specificType("description", "varchar");
+            table.specificType("image", "varchar");
+            table.specificType("address", "varchar");
+            table.specificType("city_list", "varchar");
+            table.specificType("open_time", "varchar");
+            table.specificType("class", "varchar");
         });
     }
 
@@ -368,7 +367,7 @@ export async function up(knex: Knex): Promise<void> {
             table.increments();
             table.string("code");
             table.string("currency_name");
-            table.string("using_country");
+            table.specificType("using_country", "varchar");
         });
     }
 
@@ -392,9 +391,9 @@ export async function up(knex: Knex): Promise<void> {
         await knex.schema.createTable("db_city_data", (table) => {
             table.increments();
             table.string("city_name");
-            table.text("description");
-            table.text("image");
-            table.text("city_list");
+            table.specificType("description", "varchar");
+            table.specificType("image", "varchar");
+            table.specificType("city_list", "varchar");
         });
     }
 }

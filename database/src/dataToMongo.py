@@ -131,6 +131,7 @@ def get_city_data() :
 
 def daily_currency() :
     #  data from 'exchangerate.host'
+    db.currencyRates.d
     url='https://api.exchangerate.host/symbols'
 
     response = requests.get(url)
@@ -168,10 +169,11 @@ def main() :
 
 
 if __name__ == '__main__' :
-    main()
+    # main()
+    
     daily_currency()
 
-    # schedule.every().day.at('06:30').do(daily_currency)
+    # schedule.every().day.at('06:00').do(daily_currency)
     # while True:
     #     schedule.run_pending()
     #     time.sleep(1)

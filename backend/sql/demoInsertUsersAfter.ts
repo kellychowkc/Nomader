@@ -8,45 +8,118 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("attractions_type").del();
 
     // Inserts seed entries
-    const userId : Array<{ id: number }> = await knex("users").select("id");
-    const interestId : Array<{ id: number }> = await knex("interests").select("id");
+    const userId: Array<{ id: number }> = await knex("users").select("id");
+    const interestId: Array<{ id: number }> = await knex("interests").select("id");
+    const postId: Array<{ id: number }> = await knex("posts").select("id");
+    const citiesId: Array<{ id: number, name: string }> = await knex("cities").select("id", "name");
+    const countryId: Array<{ id: number }> = await knex("countries").select("id");
+    const attractionId: Array<{ id: number }> = await knex("attractions").select("id");
 
     for (let user of userId) {
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
         await knex("users")
             .where("id", user["id"])
             .update({
-                country_id: chance.integer({ min: 0, max: 2195 })
+                country_id: countryId[chance.integer({ min: 0, max: countryId.length - 1 })]["id"],
+                created_at: new Date(randomCreatedTime * 1000),
+                updated_at: new Date(randomCreatedTime * 1000)
             })
     }
     
-    let randomAttractionsType = [];
-    for (let i = 0; i < 2196; i++) {
+    
+    for (let post of postId) {
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let city = citiesId[chance.integer({ min: 0, max: citiesId.length - 1 })];
+        let attractionId: Array<{ id: number }> = await knex("attractions").select("id").whereLike("city_list", `%${city["name"]}%`);
+        await knex("posts")
+            .where("id", post["id"])
+            .update({
+                attraction_id: attractionId[chance.integer({ min: 0, max: attractionId.length - 1 })]["id"],
+                city_id: city["id"],
+                created_at: new Date(randomCreatedTime * 1000),
+                updated_at: new Date(randomCreatedTime * 1000)
+            })
+    }
+
+
+    for (let i = 0; i < attractionId.length - 1; i++) {
         let randomInterestNum = chance.integer({ min: 1, max: 3});
         for (let i = 0; i < randomInterestNum; i++) {
             let attractionTypeData = {
-                attraction_id: i,
+                attraction_id: attractionId[i]["id"],
                 interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
             };
-            randomAttractionsType.push(attractionTypeData);
+            await knex("attractions_type").insert(attractionTypeData);
         }
     }
 
-    await knex("attractions_type").insert(randomAttractionsType);
 
-
-    let randomLikeAttractions = [];
-    for (let i = 0; i < 2196; i++) {
-        let readerNum = chance.integer({ min: 0, max: userId.length });
+    for (let i = 0; i < attractionId.length - 1; i++) {
+        let readerNum = chance.integer({ min: 0, max: userId.length - 1 });
         for (let j = 0; j < readerNum; j++) {
             let reader = chance.integer({ min: 0, max: userId.length - 1 });
             let browseData = {
                 user_id: userId[reader]["id"],
                 browse_count: chance.integer({ min: 1, max: 100 }),
-                attraction_id: i
+                attraction_id: attractionId[i]["id"]
             }
-            randomLikeAttractions.push(browseData);
+            await knex("users_like_attractions").insert(browseData);
         }
     }
+    
 
-    await knex("users_like_attractions").insert(randomLikeAttractions);
+    const relationshipId: Array<{ id: number }> = await knex("users_relationship").select("id");
+    for (let relationship of relationshipId) {
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        await knex("users_relationship")
+            .where("id", relationship["id"])
+            .update({
+                created_at: new Date(randomCreatedTime * 1000),
+                updated_at: new Date(randomCreatedTime * 1000)
+            })
+    }
+
+    const chatRoomId: Array<{ id: number }> = await knex("chat_rooms").select("id");
+    for (let room of chatRoomId) {
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        await knex("chat_rooms")
+            .where("id", room["id"])
+            .update({
+                created_at: new Date(randomCreatedTime * 1000),
+                updated_at: new Date(randomCreatedTime * 1000)
+            })
+    }
+
+    const chatId: Array<{ id: number }> = await knex("chats").select("id");
+    for (let chat of chatId) {
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        await knex("chats")
+            .where("id", chat["id"])
+            .update({
+                created_at: new Date(randomCreatedTime * 1000),
+                updated_at: new Date(randomCreatedTime * 1000)
+            })
+    }
+    
+    const browsePostId: Array<{ id: number }> = await knex("users_browse_posts").select("id");
+    for (let post of browsePostId) {
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        await knex("users_browse_posts")
+            .where("id", post["id"])
+            .update({
+                created_at: new Date(randomCreatedTime * 1000),
+                updated_at: new Date(randomCreatedTime * 1000)
+            })
+    }
+    
+    const browseAttractionId: Array<{ id: number }> = await knex("users_like_attractions").select("id");
+    for (let browse of browseAttractionId) {
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        await knex("users_like_attractions")
+            .where("id", browse["id"])
+            .update({
+                created_at: new Date(randomCreatedTime * 1000),
+                updated_at: new Date(randomCreatedTime * 1000)
+            })
+    }
 };

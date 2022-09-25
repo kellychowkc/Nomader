@@ -7,7 +7,7 @@ CREATE TABLE staging_users (
     gender TEXT,
     job_id INTEGER,
     isAdmin BOOLEAN,
-    cuntry_id INTEGER,
+    country_id INTEGER,
     created_year INTEGER,
     created_month INTEGER,
     created_day INTEGER
@@ -94,7 +94,10 @@ CREATE TABLE staging_browse_posts (
     id SERIAL PRIMARY KEY,
     user_id INTEGER,
     browse_count INTEGER,
-    post_id INTEGER
+    post_id INTEGER,
+    created_year INTEGER,
+    created_month INTEGER,
+    created_day INTEGER 
 );
 
 CREATE TABLE staging_posts_type (
@@ -107,39 +110,46 @@ CREATE TABLE staging_posts_type (
 
 CREATE TABLE dim_countries (
     id SERIAL PRIMARY KEY,
-    country_name TEXT
+    name TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-CREATE UNIQUE INDEX countries_unique_idx on dim_countries(country_name);
 
 CREATE TABLE dim_cities (
     id SERIAL PRIMARY KEY,
-    city_name TEXT,
-    city_list TEXT
+    name TEXT,
+    city_list TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-CREATE UNIQUE INDEX cities_unique_idx on dim_cities(city_name, city_list);
 
 CREATE TABLE dim_attractions (
     id SERIAL PRIMARY KEY,
-    attraction_name TEXT,
-    city_list TEXT
+    name TEXT,
+    city_list TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-CREATE UNIQUE INDEX attractons_unique_idx on dim_attractions(attraction_name, city_list);
 
 CREATE TABLE dim_interests (
     id SERIAL PRIMARY KEY,
-    interest_name TEXT
+    title TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-CREATE UNIQUE INDEX interests_unique_idx on dim_interests(interest_name);
 
 CREATE TABLE dim_jobs (
     id SERIAL PRIMARY KEY,
-    job_title TEXT
+    title TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
-CREATE UNIQUE INDEX jobs_unique_idx on dim_jobs(job_title);
  
 CREATE TABLE dim_genders (
     id SERIAL PRIMARY KEY,
-    status TEXT
+    status TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 CREATE UNIQUE INDEX genders_unique_idx on dim_genders(status);
 
@@ -147,7 +157,9 @@ CREATE TABLE dim_dates (
     id SERIAL PRIMARY KEY,
     year TEXT,
     month TEXT,
-    day TEXT
+    day TEXT,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 CREATE UNIQUE INDEX dates_unique_idx on dim_dates (year, month, day);
 
@@ -158,13 +170,17 @@ CREATE TABLE fact_attractions_interests (
     attraction_id INTEGER,
     FOREIGN KEY (attraction_id) REFERENCES dim_attractions(id),
     interest_id INTEGER,
-    FOREIGN KEY (interest_id) REFERENCES dim_interests(id)
+    FOREIGN KEY (interest_id) REFERENCES dim_interests(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_chat_rooms (
     id SERIAL PRIMARY KEY,
     created_date_id INTEGER,
-    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_chats (
@@ -172,7 +188,9 @@ CREATE TABLE fact_chats (
     created_date_id INTEGER,
     FOREIGN KEY (created_date_id) REFERENCES dim_dates(id),
     chat_room_id INTEGER,
-    FOREIGN KEY (chat_room_id) REFERENCES fact_chat_rooms(id)
+    FOREIGN KEY (chat_room_id) REFERENCES fact_chat_rooms(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_users (
@@ -187,7 +205,9 @@ CREATE TABLE fact_users (
     FOREIGN KEY (job_id) REFERENCES dim_jobs(id),
     gender_id INTEGER,
     FOREIGN KEY (gender_id) REFERENCES dim_genders(id),
-    isAdmin BOOLEAN
+    isAdmin BOOLEAN,
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_users_interests (
@@ -195,7 +215,9 @@ CREATE TABLE fact_users_interests (
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES fact_users(id),
     interest_id INTEGER,
-    FOREIGN KEY (interest_id) REFERENCES dim_interests(id)
+    FOREIGN KEY (interest_id) REFERENCES dim_interests(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_users_relactionship (
@@ -205,7 +227,9 @@ CREATE TABLE fact_users_relactionship (
     user2_id INTEGER,
     FOREIGN KEY (user2_id) REFERENCES fact_users(id),
     created_date_id INTEGER,
-    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_browse_attractions (
@@ -216,7 +240,9 @@ CREATE TABLE fact_browse_attractions (
     FOREIGN KEY (attraction_id) REFERENCES dim_attractions(id),
     browse_count INTEGER,
     created_date_id INTEGER,
-    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_posts (
@@ -228,7 +254,9 @@ CREATE TABLE fact_posts (
     attraction_id INTEGER,
     FOREIGN KEY (attraction_id) REFERENCES dim_attractions(id),
     created_date_id INTEGER,
-    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id)
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_browse_posts (
@@ -237,7 +265,11 @@ CREATE TABLE fact_browse_posts (
     FOREIGN KEY (user_id) REFERENCES fact_users(id),
     browse_count INTEGER,
     post_id INTEGER,
-    FOREIGN KEY (post_id) REFERENCES fact_posts(id)
+    FOREIGN KEY (post_id) REFERENCES fact_posts(id),
+    created_date_id INTEGER,
+    FOREIGN KEY (created_date_id) REFERENCES dim_dates(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE fact_posts_type (
@@ -245,5 +277,7 @@ CREATE TABLE fact_posts_type (
     interest_id INTEGER,
     FOREIGN KEY (interest_id) REFERENCES dim_interests(id),
     post_id INTEGER,
-    FOREIGN KEY (post_id) REFERENCES fact_posts(id)
+    FOREIGN KEY (post_id) REFERENCES fact_posts(id),
+    created_at  TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
