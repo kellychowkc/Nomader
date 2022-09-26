@@ -8,3 +8,5 @@ chatRoutes.post("/getRoomInfo", chatRoomController.getRoomInfo);
 chatRoutes.post("/getLastMessages", chatRoomController.getLastMessages);
 chatRoutes.post("/getChatRecords", chatRoomController.getChatRecords);
 chatRoutes.post("/openChat", chatRoomController.openChat);
+chatRoutes.post("/getRoomInfoByRoomTitle", chatRoomController.getRoomInfoByRoomTitle)
+

@@ -20,6 +20,12 @@ export interface ManageUserState {
     error?: string;
 }
 
+export interface ChatListState {
+    loading: boolean;
+    chatList: Array<any> | undefined;
+    error?: string;
+}
+
 export interface UserListState {
     first_name: string;
     last_name: string;

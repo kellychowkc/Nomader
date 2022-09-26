@@ -74,14 +74,15 @@ export default function ChatList(props: Props) {
                                     fontSize={'lg'}
                                     fontWeight={'medium'}
                                 >
-                                    {Date.parse(room?.updated_at as string) <
-                                    Date.now()
-                                        ? room.updated_at
+                                    {Date.parse(
+                                        room?.room_updated_at as string
+                                    ) < Date.now()
+                                        ? room.room_updated_at
                                               .split('T', 2)[1]
                                               .split('.', 1)[0]
                                               .split(':', 2)
                                               .join(':')
-                                        : room.updated_at.split('T', 1)}
+                                        : room.room_updated_at.split('T', 1)}
                                 </Text>
                                 <LinkOverlay
                                     as={Link}

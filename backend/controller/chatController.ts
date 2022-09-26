@@ -4,7 +4,7 @@ import { logger } from "../utils/logger";
 import { User } from "../utils/models";
 
 export class ChatRoomController {
-    constructor(private chatRoomService: ChatRoomService) {}
+    constructor(private chatRoomService: ChatRoomService) { }
 
     getUserChatRooms = async (req: Request, res: Response) => {
         try {
@@ -150,6 +150,34 @@ export class ChatRoomController {
             });
         }
     };
+    getRoomInfoByRoomTitle = async (req: Request, res: Response) => {
+        try {
+            const uid: number = req.body.uid;
+            const room_title: string = req.body.room_title;
+            console.log("<getRoomInfoByRoomTitle> Room Title", room_title);
+            const foundRoomInfo = await this.chatRoomService.getRoomInfoByRoomTitle(uid, room_title);
+            console.log(foundRoomInfo);
+            if (!foundRoomInfo) {
+                res.status(401).json({
+                    success: false,
+                    message: "No Room Info",
+                });
+                return;
+            }
+            res.status(201).json({
+                success: true,
+                message: "Room Info Found",
+                data: foundRoomInfo,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
 }
 
 declare global {
