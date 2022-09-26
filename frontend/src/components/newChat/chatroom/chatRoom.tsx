@@ -29,7 +29,9 @@ const ChatRoom = (props: Props) => {
     // console.log('<ChatRoom> room_id = ', room_id)
 
     const auth: AuthState = useSelector((state: any) => state.auth)
-    const chatRoom: ChatListState = useSelector((state: any) => state.chatList)
+    const chatRoomList: ChatListState = useSelector(
+        (state: any) => state.chatList
+    )
 
     const today = new Date()
 
@@ -51,17 +53,14 @@ const ChatRoom = (props: Props) => {
         }
     }
 
-    console.log(`<ChatRoom>`)
-    console.table(chatRoom)
-
     useEffect(() => {
         const friendsName = getRoomInfoByRoomTitle(
             auth.id as number,
             room_id as string
         ).then((result) => {
-            console.log(`<getfriendsName> ${result}`)
+            // console.log(`<getfriendsName> ${result}`)
             if (result.success) {
-                console.log(`<getfriendsName> Friend's Name:`)
+                // console.log(`<getfriendsName> Friend's Name:`)
                 console.table(result.data)
 
                 setRoomInfo(result.data[0])
@@ -69,9 +68,9 @@ const ChatRoom = (props: Props) => {
         })
 
         const chatRecords = getChatRecords(room_id as string).then((result) => {
-            console.log(`<getChatRecords> ${result}`)
+            // console.log(`<getChatRecords> ${result}`)
             if (result.success) {
-                console.log(`<getChatRecords> setNeMessageHistory:`)
+                // console.log(`<getChatRecords> setNeMessageHistory:`)
                 console.table(result.data)
 
                 setMessageHistory(result.data.map((item: any) => ({ ...item })))
@@ -98,7 +97,7 @@ const ChatRoom = (props: Props) => {
         return
     }, [])
 
-    console.log('[roomInfo] = ', roomInfo)
+    console.log('[STATE: roomInfo] = ', roomInfo)
 
     return (
         <Box
@@ -178,7 +177,7 @@ const ChatRoom = (props: Props) => {
                                     >
                                         {message.user_speech_id === auth.id
                                             ? 'me: '
-                                            : `${message.user_speech_id}: `}
+                                            : `${roomInfo.username}: `}
                                     </Text>
                                     <Text
                                         className="message_content"
@@ -188,7 +187,7 @@ const ChatRoom = (props: Props) => {
                                     </Text>
                                     <Text
                                         pb={2}
-                                        lineHeight={'0'}
+                                        lineHeight={'0.2'}
                                         textAlign={'right'}
                                     >
                                         {/* {message.created_at} */}

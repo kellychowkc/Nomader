@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styles from './editProfile.module.css'
 import {
     Box,
     Heading,
@@ -16,19 +17,25 @@ import {
     Textarea,
     InputRightElement,
     InputGroup,
+    Select,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { useFormik } from 'formik'
-import { fetchSelfUserProfile, UserProfile } from '../../api/user'
+import {
+    fetchSelfUserProfile,
+    updateProfile,
+    UserProfile,
+} from '../../api/user'
 import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
 
 const { REACT_APP_API_SERVER } = process.env
 
-const EditProfile = () => {
-    const [showPassword, setShowPassword] = React.useState(false)
+const Profile = () => {
+    const [showPassword, setShowPassword] = useState(false)
     const [imageStore, setImageStore] = useState('')
 
     // show existing info
@@ -39,11 +46,13 @@ const EditProfile = () => {
 
     useEffect(() => {
         fetchSelfUserProfile(userId as any as number).then((data: any) => {
-            const dataDetail = data.userDetail
+            const dataDetail = data.userDetail.rows[0]
             const time = dataDetail!.created_at!.slice(0, 10)
             dataDetail!.created_at = time
             const updateTime = dataDetail!.updated_at!.slice(0, 10)
             dataDetail!.updated_at = updateTime
+            const job = dataDetail.title
+            dataDetail!.job = job
             const profilePath =
                 `${REACT_APP_API_SERVER}/profile/` + dataDetail.profile
             dataDetail.profile = profilePath
@@ -65,12 +74,19 @@ const EditProfile = () => {
             profile: new File([''], ''),
             newProfile: new File([''], ''),
             job: '',
-            emergency_contact_person: '',
-            emergency_contact_num: undefined,
-            country: '',
         },
         onSubmit: async (values: UserProfile) => {
-            alert(JSON.stringify(values, null, 2))
+            const res: any = await updateProfile(
+                values,
+                userId as any as string
+            )
+            if (res.success) {
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Profile Updated',
+                    icon: 'success',
+                })
+            }
         },
     })
 
@@ -83,93 +99,60 @@ const EditProfile = () => {
             formik.setFieldValue('newProfile', file)
         }
     }
+
     return (
-        <Box w="auto" h="full">
+        <div>
             {/* === NavBar === */}
             <Nav />
             <VStack w="auto">
                 <Text
-                    fontSize="2em"
-                    fontWeight="bold"
-                    as={'span'}
                     position={'relative'}
-                    _after={{
-                        content: "''",
-                        width: 'full',
-                        height: '30%',
-                        position: 'absolute',
-                        bottom: 1,
-                        left: 0,
-                        bg: '#0ABAB5',
-                        zIndex: -1,
-                    }}
+                    className={styles.bigTitle}
+                    color={useColorModeValue('#1d1d42', '#B0D8BC')}
                 >
-                    Profile
+                    Profile Edit
                 </Text>
-                <Flex
-                    minH={'100vh'}
-                    align={'center'}
-                    justify={'center'}
-                    bg={useColorModeValue('gray.50', 'gray.800')}
-                >
-                    <Stack
-                        spacing={4}
-                        w={'full'}
-                        maxW={'2xl'}
-                        bg={useColorModeValue('white', 'gray.700')}
-                        rounded={'xl'}
-                        boxShadow={'lg'}
-                        p={6}
-                        my={12}
-                    >
-                        <Heading
-                            lineHeight={1.1}
-                            fontSize={{ base: '2xl', sm: '3xl' }}
-                        >
-                            User Profile Edit
-                        </Heading>
+                <Flex minH={'100vh'} align={'center'} justify={'center'}>
+                    <Stack>
                         <form onSubmit={formik.handleSubmit}>
                             <FormControl id="userIcon">
-                                <FormLabel>User Icon</FormLabel>
                                 <Stack
                                     direction={['column', 'row']}
                                     spacing={6}
                                 >
-                                    <Center>
-                                        {imageStore === '' ? (
-                                            <Avatar
-                                                size="2xl"
-                                                src={
-                                                    profileList?.profile as any as string
-                                                }
-                                            ></Avatar>
-                                        ) : (
-                                            <Avatar
-                                                size="2xl"
-                                                src={imageStore}
-                                            ></Avatar>
-                                        )}
-                                    </Center>
-                                    <Center w="full">
-                                        <input
-                                            type="file"
-                                            onChange={handleImageChange}
-                                            id="profile"
-                                            name="profile"
-                                            // className={styles.uploadBtn}
-                                        ></input>
-                                        <p>Upload Profile Picture</p>
-                                    </Center>
+                                    <div className={styles.profileContainer}>
+                                        <Center>
+                                            {imageStore === '' ? (
+                                                <Avatar
+                                                    name={profileList?.username}
+                                                    size="2xl"
+                                                    src={
+                                                        profileList?.profile as any as string
+                                                    }
+                                                ></Avatar>
+                                            ) : (
+                                                <Avatar
+                                                    size="2xl"
+                                                    src={imageStore}
+                                                ></Avatar>
+                                            )}
+                                        </Center>
+                                        <Center w="full">
+                                            <input
+                                                type="file"
+                                                onChange={handleImageChange}
+                                                id="profile"
+                                                name="profile"
+                                                className={styles.uploadBtn}
+                                            ></input>
+                                            <p className={styles.subtitle}>
+                                                Upload Profile Picture
+                                            </p>
+                                        </Center>
+                                    </div>
                                 </Stack>
                             </FormControl>
-                            <Box fontSize="sm" color="#363636">
-                                <Text>
-                                    Member since: {profileList?.created_at}
-                                </Text>
-                                <Text>
-                                    Last update: {profileList?.updated_at}
-                                </Text>
-                            </Box>
+
                             <Flex
                                 w="100%"
                                 wrap="wrap"
@@ -184,18 +167,22 @@ const EditProfile = () => {
                             >
                                 {/* Remark */}
                                 <Box m={3}>
-                                    <FormControl id="userName" isRequired>
+                                    <FormControl id="userName">
                                         <FormLabel>Username</FormLabel>
                                         <Input
+                                            id="username"
+                                            name="username"
                                             placeholder={profileList?.username}
+                                            onChange={formik.handleChange}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
                                             value={formik.values.username}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
                                 <Box m={3}>
-                                    <FormControl id="password" isRequired>
+                                    <FormControl id="password">
                                         <FormLabel>Password</FormLabel>
                                         <InputGroup>
                                             <Input
@@ -209,8 +196,9 @@ const EditProfile = () => {
                                                         : 'password'
                                                 }
                                                 placeholder="New Password"
+                                                w={'18rem'}
                                             />
-                                            <InputRightElement h={'full'}>
+                                            <InputRightElement>
                                                 <Button
                                                     variant={'ghost'}
                                                     onClick={() =>
@@ -231,9 +219,6 @@ const EditProfile = () => {
                                     </FormControl>
                                 </Box>
                             </Flex>
-                            <Text fontSize="1.5em" fontWeight="bold">
-                                Personal Info
-                            </Text>
                             <Flex
                                 w="100%"
                                 wrap="wrap"
@@ -248,46 +233,62 @@ const EditProfile = () => {
                             >
                                 {/* Remark */}
                                 <Box m={3}>
-                                    <FormControl id="first_name" isRequired>
+                                    <FormControl id="first_name">
                                         <FormLabel>First Name</FormLabel>
                                         <Input
+                                            id="first_name"
+                                            name="first_name"
+                                            onChange={formik.handleChange}
                                             placeholder={
                                                 profileList?.first_name
                                             }
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
                                 <Box m={3}>
-                                    <FormControl id="last_name" isRequired>
+                                    <FormControl id="last_name">
                                         <FormLabel>Last Name</FormLabel>
                                         <Input
+                                            id="last_name"
+                                            name="last_name"
+                                            onChange={formik.handleChange}
                                             placeholder={profileList?.last_name}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
                                 <Box m={3}>
-                                    <FormControl id="email" isRequired>
+                                    <FormControl id="email">
                                         <FormLabel>Email address</FormLabel>
                                         <Input
+                                            id="email"
+                                            name="email"
+                                            onChange={formik.handleChange}
                                             placeholder={profileList?.email}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="email"
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
                                 <Box m={3}>
                                     {/* Remark */}
-                                    <FormControl id="phone_num" isRequired>
+                                    <FormControl id="phone_num">
                                         <FormLabel>Phone no.</FormLabel>
                                         <Input
+                                            id="phone_num"
+                                            name="phone_num"
                                             placeholder={profileList?.phone_num}
                                             _placeholder={{ color: 'gray.500' }}
-                                            type="text"
+                                            type="number"
                                             value={formik.values.phone_num}
+                                            onChange={formik.handleChange}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -295,10 +296,14 @@ const EditProfile = () => {
                                     <FormControl id="birthday">
                                         <FormLabel>Birthday</FormLabel>
                                         <Input
+                                            id="birthday"
+                                            name="birthday"
                                             placeholder={profileList?.birthday}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
                                             value={formik.values.birthday}
+                                            onChange={formik.handleChange}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -307,11 +312,40 @@ const EditProfile = () => {
                                     <FormControl id="gender">
                                         <FormLabel>Gender</FormLabel>
                                         <Input
+                                            id="gender"
+                                            name="gender"
                                             placeholder={profileList?.gender}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
                                             value={formik.values.gender}
+                                            onChange={formik.handleChange}
+                                            w={'18rem'}
                                         />
+                                    </FormControl>
+                                </Box>
+                                <Box m={3}>
+                                    <FormControl id="job">
+                                        <FormLabel>Job</FormLabel>
+                                        <Select
+                                            id="job"
+                                            name="job"
+                                            onChange={formik.handleChange}
+                                            value={formik.values.job}
+                                            placeholder={profileList?.job}
+                                            w={'18rem'}
+                                        >
+                                            <option value={1}>student</option>
+                                            <option value={2}>slash</option>
+                                            <option value={3}>designer</option>
+                                            <option value={4}>
+                                                programmer
+                                            </option>
+                                            <option value={5}>
+                                                entrepreneur
+                                            </option>
+                                            <option value={6}>youtuber</option>
+                                            <option value={7}>others</option>
+                                        </Select>
                                     </FormControl>
                                 </Box>
                             </Flex>
@@ -330,38 +364,60 @@ const EditProfile = () => {
                             >
                                 <Box m={3} w="90%">
                                     {/* Remark */}
-                                    <FormControl id="information">
+                                    <FormControl
+                                        id="information"
+                                        className={styles.information}
+                                    >
                                         <FormLabel>Information</FormLabel>
                                         <Textarea
-                                            minH="20"
-                                            w="100%"
+                                            id="information"
+                                            name="information"
+                                            minH="8rem"
+                                            w="85%"
                                             placeholder={
                                                 profileList?.information
                                             }
                                             _placeholder={{ color: 'gray.500' }}
-                                            value={formik.values.password}
+                                            value={formik.values.information}
+                                            onChange={formik.handleChange}
                                         />
                                     </FormControl>
                                 </Box>
                             </Flex>
 
-                            <Stack spacing={6} direction={['column', 'row']}>
+                            <Stack direction={['column', 'row']}>
                                 <Button
                                     bgImage={
                                         'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                                     }
                                     type="submit"
+                                    className={styles.btn}
                                 >
-                                    Submit
+                                    Update
                                 </Button>
                             </Stack>
+                            <Box
+                                fontSize="sm"
+                                color="#363636"
+                                className={styles.timeBox}
+                            >
+                                <Text>
+                                    Member since: {profileList?.created_at}
+                                </Text>
+                                <Text>
+                                    Last update: {profileList?.updated_at}
+                                </Text>
+                            </Box>
                         </form>
                     </Stack>
                 </Flex>
             </VStack>
             <Dock />
-        </Box>
+        </div>
     )
 }
 
-export default EditProfile
+export default Profile
+function dispatch(arg0: any) {
+    throw new Error('Function not implemented.')
+}

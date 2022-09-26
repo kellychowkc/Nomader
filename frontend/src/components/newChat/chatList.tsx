@@ -76,7 +76,8 @@ export default function ChatList(props: Props) {
                                 >
                                     {Date.parse(
                                         room?.room_updated_at as string
-                                    ) < Date.now()
+                                    ) < Date.now() &&
+                                    room?.room_updated_at !== undefined
                                         ? room?.room_updated_at
                                               .split('T', 2)[1]
                                               .split('.', 1)[0]
@@ -87,9 +88,7 @@ export default function ChatList(props: Props) {
                                 <LinkOverlay
                                     as={Link}
                                     to={`/chat/${room.room_title}`}
-                                >
-                                    {''}
-                                </LinkOverlay>
+                                ></LinkOverlay>
                             </HStack>
                         </LinkBox>
                     </Td>

@@ -2,7 +2,7 @@ import { Dispatch } from "react";
 import { getUserChatRooms } from "../../api/chat";
 import { ChatListActions, loadChatListFail, loadChatListPending, loadChatListSuccess } from "./chatAction";
 
-export function getAllChatRoomsForRedux(user_id: any) {
+export function getAllChatRoomsInfo(user_id: any) {
     return async function (dispatch: Dispatch<ChatListActions>) {
         try {
             dispatch(loadChatListPending());

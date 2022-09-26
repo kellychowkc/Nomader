@@ -51,7 +51,13 @@ const Forum = () => {
             <Nav />
             <VStack w="auto" margin={6}>
                 <div className={styles.head}>
-                    <h1 className={styles.headTitle}>Nomad Blog</h1>
+                    <Text
+                        as="h1"
+                        className={styles.headTitle}
+                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                    >
+                        Nomad Blog
+                    </Text>
                     <Box className={styles.btnBox}>
                         <Button
                             className={styles.addbtn}
