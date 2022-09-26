@@ -1,4 +1,5 @@
 import type { InterestItem } from "../components/matching/InterestList";
+import type { ManageUserState } from "../redux/state";
 import { fetchJson } from "./utils";
 
 // let REACT_APP_API_SERVER: any;
@@ -23,16 +24,53 @@ export interface LoginForm {
 export interface SignUpForm {
     first_name: string;
     last_name: string;
-    gender?: string;
-    birthday?: string;
+    gender: string;
+    birthday: string;
     username: string;
     email: string;
     password: string;
     phone_num: string;
-    country?: string;
-    profile?: string;
-    job?: string;
+    country: string;
+    profile: Blob | File;
+    job: string;
+    information: string;
+}
+
+export interface PostForm {
+    user_id: string;
+    title: string;
+    content: string;
+    image: Blob | File;
+}
+
+export interface UserProfile {
+    username?: string;
+    password?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    phone_num?: string;
+    birthday?: string;
+    gender?: string;
     information?: string;
+    profile?: Blob | File | string;
+    newProfile?: Blob | File;
+    job?: string;
+    country?: string;
+    created_at?: string;
+    updated_at?: string;
+
+    // added by danny - start
+    id?: number;
+    isAdmin?: boolean;
+    allowPost?: boolean;
+    allowComment?: boolean;
+    allowUpload?: boolean;
+    allowMatch?: boolean;
+    emergency_contact_person?: string;
+    emergency_contact_num?: number;
+
+    // added by danny - end
 }
 
 export async function fetchSelfUserInfo(token: string) {
@@ -47,34 +85,159 @@ export async function fetchSelfUserInfo(token: string) {
 }
 
 export async function postLogin(loginForm: LoginForm) {
-    return fetchJson<{ token: string; username: string }>(
-        `${REACT_APP_API_SERVER}/user/login`,
-        {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify(loginForm),
-        }
-    );
-}
-
-export async function postSignUp(signUpForm: SignUpForm) {
-    return fetchJson(`${REACT_APP_API_SERVER}/user/signUp`, {
+    return fetchJson<{
+        token: string;
+        username: string;
+        id: number;
+        isAdmin: boolean;
+    }>(`${REACT_APP_API_SERVER}/user/login`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(signUpForm),
+        body: JSON.stringify(loginForm),
     });
 }
 
-export async function addUserInterest(interestList: Array<InterestItem>) {
+export async function postSignUp(signUpForm: SignUpForm) {
+    const formData = new FormData();
+    console.log("check data", signUpForm.country);
+    formData.append("first_name", signUpForm.first_name);
+    formData.append("last_name", signUpForm.last_name);
+    formData.append("gender", signUpForm.gender);
+    formData.append("birthday", signUpForm.birthday);
+    formData.append("username", signUpForm.username);
+    formData.append("email", signUpForm.email);
+    formData.append("password", signUpForm.password);
+    formData.append("phone_num", signUpForm.phone_num);
+    formData.append("country_id", signUpForm.country);
+    formData.append("job_id", signUpForm.job);
+    formData.append("information", signUpForm.information);
+    formData.append("profile", signUpForm.profile);
+
+    return fetchJson(`${REACT_APP_API_SERVER}/user/signUp`, {
+        method: "POST",
+        body: formData,
+    });
+}
+
+export async function preMatching(userId: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/getInterest`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ uid: userId }),
+    });
+}
+
+export async function addUserInterest(
+    interestList: Array<InterestItem>,
+    user_id: number
+) {
     return fetchJson(`${REACT_APP_API_SERVER}/user/interest`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify(interestList),
+        body: JSON.stringify({ interestList, user_id }),
     });
 }
+
+export async function newPost(postForm: PostForm) {
+    const formData = new FormData();
+    formData.append("user_id", postForm.user_id);
+    formData.append("title", postForm.title);
+    formData.append("content", postForm.content);
+    formData.append("image", postForm.image);
+
+    return fetchJson(`${REACT_APP_API_SERVER}/user/post`, {
+        method: "POST",
+        body: formData,
+    });
+}
+
+export async function getAllUsers() {
+    return fetchJson<ManageUserState>(
+        `${REACT_APP_API_SERVER}/user/getAllUsers`,
+        {
+            method: "GET",
+        }
+    );
+}
+
+export async function getUserProfile(username: string) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserProfile`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ username: username }),
+    });
+}
+
+export async function addBrowseCount(post_id: number, user_id: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/browsePost`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+
+        body: JSON.stringify({ post_id, user_id }),
+    });
+}
+
+export async function fetchSelfUserProfile(userId: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/user/profile`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ uid: userId }),
+    });
+}
+
+
+
+export async function getUserFriends(user_id: number) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriends`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id }),
+    });
+}
+
+
+export async function updateUserPermission(username: string, permissions: any[]) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/updateUserPermission`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ username: username, permissions: permissions }),
+    });
+}
+
+export async function updateProfile(updateForm: UserProfile, userId: string) {
+    const formData = new FormData();
+    formData.append("id", userId);
+    formData.append("first_name", updateForm.first_name as any as string);
+    formData.append("last_name", updateForm.last_name as any as string);
+    formData.append("gender", updateForm.gender as any as string);
+    formData.append("birthday", updateForm.birthday as any as string);
+    formData.append("username", updateForm.username as any as string);
+    formData.append("email", updateForm.email as any as string);
+    formData.append("password", updateForm.password as any as string);
+    formData.append("phone_num", updateForm.phone_num as any as string);
+    formData.append("job_id", updateForm.job as any as string);
+    formData.append("information", updateForm.information as any as string);
+    formData.append("profile", updateForm.newProfile as any as string);
+
+    return fetchJson(`${REACT_APP_API_SERVER}/user/updateProfile`, {
+        method: "POST",
+        body: formData,
+    });
+}
+

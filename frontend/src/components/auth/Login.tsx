@@ -9,7 +9,6 @@ import {
     Button,
     Heading,
 } from '@chakra-ui/react'
-import { fetchSelfUserInfo } from '../../api/user'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, RootThunkDispatch } from '../../redux/store'
 import { loginThunk } from '../../redux/auth/authThunk'
@@ -39,6 +38,7 @@ function Login() {
                 })
                 return
             }
+            navigate('/home')
         },
     })
 
@@ -107,7 +107,12 @@ function Login() {
                         </Stack>
                     </form>
                     <Stack spacing={10} align={'center'}>
-                        <Link color={'blue.400'}>New User? Sign Up</Link>
+                        <Link
+                            color={'blue.400'}
+                            onClick={() => navigate('/signUp')}
+                        >
+                            Sign Up
+                        </Link>
                     </Stack>
                 </Stack>
             </div>

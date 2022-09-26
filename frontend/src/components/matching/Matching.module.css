@@ -1,18 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 .profileContainer {
-    margin: 0;
     font-family: 'Roboto', sans-serif;
+    overflow: hidden;
 }
 
+.flexContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .profilePic {
-    width: 26rem;
-    height: 25rem;
+    margin-top: 1rem;
+    width: 16rem;
+    height: 16rem;
 }
 
 .profileInfo {
-    padding: 1rem 2.5rem;
-    padding-bottom: 0.5rem;
+    padding: 1rem 4rem;
 }
 
 .title {
@@ -38,28 +43,14 @@ hr {
 
 .tickbtn {
     margin-left: 2rem;
-    height: 71%;
-    width: 15%;
     transition: all 0.5s ease;
     color: white;
-    background-color: transparent;
-    outline: none;
-    size: 10rem;
-    border-radius: 80%;
-    background-color: #aae5bb;
 }
 
 .crossbtn {
     padding-top: 3px;
-    height: 71%;
-    width: 15%;
     transition: all 0.5s ease;
-    color: #aae5bb;
-    background-color: transparent;
-    outline: none;
-    size: 10rem;
-    border-radius: 80%;
-    border: solid #aae5bb;
+    color: white;
 }
 
 .btnBox {
@@ -67,4 +58,65 @@ hr {
     display: flex;
     justify-content: center;
     padding-top: 0.5rem;
+}
+
+/* Matching Success Page */
+.body {
+    background: url('../../assets/successBackground.jpg');
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.container {
+    margin-bottom: 4rem;
+    padding: 0 1rem;
+    color: white;
+}
+
+.tab {
+    padding-top: 4rem;
+    margin-bottom: 3.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.bigTitle {
+    font-size: 32px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.titleBox {
+    margin-right: 8rem;
+}
+
+.avatar {
+    width: 200px;
+    height: 200px;
+}
+
+.caption {
+    margin: 2.5rem 0rem;
+    font-size: 30px;
+    font-weight: 800;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+.backwardBtn {
+    background-color: transparent;
+    margin-left: 1rem;
+    width: 15%;
+    transition: all 0.5s ease;
+    color: #ffffff;
+    outline: none;
+    size: 15rem;
+}
+
+.btn {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    color: #ffffff;
 }

@@ -44,19 +44,32 @@ function SignUp() {
             password: '',
             phone_num: '',
             country: '',
-            profile: '',
+            profile: new File([''], ''),
             job: '',
             information: '',
         },
         onSubmit: async (values) => {
-            alert(JSON.stringify(values, null, 2))
-            const res = await dispatch(signUpThunk(values, navigate))
-            if (res.success) {
+            // alert(JSON.stringify(values, null, 2))
+            if (
+                formik.values.profile === new File([''], '') ||
+                formik.values.job === '' ||
+                formik.values.information === ''
+            ) {
                 Swal.fire({
-                    title: 'Congrats!',
-                    text: 'Account created',
-                    icon: 'success',
+                    title: 'Notice',
+                    text: 'Please input all the information',
+                    icon: 'warning',
                 })
+                return
+            } else {
+                const res = await dispatch(signUpThunk(values, navigate))
+                if (res.success) {
+                    Swal.fire({
+                        title: 'Congrats!',
+                        text: 'Account created',
+                        icon: 'success',
+                    })
+                }
             }
         },
     })
@@ -65,10 +78,13 @@ function SignUp() {
         if (
             formik.values.first_name === '' ||
             formik.values.last_name === '' ||
+            formik.values.gender === '' ||
+            formik.values.birthday === '' ||
             formik.values.username === '' ||
             formik.values.password === '' ||
             formik.values.email === '' ||
-            formik.values.phone_num === ''
+            formik.values.phone_num === '' ||
+            formik.values.country === ''
         ) {
             Swal.fire({
                 title: 'Notice',
@@ -90,6 +106,7 @@ function SignUp() {
         const url = reader.readAsDataURL(file)
         reader.onloadend = function (e) {
             setImageStore(reader.result as string)
+            formik.setFieldValue('profile', file)
         }
     }
 
@@ -310,7 +327,10 @@ function SignUp() {
                                     </Button>
                                 </Stack>
                                 <Stack spacing={10} align={'center'}>
-                                    <Link color={'blue.400'}>
+                                    <Link
+                                        onClick={() => navigate('/login')}
+                                        color={'blue.400'}
+                                    >
                                         Already user? Login
                                     </Link>
                                 </Stack>
@@ -343,9 +363,6 @@ function SignUp() {
                                                     onChange={handleImageChange}
                                                     id="profile"
                                                     name="profile"
-                                                    value={
-                                                        formik.values.profile
-                                                    }
                                                     className={styles.uploadBtn}
                                                 ></input>
                                                 <p className={styles.title}>
@@ -364,13 +381,17 @@ function SignUp() {
                                             value={formik.values.job}
                                             placeholder={'Job'}
                                         >
-                                            <option>Student</option>
-                                            <option>Slash</option>
-                                            <option>Designer</option>
-                                            <option>Programmer</option>
-                                            <option>Entrepreneur</option>
-                                            <option>Youtuber</option>
-                                            <option>Others</option>
+                                            <option value={1}>student</option>
+                                            <option value={2}>slash</option>
+                                            <option value={3}>designer</option>
+                                            <option value={4}>
+                                                programmer
+                                            </option>
+                                            <option value={5}>
+                                                entrepreneur
+                                            </option>
+                                            <option value={6}>youtuber</option>
+                                            <option value={7}>others</option>
                                         </Select>
                                     </FormControl>
                                 </HStack>

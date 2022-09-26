@@ -38,10 +38,9 @@ export function loginThunk(loginForm: LoginForm, navigate: NavigateFunction) {
         try {
             dispatch(loginPending());
             const data = await postLogin(loginForm);
-            console.log(data);
             window.localStorage.setItem("auth_token", data.token);
-            dispatch(loginSuccess(data.username));
-            navigate("/contact");
+            dispatch(loginSuccess(data.username, data.id, data.isAdmin));
+            navigate("/");
         } catch (err: any) {
             dispatch(loginFail(err.message));
             return err.message;
@@ -55,6 +54,7 @@ export function signUpThunk(
 ) {
     return async function (dispatch: Dispatch<AuthActions>) {
         try {
+            console.log("check thunk signupForm", signUpForm);
             const data = await postSignUp(signUpForm);
             console.log(data);
             navigate("/login");

@@ -2,11 +2,14 @@ import styles from './Interest.module.css'
 import { Wrap, Icon } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react'
-import InterestItem from './interestItem'
+import InterestItem from './InterestItem'
 import { fetchJson } from '../../api/utils'
 import Swal from 'sweetalert2'
 import { addUserInterest } from '../../api/user'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import Dock from '../common/dock/Dock'
+import { AuthState } from '../../redux/state'
+import { useSelector } from 'react-redux'
 
 const { REACT_APP_API_SERVER } = process.env
 export interface InterestItem {
@@ -17,10 +20,11 @@ export interface InterestItem {
 
 function InterestList() {
     const [interestList, setInterestList] = useState<Array<InterestItem>>([])
-    const [nextPage, setNextPage] = useState(false)
+    const auth: AuthState = useSelector((state: any) => state.auth)
+    const user_id = auth.id
 
-    useEffect(() => {
-        setNextPage(false)
+    const navigate = useNavigate()
+    const insertData = useEffect(() => {
         fetchJson<Array<{ id: number; title: string }>>(
             `${REACT_APP_API_SERVER}/data/interest`
         ).then((data) => {
@@ -37,6 +41,7 @@ function InterestList() {
         const clonedInterestList = interestList.slice()
         const interest = clonedInterestList.find((item) => item.id === id)!
         interest.isSelected = !interest.isSelected
+        console.log(clonedInterestList)
         setInterestList(clonedInterestList)
     }
 
@@ -44,8 +49,8 @@ function InterestList() {
         const filteredInterestList = interestList.filter(
             (item) => item.isSelected === true
         )
+        console.log('check length', filteredInterestList.length)
         if (filteredInterestList.length === 0) {
-            setNextPage(!nextPage)
             Swal.fire({
                 title: 'Sorry',
                 text: 'You have to pick at least one.',
@@ -53,9 +58,7 @@ function InterestList() {
             })
 
             return
-        }
-        if (filteredInterestList.length > 6) {
-            setNextPage(!nextPage)
+        } else if (filteredInterestList.length > 6) {
             Swal.fire({
                 title: "Don't be greedy!",
                 text: 'You can only pick six.',
@@ -63,17 +66,20 @@ function InterestList() {
             })
 
             return
+        } else {
+            const submitInterestList = filteredInterestList.map(
+                (item: InterestItem) => {
+                    delete item.isSelected
+                    return item
+                }
+            )
+            addUserInterest(submitInterestList, user_id as any as number).then(
+                (data) => {
+                    console.log(data)
+                    navigate('/matching')
+                }
+            )
         }
-
-        const submitInterestList = filteredInterestList.map(
-            (item: InterestItem) => {
-                delete item.isSelected
-                return item
-            }
-        )
-        addUserInterest(submitInterestList).then((data) => {
-            console.log(data)
-        })
     }
     return (
         <div className={styles.body}>
@@ -99,16 +105,11 @@ function InterestList() {
                 </div>
                 <div className={styles.btnContainer}>
                     <button className={styles.tickbtn} onClick={submit}>
-                        {nextPage ? (
-                            <Link to="/matching">
-                                <Icon as={CheckIcon} w={9} h={9} />
-                            </Link>
-                        ) : (
-                            <Icon as={CheckIcon} w={9} h={9} />
-                        )}
+                        <Icon as={CheckIcon} w={9} h={9} />
                     </button>
                 </div>
             </div>
+            <Dock />
         </div>
     )
 }
