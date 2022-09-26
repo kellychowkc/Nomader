@@ -154,7 +154,7 @@ export default function ChatHome() {
         })
     }, [])
 
-    // console.log('<[State] roomList --Outside--> = ', roomList)
+    console.log('<[State] roomList --Outside--> = ', roomList)
     // console.log('<[State] roomInfo --Outside--> = ', roomInfo)
     console.log('<[REDUX State] chatList --Outside--> = ', chatList)
 
