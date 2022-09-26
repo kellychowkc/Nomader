@@ -20,7 +20,7 @@ function Currency() {
     useEffect(() => {
         console.log(selectedOption)
         fetchRate(selectedOption as any as string).then((data) => {
-            console.log(data)
+            console.log('check', data)
         })
     })
 
