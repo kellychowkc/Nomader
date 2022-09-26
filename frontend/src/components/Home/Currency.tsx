@@ -6,22 +6,24 @@ import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
 import CurrencyList from './CurrencyList'
 import { fetchRate } from '../../api/user'
-import { Value } from 'sass'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function Currency() {
     const [selectedOption, setSelectedOption] = useState()
+    const [currencyList, setcurrencyList] = useState()
     const navigate = useNavigate()
 
     function goBack() {
         navigate('/home')
     }
 
-    function selected(code: string) {
-        fetchRate(code).then((data) => {
+    useEffect(() => {
+        console.log(selectedOption)
+        fetchRate(selectedOption as any as string).then((data) => {
             console.log(data)
         })
-    }
+    })
+
     return (
         <div className={styles.body}>
             <Nav />
@@ -48,7 +50,7 @@ function Currency() {
                     className={styles.box}
                 >
                     <div className={styles.currencyBox}>
-                        <select
+                        <Select
                             id="currency1"
                             name="currency1"
                             placeholder={'Currency'}
@@ -59,7 +61,7 @@ function Currency() {
                             }
                         >
                             <CurrencyList />
-                        </select>
+                        </Select>
                         <Box className={styles.rate}>1</Box>
                         <Select
                             id="currency2"

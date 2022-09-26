@@ -242,6 +242,7 @@ export async function updateProfile(updateForm: UserProfile, userId: string) {
 }
 
 export async function fetchRate(code: string) {
+    console.log(code);
     return fetchJson(`${REACT_APP_API_SERVER}/data/rate`, {
         method: "POST",
         headers: {
