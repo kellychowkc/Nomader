@@ -25,10 +25,15 @@ import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { useSelector } from 'react-redux'
 import { AuthState } from '../../../redux/state'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { fetchSelfUserProfile } from '../../../api/user'
+
+const { REACT_APP_API_SERVER } = process.env
 
 export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
     const navigate = useNavigate()
+    const [profilePic, setProfilePic] = useState<string>()
 
     //update username from redux
     const auth: AuthState = useSelector((state: any) => state.auth)
@@ -37,6 +42,15 @@ export default function Nav() {
         localStorage.removeItem('auth_token')
         navigate('/welcome')
     }
+
+    useEffect(() => {
+        fetchSelfUserProfile(auth.id as any as number).then((data: any) => {
+            const dataDetail = data.userDetail.rows[0]
+            const profile = dataDetail.profile
+            const profilePath = `${REACT_APP_API_SERVER}/profile/` + profile
+            setProfilePic(profilePath)
+        })
+    }, [])
 
     return (
         <>
@@ -47,12 +61,12 @@ export default function Nav() {
                     justifyContent={'space-between'}
                 >
                     <HStack
+                        paddingLeft={'4rem'}
                         w={'full'}
-                        spacing={8}
                         justifyContent={'center'}
                         alignItems={'center'}
                     >
-                        <Link href="/" style={{ textDecoration: 'none' }}>
+                        <Link href="/home" style={{ textDecoration: 'none' }}>
                             <Text
                                 fontSize="xl"
                                 fontFamily="monospace"
@@ -63,7 +77,7 @@ export default function Nav() {
                         </Link>
                     </HStack>
                     <Flex alignItems={'center'}>
-                        <Stack direction={'row'} spacing={3}>
+                        <Stack direction={'row'} spacing={0}>
                             <Button onClick={toggleColorMode}>
                                 {colorMode === 'light' ? (
                                     <MoonIcon />
@@ -87,7 +101,7 @@ export default function Nav() {
                                             <Avatar
                                                 size={'md'}
                                                 name={auth.username}
-                                                src={auth.profile}
+                                                src={profilePic}
                                             />
                                             <Text
                                                 fontSize={'lg'}

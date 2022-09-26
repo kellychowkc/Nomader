@@ -46,12 +46,12 @@ const Forum = () => {
     //fetch data
 
     return (
-        <Box w="full" h="full">
+        <div>
             {/* === NavBar === */}
             <Nav />
             <VStack w="auto" margin={6}>
                 <div className={styles.head}>
-                    <h1 className={styles.headTitle}>Nomad Forum</h1>
+                    <h1 className={styles.headTitle}>Nomad Blog</h1>
                     <Box className={styles.btnBox}>
                         <Button
                             className={styles.addbtn}
@@ -99,7 +99,7 @@ const Forum = () => {
                 </VStack>
             </VStack>
             <Dock />
-        </Box>
+        </div>
     )
 }
 

@@ -7,3 +7,5 @@ dataRoutes.get("/interest", getDataController.getInterests);
 dataRoutes.get("/country", getDataController.getCountries);
 dataRoutes.get("/post", getDataController.getPosts);
 dataRoutes.get("/hotPost", getDataController.getHotPosts);
+dataRoutes.get("/attraction", getDataController.getAttractions);
+dataRoutes.get("/code", getDataController.getCode);

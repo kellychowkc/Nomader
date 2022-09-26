@@ -40,66 +40,66 @@ import { fetchSelfUserProfile } from '../../api/user'
 const { REACT_APP_API_SERVER } = process.env
 
 const categories = [
-    { name: 'location', icon: MdMap, path: '' },
-    { name: 'exchange', icon: MdMoney, path: '' },
+    { name: 'location', icon: MdMap, path: '/attraction' },
+    { name: 'exchange', icon: MdMoney, path: '/currency' },
     { name: 'flight', icon: MdFlight, path: '/airline' },
     { name: 'safety', icon: MdSecurity, path: '/contact' },
 ]
 
 const interestList: InterestCardData[] = [
     {
-        name: 'Interest #1',
-        location: 'Location',
-        city: 'City',
-        country: 'Country',
-        picture: 'pic/toronto-skyline.jpeg',
+        name: 'Peak',
+        city: 'Hong Kong',
+        picture: 'peak.jpeg',
         like: true,
         rating: '-',
+        link: 'https://www.discoverhongkong.com/hk-eng/explore/attractions/best-vantage-points-on-peak.html',
     },
     {
-        name: 'Interest #2',
-        location: 'Location',
-        city: 'City',
-        country: 'Country',
-        picture: 'pic/canada3.jpeg',
+        name: 'Disneyland',
+        city: 'Hong Kong',
+        picture: 'disney.jpeg',
         like: true,
         rating: '-',
+        link: 'https://www.discoverhongkong.com/hk-eng/interactive-map/hong-kong-disneyland.html',
     },
     {
-        name: 'Interest #3',
-        location: 'Location',
-        city: 'City',
-        country: 'Country',
-        picture: 'pic/toronto-skyline.jpeg',
+        name: 'Hollywood',
+        city: 'Los Angeles',
+        country: 'US',
+        picture: 'hollywood.jpeg',
         like: true,
         rating: '-',
+        link: 'https://www.visittheusa.com/experience/insiders-guide-hollywood',
     },
     {
-        name: 'Interest #4',
-        location: 'Location',
-        city: 'City',
-        country: 'Country',
-        picture: 'pic/canada3.jpeg',
+        name: 'Golden Gate',
+        city: 'San Francisco',
+        country: 'US',
+        picture: 'golden.jpeg',
         like: true,
         rating: '-',
+        link: 'https://www.visittheusa.com/destination/san-francisco',
     },
     {
-        name: 'Interest #5',
-        location: 'Location',
-        city: 'City',
-        country: 'Country',
-        picture: 'pic/toronto-skyline.jpeg',
+        name: 'London Eye',
+
+        city: 'London',
+        country: 'UK',
+        picture: 'london.jpeg',
         like: true,
         rating: '-',
+        link: 'https://www.visitbritain.com/gb/en/england/london',
     },
     {
-        name: 'Interest #6',
-        location: 'Location',
-        city: 'City',
-        country: 'Country',
-        picture: 'pic/canada3.jpeg',
+        name: 'Oxford',
+
+        city: 'Oxford',
+        country: 'UK',
+        picture: 'oxford.jpeg',
         like: true,
         rating: '-',
+        link: 'https://www.visitbritain.com/gb/en/england/central-england/oxford',
     },
 ]
 
@@ -137,7 +137,7 @@ const Home = () => {
                 <Flex
                     className="greeting"
                     w="80vw"
-                    mb="3"
+                    mb="2"
                     direction="column"
                     justify="center"
                     align="center"
@@ -146,7 +146,7 @@ const Home = () => {
                         w="100%"
                         pt="15px"
                         m="0"
-                        spacing={8}
+                        spacing={3}
                         justify={{ base: 'space-around', lg: 'center' }}
                     >
                         <VStack
@@ -191,7 +191,7 @@ const Home = () => {
                         </Box>
                     </HStack>
                 </Flex>
-                <Flex
+                {/* <Flex
                     className="Search"
                     w="80vw"
                     mb="10px"
@@ -245,7 +245,7 @@ const Home = () => {
                             </HStack>
                         </Flex>
                     </HStack>
-                </Flex>
+                </Flex> */}
                 <Flex
                     className="Category"
                     w="80vw"
@@ -274,17 +274,18 @@ const Home = () => {
                     </HStack>
 
                     <HStack
+                        h="5rem"
                         w="100%"
                         maxW="container.lg"
                         p="0"
-                        mb="5"
+                        mb="2"
                         justify="space-around"
                     >
                         {categories.map((category: any, idx: number) => (
                             <Button
                                 key={idx}
-                                w="22%"
-                                h="fit-content"
+                                w="30%"
+                                h="4.5rem"
                                 py={['3', '3', '3', '4', '4']}
                                 border="0"
                                 borderRadius="10px"

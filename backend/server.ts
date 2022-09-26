@@ -63,11 +63,15 @@ export const matchService = new MatchService(knex);
 export const matchController = new MatchController(matchService);
 export const chatRoomService = new ChatRoomService(knex);
 export const chatRoomController = new ChatRoomController(chatRoomService);
+// export const currencyService = new CurrencyService(knex);
+// export const currencyController = new CurrencyController(currencyService);
 
 import { logInRoutes } from "./routers/userRoutes";
 import { dataRoutes } from "./routers/getDataRoutes";
 import { matchRoutes } from "./routers/matchRoutes";
 import { chatRoutes } from "./routers/chatRoutes";
+// import { CurrencyService } from "./service/currencyService";
+// import { CurrencyController } from "./controller/currencyController";
 
 //route handling
 app.use("/user", logInRoutes);
@@ -92,8 +96,8 @@ const server = http.createServer(app);
 const io = new socketIO(server, {
     cors: {
         origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
-    }
+        methods: ["GET", "POST"],
+    },
 });
 
 initializeSocketIO(io);

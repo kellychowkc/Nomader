@@ -14,8 +14,7 @@ import RequireAuth from './components/auth/RequireAuth'
 import InterestList from './components/matching/InterestList'
 
 import Friends from './components/layoutFriends/Friends'
-import Profile from './components/profile/profile'
-
+import Profile from './components/profile/Profile'
 import Home from './components/Home/Home'
 import ManageUser from './components/ControlPanel/contentManageUser/ManageUser'
 import Matching from './components/matching/Matching'
@@ -25,8 +24,10 @@ import MatchingIndex from './components/matching/MatchingIndex'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
 import EditProfile from './components/profile/editProfile'
+import Attraction from './components/Home/Attraction'
 import ChatHome from './components/newChat/chatHome'
 import ChatRoom from './components/newChat/chatroom/chatRoom'
+import Currency from './components/Home/Currency'
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -93,7 +94,9 @@ function App() {
                     {/* Required Auth Route */}
                     <Route path="/" element={<RequireAuth />}>
                         <Route path="home" element={<Home />} />
+                        <Route path="attraction" element={<Attraction />} />
                         <Route path="airline" element={<Skyscanner />} />
+                        <Route path="currency" element={<Currency />} />
                         <Route path="contact" element={<Contact />} />
                         <Route path="forum" element={<Forum />} />
                         <Route
@@ -145,7 +148,6 @@ function App() {
 
                         {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/}
 
-                        <Route path="home" element={<Home />} />
                         <Route path="control" element={<ControlPanel />}>
                             <Route index element={<Dashboard />} />
                             <Route path="dashboard" element={<Dashboard />} />

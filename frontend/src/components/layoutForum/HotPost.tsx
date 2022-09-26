@@ -35,6 +35,7 @@ function HotPostList() {
         const profileFileName = post.profile
         let profilePath = `${REACT_APP_API_SERVER}/profile/` + profileFileName
         post.profile = profilePath
+        const id = post.id
     })
 
     function browseCount(post_id: number) {
@@ -48,14 +49,12 @@ function HotPostList() {
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>
                         <div>
-                            <Image
-                                borderRadius="lg"
-                                w={{
-                                    md: '150px',
-                                    lg: '200px',
-                                }}
-                                src={post.image}
-                            />
+                            <div>
+                                <img
+                                    src={require(`../../assets/successBackground.jpg`)}
+                                    alt="interest"
+                                ></img>
+                            </div>
                         </div>
                     </Box>
                     <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>

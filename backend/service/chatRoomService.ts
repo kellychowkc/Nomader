@@ -4,14 +4,18 @@ export class ChatRoomService {
     constructor(private knex: Knex) { }
 
     async geUserIdWhoYouWantToMatch(id: number) {
-        const userId: Array<{ id: number }> = await this.knex("users_relationship")
+        const userId: Array<{ id: number }> = await this.knex(
+            "users_relationship"
+        )
             .select("user2_id")
             .where("user1_id", id);
         return userId;
     }
 
     async checkAlreadyMatchedUser(myId: number, userId: number) {
-        const matchId: Array<{ id: number }> = await this.knex("users_relationship")
+        const matchId: Array<{ id: number }> = await this.knex(
+            "users_relationship"
+        )
             .select("id")
             .where("user1_id", myId)
             .andWhere("user2_id", userId);
@@ -115,9 +119,9 @@ export class ChatRoomService {
     async getLastMessages(room_ids: any[]) {
         const lastMessages: Array<{ message: any }> = await this.knex("chats")
             .select("content")
-            .whereIn("chat_room_id", room_ids)
+            .whereIn("chat_room_id", room_ids);
 
-        console.log('lastMessages = ', lastMessages)
+        console.log("lastMessages = ", lastMessages);
 
         if (lastMessages.length > 0) {
             return lastMessages;
@@ -129,12 +133,18 @@ export class ChatRoomService {
     async getChatRecords(room_title: any) {
         const chatRecords: Array<any> = await this.knex("chat_rooms")
             // .select("chat_rooms.id")
-            .select("chat_rooms.id", "chats.content", "chats.user_speech_id", "chats.image", "chats.created_at")
+            .select(
+                "chat_rooms.id",
+                "chats.content",
+                "chats.user_speech_id",
+                "chats.image",
+                "chats.created_at"
+            )
             .where("chat_rooms.room_title", room_title)
-            .join("chats", "chats.chat_room_id", "chat_rooms.id")
+            .join("chats", "chats.chat_room_id", "chat_rooms.id");
         // .limit(10)
 
-        // console.log('getChatRecords = ', chatRecords)
+        console.log("getChatRecords = ", chatRecords);
 
         if (chatRecords.length > 0) {
             return chatRecords;
@@ -153,6 +163,7 @@ export class ChatRoomService {
             .select("users.username", "chat_rooms.id", "chat_rooms.room_title", "chat_rooms.user_manager_id", "chat_rooms.user_member_id", "chat_rooms.updated_at")
             .where("chat_rooms.room_title", room_title)
             .join("users", "users.id", "chat_rooms.user_member_id")
+
 
         if (roomData_manager.user_manager_id === uid) {
 
@@ -184,24 +195,37 @@ export class ChatRoomService {
 
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-
     async getChatRoomInfo(roomId: number) {
-        const roomData: Array<{ room_title: string, user_manager_id: number, user_member_id: number, updated_at: Date }> = await this.knex("chat_rooms")
-            .select("room_title", "user_manager_id", "user_member_id", "updated_at")
+        const roomData: Array<{
+            room_title: string;
+            user_manager_id: number;
+            user_member_id: number;
+            updated_at: Date;
+        }> = await this.knex("chat_rooms")
+            .select(
+                "room_title",
+                "user_manager_id",
+                "user_member_id",
+                "updated_at"
+            )
             .where("id", roomId);
         if (roomData.length > 0) {
-            const managerUser: Array<{ username: string }> = await this.knex("users")
+            const managerUser: Array<{ username: string }> = await this.knex(
+                "users"
+            )
                 .select("username")
                 .where("id", roomData[0]["user_manager_id"]);
-            const memberUser: Array<{ username: string }> = await this.knex("users")
+            const memberUser: Array<{ username: string }> = await this.knex(
+                "users"
+            )
                 .select("username")
                 .where("id", roomData[0]["user_member_id"]);
             const roomInfo = {
                 title: roomData[0]["room_title"],
                 manager: managerUser[0]["username"],
                 member: memberUser[0]["username"],
-                updatedDate: roomData[0]["updated_at"]
-            }
+                updatedDate: roomData[0]["updated_at"],
+            };
             return roomInfo;
         } else {
             return {};
@@ -214,8 +238,8 @@ export class ChatRoomService {
                 {
                     room_title: title,
                     user_manager_id: myId,
-                    user_member_id: userId
-                }
+                    user_member_id: userId,
+                },
             ])
             .returning("id");
         if (newRoom.length > 0) {
@@ -226,8 +250,24 @@ export class ChatRoomService {
     }
 
     async displayChat(roomId: number) {
-        const chatData: Array<{ id: number, user_speech_id: number, content: string, image: string, voice: string, user_listen_id: number, created_at: Date }> = await this.knex("chats")
-            .select("id", "user_speech_id", "content", "image", "voice", "user_listen_id", "created_at")
+        const chatData: Array<{
+            id: number;
+            user_speech_id: number;
+            content: string;
+            image: string;
+            voice: string;
+            user_listen_id: number;
+            created_at: Date;
+        }> = await this.knex("chats")
+            .select(
+                "id",
+                "user_speech_id",
+                "content",
+                "image",
+                "voice",
+                "user_listen_id",
+                "created_at"
+            )
             .where("chat_room_id", roomId);
         if (chatData.length > 0) {
             return chatData;
@@ -236,15 +276,20 @@ export class ChatRoomService {
         }
     }
 
-    async newChatOfContentAndImage(myId: number, userId: number, newContent: string, newImage: string) {
+    async newChatOfContentAndImage(
+        myId: number,
+        userId: number,
+        newContent: string,
+        newImage: string
+    ) {
         const newChat: Array<{ id: number }> = await this.knex("chats")
             .insert([
                 {
                     user_speech_id: myId,
                     content: newContent,
                     image: newImage,
-                    user_listen_id: userId
-                }
+                    user_listen_id: userId,
+                },
             ])
             .returning("id");
         if (newChat.length > 0) {
@@ -254,14 +299,18 @@ export class ChatRoomService {
         }
     }
 
-    async newChatOfOnlyContent(myId: number, userId: number, newContent: string) {
+    async newChatOfOnlyContent(
+        myId: number,
+        userId: number,
+        newContent: string
+    ) {
         const newChat: Array<{ id: number }> = await this.knex("chats")
             .insert([
                 {
                     user_speech_id: myId,
                     content: newContent,
-                    user_listen_id: userId
-                }
+                    user_listen_id: userId,
+                },
             ])
             .returning("id");
         if (newChat.length > 0) {
@@ -277,8 +326,8 @@ export class ChatRoomService {
                 {
                     user_speech_id: myId,
                     image: newImage,
-                    user_listen_id: userId
-                }
+                    user_listen_id: userId,
+                },
             ])
             .returning("id");
         if (newChat.length > 0) {
@@ -294,8 +343,8 @@ export class ChatRoomService {
                 {
                     user_speech_id: myId,
                     voice: newVoice,
-                    user_listen_id: userId
-                }
+                    user_listen_id: userId,
+                },
             ])
             .returning("id");
         if (newChat.length > 0) {
@@ -317,4 +366,16 @@ export class ChatRoomService {
         }
     }
 
+    async openChat(roomTitle: string, userManager: number, userMember: number) {
+        const chatData = await this.knex("chat_rooms")
+            .insert([
+                {
+                    room_title: roomTitle,
+                    user_manager_id: userManager,
+                    user_member_id: userMember,
+                },
+            ])
+            .returning("updated_at");
+        return chatData;
+    }
 }
