@@ -139,17 +139,15 @@ export class UserService {
         return browseId;
     }
 
-
     async getUserFriends(user_id: number) {
         const userFriends = await this.knex
             .select("*")
             .from("users_relationship")
-            .where("user1_id", user_id)
+            .where("user1_id", user_id);
         return userFriends;
     }
 
     async updateUserPermission(username: string, permissions: any[]) {
-
         // const permission_visible = permissions[0]
         // const permission_matching = permissions[1]
         // const permission_post = permissions[2]
@@ -166,9 +164,10 @@ export class UserService {
         //     })
         //     .where("username", username)
 
-        const userPermission = "Update Permission"
+        const userPermission = "Update Permission";
 
         return userPermission;
+    }
 
     async update(body: User) {
         let user_id = body.id;
@@ -190,6 +189,5 @@ export class UserService {
             .returning("id");
 
         return updated;
-
     }
 }

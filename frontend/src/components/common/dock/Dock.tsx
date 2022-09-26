@@ -25,7 +25,7 @@ interface Action {
 
 function Dock() {
     const actions: Action[] = [
-        { name: 'Home', path: '/', icon: MdOutlineHome },
+        { name: 'Home', path: '/home', icon: MdOutlineHome },
         { name: 'Forum', path: '/forum', icon: MdOutlineForum },
         { name: 'Matching', path: '/matchingIndex', icon: MdOutlinePeople },
         { name: 'Chat', path: '/chat', icon: MdOutlineChat },

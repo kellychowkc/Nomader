@@ -7,8 +7,6 @@ import Dock from '../common/dock/Dock'
 function Landing() {
     return (
         <Box w="auto" h="full">
-            {/* === NavBar === */}
-            <Nav />
             <VStack w="auto">
                 {/* === Main Section - Call To Action === */}
                 <Flex w="90vw" mb="5" justify="center">

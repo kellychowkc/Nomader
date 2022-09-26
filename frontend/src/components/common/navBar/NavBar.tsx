@@ -24,12 +24,19 @@ import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons'
 
 import { useSelector } from 'react-redux'
 import { AuthState } from '../../../redux/state'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
+    const navigate = useNavigate()
 
+    //update username from redux
     const auth: AuthState = useSelector((state: any) => state.auth)
+
+    function logOut() {
+        localStorage.removeItem('auth_token')
+        navigate('/welcome')
+    }
 
     return (
         <>
@@ -123,7 +130,7 @@ export default function Nav() {
                                     <LinkBox>
                                         <MenuItem>
                                             <LinkOverlay
-                                                href="/logout"
+                                                onClick={logOut}
                                                 style={{
                                                     textDecoration: 'none',
                                                 }}

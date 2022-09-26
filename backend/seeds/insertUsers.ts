@@ -6,7 +6,7 @@ const chance = new Chance();
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
-    await knex("users_browse_posts").del();
+    // await knex("users_browse_posts").del();
     await knex("posts_type").del();
     await knex("posts").del();
     await knex("chats").del();
@@ -260,16 +260,22 @@ export async function seed(knex: Knex): Promise<void> {
         }
         await knex("posts").insert(postData);
     }
-    
-    
-    const postId : Array<{ id: number }> = await knex("posts").select("id");
-    
+
+
+    const postId: Array<{ id: number }> = await knex("posts").select("id");
+
     for (let post of postId) {
         let randomInterestNum = chance.integer({ min: 1, max: 3});
+        let interestArr: Array<number> = [];
         for (let i = 0; i < randomInterestNum; i++) {
+            let interest : number;
+            do {
+                interest = chance.integer({ min: 0, max: interestId.length - 1 });
+            } while (interestArr.includes(interest));
+            interestArr.push(interest);
             let postsTypeData = {
                 post_id: post["id"],
-                interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
+                interest_id: interestId[interest]["id"]
             };
             await knex("posts_type").insert(postsTypeData);
         }
