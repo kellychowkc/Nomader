@@ -68,7 +68,13 @@ function Attraction() {
                     <Icon as={ChevronLeftIcon} w={12} h={12} />
                 </button>
                 <div className={styles.titleBox}>
-                    <h1 className={styles.bigTitle}>Attraction</h1>
+                    <Text
+                        as="h1"
+                        className={styles.headTitle}
+                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                    >
+                        Attraction
+                    </Text>
                 </div>
             </div>
             <hr className={styles.line} />

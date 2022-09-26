@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
     Box,
-    Text,
     VStack,
     Table,
     Tbody,
@@ -14,10 +13,11 @@ import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
 import { AuthState, ChatListState } from '../../redux/state'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserChatRooms } from '../../api/chat'
 import ChatList from './chatList'
-import { getAllChatRoomsForRedux } from '../../redux/chat/chatThunk'
+import { getAllChatRoomsInfo } from '../../redux/chat/chatThunk'
 import { RootThunkDispatch } from '../../redux/store'
+
+import styles from './chatHome.module.css'
 
 interface IChatUser {
     room_id: string
@@ -27,93 +27,6 @@ interface IChatUser {
     lastMessageTime: string
 }
 
-const mockUpChatsList = [
-    {
-        room_id: '1',
-        username: 'Adams',
-        profile: 'green',
-        lastMessage: 'adams is handsome',
-        lastMessageTime: '00:00',
-    },
-    {
-        room_id: '2',
-        username: 'Jason',
-        profile: 'blue',
-        lastMessage: 'jason is handsome',
-        lastMessageTime: '12:30',
-    },
-    {
-        room_id: '3',
-        username: 'Bruce',
-        profile: 'yellow',
-        lastMessage: 'bruce is handsome',
-        lastMessageTime: '04:20',
-    },
-    {
-        room_id: '4',
-        username: 'Lin',
-        profile: 'purple',
-        lastMessage: 'lin is good looking',
-        lastMessageTime: '19:33',
-    },
-    {
-        room_id: '5',
-        username: 'Adams',
-        profile: 'green',
-        lastMessage: 'adams is handsome',
-        lastMessageTime: '00:00',
-    },
-    {
-        room_id: '6',
-        username: 'Jason',
-        profile: 'blue',
-        lastMessage: 'jason is handsome',
-        lastMessageTime: '12:30',
-    },
-    {
-        room_id: '7',
-        username: 'Bruce',
-        profile: 'yellow',
-        lastMessage: 'bruce is handsome',
-        lastMessageTime: '04:20',
-    },
-    {
-        room_id: '8',
-        username: 'Lin',
-        profile: 'purple',
-        lastMessage: 'lin is good looking',
-        lastMessageTime: '19:33',
-    },
-    {
-        room_id: '9',
-        username: 'Adams',
-        profile: 'green',
-        lastMessage: 'adams is handsome',
-        lastMessageTime: '00:00',
-    },
-    {
-        room_id: '10',
-        username: 'Jason',
-        profile: 'blue',
-        lastMessage: 'jason is handsome',
-        lastMessageTime: '12:30',
-    },
-    {
-        room_id: '11',
-        username: 'Bruce',
-        profile: 'yellow',
-        lastMessage: 'bruce is handsome',
-        lastMessageTime: '04:20',
-    },
-    {
-        room_id: '12',
-        username: 'Lin',
-        profile: 'purple',
-        lastMessage: 'lin is good looking',
-        lastMessageTime: '19:33',
-    },
-]
-
 export default function ChatHome() {
     // ----------------------------------------------------------------------------
 
@@ -121,19 +34,17 @@ export default function ChatHome() {
 
     const auth: AuthState = useSelector((state: any) => state.auth)
 
-    const chatList: ChatListState = useSelector((state: any) => state.chatList)
+    const chatRoomList: ChatListState = useSelector(
+        (state: any) => state.chatList
+    )
 
     const [roomInfo, setRoomInfo] = React.useState<IChatUser>()
 
     const [roomList, setRoomList] = useState<Array<any>>([])
 
-    // const handleRoomInfoChange = (event: any) => {
-    //     setRoomInfo(event.target.value)
-    // }
-
     useEffect(() => {
         const getAllChatRooms = dispatch(
-            getAllChatRoomsForRedux(auth.id as number)
+            getAllChatRoomsInfo(auth.id as number)
         ).then((result) => {
             if (result.success) {
                 console.log('<getAllChatRooms> Fetch Success')
@@ -172,44 +83,10 @@ export default function ChatHome() {
             <Nav />
 
             <VStack w="98vw" justifyContent="center" alignItems="center">
-                <Text
-                    fontSize="2em"
-                    fontWeight="bold"
-                    as={'span'}
-                    position={'relative'}
-                    _after={{
-                        content: "''",
-                        width: 'full',
-                        height: '30%',
-                        position: 'absolute',
-                        bottom: 1,
-                        left: 0,
-                        bg: '#0ABAB5',
-                        zIndex: -1,
-                    }}
-                >
-                    Chats
-                </Text>
+                <div className={styles.head}>
+                    <h1 className={styles.headTitle}>Chats</h1>
+                </div>
 
-                {/* === Join a specific chat room === */}
-                {/* <Box p={3} border="1px solid #000000">
-                    <HStack>
-                        <input
-                            type="text"
-                            placeholder="Person"
-                            value={roomName}
-                            onChange={handleRoomNameChange}
-                            className="text-input-field"
-                        />
-                        <Button
-                            as={Link}
-                            to={`/chat/${roomName}`}
-                            className="enter-room-button"
-                        >
-                            Join room
-                        </Button>
-                    </HStack>
-                </Box> */}
                 <Box
                     w="85vw"
                     h="100%"
@@ -239,9 +116,8 @@ export default function ChatHome() {
                         </Thead>
 
                         <Tbody>
-                            {/* ========================================================================== */}
+                            {/* ==== ChatList ==== */}
                             <ChatList chatRoomList={roomList} />
-                            {/* ========================================================================== */}
                         </Tbody>
                     </Table>
                 </Box>
