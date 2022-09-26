@@ -1,5 +1,13 @@
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
-import { Box, Center, Icon, Image, Wrap, WrapItem } from '@chakra-ui/react'
+import {
+    Box,
+    Button,
+    Center,
+    Icon,
+    Image,
+    Wrap,
+    WrapItem,
+} from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -7,6 +15,7 @@ import Swal from 'sweetalert2'
 import {
     fetchOtherUserProfile,
     likedUserAction,
+    openChat,
     unlikedUserAction,
 } from '../../api/friend'
 
@@ -16,6 +25,7 @@ import { AuthState } from '../../redux/state'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'
 import MatchingSuccess from './MatchingSuccess'
+import Nav from '../common/navBar/NavBar'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -106,6 +116,9 @@ function Matching() {
         if (likedUser === 2 || likedUser === 1) {
             likedUserId?.forEach((id) => {
                 if (id === profile?.id) {
+                    openChat(userId!, profile.id).then((data) => {
+                        console.log('chat', data)
+                    })
                     Swal.fire({
                         title: 'Match!',
                         text: `Please go to chat room now!`,
@@ -124,59 +137,76 @@ function Matching() {
     }
 
     return (
-        <div className={styles.profileContainer}>
-            <div className={styles.flexContainer}>
-                {profileDefault ? (
-                    <Image
-                        src={`${REACT_APP_API_SERVER}/profile/profile.1.jpg`}
-                        alt="profile pic"
-                        className={styles.profilePic}
-                    />
-                ) : (
-                    <Image
-                        src={`${REACT_APP_API_SERVER}/profile/profile2.jpg`}
-                        alt="profile pic"
-                        className={styles.profilePic}
-                    />
-                )}
-            </div>
-            <div className={styles.profileInfo}>
-                <h1 className={styles.title}>{profile?.username}</h1>
-                <h2 className={styles.subtitle}>
-                    {' '}
-                    {profile?.country_id} country
-                </h2>
-                <h2 className={styles.subtitle}> {profile?.jobTitle}</h2>
-                <hr></hr>
-                <h3 className={styles.bio}> {profile?.information}</h3>
-                <hr></hr>
-
-                <h3 className={styles.subtitle}> Interests </h3>
-                <div className={styles.interestBox}>
-                    <Wrap spacingX={8}>
-                        {profile?.interests.map((interest) => (
-                            <WrapItem key={interest}>
-                                <Center w="82px" h="83px" overflow="hidden">
-                                    <img
-                                        src={require(`../../assets/interests/${interest}.png`)}
-                                        alt="interest"
-                                    ></img>
-                                </Center>
-                            </WrapItem>
-                        ))}
-                    </Wrap>
+        <>
+            <Nav />
+            <div className={styles.profileContainer}>
+                <div className={styles.flexContainer}>
+                    {profileDefault ? (
+                        <Image
+                            src={`${REACT_APP_API_SERVER}/profile/profile1.jpg`}
+                            alt="profile pic"
+                            className={styles.profilePic}
+                        />
+                    ) : (
+                        <Image
+                            src={`${REACT_APP_API_SERVER}/profile/profile2.jpg`}
+                            alt="profile pic"
+                            className={styles.profilePic}
+                        />
+                    )}
                 </div>
+                <div className={styles.profileInfo}>
+                    <h1 className={styles.title}>{profile?.username}</h1>
+                    <h2 className={styles.subtitle}>
+                        {' '}
+                        {profile?.country_id} country
+                    </h2>
+                    <h2 className={styles.subtitle}> {profile?.jobTitle}</h2>
+                    <hr></hr>
+                    <h3 className={styles.bio}> {profile?.information}</h3>
+                    <hr></hr>
+
+                    <h3 className={styles.subtitle}> Interests </h3>
+                    <div className={styles.interestBox}>
+                        <Wrap spacingX={2}>
+                            {profile?.interests.map((interest) => (
+                                <WrapItem key={interest}>
+                                    <Center w="82px" h="83px" overflow="hidden">
+                                        <img
+                                            src={require(`../../assets/interests/${interest}.png`)}
+                                            alt="interest"
+                                        ></img>
+                                    </Center>
+                                </WrapItem>
+                            ))}
+                        </Wrap>
+                    </div>
+                </div>
+                <Box className={styles.btnBox}>
+                    <Button
+                        className={styles.crossbtn}
+                        onClick={unliked}
+                        borderRadius="full"
+                        bgImage={'linear-gradient(to right,#569ee6,  #b0d8bc)'}
+                        boxSize={'4em'}
+                    >
+                        <Icon as={CloseIcon} boxSize={'1.5em'} />
+                    </Button>
+                    <Button
+                        className={styles.tickbtn}
+                        onClick={liked}
+                        borderRadius="full"
+                        bgImage={
+                            'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                        }
+                        boxSize={'4em'}
+                    >
+                        <Icon as={CheckIcon} boxSize={'2em'} />
+                    </Button>
+                </Box>
+                <Dock />
             </div>
-            <Box className={styles.btnBox}>
-                <button className={styles.crossbtn} onClick={unliked}>
-                    <Icon as={CloseIcon} w={6} h={6} />
-                </button>
-                <button className={styles.tickbtn} onClick={liked}>
-                    <Icon as={CheckIcon} w={8} h={8} />
-                </button>
-            </Box>
-            <Dock />
-        </div>
+        </>
     )
 }
 

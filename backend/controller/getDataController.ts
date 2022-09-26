@@ -21,17 +21,6 @@ export class GetDataController {
     getCountries = async (req: Request, res: Response) => {
         try {
             const countryList = await this.getDataService.getCountryData();
-            // const countryList = [
-            //     { id: 1, name: "US" },
-            //     { id: 2, name: "US" },
-            //     { id: 3, name: "US" },
-            //     { id: 4, name: "US" },
-            //     { id: 5, name: "US" },
-            //     { id: 6, name: "US" },
-            //     { id: 7, name: "US" },
-            //     { id: 8, name: "US" },
-            //     { id: 9, name: "US" },
-            // ];
 
             res.json(countryList);
         } catch (err) {
@@ -67,6 +56,21 @@ export class GetDataController {
                 Math.max(postList.length - 20, 0)
             );
             res.json(hotPostList);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
+    getAttractions = async (req: Request, res: Response) => {
+        try {
+            const attractionList =
+                await this.getDataService.getAttractionData();
+
+            res.json(attractionList);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({

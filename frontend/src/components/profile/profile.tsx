@@ -173,7 +173,7 @@ const Profile = () => {
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
                                             value={formik.values.username}
-                                            className={styles.input}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -192,7 +192,7 @@ const Profile = () => {
                                                         : 'password'
                                                 }
                                                 placeholder="New Password"
-                                                className={styles.input}
+                                                w={'18rem'}
                                             />
                                             <InputRightElement>
                                                 <Button
@@ -240,7 +240,7 @@ const Profile = () => {
                                             }
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
-                                            className={styles.input}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -254,7 +254,7 @@ const Profile = () => {
                                             placeholder={profileList?.last_name}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
-                                            className={styles.input}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -268,7 +268,7 @@ const Profile = () => {
                                             placeholder={profileList?.email}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="email"
-                                            className={styles.input}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -284,7 +284,7 @@ const Profile = () => {
                                             type="number"
                                             value={formik.values.phone_num}
                                             onChange={formik.handleChange}
-                                            className={styles.input}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -299,7 +299,7 @@ const Profile = () => {
                                             type="text"
                                             value={formik.values.birthday}
                                             onChange={formik.handleChange}
-                                            className={styles.input}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -315,7 +315,7 @@ const Profile = () => {
                                             type="text"
                                             value={formik.values.gender}
                                             onChange={formik.handleChange}
-                                            className={styles.input}
+                                            w={'18rem'}
                                         />
                                     </FormControl>
                                 </Box>
@@ -328,7 +328,7 @@ const Profile = () => {
                                             onChange={formik.handleChange}
                                             value={formik.values.job}
                                             placeholder={profileList?.job}
-                                            className={styles.job}
+                                            w={'18rem'}
                                         >
                                             <option value={1}>student</option>
                                             <option value={2}>slash</option>

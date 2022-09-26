@@ -37,3 +37,13 @@ export interface BrowseCount {
     user_id: number;
     post_id: number;
 }
+
+export interface AttractionPost {
+    id: number;
+    name: string;
+    description: string;
+    image?: string;
+    address: string;
+    open_time: string;
+    city_list: string;
+}

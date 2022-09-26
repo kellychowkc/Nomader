@@ -47,10 +47,9 @@ function PostList() {
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>
                         <div>
-                            {/* <Image src="../../assets/matchingBackground.jpg" /> */}
                             <img
                                 src={require(`../../assets/matchingBackground.jpg`)}
-                                alt="interest"
+                                alt="latest"
                             ></img>
                         </div>
                     </Box>

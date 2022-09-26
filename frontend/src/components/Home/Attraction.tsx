@@ -1,7 +1,20 @@
-import { Box, HStack, Image, Text } from '@chakra-ui/react'
+import {
+    Box,
+    Flex,
+    FormControl,
+    HStack,
+    Icon,
+    Image,
+    Input,
+    Text,
+    useColorModeValue,
+} from '@chakra-ui/react'
 import styles from '../layoutForum/Forum.module.css'
 import React, { useEffect, useState } from 'react'
 import { fetchJson } from '../../api/utils'
+import Nav from '../common/navBar/NavBar'
+import Dock from '../common/dock/Dock'
+import { MdSearch } from 'react-icons/md'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -22,6 +35,7 @@ function Attraction() {
         fetchJson<Array<AttractionPost>>(
             `${REACT_APP_API_SERVER}/data/attraction`
         ).then((data) => {
+            console.log(data)
             setPostList(
                 data.map((item) => ({
                     ...item,
@@ -31,9 +45,6 @@ function Attraction() {
     }, [])
 
     postList.forEach((post: AttractionPost) => {
-        const fileName = post.image
-        let path = `${REACT_APP_API_SERVER}/post/` + fileName
-        post.image = path
         const imageFileName = post.image
         let imagePath = `${REACT_APP_API_SERVER}/attraction/` + imageFileName
         post.image = imagePath
@@ -41,6 +52,62 @@ function Attraction() {
 
     return (
         <>
+            <Nav />
+            <Flex
+                className="Search"
+                w="80vw"
+                mb="10px"
+                direction="column"
+                justify="center"
+                align="center"
+            >
+                <HStack
+                    w="100%"
+                    m="0"
+                    spacing={{ base: 3, lg: 5 }}
+                    justify="center"
+                >
+                    <Flex
+                        className="serachBar"
+                        w="85%"
+                        maxW={'2xl'}
+                        h="50px"
+                        px="3"
+                        py="1"
+                        borderRadius="10px"
+                        boxShadow="0px 0px 9px #BBBBBB"
+                        bg={useColorModeValue('gray.100', 'gray.400')}
+                        align={'center'}
+                        justify={'center'}
+                    >
+                        <HStack w="100%" justify="space-between" p="3px">
+                            <FormControl id="search" isRequired>
+                                <Input
+                                    placeholder="Search..."
+                                    _placeholder={{
+                                        color: 'gray.900',
+                                    }}
+                                    type="text"
+                                    // value={search}
+                                    // onChange={handleChange_search}
+                                    border="0"
+                                    fontSize={{ base: 'md', lg: 'lg' }}
+                                    _focus={{
+                                        outline: 'none',
+                                        border: '0px',
+                                    }}
+                                />
+                            </FormControl>
+                            <Icon
+                                as={MdSearch}
+                                h={{ base: '30px', lg: '35px' }}
+                                w={{ base: '30px', lg: '35px' }}
+                                _hover={{ cursor: 'pointer' }}
+                            />
+                        </HStack>
+                    </Flex>
+                </HStack>
+            </Flex>
             {postList.map((post) => (
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>
@@ -75,6 +142,8 @@ function Attraction() {
                     </Box>
                 </Box>
             ))}
+
+            <Dock />
         </>
     )
 }

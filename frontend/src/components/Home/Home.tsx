@@ -40,8 +40,8 @@ import { fetchSelfUserProfile } from '../../api/user'
 const { REACT_APP_API_SERVER } = process.env
 
 const categories = [
-    { name: 'location', icon: MdMap, path: '' },
-    { name: 'exchange', icon: MdMoney, path: '' },
+    { name: 'location', icon: MdMap, path: '/attraction' },
+    { name: 'exchange', icon: MdMoney, path: '/currency' },
     { name: 'flight', icon: MdFlight, path: '/airline' },
     { name: 'safety', icon: MdSecurity, path: '/contact' },
 ]
@@ -137,7 +137,7 @@ const Home = () => {
                 <Flex
                     className="greeting"
                     w="80vw"
-                    mb="3"
+                    mb="2"
                     direction="column"
                     justify="center"
                     align="center"
@@ -146,7 +146,7 @@ const Home = () => {
                         w="100%"
                         pt="15px"
                         m="0"
-                        spacing={8}
+                        spacing={3}
                         justify={{ base: 'space-around', lg: 'center' }}
                     >
                         <VStack
@@ -191,7 +191,7 @@ const Home = () => {
                         </Box>
                     </HStack>
                 </Flex>
-                <Flex
+                {/* <Flex
                     className="Search"
                     w="80vw"
                     mb="10px"
@@ -245,7 +245,7 @@ const Home = () => {
                             </HStack>
                         </Flex>
                     </HStack>
-                </Flex>
+                </Flex> */}
                 <Flex
                     className="Category"
                     w="80vw"
@@ -274,17 +274,18 @@ const Home = () => {
                     </HStack>
 
                     <HStack
+                        h="5rem"
                         w="100%"
                         maxW="container.lg"
                         p="0"
-                        mb="5"
+                        mb="2"
                         justify="space-around"
                     >
                         {categories.map((category: any, idx: number) => (
                             <Button
                                 key={idx}
-                                w="22%"
-                                h="fit-content"
+                                w="30%"
+                                h="4.5rem"
                                 py={['3', '3', '3', '4', '4']}
                                 border="0"
                                 borderRadius="10px"

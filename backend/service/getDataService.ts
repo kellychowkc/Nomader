@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+import { AttractionPost } from "../utils/models";
 // import { Interest } from "../utils/models";
 
 export class GetDataService {
@@ -67,5 +68,21 @@ export class GetDataService {
             .orderByRaw("SUM(browse_count) DESC");
 
         return hotPostList;
+    }
+
+    async getAttractionData() {
+        const getAttractions: Array<[AttractionPost]> = await this.knex
+            .select(
+                "id",
+                "name",
+                "description",
+                "image",
+                "address",
+                "open_time",
+                "city_list"
+            )
+            .from("attractions");
+
+        return getAttractions;
     }
 }
