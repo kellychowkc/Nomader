@@ -26,7 +26,7 @@ def transform_table_cities(df) :
     df = df.withColumnRenamed('name','city_name')
     return df
 
-def transfomr_table_attractions(df) :
+def transform_table_attractions(df) :
     df = df.withColumnRenamed('name','attraction_name')
     df = df.withColumnRenamed('type', 'class')
     return df
@@ -51,7 +51,7 @@ def main() :
     data_to_psql(config, df_city, 'db_city_data')
 
     df_attraction = data_from_mongodb(config, spark, 'attractionData')
-    df_attraction = transfomr_table_attractions(df_attraction)
+    df_attraction = transform_table_attractions(df_attraction)
     data_to_psql(config, df_attraction, 'db_attractions')
 
     df_currency = data_from_mongodb(config, spark, 'currencyCodes')

@@ -20,11 +20,12 @@ def extract_data(spark, config, table) :
     
 
 def load_data(df, config, table):
+    print(df.show())
     df.write.format('jdbc')\
-        .option("url", "jdbc:postgresql://{}/{}".format(config.POSTGRES_HOST, config.POSTGRES_DW))\
+        .option("url", "jdbc:postgresql://{}/{}".format(config.RDS_HOST_NAME, config.RDS_DB_NAME))\
         .option("dbtable", "{}".format(table))\
-        .option("user", config.POSTGRES_USER)\
-        .option("password", config.POSTGRES_PASSWORD)\
+        .option("user", config.RDS_USERNAME)\
+        .option("password", config.RDS_PASSWORD)\
         .option("driver", "org.postgresql.Driver")\
         .mode('append')\
         .save()
@@ -58,7 +59,7 @@ def main() :
     df_attractions = df_attractions.drop('open_time')
     df_attractions = df_attractions.drop('class')
     load_data(df_attractions, config, 'staging_attractions')
-    
+
 
     df_interests = extract_data(spark, config, 'interests')
     df_interests =df_interests.drop('id')
@@ -173,6 +174,7 @@ def main() :
     df_posts_type = extract_data(spark, config, 'posts_type')
     df_posts_type = df_posts_type.drop('id')
     load_data(df_posts_type, config, 'staging_posts_type')
+
 
 
     df_browse_posts = extract_data(spark, config, 'users_browse_posts')

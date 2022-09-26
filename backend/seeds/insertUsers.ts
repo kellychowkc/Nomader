@@ -160,10 +160,16 @@ export async function seed(knex: Knex): Promise<void> {
     
     for (let user of userId) {
         let randomInterestNum = chance.integer({ min: 1, max: 6});
+        let interestArr: Array<number> = [];
         for (let i = 0; i < randomInterestNum; i++) {
+            let interest : number;
+            do {
+                interest = chance.integer({ min: 0, max: interestId.length - 1 })
+            } while (interestArr.includes(interest));
+            interestArr.push(interest);
             let usersInterestsData = {
                 user_id: user["id"],
-                interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
+                interest_id: interestId[interest]["id"]
             };
             await knex("users_interests").insert(usersInterestsData);
         }
