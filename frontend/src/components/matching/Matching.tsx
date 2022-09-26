@@ -1,14 +1,21 @@
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { Box, Center, Icon, Image, Wrap, WrapItem } from '@chakra-ui/react'
-import { profileEnd } from 'console'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { fetchOtherUserProfile, OtherUserProfile } from '../../api/friend'
+import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import {
+    fetchOtherUserProfile,
+    likedUserAction,
+    unlikedUserAction,
+} from '../../api/friend'
+
+import type { OtherUserProfile } from '../../api/friend'
 
 import { AuthState } from '../../redux/state'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'
+import MatchingSuccess from './MatchingSuccess'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -16,17 +23,18 @@ function Matching() {
     const auth: AuthState = useSelector((state: any) => state.auth)
     const [profileList, setProfileList] = useState<[OtherUserProfile]>()
     const [profile, setProfile] = useState<OtherUserProfile>()
-    const [defaultPic, setdefaultPic] = useState(true)
-    const [successMatch, setSuccessMatch] = useState(true)
-    const [likedUser, setLikedUser] = useState()
+    const [likedUser, setLikedUser] = useState(2)
+    const [likedUserId, setLikedUserId] = useState<number[]>()
+    const [profileDefault, setProfileDefault] = useState(true)
+    const navigate = useNavigate()
 
     const userId = auth.id
 
+    console.log(profileList)
     useEffect(() => {
         try {
             fetchOtherUserProfile(userId as any as number).then((data: any) => {
                 const userList = data.message.user
-                console.log('check2')
                 setLikedUser(data.message.waitMatchNum)
                 setProfileList(
                     userList.map((user: OtherUserProfile) => ({
@@ -34,7 +42,17 @@ function Matching() {
                     }))
                 )
                 setProfile(userList[0])
-                console.log('check')
+                let likedUserIdList: number[] = []
+                if (likedUser === 2) {
+                    likedUserIdList.push(userList[0].id)
+                    likedUserIdList.push(userList[1].id)
+                    setLikedUserId(likedUserIdList)
+                } else if (likedUser === 1) {
+                    likedUserIdList.push(userList[0].id)
+                    setLikedUserId(likedUserIdList)
+                } else {
+                    return
+                }
             })
         } catch (err) {
             window.location.reload()
@@ -46,42 +64,77 @@ function Matching() {
         for (let i = 0; i < interestList.length; i++) {
             interestList[i] = interestList[i].replace(/\s+/g, '')
         }
-        console.log(interestList)
         if (user.profile === '') {
             return
         } else {
             const fileName = user.profile
-            let path = `${REACT_APP_API_SERVER}/post/` + fileName
+            let path = `${REACT_APP_API_SERVER}/profile/` + fileName
             user.profile = path
         }
     })
 
-    // if (!(profile?.profile === '')) {
-    //     setdefaultPic(!defaultPic)
-    // }
-
     function unliked() {
+        unlikedUserAction(userId!, profile!.id).then((data: any) => {
+            console.log(data)
+        })
+        if (profileList!.length === 1) {
+            Swal.fire({
+                title: 'Oops...',
+                text: `Don't be greedy. You can only read 5 profiles each time`,
+                icon: 'warning',
+            })
+            navigate('/home')
+        }
         profileList!.shift()
-        setProfileList(profileList)
         setProfile(profileList![0])
+        setProfileDefault(!profileDefault)
     }
 
-    {
-        profile?.interests.map((interest) => console.log(interest))
+    function liked() {
+        likedUserAction(userId!, profile!.id).then((data: any) => {
+            console.log(data)
+        })
+        console.log(userId, profile?.id)
+        if (profileList!.length === 1) {
+            Swal.fire({
+                title: 'Oops...',
+                text: `Don't be greedy. You can only read 5 profiles each time`,
+                icon: 'warning',
+            })
+            navigate('/home')
+        }
+        if (likedUser === 2 || likedUser === 1) {
+            likedUserId?.forEach((id) => {
+                if (id === profile?.id) {
+                    Swal.fire({
+                        title: 'Match!',
+                        text: `Please go to chat room now!`,
+                        icon: 'success',
+                    })
+                }
+            })
+            profileList!.shift()
+            setProfile(profileList![0])
+            setProfileDefault(!profileDefault)
+        } else {
+            profileList!.shift()
+            setProfile(profileList![0])
+            setProfileDefault(!profileDefault)
+        }
     }
 
     return (
         <div className={styles.profileContainer}>
             <div className={styles.flexContainer}>
-                {defaultPic ? (
+                {profileDefault ? (
                     <Image
-                        src="https://bit.ly/dan-abramov"
+                        src={`${REACT_APP_API_SERVER}/profile/profile.1.jpg`}
                         alt="profile pic"
                         className={styles.profilePic}
                     />
                 ) : (
                     <Image
-                        src={profile?.profile}
+                        src={`${REACT_APP_API_SERVER}/profile/profile2.jpg`}
                         alt="profile pic"
                         className={styles.profilePic}
                     />
@@ -118,10 +171,8 @@ function Matching() {
                 <button className={styles.crossbtn} onClick={unliked}>
                     <Icon as={CloseIcon} w={6} h={6} />
                 </button>
-                <button className={styles.tickbtn}>
-                    <Link to="/matchingSuccess">
-                        <Icon as={CheckIcon} w={8} h={8} />
-                    </Link>
+                <button className={styles.tickbtn} onClick={liked}>
+                    <Icon as={CheckIcon} w={8} h={8} />
                 </button>
             </Box>
             <Dock />

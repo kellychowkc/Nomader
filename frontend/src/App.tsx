@@ -14,7 +14,7 @@ import RequireAuth from './components/auth/RequireAuth'
 import InterestList from './components/matching/InterestList'
 
 import Friends from './components/layoutFriends/Friends'
-import Profile from './components/profile/profile'
+import Profile from './components/profile/Profile'
 import Chat from './components/Chat/Chat'
 import Home from './components/Home/Home'
 import ManageUser from './components/ControlPanel/contentManageUser/ManageUser'
@@ -25,6 +25,7 @@ import MatchingIndex from './components/matching/MatchingIndex'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
 import EditProfile from './components/profile/editProfile'
+import Attraction from './components/Home/Attraction'
 
 function App() {
     return (
@@ -48,16 +49,17 @@ function App() {
                         />
                         <Route path="interest" element={<InterestList />} />
                         <Route path="matching" element={<Matching />} />
-                        <Route
+                        {/* <Route
                             path="matchingSuccess"
                             element={<MatchingSuccess />}
-                        />
+                        /> */}
                         <Route path="newPost" element={<NewPost />} />
                         <Route path="friends" element={<Friends />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="editProfile" element={<EditProfile />} />
                         <Route path="chat" element={<Chat />} />
                         <Route path="home" element={<Home />} />
+                        <Route path="attraction" element={<Attraction />} />
                         <Route path="control" element={<ControlPanel />}>
                             <Route index element={<Dashboard />} />
                             <Route path="dashboard" element={<Dashboard />} />

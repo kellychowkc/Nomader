@@ -180,6 +180,30 @@ export class MatchController {
 
     unlikeUser = async (req: Request, res: Response) => {
         try {
+            const id = req.body.id;
+            const userId = req.body.userId;
+            await this.matchService.unlikeWaitingMatchUser(id, userId);
+            res.status(200).json({
+                success: true,
+                message: "success",
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(401).json({ message: "match failed" });
+            return;
+        }
+    };
+
+    likedUser = async (req: Request, res: Response) => {
+        try {
+            const id = req.body.id;
+            const userId = req.body.userId;
+            const resp = await this.matchService.likeUser(id, userId);
+            console.log(resp);
+            res.status(200).json({
+                success: true,
+                message: "success",
+            });
         } catch (err) {
             logger.error(err.toString());
             res.status(401).json({ message: "match failed" });

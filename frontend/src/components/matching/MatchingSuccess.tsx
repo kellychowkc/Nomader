@@ -1,18 +1,39 @@
 import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { Avatar, Box, Button, Icon } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { fetchSelfUserProfile } from '../../api/user'
+import { AuthState } from '../../redux/state'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'
 
-function MatchingSuccess() {
+const { REACT_APP_API_SERVER } = process.env
+
+function MatchingSuccess(userId: number, userProfile: string) {
+    const navigate = useNavigate()
+    const [profilePic, setProfilePic] = useState<string>()
+    const auth: AuthState = useSelector((state: any) => state.auth)
+
+    function goBack() {
+        navigate('/matching')
+    }
+
+    useEffect(() => {
+        fetchSelfUserProfile(auth.id as any as number).then((data: any) => {
+            const dataDetail = data.userDetail.rows[0]
+            const profile = dataDetail.profile
+            const profilePath = `${REACT_APP_API_SERVER}/profile/` + profile
+            setProfilePic(profilePath)
+        })
+    }, [])
+
     return (
         <div className={styles.body}>
             <div className={styles.container}>
                 <div className={styles.tab}>
-                    <button className={styles.backwardBtn}>
-                        <Link to="/matching">
-                            <Icon as={ChevronLeftIcon} w={12} h={12} />
-                        </Link>
+                    <button className={styles.backwardBtn} onClick={goBack}>
+                        <Icon as={ChevronLeftIcon} w={12} h={12} />
                     </button>
                     <div className={styles.titleBox}>
                         <h1 className={styles.bigTitle}>Match!</h1>
@@ -33,7 +54,7 @@ function MatchingSuccess() {
                     <Avatar
                         className={styles.avatar}
                         size="xl"
-                        src="https://avatars.dicebear.com/api/male/username.svg"
+                        src={userProfile}
                     ></Avatar>
                     <div className={styles.flexContainer}>
                         <h1 className={styles.caption}>
@@ -43,7 +64,7 @@ function MatchingSuccess() {
                     <Avatar
                         className={styles.avatar}
                         size="xl"
-                        src="https://avatars.dicebear.com/api/male/username.svg"
+                        src={profilePic}
                     ></Avatar>
                     <Button
                         bgImage={

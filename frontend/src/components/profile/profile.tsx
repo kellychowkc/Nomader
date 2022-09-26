@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styles from './Profile.module.css'
 import {
     Box,
     Heading,
@@ -104,87 +105,50 @@ const Profile = () => {
             {/* === NavBar === */}
             <Nav />
             <VStack w="auto">
-                <Text
-                    fontSize="2em"
-                    fontWeight="bold"
-                    as={'span'}
-                    position={'relative'}
-                    _after={{
-                        content: "''",
-                        width: 'full',
-                        height: '30%',
-                        position: 'absolute',
-                        bottom: 1,
-                        left: 0,
-                        bg: '#0ABAB5',
-                        zIndex: -1,
-                    }}
-                >
-                    Profile
+                <Text position={'relative'} className={styles.bigTitle}>
+                    Profile Edit
                 </Text>
-                <Flex
-                    minH={'100vh'}
-                    align={'center'}
-                    justify={'center'}
-                    bg={useColorModeValue('gray.50', 'gray.800')}
-                >
-                    <Stack
-                        spacing={4}
-                        w={'full'}
-                        maxW={'2xl'}
-                        bg={useColorModeValue('white', 'gray.700')}
-                        rounded={'xl'}
-                        boxShadow={'lg'}
-                        p={6}
-                    >
-                        <Heading
-                            lineHeight={1.1}
-                            fontSize={{ base: '2xl', sm: '3xl' }}
-                        >
-                            User Profile Edit
-                        </Heading>
+                <Flex minH={'100vh'} align={'center'} justify={'center'}>
+                    <Stack>
                         <form onSubmit={formik.handleSubmit}>
                             <FormControl id="userIcon">
-                                <FormLabel>User Icon</FormLabel>
                                 <Stack
                                     direction={['column', 'row']}
                                     spacing={6}
                                 >
-                                    <Center>
-                                        {imageStore === '' ? (
-                                            <Avatar
-                                                size="2xl"
-                                                src={
-                                                    profileList?.profile as any as string
-                                                }
-                                            ></Avatar>
-                                        ) : (
-                                            <Avatar
-                                                size="2xl"
-                                                src={imageStore}
-                                            ></Avatar>
-                                        )}
-                                    </Center>
-                                    <Center w="full">
-                                        <input
-                                            type="file"
-                                            onChange={handleImageChange}
-                                            id="profile"
-                                            name="profile"
-                                            // className={styles.uploadBtn}
-                                        ></input>
-                                        <p>Upload Profile Picture</p>
-                                    </Center>
+                                    <div className={styles.profileContainer}>
+                                        <Center>
+                                            {imageStore === '' ? (
+                                                <Avatar
+                                                    name={profileList?.username}
+                                                    size="2xl"
+                                                    src={
+                                                        profileList?.profile as any as string
+                                                    }
+                                                ></Avatar>
+                                            ) : (
+                                                <Avatar
+                                                    size="2xl"
+                                                    src={imageStore}
+                                                ></Avatar>
+                                            )}
+                                        </Center>
+                                        <Center w="full">
+                                            <input
+                                                type="file"
+                                                onChange={handleImageChange}
+                                                id="profile"
+                                                name="profile"
+                                                className={styles.uploadBtn}
+                                            ></input>
+                                            <p className={styles.subtitle}>
+                                                Upload Profile Picture
+                                            </p>
+                                        </Center>
+                                    </div>
                                 </Stack>
                             </FormControl>
-                            <Box fontSize="sm" color="#363636">
-                                <Text>
-                                    Member since: {profileList?.created_at}
-                                </Text>
-                                <Text>
-                                    Last update: {profileList?.updated_at}
-                                </Text>
-                            </Box>
+
                             <Flex
                                 w="100%"
                                 wrap="wrap"
@@ -209,6 +173,7 @@ const Profile = () => {
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
                                             value={formik.values.username}
+                                            className={styles.input}
                                         />
                                     </FormControl>
                                 </Box>
@@ -227,8 +192,9 @@ const Profile = () => {
                                                         : 'password'
                                                 }
                                                 placeholder="New Password"
+                                                className={styles.input}
                                             />
-                                            <InputRightElement h={'full'}>
+                                            <InputRightElement>
                                                 <Button
                                                     variant={'ghost'}
                                                     onClick={() =>
@@ -249,9 +215,6 @@ const Profile = () => {
                                     </FormControl>
                                 </Box>
                             </Flex>
-                            <Text fontSize="1.5em" fontWeight="bold">
-                                Personal Info
-                            </Text>
                             <Flex
                                 w="100%"
                                 wrap="wrap"
@@ -277,6 +240,7 @@ const Profile = () => {
                                             }
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
+                                            className={styles.input}
                                         />
                                     </FormControl>
                                 </Box>
@@ -290,6 +254,7 @@ const Profile = () => {
                                             placeholder={profileList?.last_name}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="text"
+                                            className={styles.input}
                                         />
                                     </FormControl>
                                 </Box>
@@ -303,6 +268,7 @@ const Profile = () => {
                                             placeholder={profileList?.email}
                                             _placeholder={{ color: 'gray.500' }}
                                             type="email"
+                                            className={styles.input}
                                         />
                                     </FormControl>
                                 </Box>
@@ -318,6 +284,7 @@ const Profile = () => {
                                             type="number"
                                             value={formik.values.phone_num}
                                             onChange={formik.handleChange}
+                                            className={styles.input}
                                         />
                                     </FormControl>
                                 </Box>
@@ -332,6 +299,7 @@ const Profile = () => {
                                             type="text"
                                             value={formik.values.birthday}
                                             onChange={formik.handleChange}
+                                            className={styles.input}
                                         />
                                     </FormControl>
                                 </Box>
@@ -347,6 +315,7 @@ const Profile = () => {
                                             type="text"
                                             value={formik.values.gender}
                                             onChange={formik.handleChange}
+                                            className={styles.input}
                                         />
                                     </FormControl>
                                 </Box>
@@ -359,6 +328,7 @@ const Profile = () => {
                                             onChange={formik.handleChange}
                                             value={formik.values.job}
                                             placeholder={profileList?.job}
+                                            className={styles.job}
                                         >
                                             <option value={1}>student</option>
                                             <option value={2}>slash</option>
@@ -374,7 +344,6 @@ const Profile = () => {
                                         </Select>
                                     </FormControl>
                                 </Box>
-                                <Box m={3}></Box>
                             </Flex>
                             <Flex
                                 w="100%"
@@ -391,13 +360,16 @@ const Profile = () => {
                             >
                                 <Box m={3} w="90%">
                                     {/* Remark */}
-                                    <FormControl id="information">
+                                    <FormControl
+                                        id="information"
+                                        className={styles.information}
+                                    >
                                         <FormLabel>Information</FormLabel>
                                         <Textarea
                                             id="information"
                                             name="information"
-                                            minH="20"
-                                            w="100%"
+                                            minH="8rem"
+                                            w="85%"
                                             placeholder={
                                                 profileList?.information
                                             }
@@ -409,16 +381,29 @@ const Profile = () => {
                                 </Box>
                             </Flex>
 
-                            <Stack spacing={6} direction={['column', 'row']}>
+                            <Stack direction={['column', 'row']}>
                                 <Button
                                     bgImage={
                                         'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                                     }
                                     type="submit"
+                                    className={styles.btn}
                                 >
                                     Update
                                 </Button>
                             </Stack>
+                            <Box
+                                fontSize="sm"
+                                color="#363636"
+                                className={styles.timeBox}
+                            >
+                                <Text>
+                                    Member since: {profileList?.created_at}
+                                </Text>
+                                <Text>
+                                    Last update: {profileList?.updated_at}
+                                </Text>
+                            </Box>
                         </form>
                     </Stack>
                 </Flex>
