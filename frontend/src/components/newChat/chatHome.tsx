@@ -154,9 +154,9 @@ export default function ChatHome() {
         })
     }, [])
 
-    console.log('<[State] roomList --Outside--> = ', roomList)
+    // console.log('<[State] roomList --Outside--> = ', roomList)
     // console.log('<[State] roomInfo --Outside--> = ', roomInfo)
-    console.log('<[REDUX State] chatList --Outside--> = ', chatList)
+    // console.log('<[REDUX State] chatList --Outside--> = ', chatList)
 
     // ----------------------------------------------------------------------------
 
@@ -249,13 +249,4 @@ export default function ChatHome() {
             <Dock />
         </Box>
     )
-}
-function dispatch(
-    arg0: (
-        dispatch: React.Dispatch<
-            import('../../redux/chat/chatAction').ChatListActions
-        >
-    ) => Promise<any>
-) {
-    throw new Error('Function not implemented.')
 }
