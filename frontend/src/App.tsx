@@ -119,33 +119,6 @@ function App() {
                         <Route path="chat" element={<ChatHome />} />
                         <Route path="chat/:room_id" element={<ChatRoom />} />
 
-                        {/* <Route
-                            path="chat"
-                            element={
-                                <UserChatList // added by danny
-                                    socket={socket}
-                                    createNewSocket={createNewSocket}
-                                    setUser={connectUserToSocket}
-                                />
-                            }
-                        /> */}
-
-                        {/* <Route
-                            path="chatRoom"
-                            element={
-                                socket ? (
-                                    <ChatRoom
-                                        socket={socket}
-                                        user={user}
-                                        setSocket={setSocket}
-                                        setUser={setUser}
-                                    />
-                                ) : (
-                                    <Link to="/" />
-                                )
-                            }
-                        /> */}
-
                         {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/}
 
                         <Route path="control" element={<ControlPanel />}>
@@ -155,9 +128,6 @@ function App() {
                             <Route path="forum" element={<ManageUser />} />
                         </Route>
                     </Route>
-
-                    {/* <Route path="contact" element={<Contact />} />
-                    <Route path="forum" element={<Forum />} /> */}
 
                     <Route
                         path="*"

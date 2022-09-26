@@ -29,6 +29,7 @@ import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import { ModalFriends, ModalPosts } from './ModalProfile'
+import { Link } from 'react-router-dom'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -218,7 +219,7 @@ const Profile = () => {
                                     colorScheme="gray"
                                     boxShadow={'0px 1px 2px #BBBBBB'}
                                 >
-                                    Edit Profile
+                                    <Link to="/editProfile">Edit Profile</Link>
                                 </Button>
                             </Stack>
                         </Stack>
@@ -232,7 +233,7 @@ const Profile = () => {
                             spacing={5}
                         >
                             <Button
-                                w={'80%'}
+                                size={'lg'}
                                 bgImage={
                                     'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                                 }
@@ -247,7 +248,7 @@ const Profile = () => {
                                 View My Friends
                             </Button>
                             <Button
-                                w={'80%'}
+                                size={'lg'}
                                 bgImage={
                                     'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                                 }

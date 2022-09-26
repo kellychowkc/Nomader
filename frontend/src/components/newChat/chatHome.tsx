@@ -9,6 +9,9 @@ import {
     Thead,
     Tr,
     useColorModeValue,
+    Button,
+    Icon,
+    HStack,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
@@ -19,6 +22,8 @@ import { getAllChatRoomsInfo } from '../../redux/chat/chatThunk'
 import { RootThunkDispatch } from '../../redux/store'
 
 import styles from './chatHome.module.css'
+import { AddIcon } from '@chakra-ui/icons'
+import { useNavigate } from 'react-router-dom'
 
 interface IChatUser {
     room_id: string
@@ -32,6 +37,7 @@ export default function ChatHome() {
     // ----------------------------------------------------------------------------
 
     const dispatch = useDispatch<RootThunkDispatch>()
+    const navigate = useNavigate()
 
     const auth: AuthState = useSelector((state: any) => state.auth)
 
@@ -83,16 +89,36 @@ export default function ChatHome() {
             {/* === NavBar === */}
             <Nav />
 
-            <VStack w="98vw" justifyContent="center" alignItems="center">
-                <div className={styles.head}>
-                    <Text
-                        as="h1"
-                        className={styles.headTitle}
-                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
-                    >
-                        Chat
-                    </Text>
-                </div>
+            <VStack w="98vw" mt={6} justifyContent="center" alignItems="center">
+                <HStack
+                    w="100%"
+                    className={styles.head}
+                    justifyContent="space-around"
+                >
+                    <Box w={'80%'} pl={5} justifyContent="center">
+                        <Text
+                            className={styles.headTitle}
+                            as="h1"
+                            textAlign={'center'}
+                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                        >
+                            Chat
+                        </Text>
+                    </Box>
+                    <Box className={styles.btnBox}>
+                        <Button
+                            className={styles.addbtn}
+                            bgImage={
+                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                            }
+                            onClick={() => {
+                                navigate('/newPost')
+                            }}
+                        >
+                            <Icon as={AddIcon} w={6} h={6} />
+                        </Button>
+                    </Box>
+                </HStack>
 
                 <Box
                     w="85vw"
@@ -104,9 +130,7 @@ export default function ChatHome() {
                     overflowX="hidden"
                 >
                     <Table
-                        className="messageTable"
-                        variant="striped"
-                        colorScheme="teal"
+                        className={styles.messageTable}
                         bg={useColorModeValue('white', 'gray.600')}
                         w="100%"
                     >
