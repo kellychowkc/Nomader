@@ -15,7 +15,7 @@ import InterestList from './components/matching/InterestList'
 
 import Friends from './components/layoutFriends/Friends'
 import Profile from './components/profile/profile'
-import Chat from './components/Chat/Chat'
+
 import Home from './components/Home/Home'
 import ManageUser from './components/ControlPanel/contentManageUser/ManageUser'
 import Matching from './components/matching/Matching'
@@ -25,8 +25,62 @@ import MatchingIndex from './components/matching/MatchingIndex'
 import Contact from './components/layoutSafetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
 import EditProfile from './components/profile/editProfile'
+import ChatHome from './components/newChat/chatHome'
+import ChatRoom from './components/newChat/chatroom/chatRoom'
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// import { io, Socket } from 'socket.io-client'
+
+// import { useState } from 'react'
+
+// import UserChatList from './components/newChat/userChatList'
+// import ChatRoom from './components/newChat/chatRoom'
+
+// const socketUrl = 'http://localhost:8080/'
+
+// export interface IChatUser {
+//     id: string
+//     username?: string
+//     room?: string
+//     active?: boolean
+// }
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 function App() {
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    // const [socket, setSocket] = useState<Socket | null>(null)
+    // const [user, setUser] = useState<IChatUser | null>(null)
+
+    // console.log('user', user)
+
+    // const createNewSocket = () => {
+    //     let socket = io(socketUrl)
+    //     socket?.on('connect', () => {
+    //         console.log('connected! front-end')
+    //     })
+    //     setSocket(socket)
+    // }
+    // const connectUserToSocket = (user: IChatUser) => {
+    //     console.log('<connectUserToSocket> socket emit (before)')
+
+    //     socket?.emit('connect', user)
+    //     console.log('<connectUserToSocket> socket emit (after)')
+
+    //     setUser(user)
+    // }
+
+    // //to adapt height on mac device's browser:
+    // window.addEventListener('resize', () => {
+    //     let vh = window.innerHeight * 0.01
+    //     document.documentElement.style.setProperty('--vh', `${vh}px`)
+    // })
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
     return (
         <>
             <Router>
@@ -56,7 +110,41 @@ function App() {
                         <Route path="friends" element={<Friends />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="editProfile" element={<EditProfile />} />
-                        <Route path="chat" element={<Chat />} />
+
+                        {/* // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+
+                        <Route path="chat" element={<ChatHome />} />
+                        <Route path="chat/:room_id" element={<ChatRoom />} />
+
+                        {/* <Route
+                            path="chat"
+                            element={
+                                <UserChatList // added by danny
+                                    socket={socket}
+                                    createNewSocket={createNewSocket}
+                                    setUser={connectUserToSocket}
+                                />
+                            }
+                        /> */}
+
+                        {/* <Route
+                            path="chatRoom"
+                            element={
+                                socket ? (
+                                    <ChatRoom
+                                        socket={socket}
+                                        user={user}
+                                        setSocket={setSocket}
+                                        setUser={setUser}
+                                    />
+                                ) : (
+                                    <Link to="/" />
+                                )
+                            }
+                        /> */}
+
+                        {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/}
+
                         <Route path="home" element={<Home />} />
                         <Route path="control" element={<ControlPanel />}>
                             <Route index element={<Dashboard />} />

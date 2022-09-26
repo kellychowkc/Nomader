@@ -6,7 +6,7 @@ const chance = new Chance();
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
-    await knex("users_browse_posts").del();
+    // await knex("users_browse_posts").del();
     await knex("posts_type").del();
     await knex("posts").del();
     await knex("chats").del();
@@ -21,7 +21,7 @@ export async function seed(knex: Knex): Promise<void> {
     const interestId: Array<{ id: number }> = await knex("interests")
         .insert([
             { title: "hiking", image: "hiking.png" },
-            { title: "camping",image: "camping.png" },
+            { title: "camping", image: "camping.png" },
             { title: "cycling", image: "cycling.png" },
             { title: "foodie", image: "foodie.png" },
             { title: "party", image: "party.png" },
@@ -138,7 +138,7 @@ export async function seed(knex: Knex): Promise<void> {
     const userId: Array<{ id: number }> = await knex("users")
         .insert(randomUser)
         .returning("id");
-    
+
 
     for (let user of userId) {
         let randomInterestNum = chance.integer({ min: 1, max: 6 });
@@ -147,7 +147,7 @@ export async function seed(knex: Knex): Promise<void> {
                 user_id: user["id"],
                 interest_id:
                     interestId[
-                        chance.integer({ min: 0, max: interestId.length - 1 })
+                    chance.integer({ min: 0, max: interestId.length - 1 })
                     ]["id"],
             };
             await knex("users_interests").insert(usersInterestsData);
@@ -244,10 +244,10 @@ export async function seed(knex: Knex): Promise<void> {
         }
         await knex("posts").insert(postData);
     }
-    
-    
-    const postId : Array<{ id: number }> = await knex("posts").select("id");
-    
+
+
+    const postId: Array<{ id: number }> = await knex("posts").select("id");
+
     for (let post of postId) {
         let randomInterestNum = chance.integer({ min: 1, max: 3 });
         for (let i = 0; i < randomInterestNum; i++) {
@@ -255,7 +255,7 @@ export async function seed(knex: Knex): Promise<void> {
                 post_id: post["id"],
                 interest_id:
                     interestId[
-                        chance.integer({ min: 0, max: interestId.length - 1 })
+                    chance.integer({ min: 0, max: interestId.length - 1 })
                     ]["id"],
             };
             await knex("posts_type").insert(postsTypeData);
