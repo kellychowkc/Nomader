@@ -30,7 +30,7 @@
 
 .message_item {
     width: auto;
-    max-width: 65%;
+    max-width: 70%;
     margin: 15px 15px;
     padding: 10px 15px;
     word-break: break-word;
@@ -42,6 +42,7 @@
     background-color: #B0D8BC;
     margin-left: auto;
     box-shadow: 1px 1px 2px 0px #DDDDDD;
+
 
 }
 
@@ -64,4 +65,40 @@
 .new-message-input-field,
 .send-message-button {
     /* border-color: #9a9a9a; */
+}
+
+.messages-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+.tab {
+    /* padding-top: 1.5rem; */
+    /* margin-bottom: 3.5rem; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.bigTitle {
+    font-size: 32px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.titleBox {
+    margin-right: 8rem;
+}
+
+.backwardBtn {
+    background-color: transparent;
+    /* margin-left: 1rem; */
+    width: 15%;
+    transition: all 0.5s ease;
+    color: #000000;
+    outline: none;
+    size: 15rem;
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import './chatroom.css'
 // import styles from './chatroom.module.css'
 
@@ -7,27 +7,33 @@ import useChat from '../useChat'
 import {
     Box,
     VStack,
-    Heading,
     Text,
     Textarea,
     Button,
     useColorModeValue,
     HStack,
+    Icon,
+    Avatar,
 } from '@chakra-ui/react'
-import Nav from '../../common/navBar/NavBar'
 import Dock from '../../common/dock/Dock'
-import { getChatRecords } from '../../../api/chat'
+import { getChatRecords, getRoomInfoByRoomTitle } from '../../../api/chat'
 import { useSelector } from 'react-redux'
-import { AuthState } from '../../../redux/state'
+import { AuthState, ChatListState } from '../../../redux/state'
+import { ChevronLeftIcon } from '@chakra-ui/icons'
 
 type Props = {}
 
 const ChatRoom = (props: Props) => {
     let { room_id } = useParams()
 
-    console.log('<ChatRoom> room_id = ', room_id)
+    // console.log('<ChatRoom> room_id = ', room_id)
 
     const auth: AuthState = useSelector((state: any) => state.auth)
+    const chatRoom: ChatListState = useSelector((state: any) => state.chatList)
+
+    const today = new Date()
+
+    const [roomInfo, setRoomInfo] = useState<any>('')
 
     const [messageHistory, setMessageHistory] = useState([])
 
@@ -39,17 +45,34 @@ const ChatRoom = (props: Props) => {
     }
 
     const handleSendMessage = () => {
-        sendMessage(newMessage)
-        setNewMessage('')
+        if (newMessage !== '') {
+            sendMessage(newMessage)
+            setNewMessage('')
+        }
     }
 
+    console.log(`<ChatRoom>`)
+    console.table(chatRoom)
+
     useEffect(() => {
+        const friendsName = getRoomInfoByRoomTitle(
+            auth.id as number,
+            room_id as string
+        ).then((result) => {
+            console.log(`<getfriendsName> ${result}`)
+            if (result.success) {
+                console.log(`<getfriendsName> Friend's Name:`)
+                console.table(result.data)
+
+                setRoomInfo(result.data[0])
+            }
+        })
+
         const chatRecords = getChatRecords(room_id as string).then((result) => {
             console.log(`<getChatRecords> ${result}`)
             if (result.success) {
-                console.log(`<getChatRecords> setNeMessage:`)
+                console.log(`<getChatRecords> setNeMessageHistory:`)
                 console.table(result.data)
-                // sendMessage(result.data.map((item: any) => ({ ...item })))
 
                 setMessageHistory(result.data.map((item: any) => ({ ...item })))
             }
@@ -57,9 +80,25 @@ const ChatRoom = (props: Props) => {
         return
     }, [])
 
-    console.log(`[messageHistory] = `, messageHistory)
+    const messageEl: React.MutableRefObject<any> = useRef(null)
 
-    console.log(`[messages] = `, messages)
+    useEffect(() => {
+        if (messageEl.current !== null) {
+            messageEl.current.addEventListener(
+                'DOMNodeInserted',
+                (event: any) => {
+                    const { currentTarget: target } = event
+                    target.scroll({
+                        top: target.scrollHeight,
+                        behavior: 'smooth',
+                    })
+                }
+            )
+        }
+        return
+    }, [])
+
+    console.log('[roomInfo] = ', roomInfo)
 
     return (
         <Box
@@ -70,36 +109,57 @@ const ChatRoom = (props: Props) => {
             justifyContent="center"
         >
             {/* === NavBar === */}
-            <Nav />
-
-            <VStack w="98vw" h={'auto'}>
-                <Text
-                    fontSize="2em"
-                    fontWeight="bold"
-                    as={'span'}
-                    position={'relative'}
-                    _after={{
-                        content: "''",
-                        width: 'full',
-                        height: '30%',
-                        position: 'absolute',
-                        bottom: 1,
-                        left: 0,
-                        bg: '#0ABAB5',
-                        zIndex: -1,
-                    }}
+            {/* <Nav /> */}
+            <Box
+                w={'full'}
+                h={'100%'}
+                bg={useColorModeValue('gray.100', 'gray.900')}
+                boxShadow={'0px 1px 2px 0px #DDDDDD'}
+            >
+                <HStack
+                    px={2}
+                    py={3}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    alignContent={'center'}
                 >
-                    Chat Room
-                </Text>
-
-                <Box w={'80%'} h={'100%'}>
-                    <Heading as={'h3'} size={'md'} className="room-name">
-                        Room ID: {room_id}
-                    </Heading>
+                    <div className={'tab'}>
+                        <button className={'backwardBtn'}>
+                            <Link to="/chat">
+                                <Icon as={ChevronLeftIcon} w={12} h={12} />
+                            </Link>
+                        </button>
+                    </div>
+                    <HStack
+                        pl={3}
+                        flex={'1'}
+                        justifyContent={'flex-start'}
+                        alignItems={'center'}
+                        alignContent={'center'}
+                        spacing={3}
+                    >
+                        <Avatar
+                            size={{
+                                base: 'md',
+                                lg: 'lg',
+                            }}
+                            name={roomInfo.username}
+                            src={roomInfo.profile}
+                        />
+                        <Text fontSize={'lg'} fontWeight={'medium'}>
+                            {roomInfo.username ? roomInfo.username : ''}
+                        </Text>
+                    </HStack>
+                    {/* <Box className="room-name">Room ID: {room_id}</Box> */}
+                </HStack>
+            </Box>
+            <VStack w="98vw" h={'auto'}>
+                <Box w={'85%'} h={'100%'}>
                     <Box
-                        h={'60vh'}
+                        h={'70vh'}
                         className="messages-container"
                         overflowY={'scroll'}
+                        ref={messageEl}
                     >
                         <ol className="messages-list">
                             {messageHistory.map((message: any, idx: number) => (
@@ -126,6 +186,23 @@ const ChatRoom = (props: Props) => {
                                     >
                                         {message.content}
                                     </Text>
+                                    <Text
+                                        pb={2}
+                                        lineHeight={'0'}
+                                        textAlign={'right'}
+                                    >
+                                        {/* {message.created_at} */}
+
+                                        {Date.parse(
+                                            message?.created_at as string
+                                        ) < Date.now()
+                                            ? message.created_at
+                                                  .split('T', 2)[1]
+                                                  .split('.', 1)[0]
+                                                  .split(':', 2)
+                                                  .join(':')
+                                            : message.created_at.split('T', 1)}
+                                    </Text>
                                 </li>
                             ))}
 
@@ -137,6 +214,35 @@ const ChatRoom = (props: Props) => {
                                             ? 'my-message'
                                             : 'received-message'
                                     }`}
+                                    style={
+                                        message.ownedByCurrentUser
+                                            ? {
+                                                  width: 'auto',
+                                                  maxWidth: '70%',
+                                                  padding: '10px 15px',
+                                                  wordBreak: 'break-word',
+                                                  borderRadius: '10px',
+                                                  color: '#FFFFFF',
+                                                  margin: '15px 15px',
+                                                  backgroundColor: '#B0D8BC',
+                                                  marginLeft: 'auto',
+                                                  boxShadow:
+                                                      '1px 1px 2px 0px #DDDDDD',
+                                              }
+                                            : {
+                                                  width: 'auto',
+                                                  maxWidth: '70%',
+                                                  padding: '10px 15px',
+                                                  wordBreak: 'break-word',
+                                                  borderRadius: '10px',
+                                                  color: '#FFFFFF',
+                                                  margin: '15px 15px',
+                                                  backgroundColor: '#1D1D42',
+                                                  marginRight: 'auto',
+                                                  boxShadow:
+                                                      '-1px 1px 2px 0px #DDDDDD',
+                                              }
+                                    }
                                 >
                                     <Text
                                         className="message_header"
@@ -152,6 +258,15 @@ const ChatRoom = (props: Props) => {
                                         fontSize={'1em'}
                                     >
                                         {message.body}
+                                    </Text>
+                                    <Text
+                                        pb={2}
+                                        lineHeight={'0'}
+                                        textAlign={'right'}
+                                    >
+                                        {today.getHours() +
+                                            ':' +
+                                            today.getMinutes()}
                                     </Text>
                                 </li>
                             ))}
@@ -176,7 +291,7 @@ const ChatRoom = (props: Props) => {
                                     'whiteAlpha.800',
                                     'gray.400'
                                 )}
-                                boxShadow={'0px 0px 1px 0px #BBBBBB'}
+                                boxShadow={'0px 0px 2px 0px #DDDDDD'}
                                 focusBorderColor={'none'}
                                 border={'none'}
                                 borderRadius={'full'}
@@ -202,12 +317,13 @@ const ChatRoom = (props: Props) => {
                             <Button
                                 className="add-button"
                                 colorScheme={'teal'}
+                                bg={useColorModeValue('gray.100', 'gray.400')}
                                 border={'none'}
                                 borderRadius={'full'}
                                 fontSize="3xl"
                                 p={'0'}
                                 boxShadow={'0px 0px 2px 0px #BBBBBB'}
-                                _hover={{ bg: 'red' }}
+                                // _hover={{ bg: 'red' }}
                             >
                                 +
                             </Button>

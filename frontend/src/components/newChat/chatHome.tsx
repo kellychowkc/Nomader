@@ -12,10 +12,12 @@ import {
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
-import { AuthState } from '../../redux/state'
-import { useSelector } from 'react-redux'
-import { getLastMessages, getRoomInfo, getUserChatRooms } from '../../api/chat'
+import { AuthState, ChatListState } from '../../redux/state'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserChatRooms } from '../../api/chat'
 import ChatList from './chatList'
+import { getAllChatRoomsForRedux } from '../../redux/chat/chatThunk'
+import { RootThunkDispatch } from '../../redux/store'
 
 interface IChatUser {
     room_id: string
@@ -115,7 +117,11 @@ const mockUpChatsList = [
 export default function ChatHome() {
     // ----------------------------------------------------------------------------
 
+    const dispatch = useDispatch<RootThunkDispatch>()
+
     const auth: AuthState = useSelector((state: any) => state.auth)
+
+    const chatList: ChatListState = useSelector((state: any) => state.chatList)
 
     const [roomInfo, setRoomInfo] = React.useState<IChatUser>()
 
@@ -126,32 +132,31 @@ export default function ChatHome() {
     // }
 
     useEffect(() => {
-        const allChatRoomsInfo = getUserChatRooms(auth.id as number).then(
-            (result) => {
-                if (result.success) {
-                    console.log('<allChatRoomsInfo> Fetch Success')
-                    console.log(
-                        '<allChatRoomsInfo> User Chat Rooms and Info = ',
-                        result.data
-                    )
+        const getAllChatRooms = dispatch(
+            getAllChatRoomsForRedux(auth.id as number)
+        ).then((result) => {
+            if (result.success) {
+                console.log('<getAllChatRooms> Fetch Success')
+                console.log('<getAllChatRooms> User Chat Rooms and Info: ')
+                console.table(result.data)
 
-                    setRoomList(
-                        result.data.map((item: any) => ({
-                            ...item,
-                            newItem: 'Hello, I want to add last messages here',
-                        }))
-                    )
+                setRoomList(
+                    result.data.map((item: any) => ({
+                        ...item,
+                        newItem: 'Hello, I want to add last messages here',
+                    }))
+                )
 
-                    return result.data
-                } else {
-                    console.log('<allChatRoomsInfo> Fetch Fail')
-                }
+                return result.data
+            } else {
+                console.log('<getAllChatRooms> Fetch Fail')
             }
-        )
+        })
     }, [])
 
-    console.log('<[State] roomList --Outside--> = ', roomList)
-    console.log('<[State] roomInfo --Outside--> = ', roomInfo)
+    // console.log('<[State] roomList --Outside--> = ', roomList)
+    // console.log('<[State] roomInfo --Outside--> = ', roomInfo)
+    console.log('<[REDUX State] chatList --Outside--> = ', chatList)
 
     // ----------------------------------------------------------------------------
 
@@ -244,4 +249,13 @@ export default function ChatHome() {
             <Dock />
         </Box>
     )
+}
+function dispatch(
+    arg0: (
+        dispatch: React.Dispatch<
+            import('../../redux/chat/chatAction').ChatListActions
+        >
+    ) => Promise<any>
+) {
+    throw new Error('Function not implemented.')
 }

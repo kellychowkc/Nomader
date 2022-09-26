@@ -47,6 +47,7 @@ export async function getLastMessages(roomIds: any[]) {
         body: JSON.stringify({ room_ids: roomIds }),
     });
 }
+
 export async function getChatRecords(room_title: string) {
     return fetchJson<any>(`${REACT_APP_API_SERVER}/chat/getChatRecords`, {
         method: "POST",
@@ -54,5 +55,15 @@ export async function getChatRecords(room_title: string) {
             "content-type": "application/json",
         },
         body: JSON.stringify({ room_title: room_title }),
+    });
+}
+
+export async function getRoomInfoByRoomTitle(uid: number, room_title: string) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/chat/getRoomInfoByRoomTitle`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ uid: uid, room_title: room_title }),
     });
 }

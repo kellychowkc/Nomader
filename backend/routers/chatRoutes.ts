@@ -7,5 +7,7 @@ chatRoutes.post("/getUserChatRooms", chatRoomController.getUserChatRooms)
 chatRoutes.post("/getRoomInfo", chatRoomController.getRoomInfo)
 chatRoutes.post("/getLastMessages", chatRoomController.getLastMessages)
 chatRoutes.post("/getChatRecords", chatRoomController.getChatRecords)
+chatRoutes.post("/getRoomInfoByRoomTitle", chatRoomController.getRoomInfoByRoomTitle)
+
 
 
