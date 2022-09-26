@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styles from './Profile.module.css'
 import {
     Box,
-    Heading,
     Text,
     VStack,
     Flex,
@@ -11,31 +10,29 @@ import {
     Button,
     Center,
     FormControl,
-    FormLabel,
-    Input,
     useColorModeValue,
-    Textarea,
-    InputRightElement,
-    InputGroup,
-    Select,
+    Modal,
+    ModalOverlay,
+    useDisclosure,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { useFormik } from 'formik'
 import {
     fetchSelfUserProfile,
+    getUserFriendsWithInfo,
+    getUserProfile,
     updateProfile,
     UserProfile,
 } from '../../api/user'
 import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
+import { ModalFriends, ModalPosts } from './ModalProfile'
 
 const { REACT_APP_API_SERVER } = process.env
 
 const Profile = () => {
-    const [showPassword, setShowPassword] = useState(false)
     const [imageStore, setImageStore] = useState('')
 
     // show existing info
@@ -43,6 +40,8 @@ const Profile = () => {
     const auth: AuthState = useSelector((state: any) => state.auth)
 
     const userId = auth.id
+
+    const [userProfile, setUserProfile] = React.useState<UserProfile>({})
 
     useEffect(() => {
         fetchSelfUserProfile(userId as any as number).then((data: any) => {
@@ -100,6 +99,55 @@ const Profile = () => {
         }
     }
 
+    useEffect(() => {
+        const result = getUserProfile(auth.username as string).then((data) => {
+            console.log('View user data = ', data)
+            if (data.success) {
+                console.log('<getUserProfile> Fetch Success')
+                setUserProfile(data.userProfile)
+            } else {
+                console.log('<getUserProfile> Fetch Fail')
+            }
+        })
+
+        // permissions.map((permission: Permission) => {
+        //     // `setPermission_${permission.name}(${permission.value})`
+        //     if (permission.name === 'visible') {
+        //         setPermission_visible(permission.value)
+        //     } else if (permission.name === 'matching') {
+        //         setPermission_matching(permission.value)
+        //     } else if (permission.name === 'post') {
+        //         setPermission_post(permission.value)
+        //     } else if (permission.name === 'comment') {
+        //         setPermission_comment(permission.value)
+        //     } else if (permission.name === 'upload') {
+        //         setPermission_upload(permission.value)
+        //     }
+        // })
+    }, [])
+
+    // Modal popup for showing user profile detail and friends
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [modalType, setModalType] = useState<string>('')
+
+    const [friendsCount, setFriendsCount] = useState<any>('')
+    const [userFriends, setUserFriends] = useState<Array<any>>([])
+    const [userPosts, setUserPosts] = useState<Array<any>>([])
+
+    useEffect(() => {
+        const result = getUserFriendsWithInfo(auth.id as number).then(
+            (data) => {
+                console.log('View user friends with Info = ', data)
+                if (data.success) {
+                    console.log('<getUserFriendsWithInfo> Fetch Success')
+                } else {
+                    console.log('<getUserFriendsWithInfo> Fetch Fail')
+                }
+                setUserFriends(data.userFriends)
+            }
+        )
+    }, [])
+
     return (
         <div>
             {/* === NavBar === */}
@@ -112,303 +160,154 @@ const Profile = () => {
                 >
                     Profile
                 </Text>
-                <Flex minH={'100vh'} align={'center'} justify={'center'}>
+                <Flex minH={'full'} align={'center'} justify={'center'}>
                     <Stack>
-                        <form onSubmit={formik.handleSubmit}>
-                            <FormControl id="userIcon">
-                                <Stack
-                                    direction={['column', 'row']}
-                                    spacing={6}
+                        <Stack
+                            direction={['column', 'row']}
+                            spacing={3}
+                            justifyContent="center"
+                            alignItems={'center'}
+                        >
+                            <div className={styles.profileContainer}>
+                                {imageStore === '' ? (
+                                    <Avatar
+                                        name={profileList?.username}
+                                        size="2xl"
+                                        src={
+                                            profileList?.profile as any as string
+                                        }
+                                    ></Avatar>
+                                ) : (
+                                    <Avatar
+                                        size="2xl"
+                                        src={imageStore}
+                                    ></Avatar>
+                                )}
+                            </div>
+
+                            <Stack
+                                w="100%"
+                                p={3}
+                                wrap="wrap"
+                                direction={{
+                                    base: 'column',
+                                    sm: 'column',
+                                    md: 'column',
+                                    lg: 'row',
+                                    xl: 'row',
+                                }}
+                                justify="space-evenly"
+                                alignItems={'center'}
+                                spacing={2}
+                            >
+                                <Text
+                                    as="h3"
+                                    fontSize={'2xl'}
+                                    fontWeight={'semibold'}
+                                    color={useColorModeValue(
+                                        '#1d1d42',
+                                        '#B0D8BC'
+                                    )}
                                 >
-                                    <div className={styles.profileContainer}>
-                                        <Center>
-                                            {imageStore === '' ? (
-                                                <Avatar
-                                                    name={profileList?.username}
-                                                    size="2xl"
-                                                    src={
-                                                        profileList?.profile as any as string
-                                                    }
-                                                ></Avatar>
-                                            ) : (
-                                                <Avatar
-                                                    size="2xl"
-                                                    src={imageStore}
-                                                ></Avatar>
-                                            )}
-                                        </Center>
-                                        <Center w="full">
-                                            <input
-                                                type="file"
-                                                onChange={handleImageChange}
-                                                id="profile"
-                                                name="profile"
-                                                className={styles.uploadBtn}
-                                            ></input>
-                                            <p className={styles.subtitle}>
-                                                Upload Profile Picture
-                                            </p>
-                                        </Center>
-                                    </div>
-                                </Stack>
-                            </FormControl>
-
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="space-evenly"
-                            >
-                                {/* Remark */}
-                                <Box m={3}>
-                                    <FormControl id="userName">
-                                        <FormLabel>Username</FormLabel>
-                                        <Input
-                                            id="username"
-                                            name="username"
-                                            placeholder={profileList?.username}
-                                            onChange={formik.handleChange}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={formik.values.username}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="password">
-                                        <FormLabel>Password</FormLabel>
-                                        <InputGroup>
-                                            <Input
-                                                id="password"
-                                                name="password"
-                                                onChange={formik.handleChange}
-                                                value={formik.values.password}
-                                                type={
-                                                    showPassword
-                                                        ? 'text'
-                                                        : 'password'
-                                                }
-                                                placeholder="New Password"
-                                                w={'18rem'}
-                                            />
-                                            <InputRightElement>
-                                                <Button
-                                                    variant={'ghost'}
-                                                    onClick={() =>
-                                                        setShowPassword(
-                                                            (showPassword) =>
-                                                                !showPassword
-                                                        )
-                                                    }
-                                                >
-                                                    {showPassword ? (
-                                                        <ViewIcon />
-                                                    ) : (
-                                                        <ViewOffIcon />
-                                                    )}
-                                                </Button>
-                                            </InputRightElement>
-                                        </InputGroup>
-                                    </FormControl>
-                                </Box>
-                            </Flex>
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="space-evenly"
-                            >
-                                {/* Remark */}
-                                <Box m={3}>
-                                    <FormControl id="first_name">
-                                        <FormLabel>First Name</FormLabel>
-                                        <Input
-                                            id="first_name"
-                                            name="first_name"
-                                            onChange={formik.handleChange}
-                                            placeholder={
-                                                profileList?.first_name
-                                            }
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="last_name">
-                                        <FormLabel>Last Name</FormLabel>
-                                        <Input
-                                            id="last_name"
-                                            name="last_name"
-                                            onChange={formik.handleChange}
-                                            placeholder={profileList?.last_name}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="email">
-                                        <FormLabel>Email address</FormLabel>
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            onChange={formik.handleChange}
-                                            placeholder={profileList?.email}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="email"
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    {/* Remark */}
-                                    <FormControl id="phone_num">
-                                        <FormLabel>Phone no.</FormLabel>
-                                        <Input
-                                            id="phone_num"
-                                            name="phone_num"
-                                            placeholder={profileList?.phone_num}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="number"
-                                            value={formik.values.phone_num}
-                                            onChange={formik.handleChange}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="birthday">
-                                        <FormLabel>Birthday</FormLabel>
-                                        <Input
-                                            id="birthday"
-                                            name="birthday"
-                                            placeholder={profileList?.birthday}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={formik.values.birthday}
-                                            onChange={formik.handleChange}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    {/* Remark */}
-                                    <FormControl id="gender">
-                                        <FormLabel>Gender</FormLabel>
-                                        <Input
-                                            id="gender"
-                                            name="gender"
-                                            placeholder={profileList?.gender}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={formik.values.gender}
-                                            onChange={formik.handleChange}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="job">
-                                        <FormLabel>Job</FormLabel>
-                                        <Select
-                                            id="job"
-                                            name="job"
-                                            onChange={formik.handleChange}
-                                            value={formik.values.job}
-                                            placeholder={profileList?.job}
-                                            w={'18rem'}
-                                        >
-                                            <option value={1}>student</option>
-                                            <option value={2}>slash</option>
-                                            <option value={3}>designer</option>
-                                            <option value={4}>
-                                                programmer
-                                            </option>
-                                            <option value={5}>
-                                                entrepreneur
-                                            </option>
-                                            <option value={6}>youtuber</option>
-                                            <option value={7}>others</option>
-                                        </Select>
-                                    </FormControl>
-                                </Box>
-                            </Flex>
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="center"
-                                align="center"
-                            >
-                                <Box m={3} w="90%">
-                                    {/* Remark */}
-                                    <FormControl
-                                        id="information"
-                                        className={styles.information}
-                                    >
-                                        <FormLabel>Information</FormLabel>
-                                        <Textarea
-                                            id="information"
-                                            name="information"
-                                            minH="8rem"
-                                            w="85%"
-                                            placeholder={
-                                                profileList?.information
-                                            }
-                                            _placeholder={{ color: 'gray.500' }}
-                                            value={formik.values.information}
-                                            onChange={formik.handleChange}
-                                        />
-                                    </FormControl>
-                                </Box>
-                            </Flex>
-
-                            <Stack direction={['column', 'row']}>
+                                    {profileList?.first_name +
+                                        ' ' +
+                                        profileList?.last_name}
+                                </Text>
                                 <Button
-                                    bgImage={
-                                        'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                                    }
-                                    type="submit"
-                                    className={styles.btn}
+                                    size={'xs'}
+                                    colorScheme="gray"
+                                    boxShadow={'0px 1px 2px #BBBBBB'}
                                 >
-                                    Update
+                                    Edit Profile
                                 </Button>
                             </Stack>
-                            <Box
-                                fontSize="sm"
-                                color="#363636"
-                                className={styles.timeBox}
+                        </Stack>
+
+                        <Stack
+                            m={3}
+                            p={3}
+                            direction={['column', 'row']}
+                            justifyContent="center"
+                            alignItems="center"
+                            spacing={5}
+                        >
+                            <Button
+                                w={'80%'}
+                                bgImage={
+                                    'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                }
+                                boxShadow={'0px 1px 2px #BBBBBB'}
+                                type="submit"
+                                className={styles.btn}
+                                onClick={() => {
+                                    setModalType('friends')
+                                    onOpen()
+                                }}
                             >
-                                <Text>
-                                    Member since: {profileList?.created_at}
-                                </Text>
-                                <Text>
-                                    Last update: {profileList?.updated_at}
-                                </Text>
-                            </Box>
-                        </form>
+                                View My Friends
+                            </Button>
+                            <Button
+                                w={'80%'}
+                                bgImage={
+                                    'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                }
+                                boxShadow={'0px 1px 2px #BBBBBB'}
+                                type="submit"
+                                className={styles.btn}
+                                onClick={() => {
+                                    setModalType('posts')
+                                    onOpen()
+                                }}
+                            >
+                                View My Posts
+                            </Button>
+                        </Stack>
+                        <Stack
+                            my="3px"
+                            p="3px"
+                            spacing={4}
+                            direction={['column', 'row']}
+                        >
+                            <Modal
+                                id="modal_Profile"
+                                isOpen={isOpen}
+                                onClose={onClose}
+                                size={{ base: 'sm', md: 'lg', lg: 'xl' }}
+                            >
+                                <ModalOverlay />
+                                {modalType === 'friends' ? (
+                                    <ModalFriends
+                                        userProfile={userProfile}
+                                        userFriends={userFriends}
+                                        disclosure={{
+                                            onOpen,
+                                            isOpen,
+                                            onClose,
+                                        }}
+                                    />
+                                ) : (
+                                    <ModalPosts
+                                        userProfile={userProfile}
+                                        userFriends={userFriends}
+                                        disclosure={{
+                                            onOpen,
+                                            isOpen,
+                                            onClose,
+                                        }}
+                                    />
+                                )}
+                            </Modal>
+                        </Stack>
+                        <Box
+                            fontSize="sm"
+                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                            className={styles.timeBox}
+                        >
+                            <Text fontSize={'1em'}>
+                                Member since: {profileList?.created_at}
+                            </Text>
+                            <Text>Last update: {profileList?.updated_at}</Text>
+                        </Box>
                     </Stack>
                 </Flex>
             </VStack>
@@ -418,6 +317,3 @@ const Profile = () => {
 }
 
 export default Profile
-function dispatch(arg0: any) {
-    throw new Error('Function not implemented.')
-}

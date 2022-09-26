@@ -251,3 +251,16 @@ export async function fetchRate(code: string) {
         body: JSON.stringify({ code: code }),
     });
 }
+
+
+
+// added by dannys
+export async function getUserFriendsWithInfo(user_id: number) {
+    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriendsWithInfo`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ user_id: user_id }),
+    });
+}

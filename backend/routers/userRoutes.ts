@@ -25,3 +25,6 @@ logInRoutes.post("/getUserProfile", userController.getUserProfile)
 logInRoutes.post("/getUserFriends", userController.getUserFriends)
 logInRoutes.post("/updateUserPermission", userController.updateUserPermission)
 
+
+// added by danny
+logInRoutes.post("/getUserFriendsWithInfo", userController.getUserFriendsWithInfo)

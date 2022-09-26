@@ -125,7 +125,15 @@ const ChatRoom = (props: Props) => {
                     <div className={'tab'}>
                         <button className={'backwardBtn'}>
                             <Link to="/chat">
-                                <Icon as={ChevronLeftIcon} w={12} h={12} />
+                                <Icon
+                                    as={ChevronLeftIcon}
+                                    w={12}
+                                    h={12}
+                                    color={useColorModeValue(
+                                        '#1d1d42',
+                                        '#B0D8BC'
+                                    )}
+                                />
                             </Link>
                         </button>
                     </div>
@@ -276,7 +284,7 @@ const ChatRoom = (props: Props) => {
                             px={5}
                             py={4}
                             borderRadius={'10px'}
-                            bg={useColorModeValue('gray.100', 'gray.400')}
+                            bg={useColorModeValue('gray.100', 'gray.600')}
                             boxShadow={'0px 3px 3px 0px #BBBBBB'}
                             h={'fit-content'}
                             maxH={'100px'}

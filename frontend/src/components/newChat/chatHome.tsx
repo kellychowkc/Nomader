@@ -4,6 +4,7 @@ import {
     VStack,
     Table,
     Tbody,
+    Text,
     Th,
     Thead,
     Tr,
@@ -84,12 +85,19 @@ export default function ChatHome() {
 
             <VStack w="98vw" justifyContent="center" alignItems="center">
                 <div className={styles.head}>
-                    <h1 className={styles.headTitle}>Chats</h1>
+                    <Text
+                        as="h1"
+                        className={styles.headTitle}
+                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                    >
+                        Chat
+                    </Text>
                 </div>
 
                 <Box
                     w="85vw"
                     h="100%"
+                    maxW={'container.lg'}
                     maxH="full"
                     scrollBehavior="smooth"
                     overflowY="auto"
@@ -109,7 +117,11 @@ export default function ChatHome() {
                             zIndex={10}
                         >
                             <Tr>
-                                <Th pl={8} fontSize={'md'} fontWeight={'bold'}>
+                                <Th
+                                    pl={2}
+                                    fontSize={{ base: 'lg', lg: 'xl' }}
+                                    fontWeight={'bold'}
+                                >
                                     Message
                                 </Th>
                             </Tr>
