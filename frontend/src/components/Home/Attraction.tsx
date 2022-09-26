@@ -65,7 +65,12 @@ function Attraction() {
             <Nav />
             <div className={styles.tab}>
                 <button className={styles.backwardBtn} onClick={goBack}>
-                    <Icon as={ChevronLeftIcon} w={12} h={12} />
+                    <Icon
+                        as={ChevronLeftIcon}
+                        w={12}
+                        h={12}
+                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                    />
                 </button>
                 <div className={styles.titleBox}>
                     <Text

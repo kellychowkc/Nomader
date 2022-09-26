@@ -105,8 +105,12 @@ const Profile = () => {
             {/* === NavBar === */}
             <Nav />
             <VStack w="auto">
-                <Text position={'relative'} className={styles.bigTitle}>
-                    Profile Edit
+                <Text
+                    position={'relative'}
+                    className={styles.bigTitle}
+                    color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                >
+                    Profile
                 </Text>
                 <Flex minH={'100vh'} align={'center'} justify={'center'}>
                     <Stack>
