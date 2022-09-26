@@ -14,7 +14,8 @@ import React, { useEffect, useState } from 'react'
 import { fetchJson } from '../../api/utils'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
-import { MdSearch } from 'react-icons/md'
+import { useNavigate } from 'react-router'
+import { ChevronLeftIcon } from '@chakra-ui/icons'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -23,6 +24,7 @@ export interface AttractionPost {
     name: string
     description: string
     image?: string
+    imageLink?: string
     address: string
     open_time: string
     city_list: string
@@ -30,30 +32,47 @@ export interface AttractionPost {
 
 function Attraction() {
     const [postList, setPostList] = useState<Array<AttractionPost>>([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetchJson<Array<AttractionPost>>(
             `${REACT_APP_API_SERVER}/data/attraction`
         ).then((data) => {
-            console.log(data)
             setPostList(
                 data.map((item) => ({
                     ...item,
                 }))
             )
+            console.log(data)
         })
     }, [])
 
     postList.forEach((post: AttractionPost) => {
-        const imageFileName = post.image
-        let imagePath = `${REACT_APP_API_SERVER}/attraction/` + imageFileName
-        post.image = imagePath
+        const imageLink = post.image?.replace('url(', '')
+        let lastIndex = imageLink?.lastIndexOf('"')
+        let newLink = imageLink?.substring(0, lastIndex).substring(1)
+        post.image = newLink
     })
+
+    console.log(postList)
+
+    function goBack() {
+        navigate('/home')
+    }
 
     return (
         <>
             <Nav />
-            <Flex
+            <div className={styles.tab}>
+                <button className={styles.backwardBtn} onClick={goBack}>
+                    <Icon as={ChevronLeftIcon} w={12} h={12} />
+                </button>
+                <div className={styles.titleBox}>
+                    <h1 className={styles.bigTitle}>Attraction</h1>
+                </div>
+            </div>
+            <hr className={styles.line} />
+            {/* <Flex
                 className="Search"
                 w="80vw"
                 mb="10px"
@@ -107,42 +126,51 @@ function Attraction() {
                         </HStack>
                     </Flex>
                 </HStack>
-            </Flex>
-            {postList.map((post) => (
-                <Box p={2} display={{ md: 'flex' }} key={post.id}>
-                    <Box flexShrink={0}>
-                        <div>
-                            <Image
-                                borderRadius="lg"
-                                w={{
-                                    md: '150px',
-                                    lg: '200px',
-                                }}
-                                src={post.image}
-                            />
-                        </div>
-                    </Box>
-                    <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
-                        <HStack>
-                            <Text
-                                fontWeight="bold"
-                                textTransform="uppercase"
-                                fontSize="lg"
-                                letterSpacing="wide"
-                                color="teal.600"
-                            >
-                                {post.name}
+            </Flex> */}
+            <Box className={styles.postContainer}>
+                {postList.map((post) => (
+                    <Box
+                        p={3}
+                        display={{ md: 'flex' }}
+                        key={post.id}
+                        marginBottom={1}
+                    >
+                        <Box flexShrink={0}>
+                            <div>
+                                <Image
+                                    borderRadius="lg"
+                                    w={{
+                                        md: '150px',
+                                        lg: '200px',
+                                    }}
+                                    src={post.image}
+                                />
+                            </div>
+                        </Box>
+                        <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
+                            <HStack>
+                                <Text
+                                    fontWeight="bold"
+                                    textTransform="uppercase"
+                                    fontSize="lg"
+                                    letterSpacing="wide"
+                                    color="teal.600"
+                                >
+                                    {post.name}
+                                </Text>
+                            </HStack>
+                            <Text className={styles.cityList}>
+                                {post.city_list}
                             </Text>
-                        </HStack>
-                        <Box className={styles.infoBox}>
-                            <Text className={styles.content}>
-                                {post.description}
-                            </Text>
+                            <Box className={styles.infoBox}>
+                                <Text className={styles.content}>
+                                    {post.description}
+                                </Text>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
-            ))}
-
+                ))}
+            </Box>
             <Dock />
         </>
     )

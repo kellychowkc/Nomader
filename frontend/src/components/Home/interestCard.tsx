@@ -12,15 +12,21 @@ import { FaHeart } from 'react-icons/fa'
 
 export interface InterestCardData {
     name: string
-    location: string
     city: string
-    country: string
-    picture: string
-    like: boolean
-    rating: string
+    country?: string
+    picture?: string
+    like?: boolean
+    rating?: string
+    link: string
+}
+
+function link(link: string) {
+    window.open(`${link}`, '_blank', 'noopener,noreferrer')
 }
 
 export default function InterestCard(props: { data: InterestCardData }) {
+    const assetLink = props.data.picture
+    console.log(assetLink)
     return (
         <Center py={5} mx={'10px'} w="auto">
             <Box
@@ -32,6 +38,9 @@ export default function InterestCard(props: { data: InterestCardData }) {
                 rounded={'lg'}
                 pos={'relative'}
                 zIndex={1}
+                onClick={() => {
+                    link(props.data.link)
+                }}
             >
                 <Box
                     rounded={'lg'}
@@ -61,11 +70,11 @@ export default function InterestCard(props: { data: InterestCardData }) {
                         height={200}
                         width={'full'}
                         objectFit={'cover'}
-                        src={props.data.picture}
+                        src={require(`../../assets/${assetLink}`)}
                     />
                 </Box>
                 <Stack pt="10px" align={'flex-start'} position="relative">
-                    <Icon
+                    {/* <Icon
                         as={FaHeart}
                         position="absolute"
                         top="20px"
@@ -74,7 +83,7 @@ export default function InterestCard(props: { data: InterestCardData }) {
                         color={'#BBBBBB'}
                         _hover={{ color: '#FF0000' }}
                         _focus={{ color: '#FF0000' }}
-                    />
+                    /> */}
                     <Heading
                         className="interestTitle"
                         fontSize={'xl'}
@@ -84,8 +93,7 @@ export default function InterestCard(props: { data: InterestCardData }) {
                     </Heading>
                     <HStack className="interestLocation" align={'center'}>
                         <Text>
-                            {props.data.location},{props.data.city},
-                            {props.data.country}
+                            {props.data.city},{props.data.country}
                         </Text>
                     </HStack>
                 </Stack>

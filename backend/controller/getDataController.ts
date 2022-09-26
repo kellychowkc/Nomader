@@ -79,4 +79,17 @@ export class GetDataController {
             });
         }
     };
+
+    getCode = async (req: Request, res: Response) => {
+        try {
+            const codeList = await this.getDataService.getCurrencyCode();
+            res.json(codeList);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
 }

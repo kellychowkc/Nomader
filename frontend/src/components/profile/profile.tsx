@@ -101,7 +101,7 @@ const Profile = () => {
     }
 
     return (
-        <Box w="auto" h="full">
+        <div>
             {/* === NavBar === */}
             <Nav />
             <VStack w="auto">
@@ -409,7 +409,7 @@ const Profile = () => {
                 </Flex>
             </VStack>
             <Dock />
-        </Box>
+        </div>
     )
 }
 

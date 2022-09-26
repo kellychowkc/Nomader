@@ -142,3 +142,31 @@ summary {
 .contentBox {
     width: 20rem;
 }
+
+/* attractions */
+.backwardBtn {
+    background-color: transparent;
+    margin-left: 1rem;
+    width: 15%;
+    transition: all 0.5s ease;
+    outline: none;
+    size: 15rem;
+    color: #1d1d42;
+}
+
+.line {
+    background: rgba(121, 121, 121, 0.454);
+    color: rgba(121, 121, 121, 0.454);
+    height: 2px;
+    margin-top: 1rem;
+}
+
+/* attraction */
+.postContainer {
+    margin: 10px 1.5rem;
+}
+
+.cityList {
+    font-size: 16px;
+    color: #2d4b6fca;
+}

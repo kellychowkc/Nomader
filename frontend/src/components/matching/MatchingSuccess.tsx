@@ -10,7 +10,7 @@ import styles from './Matching.module.css'
 
 const { REACT_APP_API_SERVER } = process.env
 
-function MatchingSuccess(userId: number, userProfile: string) {
+function MatchingSuccess() {
     const navigate = useNavigate()
     const [profilePic, setProfilePic] = useState<string>()
     const auth: AuthState = useSelector((state: any) => state.auth)
@@ -51,21 +51,13 @@ function MatchingSuccess(userId: number, userProfile: string) {
                     justifyContent={'center'}
                     alignItems={'center'}
                 >
-                    <Avatar
-                        className={styles.avatar}
-                        size="xl"
-                        src={userProfile}
-                    ></Avatar>
+                    <Avatar className={styles.avatar} size="xl"></Avatar>
                     <div className={styles.flexContainer}>
                         <h1 className={styles.caption}>
                             Enjoy <br></br>your journey!
                         </h1>
                     </div>
-                    <Avatar
-                        className={styles.avatar}
-                        size="xl"
-                        src={profilePic}
-                    ></Avatar>
+                    <Avatar className={styles.avatar} size="xl"></Avatar>
                     <Button
                         bgImage={
                             'linear-gradient(to right,#67d6f8, #67d6f8, #bae4c7)'

@@ -92,9 +92,7 @@ function Login() {
                                     placeholder={'Password'}
                                 />
                             </FormControl>
-                            <Stack spacing={10} align={'center'}>
-                                <Link color={'blue.400'}>Forgot password?</Link>
-                            </Stack>
+                            <Stack spacing={10} align={'center'}></Stack>
                             <Button
                                 bgImage={
                                     'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'

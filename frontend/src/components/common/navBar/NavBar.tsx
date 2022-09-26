@@ -61,12 +61,12 @@ export default function Nav() {
                     justifyContent={'space-between'}
                 >
                     <HStack
+                        paddingLeft={'4rem'}
                         w={'full'}
-                        spacing={8}
                         justifyContent={'center'}
                         alignItems={'center'}
                     >
-                        <Link href="/" style={{ textDecoration: 'none' }}>
+                        <Link href="/home" style={{ textDecoration: 'none' }}>
                             <Text
                                 fontSize="xl"
                                 fontFamily="monospace"
@@ -77,7 +77,7 @@ export default function Nav() {
                         </Link>
                     </HStack>
                     <Flex alignItems={'center'}>
-                        <Stack direction={'row'} spacing={3}>
+                        <Stack direction={'row'} spacing={0}>
                             <Button onClick={toggleColorMode}>
                                 {colorMode === 'light' ? (
                                     <MoonIcon />

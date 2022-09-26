@@ -105,10 +105,10 @@ function App() {
                         />
                         <Route path="interest" element={<InterestList />} />
                         <Route path="matching" element={<Matching />} />
-                        {/* <Route
+                        <Route
                             path="matchingSuccess"
                             element={<MatchingSuccess />}
-                        /> */}
+                        />
                         <Route path="newPost" element={<NewPost />} />
                         <Route path="friends" element={<Friends />} />
                         <Route path="profile" element={<Profile />} />

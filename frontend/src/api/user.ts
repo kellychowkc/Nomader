@@ -197,8 +197,6 @@ export async function fetchSelfUserProfile(userId: number) {
     });
 }
 
-
-
 export async function getUserFriends(user_id: number) {
     return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriends`, {
         method: "POST",
@@ -209,8 +207,10 @@ export async function getUserFriends(user_id: number) {
     });
 }
 
-
-export async function updateUserPermission(username: string, permissions: any[]) {
+export async function updateUserPermission(
+    username: string,
+    permissions: any[]
+) {
     return fetchJson<any>(`${REACT_APP_API_SERVER}/user/updateUserPermission`, {
         method: "POST",
         headers: {
@@ -241,3 +241,12 @@ export async function updateProfile(updateForm: UserProfile, userId: string) {
     });
 }
 
+export async function fetchRate(code: string) {
+    return fetchJson(`${REACT_APP_API_SERVER}/data/rate`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ code: code }),
+    });
+}

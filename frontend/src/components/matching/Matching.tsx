@@ -51,6 +51,7 @@ function Matching() {
                         ...user,
                     }))
                 )
+                console.log('check', profileList)
                 setProfile(userList[0])
                 let likedUserIdList: number[] = []
                 if (likedUser === 2) {
@@ -71,6 +72,7 @@ function Matching() {
 
     profileList?.forEach((user: OtherUserProfile) => {
         const interestList = user.interests
+        console.log(interestList)
         for (let i = 0; i < interestList.length; i++) {
             interestList[i] = interestList[i].replace(/\s+/g, '')
         }
