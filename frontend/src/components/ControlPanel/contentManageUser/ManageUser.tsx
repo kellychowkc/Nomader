@@ -149,6 +149,17 @@ export default function ManageUser() {
     const [viewUser, setViewUser] = React.useState<string>('')
     const [userProfile, setUserProfile] = React.useState<UserProfile>(demoUser)
 
+    const [permission_visible, setPermission_visible] =
+        useState<Permission['value']>(false)
+    const [permission_matching, setPermission_matching] =
+        useState<Permission['value']>(false)
+    const [permission_post, setPermission_post] =
+        useState<Permission['value']>(false)
+    const [permission_comment, setPermission_comment] =
+        useState<Permission['value']>(false)
+    const [permission_upload, setPermission_upload] =
+        useState<Permission['value']>(false)
+
     // view selected user profile & permission setting
     useEffect(() => {
         if (viewUser) {
@@ -158,6 +169,10 @@ export default function ManageUser() {
                     console.log('<getUserProfile> Fetch Success')
                     setUserProfile(data.userProfile)
                     setPermission_post(data.userProfile.isAdmin)
+                    setPermission_visible(data.userProfile.isAdmin)
+                    setPermission_matching(data.userProfile.isAdmin)
+                    setPermission_comment(data.userProfile.isAdmin)
+                    setPermission_upload(data.userProfile.isAdmin)
                 } else {
                     console.log('<getUserProfile> Fetch Fail')
                 }
@@ -179,17 +194,6 @@ export default function ManageUser() {
             // })
         }
     }, [viewUser])
-
-    const [permission_visible, setPermission_visible] =
-        useState<Permission['value']>(false)
-    const [permission_matching, setPermission_matching] =
-        useState<Permission['value']>(false)
-    const [permission_post, setPermission_post] =
-        useState<Permission['value']>(false)
-    const [permission_comment, setPermission_comment] =
-        useState<Permission['value']>(false)
-    const [permission_upload, setPermission_upload] =
-        useState<Permission['value']>(false)
 
     const permissions: Permission[] = [
         {

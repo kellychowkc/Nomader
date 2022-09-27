@@ -13,6 +13,7 @@ import {
     IconProps,
     useColorModeValue,
 } from '@chakra-ui/react'
+import { MdLaunch } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
 export default function CallToAction() {
@@ -52,7 +53,7 @@ export default function CallToAction() {
                             lives everywhere!
                         </Text>
                     </Heading>
-                    <Text color={'gray.500'}>
+                    <Text fontSize={'md'} color={'gray.500'}>
                         Obsessed with traveling and exploring, for the love of
                         freedom, culture, art, sport...
                     </Text>
@@ -63,22 +64,30 @@ export default function CallToAction() {
                         <Button
                             rounded={'full'}
                             size={'lg'}
-                            fontWeight={'normal'}
+                            fontWeight={'medium'}
                             px={6}
-                            // colorScheme={'red'}
-                            bg={'#0ABAB5'}
-                            // _hover={{ bg: 'red.500' }}
+                            leftIcon={
+                                <Icon as={MdLaunch} color={'#FFFFFF'}></Icon>
+                            }
+                            bg={
+                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                            }
+                            color={'#FFFFFF'}
                         >
-                            <Link to="/welcome">Sign Up</Link>
+                            <Link to="/signUp">Sign Up</Link>
                         </Button>
                         <Button
                             rounded={'full'}
                             size={'lg'}
-                            fontWeight={'normal'}
+                            fontWeight={'medium'}
                             px={6}
                             leftIcon={
-                                <PlayIcon h={4} w={4} color={'gray.300'} />
+                                <PlayIcon h={4} w={4} color={'#FFFFFF'} />
                             }
+                            bg={
+                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                            }
+                            color={'#FFFFFF'}
                         >
                             Explore
                         </Button>
@@ -98,7 +107,7 @@ export default function CallToAction() {
                         top={'-20%'}
                         left={0}
                         zIndex={-1}
-                        color={useColorModeValue('red.50', 'red.400')}
+                        color={useColorModeValue('teal.50', 'teal.300')}
                     />
                     <Box
                         position={'relative'}
