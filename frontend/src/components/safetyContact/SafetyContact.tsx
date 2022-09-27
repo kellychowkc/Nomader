@@ -9,15 +9,16 @@ import { useEffect, useState } from 'react'
 import CountryList from '../auth/CountryList'
 
 interface Emergency {
-    emergency: string
-    police: string
-    ambulance: string
-    fire: string
+    emergency_tel: string
+    police_tel: string
+    ambulance_tel: string
+    fire_tel: string
 }
 
 function SafetyContact() {
     const [selectedOption, setSelectedOption] = useState()
     const [list, setList] = useState<Emergency>()
+
     const navigate = useNavigate()
 
     function goBack() {
@@ -26,9 +27,9 @@ function SafetyContact() {
 
     useEffect(() => {
         console.log(selectedOption)
-        fetchCountry(selectedOption as any as number).then((data) => {
-            console.log('check', data)
-            setList(data as any)
+        fetchCountry(selectedOption as any as number).then((data: any) => {
+            const dataList = data[0]
+            setList(dataList)
         })
     })
 
@@ -61,6 +62,7 @@ function SafetyContact() {
                         <Select
                             h={'4rem'}
                             w={'15rem'}
+                            fontSize={'24px'}
                             id="country"
                             name="country"
                             placeholder={'Country'}
@@ -73,13 +75,13 @@ function SafetyContact() {
                             <CountryList />
                         </Select>
                         <h4 className={styles.subtitle}>Emergency</h4>
-                        <Box className={styles.rate}>{list?.emergency}</Box>
+                        <Box className={styles.rate}>{list?.emergency_tel}</Box>
                         <h4 className={styles.subtitle}>Police</h4>
-                        <Box className={styles.rate}>{list?.police}</Box>
+                        <Box className={styles.rate}>{list?.police_tel}</Box>
                         <h4 className={styles.subtitle}>Ambulance</h4>
-                        <Box className={styles.rate}>{list?.ambulance}</Box>
+                        <Box className={styles.rate}>{list?.ambulance_tel}</Box>
                         <h4 className={styles.subtitle}>Fire station</h4>
-                        <Box className={styles.rate}>{list?.fire}</Box>
+                        <Box className={styles.rate}>{list?.fire_tel}</Box>
                     </div>
                 </Box>
             </div>
