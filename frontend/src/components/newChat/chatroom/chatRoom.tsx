@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
 import './chatroom.css'
 // import styles from './chatroom.module.css'
 
@@ -14,16 +14,36 @@ import {
     HStack,
     Icon,
     Avatar,
+    Flex,
+    Stack,
+    useColorMode,
+    Menu,
+    LinkBox,
+    LinkOverlay,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
 } from '@chakra-ui/react'
 import Dock from '../../common/dock/Dock'
 import { getChatRecords, getRoomInfoByRoomTitle } from '../../../api/chat'
 import { useSelector } from 'react-redux'
 import { AuthState, ChatListState } from '../../../redux/state'
-import { ChevronLeftIcon } from '@chakra-ui/icons'
+import {
+    ChevronLeftIcon,
+    HamburgerIcon,
+    MoonIcon,
+    SunIcon,
+} from '@chakra-ui/icons'
+import { fetchSelfUserProfile } from '../../../api/user'
+
+const { REACT_APP_API_SERVER } = process.env
 
 type Props = {}
 
 const ChatRoom = (props: Props) => {
+    const { colorMode, toggleColorMode } = useColorMode()
+
     let { room_id } = useParams()
 
     // console.log('<ChatRoom> room_id = ', room_id)
@@ -52,6 +72,21 @@ const ChatRoom = (props: Props) => {
             setNewMessage('')
         }
     }
+
+    const navigate = useNavigate()
+    const [profilePic, setProfilePic] = useState<string>()
+    function logOut() {
+        localStorage.removeItem('auth_token')
+        navigate('/welcome')
+    }
+    useEffect(() => {
+        fetchSelfUserProfile(auth.id as any as number).then((data: any) => {
+            const dataDetail = data.userDetail.rows[0]
+            const profile = dataDetail.profile
+            const profilePath = `${REACT_APP_API_SERVER}/profile/` + profile
+            setProfilePic(profilePath)
+        })
+    }, [])
 
     useEffect(() => {
         const friendsName = getRoomInfoByRoomTitle(
@@ -116,8 +151,8 @@ const ChatRoom = (props: Props) => {
                 boxShadow={'0px 1px 2px 0px #DDDDDD'}
             >
                 <HStack
-                    px={2}
-                    py={3}
+                    px={4}
+                    py={2}
                     justifyContent={'center'}
                     alignItems={'center'}
                     alignContent={'center'}
@@ -125,29 +160,125 @@ const ChatRoom = (props: Props) => {
                     <div className={'tab'}>
                         <button className={'backwardBtn'}>
                             <Link to="/chat">
-                                <Icon as={ChevronLeftIcon} w={12} h={12} />
+                                <Icon
+                                    as={ChevronLeftIcon}
+                                    w={12}
+                                    h={12}
+                                    color={useColorModeValue(
+                                        '#1d1d42',
+                                        '#B0D8BC'
+                                    )}
+                                />
                             </Link>
                         </button>
                     </div>
                     <HStack
-                        pl={3}
+                        pl={2}
                         flex={'1'}
-                        justifyContent={'flex-start'}
+                        justifyContent={'space-between'}
                         alignItems={'center'}
                         alignContent={'center'}
                         spacing={3}
                     >
-                        <Avatar
-                            size={{
-                                base: 'md',
-                                lg: 'lg',
-                            }}
-                            name={roomInfo.username}
-                            src={roomInfo.profile}
-                        />
-                        <Text fontSize={'lg'} fontWeight={'medium'}>
-                            {roomInfo.username ? roomInfo.username : ''}
-                        </Text>
+                        <HStack justifyContent={'flex-start'}>
+                            <Avatar
+                                size={{
+                                    base: 'md',
+                                    lg: 'lg',
+                                }}
+                                name={roomInfo.username}
+                                src={roomInfo.profile}
+                            />
+                            <Text fontSize={'lg'} fontWeight={'medium'}>
+                                {roomInfo.username ? roomInfo.username : ''}
+                            </Text>
+                        </HStack>
+                        <Flex alignItems={'center'}>
+                            <Stack direction={'row'} spacing={0}>
+                                <Button onClick={toggleColorMode}>
+                                    {colorMode === 'light' ? (
+                                        <MoonIcon />
+                                    ) : (
+                                        <SunIcon />
+                                    )}
+                                </Button>
+                                <Menu>
+                                    <MenuButton
+                                        as={Button}
+                                        rounded={'full'}
+                                        variant={'link'}
+                                        cursor={'pointer'}
+                                        minW={0}
+                                    >
+                                        <Icon
+                                            as={HamburgerIcon}
+                                            boxSize="1.5em"
+                                        />
+                                    </MenuButton>
+                                    <MenuList>
+                                        <Box py={1} px={2}>
+                                            <HStack
+                                                justifyContent={'space-around'}
+                                            >
+                                                <Avatar
+                                                    size={'md'}
+                                                    name={auth.username}
+                                                    src={profilePic}
+                                                />
+                                                <Text
+                                                    fontSize={'lg'}
+                                                    fontWeight={'semibold'}
+                                                    textAlign={'center'}
+                                                >
+                                                    {auth.username}
+                                                </Text>
+                                            </HStack>
+                                        </Box>
+                                        <LinkBox>
+                                            <MenuItem>
+                                                <LinkOverlay
+                                                    href="/editProfile"
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                    }}
+                                                >
+                                                    Edit Profile
+                                                </LinkOverlay>
+                                            </MenuItem>
+                                        </LinkBox>
+
+                                        {auth.isAdmin ? (
+                                            <LinkBox>
+                                                <MenuItem>
+                                                    <NavLink
+                                                        className="controlPanel"
+                                                        to={'/control/'}
+                                                    >
+                                                        Control Panel
+                                                    </NavLink>
+                                                </MenuItem>
+                                            </LinkBox>
+                                        ) : (
+                                            <></>
+                                        )}
+
+                                        <MenuDivider />
+                                        <LinkBox>
+                                            <MenuItem>
+                                                <LinkOverlay
+                                                    onClick={logOut}
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                    }}
+                                                >
+                                                    Logout
+                                                </LinkOverlay>
+                                            </MenuItem>
+                                        </LinkBox>
+                                    </MenuList>
+                                </Menu>
+                            </Stack>
+                        </Flex>
                     </HStack>
                     {/* <Box className="room-name">Room ID: {room_id}</Box> */}
                 </HStack>
@@ -276,7 +407,7 @@ const ChatRoom = (props: Props) => {
                             px={5}
                             py={4}
                             borderRadius={'10px'}
-                            bg={useColorModeValue('gray.100', 'gray.400')}
+                            bg={useColorModeValue('gray.100', 'gray.600')}
                             boxShadow={'0px 3px 3px 0px #BBBBBB'}
                             h={'fit-content'}
                             maxH={'100px'}

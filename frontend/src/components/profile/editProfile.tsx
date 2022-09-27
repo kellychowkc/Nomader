@@ -34,7 +34,7 @@ import Swal from 'sweetalert2'
 
 const { REACT_APP_API_SERVER } = process.env
 
-const Profile = () => {
+const EditProfile = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [imageStore, setImageStore] = useState('')
 
@@ -110,9 +110,9 @@ const Profile = () => {
                     className={styles.bigTitle}
                     color={useColorModeValue('#1d1d42', '#B0D8BC')}
                 >
-                    Profile Edit
+                    Edit Profile
                 </Text>
-                <Flex minH={'100vh'} align={'center'} justify={'center'}>
+                <Flex minH={'full'} align={'center'} justify={'center'}>
                     <Stack>
                         <form onSubmit={formik.handleSubmit}>
                             <FormControl id="userIcon">
@@ -417,7 +417,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
-function dispatch(arg0: any) {
-    throw new Error('Function not implemented.')
-}
+export default EditProfile
