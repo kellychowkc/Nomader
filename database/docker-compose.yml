@@ -88,7 +88,28 @@ services:
         - "5432:5432"
     volumes:
         - ./pgdata:/var/lib/postgresql/data
-  
+  nomader:
+    environment: 
+        POSTGRES_DB: cap_project
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_HOST: postgres
+        NODE_ENV: production
+        DB_SECRET: iamasecret
+        PORT: 8080
+    platform: linux/amd64
+    image: "kellychowkc/nomader:latest"
+    depends_on: 
+        - postgres
+    build:
+        context: ../backend/
+        dockerfile: ./Dockerfile
+    restart: always
+    ports:
+        - "8080:8080"
+    networks:
+      project:
+        ipv4_address: 172.1.0.100
 networks:
   project:
     driver: bridge

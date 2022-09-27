@@ -38,8 +38,6 @@ export async function up(knex: Knex): Promise<void> {
             table.string("fire_tel");
             table.string("ambulance_tel");
             table.string("info");
-            table.integer("currency_code_id").unsigned();
-            table.foreign("currency_code_id").references("currency_codes.id");
         });
     }
 
@@ -133,6 +131,11 @@ export async function up(knex: Knex): Promise<void> {
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
             table.boolean("isAdmin").notNullable();
+            table.boolean("isVisible").notNullable();
+            table.boolean("allow_post").notNullable();
+            table.boolean("allow_comment").notNullable();
+            table.boolean("allow_upload").notNullable();
+            table.boolean("allow_match").notNullable();
             table.timestamps(true, true);
         });
     }
@@ -204,6 +207,7 @@ export async function up(knex: Knex): Promise<void> {
                 .references("posts.id")
                 .onUpdate("CASCADE")
                 .onDelete("CASCADE");
+            table.timestamps(true, true);
         });
     }
 

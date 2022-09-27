@@ -92,4 +92,18 @@ export class GetDataController {
             });
         }
     };
+
+    getRate = async (req: Request, res: Response) => {
+        try {
+            const code = 'UKD';
+            const rateData = await this.getDataService.getCurrencyRates(code);
+            res.json(rateData);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    }
 }
