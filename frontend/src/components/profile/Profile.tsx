@@ -14,6 +14,9 @@ import {
     Modal,
     ModalOverlay,
     useDisclosure,
+    Stat,
+    StatLabel,
+    StatNumber,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
@@ -145,9 +148,12 @@ const Profile = () => {
                     console.log('<getUserFriendsWithInfo> Fetch Fail')
                 }
                 setUserFriends(data.userFriends)
+                setFriendsCount(data.userFriends.length)
             }
         )
     }, [])
+
+    console.log(`Friends Count = ${friendsCount}`)
 
     return (
         <div>
@@ -232,6 +238,10 @@ const Profile = () => {
                             alignItems="center"
                             spacing={5}
                         >
+                            <Stat>
+                                <StatLabel>Friends</StatLabel>
+                                <StatNumber>{friendsCount}</StatNumber>
+                            </Stat>
                             <Button
                                 size={'lg'}
                                 bgImage={
