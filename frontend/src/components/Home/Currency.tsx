@@ -67,6 +67,7 @@ function Currency() {
                 >
                     <div className={styles.currencyBox}>
                         <Select
+                            h={'4rem'}
                             id="currency1"
                             name="currency1"
                             placeholder={'Currency'}
@@ -80,6 +81,7 @@ function Currency() {
                         </Select>
                         <Box className={styles.rate}>1</Box>
                         <Select
+                            h={'4rem'}
                             id="currency2"
                             name="currency2"
                             placeholder={'Currency'}

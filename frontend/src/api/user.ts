@@ -150,6 +150,7 @@ export async function newPost(postForm: PostForm) {
     formData.append("title", postForm.title);
     formData.append("content", postForm.content);
     formData.append("image", postForm.image);
+    console.log("fetch", formData.get("image"));
 
     return fetchJson(`${REACT_APP_API_SERVER}/user/post`, {
         method: "POST",
@@ -252,15 +253,16 @@ export async function fetchRate(code: string) {
     });
 }
 
-
-
 // added by dannys
 export async function getUserFriendsWithInfo(user_id: number) {
-    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriendsWithInfo`, {
-        method: "POST",
-        headers: {
-            "content-type": "application/json",
-        },
-        body: JSON.stringify({ user_id: user_id }),
-    });
+    return fetchJson<any>(
+        `${REACT_APP_API_SERVER}/user/getUserFriendsWithInfo`,
+        {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({ user_id: user_id }),
+        }
+    );
 }

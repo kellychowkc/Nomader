@@ -170,3 +170,16 @@ summary {
     font-size: 16px;
     color: #2d4b6fca;
 }
+
+.attractionTitleBox {
+    margin-right: 8.5rem;
+    margin-top: 0;
+}
+
+.attractionTab {
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #1d1d42;
+}

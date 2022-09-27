@@ -3,11 +3,12 @@ import { fetchJson } from "./utils";
 export interface OtherUserProfile {
     id: number;
     username: string;
-    country_id?: string;
+    country?: string;
     jobTitle: string;
     information: string;
     interests: string[];
     profile: string;
+    gender?: string;
 }
 
 const { REACT_APP_API_SERVER } = process.env;

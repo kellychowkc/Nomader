@@ -17,19 +17,30 @@
 }
 
 .profileInfo {
-    padding: 1rem 4rem;
+    padding: 0.5rem 4rem;
+}
+
+.infoBox {
+    height: 25px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
 }
 
 .title {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .subtitle {
     font-size: 16px;
+    text-transform: capitalize;
 }
 
+.icon {
+    width: 20px;
+    height: 20px;
+}
 hr {
-    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -38,7 +49,7 @@ hr {
 }
 
 .interestBox {
-    padding-top: 0.5rem;
+    padding-top: 0.1rem;
 }
 
 .tickbtn {

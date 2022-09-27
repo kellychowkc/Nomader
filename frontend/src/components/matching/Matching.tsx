@@ -1,5 +1,11 @@
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import {
+    BsFillPencilFill,
+    BsFillPersonBadgeFill,
+    BsFillPersonFill,
+    BsHouseDoorFill,
+} from 'react-icons/bs'
+import {
     Box,
     Button,
     Center,
@@ -24,7 +30,7 @@ import type { OtherUserProfile } from '../../api/friend'
 import { AuthState } from '../../redux/state'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'
-import MatchingSuccess from './MatchingSuccess'
+// import MatchingSuccess from './MatchingSuccess'
 import Nav from '../common/navBar/NavBar'
 
 const { REACT_APP_API_SERVER } = process.env
@@ -45,6 +51,7 @@ function Matching() {
         try {
             fetchOtherUserProfile(userId as any as number).then((data: any) => {
                 const userList = data.message.user
+                console.log('check', userList)
                 setLikedUser(data.message.waitMatchNum)
                 setProfileList(
                     userList.map((user: OtherUserProfile) => ({
@@ -82,6 +89,12 @@ function Matching() {
             const fileName = user.profile
             let path = `${REACT_APP_API_SERVER}/profile/` + fileName
             user.profile = path
+        }
+
+        if (user.gender === 'Female') {
+            setProfileDefault(true)
+        } else {
+            setProfileDefault(false)
         }
     })
 
@@ -158,14 +171,22 @@ function Matching() {
                     )}
                 </div>
                 <div className={styles.profileInfo}>
-                    <h1 className={styles.title}>{profile?.username}</h1>
-                    <h2 className={styles.subtitle}>
-                        {' '}
-                        {profile?.country_id} country
-                    </h2>
-                    <h2 className={styles.subtitle}> {profile?.jobTitle}</h2>
+                    <div className={styles.infoBox}>
+                        <BsFillPersonFill className={styles.icon} />
+                        <h1 className={styles.title}>{profile?.username}</h1>
+                    </div>
+                    <div className={styles.infoBox}>
+                        <BsHouseDoorFill className={styles.icon} />
+                        <h2 className={styles.subtitle}> {profile?.country}</h2>
+                    </div>
+                    <div className={styles.infoBox}>
+                        <BsFillPersonBadgeFill className={styles.icon} />
+                        <h2 className={styles.subtitle}>{profile?.jobTitle}</h2>
+                    </div>
                     <hr></hr>
+
                     <h3 className={styles.bio}> {profile?.information}</h3>
+
                     <hr></hr>
 
                     <h3 className={styles.subtitle}> Interests </h3>
@@ -173,7 +194,7 @@ function Matching() {
                         <Wrap spacingX={2}>
                             {profile?.interests.map((interest) => (
                                 <WrapItem key={interest}>
-                                    <Center w="82px" h="83px" overflow="hidden">
+                                    <Center w="80px" h="80px" overflow="hidden">
                                         <img
                                             src={require(`../../assets/interests/${interest}.png`)}
                                             alt="interest"
