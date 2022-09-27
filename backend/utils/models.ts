@@ -41,9 +41,9 @@ export interface BrowseCount {
 export interface AttractionPost {
     id: number;
     name: string;
-    description: string;
+    description?: string;
     image?: string;
-    address: string;
-    open_time: string;
-    city_list: string;
+    address?: string;
+    open_time?: string;
+    city_list?: string;
 }

@@ -20,16 +20,21 @@ import initializeSocketIO from "./socket/socket";
 const app = express();
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb" }));
+app.use(express.json({ limit: "500mb" }));
+app.use(express.urlencoded({ limit: "500mb" }));
 
 //accept other host
-const allowList = ["http://localhost:3000"];
+// const allowList = ["*","https://nomader.tecky-kc.me/"];
+// app.use(
+//     cors({
+//         origin: allowList.map((host) => host),
+//     })
+// );
+
 app.use(
-    cors({
-        origin: allowList.map((host) => host),
-    })
+    cors()
 );
+
 
 //service and controller
 import { UserService } from "./service/userService";
@@ -95,7 +100,7 @@ const server = http.createServer(app);
 
 const io = new socketIO(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://localhost:3000",
         methods: ["GET", "POST"],
     },
 });

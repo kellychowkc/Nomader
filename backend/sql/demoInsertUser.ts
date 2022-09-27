@@ -21,7 +21,7 @@ export async function seed(knex: Knex): Promise<void> {
     const interestId: Array<{ id: number }> = await knex("interests")
         .insert([
             { title: "hiking", image: "hiking.png" },
-            { title: "camping", image: "camping.png" },
+            { title: "camping",image: "camping.png" },
             { title: "cycling", image: "cycling.png" },
             { title: "foodie", image: "foodie.png" },
             { title: "party", image: "party.png" },
@@ -51,9 +51,10 @@ export async function seed(knex: Knex): Promise<void> {
         .returning("id");
     
 
+    let randomUser = [];
     let userData = {};
     let nameArr : Array<string> = [];
-    for (let i = 0; i < 300 ; i++) {
+    for (let i = 0; i < 150 ; i++) {
         switch ( i ) {
             case 0 : 
                 userData = {
@@ -68,15 +69,9 @@ export async function seed(knex: Knex): Promise<void> {
                     email: "kc@kc",
                     phone_num: "1234",
                     job_id: jobId[1].id,
-                    isAdmin: false,
-                    isVisible: true,
-                    allow_post: true,
-                    allow_comment: true,
-                    allow_upload: true,
-                    allow_match: true
+                    isAdmin: true
                 }
                 nameArr.push(userData["username"]);
-                await knex("users").insert(userData);
                 break;
             case 1 :
                 userData = {
@@ -91,15 +86,9 @@ export async function seed(knex: Knex): Promise<void> {
                     email: "danny@danny",
                     phone_num: "12345678",
                     job_id: jobId[2].id,
-                    isAdmin: true,
-                    isVisible: true,
-                    allow_post: true,
-                    allow_comment: true,
-                    allow_upload: true,
-                    allow_match: true
+                    isAdmin: true
                 }
                 nameArr.push(userData["username"]);
-                await knex("users").insert(userData);
                 break;
             case 2 : 
                 userData = {
@@ -114,37 +103,8 @@ export async function seed(knex: Knex): Promise<void> {
                     email: "sam@sam",
                     phone_num: "12345678",
                     job_id: jobId[2].id,
-                    isAdmin: true,
-                    isVisible: true,
-                    allow_post: true,
-                    allow_comment: true,
-                    allow_upload: true,
-                    allow_match: true
+                    isAdmin: true
                 }
-                nameArr.push(userData["username"]);
-                await knex("users").insert(userData);
-                break;
-            case  3: 
-                userData = {
-                    username: "adams",
-                    password: (await hashPassword("1234")).toString(),
-                    first_name: "adams",
-                    last_name: "adams",
-                    birthday: "29-2-2000",
-                    gender: "Male",
-                    information: "hi",
-                    profile: "",
-                    email: "adams@adams",
-                    phone_num: "12345678",
-                    job_id: jobId[2].id,
-                    isAdmin: false,
-                    isVisible: true,
-                    allow_post: true,
-                    allow_comment: true,
-                    allow_upload: true,
-                    allow_match: true
-                }
-                await knex("users").insert(userData);
                 nameArr.push(userData["username"]);
                 break;
             default : 
@@ -163,37 +123,27 @@ export async function seed(knex: Knex): Promise<void> {
                         email: chance.email(),
                         phone_num: chance.integer({ min: 10000000, max: 99999999 }),
                         job_id: jobId[chance.integer({ min: 0, max: jobId.length - 1 })]["id"],
-                        isAdmin: false,
-                        isVisible: chance.bool(),
-                        allow_post: chance.bool(),
-                        allow_comment: chance.bool(),
-                        allow_upload: chance.bool(),
-                        allow_match: chance.bool()
+                        isAdmin: false
                     };
                 } while (nameArr.includes(userData["username"]));
 
                 nameArr.push(userData["username"]);
-                await knex("users").insert(userData);
                 break;
         }
+        randomUser.push(userData);
     }
 
-    const userId: Array<{ id: number }> = await knex("users").select("id");
+    const userId: Array<{ id: number }> = await knex("users")
+        .insert(randomUser)
+        .returning("id");
 
     
-    for (let i = 4; i <= userId.length - 1; i++) {
-        let randomInterestNum = chance.integer({ min: 1, max: 6 });
-        let user = userId[i]["id"];
-        let interestArr: Array<number> = [];
-        for (let i = 0; i <= randomInterestNum - 1; i++) {
-            let interest : number;
-            do {
-                interest = chance.integer({ min: 0, max: interestId.length - 1 })
-            } while (interestArr.includes(interest));
-            interestArr.push(interest);
+    for (let user of userId) {
+        let randomInterestNum = chance.integer({ min: 1, max: 6});
+        for (let i = 0; i < randomInterestNum; i++) {
             let usersInterestsData = {
-                user_id: user,
-                interest_id: interestId[interest]["id"]
+                user_id: user["id"],
+                interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
             };
             await knex("users_interests").insert(usersInterestsData);
         }
@@ -203,11 +153,11 @@ export async function seed(knex: Knex): Promise<void> {
     let usersRelationshipData = {};
     let matchedIdData: Array<[number, number]> = [];
     let friendIdData: Array<[number, number]> = [];
-    for (let i = 0; i <= userId.length - 1; i++) {
+    for (let i = 0; i < userId.length; i++) {
         let randomMatchNum = chance.integer({ min: 0, max: userId.length - 1 });
         let friendId : Array<number> = [];
         let matchUserId : number;
-        for (let j = 0; j <= randomMatchNum - 1; j++) {
+        for (let j = 0; j < randomMatchNum; j++) {
             do {
                 do {
                     matchUserId = chance.integer({ min: 0, max: userId.length - 1 });
@@ -252,7 +202,7 @@ export async function seed(knex: Knex): Promise<void> {
             .select("user_manager_id", "user_member_id")
             .where("id", room["id"]);
         let randomChatNum = chance.integer({min: 0, max: 10 });
-        for (let i = 0; i <= randomChatNum - 1; i++) {
+        for (let i = 0; i < randomChatNum; i++) {
             let chatUser = chance.bool();
             let speechUser = 0;
             let listenUser = 0;
@@ -286,21 +236,14 @@ export async function seed(knex: Knex): Promise<void> {
     }
     
     
-
-    const postId: Array<{ id: number }> = await knex("posts").select("id");
-
+    const postId : Array<{ id: number }> = await knex("posts").select("id");
+    
     for (let post of postId) {
         let randomInterestNum = chance.integer({ min: 1, max: 3});
-        let interestArr: Array<number> = [];
-        for (let i = 0; i <= randomInterestNum - 1; i++) {
-            let interest : number;
-            do {
-                interest = chance.integer({ min: 0, max: interestId.length - 1 });
-            } while (interestArr.includes(interest));
-            interestArr.push(interest);
+        for (let i = 0; i < randomInterestNum; i++) {
             let postsTypeData = {
                 post_id: post["id"],
-                interest_id: interestId[interest]["id"]
+                interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
             };
             await knex("posts_type").insert(postsTypeData);
         }
@@ -308,13 +251,15 @@ export async function seed(knex: Knex): Promise<void> {
 
 
     for (let post of postId) {
-        let readerNum = chance.integer({ min: 0, max: userId.length - 1 });
-        for (let i = 0; i <= readerNum - 1; i++) {
+        let readerNum = chance.integer({ min: 0, max: userId.length });
+        for (let i = 0; i < readerNum; i++) {
+            let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664582400 });
             let reader = chance.integer({ min: 0, max: userId.length - 1 });
             let browseData = {
                 user_id: userId[reader]["id"],
                 browse_count: chance.integer({ min: 1, max: 100 }),
-                post_id: post["id"]
+                post_id: post["id"],
+                created_at: new Date(randomCreatedTime)
             }
             await knex("users_browse_posts").insert(browseData);
         }

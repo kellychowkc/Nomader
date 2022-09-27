@@ -22,7 +22,7 @@ const form = formidable({
     keepExtensions: true,
     maxFiles: 1,
     multiples: false,
-    maxFileSize: 200 * 1024 ** 2,
+    maxFileSize: 500 * 1024 ** 2,
     filter: (part) => part.mimetype?.startsWith("image/") || false,
 });
 

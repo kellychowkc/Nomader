@@ -12,20 +12,24 @@ services:
             PORT: 8080
         platform: linux/amd64
         image: "kellychowkc/nomader:latest"
-        depends_on: 
-            - postgres
+        # depends_on: 
+        #     - postgres
         build:
             context: ./
             dockerfile: ./Dockerfile
         ports:
             - "8080:8080"
-    postgres:
-        image: "postgres:13"
-        environment:
-            POSTGRES_DB: cap_project
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-        ports:
-            - "5432:5432"
-        volumes:
-            - ./pgdata:/var/lib/postgresql/data
+    # postgres:
+    #     image: "postgres:13"
+    #     environment:
+    #         POSTGRES_DB: cap_project
+    #         POSTGRES_USER: postgres
+    #         POSTGRES_PASSWORD: postgres
+    #     ports:
+    #         - "5432:5432"
+    #     volumes:
+    #         - ./pgdata:/var/lib/postgresql/data
+networks:
+    default:
+        name: dae
+        external: true
