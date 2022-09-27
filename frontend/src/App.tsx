@@ -21,13 +21,13 @@ import Matching from './components/matching/Matching'
 import MatchingSuccess from './components/matching/MatchingSuccess'
 import NewPost from './components/layoutForum/NewPost'
 import MatchingIndex from './components/matching/MatchingIndex'
-import Contact from './components/safetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
 import EditProfile from './components/profile/editProfile'
 import Attraction from './components/Home/Attraction'
 import ChatHome from './components/newChat/chatHome'
 import ChatRoom from './components/newChat/chatroom/chatRoom'
 import Currency from './components/Home/Currency'
+import SafetyContact from './components/safetyContact/SafetyContact'
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -97,7 +97,7 @@ function App() {
                         <Route path="attraction" element={<Attraction />} />
                         <Route path="airline" element={<Skyscanner />} />
                         <Route path="currency" element={<Currency />} />
-                        <Route path="contact" element={<Contact />} />
+                        <Route path="contact" element={<SafetyContact />} />
                         <Route path="forum" element={<Forum />} />
                         <Route
                             path="matchingIndex"

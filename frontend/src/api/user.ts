@@ -253,6 +253,17 @@ export async function fetchRate(code: string) {
     });
 }
 
+export async function fetchCountry(id: number) {
+    console.log("fetch", id);
+    return fetchJson(`${REACT_APP_API_SERVER}/data/emergency`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+    });
+}
+
 // added by dannys
 export async function getUserFriendsWithInfo(user_id: number) {
     return fetchJson<any>(

@@ -98,5 +98,21 @@ export class GetDataController {
                 message: "internal server error",
             });
         }
-    }
+    };
+
+    getEmergency = async (req: Request, res: Response) => {
+        try {
+            const dataList = await this.getDataService.getEmergencyData(
+                req.body.id
+            );
+
+            res.json(dataList);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
 }

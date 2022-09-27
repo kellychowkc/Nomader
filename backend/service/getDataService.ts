@@ -136,4 +136,19 @@ export class GetDataService {
             .andWhere("currency_rates.code_base_id", codeId[0]["id"]);
         return currencyData;
     }
+
+    async getEmergencyData(id: number) {
+        const countries: Array<{
+            emergency_tel: string;
+            police_tel: string;
+            ambulance_tel: string;
+            fire_tel: string;
+        }> = await this.knex
+            .select("emergency_tel", "police_tel", "ambulance_tel", "fire_tel")
+            .from("countries")
+            .where("id", id);
+
+        console.log(countries);
+        return countries;
+    }
 }

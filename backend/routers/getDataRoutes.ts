@@ -10,3 +10,4 @@ dataRoutes.get("/hotPost", getDataController.getHotPosts);
 dataRoutes.get("/attraction", getDataController.getAttractions);
 dataRoutes.get("/code", getDataController.getCode);
 dataRoutes.post("/rate", getDataController.getRate);
+dataRoutes.post("/emergency", getDataController.getEmergency);
