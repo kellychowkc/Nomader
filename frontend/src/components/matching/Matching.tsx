@@ -144,17 +144,17 @@ function Matching() {
             <div className={styles.profileContainer}>
                 <div className={styles.flexContainer}>
                     {profileDefault ? (
-                        <Image
-                            src={`${REACT_APP_API_SERVER}/profile/profile1.jpg`}
+                        <img
+                            src={require(`../../assets/profile2.jpg`)}
                             alt="profile pic"
                             className={styles.profilePic}
-                        />
+                        ></img>
                     ) : (
-                        <Image
-                            src={`${REACT_APP_API_SERVER}/profile/profile2.jpg`}
+                        <img
+                            src={require(`../../assets/profile.1.jpg`)}
                             alt="profile pic"
                             className={styles.profilePic}
-                        />
+                        ></img>
                     )}
                 </div>
                 <div className={styles.profileInfo}>

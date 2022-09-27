@@ -24,7 +24,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 
 //accept other host
-const allowList = ["http://localhost:3000"];
+const allowList = ["https://localhost:3000"];
 app.use(
     cors({
         origin: allowList.map((host) => host),
@@ -95,7 +95,7 @@ const server = http.createServer(app);
 
 const io = new socketIO(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://localhost:3000",
         methods: ["GET", "POST"],
     },
 });

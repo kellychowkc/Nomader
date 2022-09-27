@@ -8,9 +8,16 @@ import CurrencyList from './CurrencyList'
 import { fetchRate } from '../../api/user'
 import { useEffect, useState } from 'react'
 
+interface Currency {
+    rate: number
+    code: string
+}
+
 function Currency() {
     const [selectedOption, setSelectedOption] = useState()
-    const [currencyList, setcurrencyList] = useState()
+    const [selectedOption2, setSelectedOption2] = useState()
+    const [rate, setRate] = useState(1)
+    const [currencyList, setCurrencyList] = useState<[Currency]>()
     const navigate = useNavigate()
 
     function goBack() {
@@ -20,8 +27,17 @@ function Currency() {
     useEffect(() => {
         console.log(selectedOption)
         fetchRate(selectedOption as any as string).then((data) => {
-            console.log('check', data)
+            setCurrencyList(data as any)
         })
+
+        if (selectedOption) {
+            console.log('check', selectedOption2)
+            currencyList?.forEach((cur) => {
+                if (cur.code === selectedOption2) {
+                    setRate(cur.rate)
+                }
+            })
+        }
     })
 
     return (
@@ -68,10 +84,14 @@ function Currency() {
                             name="currency2"
                             placeholder={'Currency'}
                             className={styles.select}
+                            value={selectedOption2}
+                            onChange={(e) =>
+                                setSelectedOption2(e.target.value as any)
+                            }
                         >
                             <CurrencyList />
                         </Select>
-                        <Box className={styles.rate}></Box>
+                        <Box className={styles.rate}>{rate}</Box>
                     </div>
                 </Box>
             </div>
