@@ -161,7 +161,7 @@ export class MatchController {
                         profile: userInfo["profile"],
                         information: userInfo["information"],
                         interests: interestArr,
-                        // country : userInfo["country"]
+                        country : userInfo["name"]
                     };
                     matchUserData.push(userPortfolio);
                 }

@@ -74,9 +74,9 @@ export default function CallToAction() {
                             }
                             color={'#FFFFFF'}
                         >
-                            <Link to="/signUp">Sign Up</Link>
+                            <Link to="/welcome">Get Start</Link>
                         </Button>
-                        <Button
+                        {/* <Button
                             rounded={'full'}
                             size={'lg'}
                             fontWeight={'medium'}
@@ -90,7 +90,7 @@ export default function CallToAction() {
                             color={'#FFFFFF'}
                         >
                             Explore
-                        </Button>
+                        </Button> */}
                     </Stack>
                 </Stack>
                 <Flex

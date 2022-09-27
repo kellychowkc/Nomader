@@ -59,15 +59,18 @@ export class MatchService {
             title: string;
             information: string;
             profile: string;
+            name: string;
         }> = await this.knex("users")
             .select(
                 "users.username",
                 "jobs.title",
                 "users.information",
-                "users.profile"
+                "users.profile",
+                "users.gender",
+                "countries.name"
             )
             .innerJoin("jobs", "users.job_id", "jobs.id")
-            // .innerJoin("countries", "users.country_id", "countries.id")
+            .innerJoin("countries", "users.country_id", "countries.id")
             .where("users.id", id);
         return { interestIdList, userData };
     }

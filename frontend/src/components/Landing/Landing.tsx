@@ -1,7 +1,7 @@
 import { Box, Container, Flex, Image, Text, VStack } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import CallToAction from './callToActionOnLanding/CallToAction'
-import InfiniteGrid from '../Home/infiniteGrid/InfiniteGrid'
+import InfiniteGrid from './infiniteGrid/InfiniteGrid'
 import Dock from '../common/dock/Dock'
 
 function Landing() {
@@ -13,7 +13,7 @@ function Landing() {
                     <CallToAction />
                 </Flex>
 
-                <Flex
+                {/* <Flex
                     w="90vw"
                     h="auto"
                     flexDirection={['column', 'column', 'row', 'row']}
@@ -95,9 +95,9 @@ function Landing() {
                             <Text></Text>
                         </VStack>
                     </Box>
-                </Flex>
+                </Flex> */}
                 <Box w="90vw">
-                    <Container mb="5" centerContent>
+                    {/* <Container mb="5" centerContent>
                         <Text
                             fontSize="2em"
                             fontWeight="bold"
@@ -116,7 +116,7 @@ function Landing() {
                         >
                             Explore
                         </Text>
-                    </Container>
+                    </Container> */}
                     <InfiniteGrid />
                 </Box>
             </VStack>

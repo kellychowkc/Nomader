@@ -42,32 +42,26 @@ export async function seed(knex: Knex): Promise<void> {
     }
 
 
-    for (let attraction of attractionId) {
+    for (let i = 0; i < attractionId.length - 1; i++) {
         let randomInterestNum = chance.integer({ min: 1, max: 3});
-        let interestArr: Array<number> = [];
         for (let i = 0; i < randomInterestNum; i++) {
-            let interest: number;
-            do {
-                interest = chance.integer({ min: 0, max: interestId.length - 1 })
-            } while (interestArr.includes(interest));
-            interestArr.push(interest);
             let attractionTypeData = {
-                attraction_id: attraction["id"],
-                interest_id: interestId[interest]["id"]
+                attraction_id: attractionId[i]["id"],
+                interest_id: interestId[chance.integer({ min: 0, max: interestId.length - 1 })]["id"]
             };
             await knex("attractions_type").insert(attractionTypeData);
         }
     }
 
 
-    for (let attraction of attractionId) {
+    for (let i = 0; i < attractionId.length - 1; i++) {
         let readerNum = chance.integer({ min: 0, max: userId.length - 1 });
-        for (let i = 0; i < readerNum; i++) {
+        for (let j = 0; j < readerNum; j++) {
             let reader = chance.integer({ min: 0, max: userId.length - 1 });
             let browseData = {
                 user_id: userId[reader]["id"],
                 browse_count: chance.integer({ min: 1, max: 100 }),
-                attraction_id: attraction["id"]
+                attraction_id: attractionId[i]["id"]
             }
             await knex("users_like_attractions").insert(browseData);
         }
