@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './Forum.module.css'
 import {
     Box,
@@ -19,6 +19,8 @@ import {
     TabPanel,
     Icon,
     Button,
+    FormControl,
+    Input,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
@@ -26,6 +28,7 @@ import { AddIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router'
 import PostList from './LastestPostList'
 import HotPostList from './HotPost'
+import { MdSearch } from 'react-icons/md'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -42,8 +45,6 @@ export interface Post {
 
 const Forum = () => {
     const navigate = useNavigate()
-
-    //fetch data
 
     return (
         <div>

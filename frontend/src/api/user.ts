@@ -250,6 +250,10 @@ export async function updateProfile(updateForm: UserProfile, userId: string) {
     formData.append("information", updateForm.information as any as string);
     formData.append("profile", updateForm.newProfile as any as string);
 
+    // added by danny
+    formData.append("emergency_contact_person", updateForm.emergency_contact_person as any as string);
+    formData.append("emergency_contact_num", updateForm.emergency_contact_num as any as string);
+
     return fetchJson(`${REACT_APP_API_SERVER}/user/updateProfile`, {
         method: "POST",
         body: formData,

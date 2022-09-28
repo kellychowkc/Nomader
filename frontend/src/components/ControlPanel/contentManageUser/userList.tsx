@@ -15,20 +15,16 @@ import {
 } from '@chakra-ui/react'
 
 import type { IUser } from './ManageUser'
+import styles from './userList.module.css'
 
 type Props = {
     list: IUser[]
-    viewUser: (username: string) => void
+    setViewUser: (username: string) => void
 }
 
 export function UsersList(props: Props) {
     return (
-        <Table
-            variant="striped"
-            colorScheme="teal"
-            bg={useColorModeValue('white', 'gray.600')}
-            w="100%"
-        >
+        <Table bg={useColorModeValue('white', 'gray.600')} w="100%">
             <Thead
                 position="sticky"
                 top={0}
@@ -36,7 +32,7 @@ export function UsersList(props: Props) {
                 zIndex={10}
             >
                 <Tr>
-                    <Th pl={8} fontSize={'md'} fontWeight={'bold'}>
+                    <Th pl={5} fontSize={'md'} fontWeight={'bold'}>
                         User
                     </Th>
                     <Th fontSize={'md'} fontWeight={'bold'}>
@@ -78,7 +74,7 @@ export function UsersList(props: Props) {
                             <Button
                                 m="1"
                                 size="md"
-                                onClick={() => props.viewUser(user.username)}
+                                onClick={() => props.setViewUser(user.username)}
                             >
                                 View
                             </Button>

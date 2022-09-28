@@ -150,16 +150,28 @@ function ActiveStatsCard(props: StatsCardProps) {
 
 export default function Dashboard() {
     return (
-        <Box maxW="7xl" mx={'auto'} px={{ base: 2, sm: 12, md: 17 }}>
-            <chakra.h1
+        <Box maxW="7xl" px={{ base: 0 }}>
+            {/* <chakra.h1
                 textAlign={'center'}
                 fontSize={'4xl'}
                 py={1}
                 fontWeight={'bold'}
             >
-                Dashboard of useful data.
-            </chakra.h1>
-            <SimpleGrid
+                Data Dashboard
+            </chakra.h1> */}
+            <Box w={'100vw'} h={'100vh'}>
+                <iframe
+                    title="charts"
+                    width={`${window.innerWidth * 0.85}`}
+                    height={`${window.innerHeight * 0.85}`}
+                    src="https://datastudio.google.com/embed/reporting/a09d7e5e-8f21-4da7-8f44-fdc08b7deff3/page/p_3vlkq3a2yc"
+                    frameBorder="0"
+                    // style="border:0"
+                    // allowfullscreen
+                ></iframe>
+            </Box>
+
+            {/* <SimpleGrid
                 columns={{ base: 1, md: 3 }}
                 spacing={{ base: 5, lg: 8 }}
             >
@@ -257,7 +269,7 @@ export default function Dashboard() {
                         </Flex>
                     </GridItem>
                 </Grid>
-            </Container>
+            </Container> */}
         </Box>
     )
 }
