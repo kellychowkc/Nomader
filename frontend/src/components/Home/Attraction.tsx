@@ -1,128 +1,260 @@
 import {
-    Container,
-    Stack,
-    Flex,
     Box,
-    Heading,
-    Text,
-    Button,
-    Image,
+    Flex,
+    FormControl,
+    HStack,
     Icon,
-    IconButton,
-    createIcon,
-    IconProps,
+    Image,
+    Input,
+    Text,
     useColorModeValue,
-    AspectRatio,
+    VStack,
 } from '@chakra-ui/react'
-import { MdLaunch } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { fetchJson } from '../../api/utils'
+import Nav from '../common/navBar/NavBar'
+import Dock from '../common/dock/Dock'
+import { useNavigate } from 'react-router'
+import { ChevronLeftIcon } from '@chakra-ui/icons'
+import { MdSearch } from 'react-icons/md'
+import styles from './Attraction.module.css'
 
-export default function CallToAction() {
-    return (
-        <Container w="90vw" centerContent>
-            <Stack
-                w="85vw"
-                align={'center'}
-                spacing={{ base: 1, md: 1 }}
-                py={{ base: 19, md: 25 }}
-                direction={{ base: 'column', md: 'row' }}
+const { REACT_APP_API_SERVER } = process.env
+
+export interface AttractionPost {
+    id: number
+    name: string
+    description: string
+    image?: string
+    imageLink?: string
+    address: string
+    open_time: string
+    city_list: string
+}
+
+function Attraction() {
+    const [postList, setPostList] = useState<Array<AttractionPost>>([])
+    const [searchPostList, setSearchPostList] = useState<Array<AttractionPost>>(
+        []
+    )
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        fetchJson<Array<AttractionPost>>(
+            `${REACT_APP_API_SERVER}/data/attraction`
+        ).then((data) => {
+            setPostList(
+                data.map((item) => ({
+                    ...item,
+                }))
+            )
+            setSearchPostList(
+                data.map((item) => ({
+                    ...item,
+                }))
+            )
+            console.log('Fetch Data = ', data)
+        })
+    }, [])
+
+    postList.forEach((post: AttractionPost) => {
+        const imageLink = post.image?.replace('url(', '')
+        let lastIndex = imageLink?.lastIndexOf('"')
+        let newLink = imageLink?.substring(0, lastIndex).substring(1)
+        post.image = newLink
+    })
+
+    const [searchPost, setSearchPost] = useState('')
+    const handleChange_searchPost = (event: any) =>
+        setSearchPost(event.target.value)
+    const searchRef = useRef(searchPost)
+
+    useEffect(() => {
+        if (searchPost !== searchRef.current) {
+            console.log('<Search User> searchUser = ', searchPost)
+            const result = searchPostList!.filter(
+                (item) =>
+                    item.name.match(searchPost) ||
+                    item.description.match(searchPost)
+            )
+            const postListData = result.map((item: any) => ({
+                ...item,
+            }))
+            // console.log('<Search User> userListData = ', postListData)
+            setPostList(postListData)
+        }
+    }, [searchPost])
+
+    // Function written to use useColorModeValue, but will cause error getting pictures
+    function PostCards(post: any) {
+        return (
+            <Box
+                px={5}
+                py={3}
+                display={{ md: 'flex' }}
+                key={post.id}
+                marginBottom={1}
             >
-                <Stack flex={1} spacing={{ base: 5, md: 10 }}>
-                    <Heading
-                        lineHeight={1.1}
-                        fontWeight={600}
-                        fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
-                    >
+                <Box flexShrink={0}>
+                    <div>
+                        <Image
+                            borderRadius="lg"
+                            w={{
+                                md: '150px',
+                                lg: '200px',
+                            }}
+                            src={post.image}
+                        />
+                    </div>
+                </Box>
+                <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
+                    <HStack>
                         <Text
-                            as={'span'}
-                            position={'relative'}
-                            color={'#00B0B0'}
-                            // _after={{
-                            //     content: "''",
-                            //     width: 'full',
-                            //     height: '100%',
-                            //     position: 'absolute',
-                            //     bottom: 1,
-                            //     left: 0,
-                            //     bg: '#0ABAB5',
-                            //     zIndex: -1,
-                            // }}
+                            fontWeight="bold"
+                            textTransform="uppercase"
+                            fontSize="xl"
+                            letterSpacing="wide"
+                            // color="teal.600"
+                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
                         >
-                            Nomad spirit,
+                            {post.name}
                         </Text>
-                        <br />
-                        <Text as={'span'} color={'#0ABAB5'}>
-                            lives everywhere!
-                        </Text>
-                    </Heading>
-                    <Text fontSize={'md'} color={'gray.500'}>
-                        Obsessed with traveling and exploring, for the love of
-                        freedom, culture, art, sport...
-                    </Text>
-                    <Stack
-                        spacing={{ base: 1, sm: 1 }}
-                        direction={{ base: 'column', sm: 'row' }}
+                    </HStack>
+                    <Text
+                        className={styles.cityList}
+                        fontWeight="bold"
+                        textTransform="uppercase"
+                        fontSize="xl"
+                        letterSpacing="wide"
+                        color="#2d4b6fca"
                     >
-                        <Button
-                            rounded={'full'}
-                            size={'lg'}
-                            fontWeight={'medium'}
-                            px={6}
-                            leftIcon={
-                                <Icon as={MdLaunch} color={'#FFFFFF'}></Icon>
-                            }
-                            bg={
-                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                            }
-                            color={'#FFFFFF'}
-                        >
-                            <Link to="welcome">Get Start</Link>
-                        </Button>
-                    </Stack>
-                </Stack>
-                <Flex
-                    flex={1}
-                    justify={'center'}
-                    align={'center'}
-                    position={'relative'}
-                    w={'full'}
-                >
-                    <Blob
-                        w={'150%'}
-                        h={'150%'}
-                        position={'absolute'}
-                        top={'-10%'}
-                        left={0}
-                        zIndex={-1}
-                        color={useColorModeValue('teal.50', 'teal.300')}
-                    />
-                </Flex>
-            </Stack>
-        </Container>
-    )
-}
+                        {post.city_list}
+                    </Text>
+                    <Box className={styles.infoBox}>
+                        <Text className={styles.content}>
+                            {post.description}
+                        </Text>
+                    </Box>
+                </Box>
+            </Box>
+        )
+    }
 
-const PlayIcon = createIcon({
-    displayName: 'PlayIcon',
-    viewBox: '0 0 58 58',
-    d: 'M28.9999 0.562988C13.3196 0.562988 0.562378 13.3202 0.562378 29.0005C0.562378 44.6808 13.3196 57.438 28.9999 57.438C44.6801 57.438 57.4374 44.6808 57.4374 29.0005C57.4374 13.3202 44.6801 0.562988 28.9999 0.562988ZM39.2223 30.272L23.5749 39.7247C23.3506 39.8591 23.0946 39.9314 22.8332 39.9342C22.5717 39.9369 22.3142 39.8701 22.0871 39.7406C21.86 39.611 21.6715 39.4234 21.5408 39.1969C21.4102 38.9705 21.3421 38.7133 21.3436 38.4519V19.5491C21.3421 19.2877 21.4102 19.0305 21.5408 18.8041C21.6715 18.5776 21.86 18.3899 22.0871 18.2604C22.3142 18.1308 22.5717 18.064 22.8332 18.0668C23.0946 18.0696 23.3506 18.1419 23.5749 18.2763L39.2223 27.729C39.4404 27.8619 39.6207 28.0486 39.7458 28.2713C39.8709 28.494 39.9366 28.7451 39.9366 29.0005C39.9366 29.2559 39.8709 29.507 39.7458 29.7297C39.6207 29.9523 39.4404 30.1391 39.2223 30.272Z',
-})
+    function goBack() {
+        navigate('/home')
+    }
 
-export const Blob = (props: IconProps) => {
     return (
-        <Icon
-            width={'100%'}
-            viewBox="0 0 578 440"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            {...props}
-        >
-            <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M239.184 439.443c-55.13-5.419-110.241-21.365-151.074-58.767C42.307 338.722-7.478 282.729.938 221.217c8.433-61.644 78.896-91.048 126.871-130.712 34.337-28.388 70.198-51.348 112.004-66.78C282.34 8.024 325.382-3.369 370.518.904c54.019 5.115 112.774 10.886 150.881 49.482 39.916 40.427 49.421 100.753 53.385 157.402 4.13 59.015 11.255 128.44-30.444 170.44-41.383 41.683-111.6 19.106-169.213 30.663-46.68 9.364-88.56 35.21-135.943 30.551z"
-                fill="currentColor"
-            />
-        </Icon>
+        <>
+            <div>
+                <Nav />
+                <div className={styles.tab}>
+                    <button className={styles.backwardBtn} onClick={goBack}>
+                        <Icon
+                            as={ChevronLeftIcon}
+                            w={12}
+                            h={12}
+                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                        />
+                    </button>
+                    <div className={styles.titleBox}>
+                        <Text
+                            as="h1"
+                            className={styles.headTitle}
+                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                        >
+                            Attraction
+                        </Text>
+                    </div>
+                </div>
+                <hr className={styles.line} />
+                <VStack justifyContent={'center'}>
+                    <Box
+                        className="searchUser"
+                        w="90%"
+                        maxW={'xl'}
+                        m={3}
+                        px="5px"
+                        bg="gray.200"
+                        rounded={'15px'}
+                        boxShadow={'lg'}
+                    >
+                        <HStack>
+                            <FormControl id="searchUser">
+                                <Input
+                                    placeholder="Search attraction"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    border="0"
+                                    type="text"
+                                    onChange={handleChange_searchPost}
+                                    value={searchPost}
+                                    focusBorderColor={'none'}
+                                />
+                            </FormControl>
+                            <Icon as={MdSearch} h="30px" w="30px" />
+                        </HStack>
+                    </Box>
+                    <Box className={styles.postContainer} p={3}>
+                        {postList.map((post, idx) => (
+                            // <PostCards post={post} key={idx} />
+
+                            <Box
+                                px={5}
+                                py={3}
+                                display={{ md: 'flex' }}
+                                key={post.id}
+                                marginBottom={1}
+                            >
+                                <Box flexShrink={0}>
+                                    <div>
+                                        <Image
+                                            borderRadius="lg"
+                                            w={{
+                                                md: '150px',
+                                                lg: '200px',
+                                            }}
+                                            src={post.image}
+                                        />
+                                    </div>
+                                </Box>
+                                <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
+                                    <HStack>
+                                        <Text
+                                            fontWeight="bold"
+                                            textTransform="uppercase"
+                                            fontSize="xl"
+                                            letterSpacing="wide"
+                                            color="teal.600"
+                                            // color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                                        >
+                                            {post.name}
+                                        </Text>
+                                    </HStack>
+                                    <Text
+                                        className={styles.cityList}
+                                        fontWeight="medium"
+                                        fontSize="lg"
+                                        color="#2d4b6fca"
+                                    >
+                                        {post.city_list}
+                                    </Text>
+                                    <Box className={styles.infoBox}>
+                                        <Text className={styles.content}>
+                                            {post.description}
+                                        </Text>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        ))}
+                    </Box>
+                </VStack>
+                <Dock />
+            </div>
+        </>
     )
 }
+
+export default Attraction
