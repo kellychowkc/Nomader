@@ -23,7 +23,7 @@ export default function CallToAction() {
                 w="85vw"
                 align={'center'}
                 spacing={{ base: 8, md: 10 }}
-                py={{ base: 20, md: 28 }}
+                py={{ base: 19, md: 28 }}
                 direction={{ base: 'column', md: 'row' }}
             >
                 <Stack flex={1} spacing={{ base: 5, md: 10 }}>
@@ -74,23 +74,8 @@ export default function CallToAction() {
                             }
                             color={'#FFFFFF'}
                         >
-                            <Link to="/welcome">Get Start</Link>
+                            <Link to="welcome">Get Start</Link>
                         </Button>
-                        {/* <Button
-                            rounded={'full'}
-                            size={'lg'}
-                            fontWeight={'medium'}
-                            px={6}
-                            leftIcon={
-                                <PlayIcon h={4} w={4} color={'#FFFFFF'} />
-                            }
-                            bg={
-                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                            }
-                            color={'#FFFFFF'}
-                        >
-                            Explore
-                        </Button> */}
                     </Stack>
                 </Stack>
                 <Flex

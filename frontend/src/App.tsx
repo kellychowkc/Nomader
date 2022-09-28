@@ -25,8 +25,8 @@ import Contact from './components/safetyContact/SafetyContact'
 import Skyscanner from './components/Home/Skyscanner'
 import EditProfile from './components/profile/editProfile'
 import Attraction from './components/Home/Attraction'
-import ChatHome from './components/newChat/chatHome'
-import ChatRoom from './components/newChat/chatroom/chatRoom'
+import ChatHome from './components/chat/chatHome'
+import ChatRoom from './components/chat/chatroom/chatRoom'
 import Currency from './components/Home/Currency'
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

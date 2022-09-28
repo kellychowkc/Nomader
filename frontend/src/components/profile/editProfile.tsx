@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styles from './editProfile.module.css'
 import {
     Box,
-    Heading,
     Text,
     VStack,
     Flex,
@@ -62,7 +61,7 @@ const EditProfile = () => {
 
     const formik = useFormik({
         initialValues: {
-            username: '',
+            username: profileList?.username,
             password: '',
             first_name: '',
             last_name: '',
@@ -102,317 +101,395 @@ const EditProfile = () => {
 
     return (
         <div>
-            {/* === NavBar === */}
-            <Nav />
-            <VStack w="auto">
-                <Text
-                    position={'relative'}
-                    className={styles.bigTitle}
-                    color={useColorModeValue('#1d1d42', '#B0D8BC')}
-                >
-                    Edit Profile
-                </Text>
-                <Flex minH={'full'} align={'center'} justify={'center'}>
-                    <Stack>
-                        <form onSubmit={formik.handleSubmit}>
-                            <FormControl id="userIcon">
-                                <Stack
-                                    direction={['column', 'row']}
-                                    spacing={6}
-                                >
-                                    <div className={styles.profileContainer}>
-                                        <Center>
-                                            {imageStore === '' ? (
-                                                <Avatar
-                                                    name={profileList?.username}
-                                                    size="2xl"
-                                                    src={
-                                                        profileList?.profile as any as string
-                                                    }
-                                                ></Avatar>
-                                            ) : (
-                                                <Avatar
-                                                    size="2xl"
-                                                    src={imageStore}
-                                                ></Avatar>
-                                            )}
-                                        </Center>
-                                        <Center w="full">
-                                            <input
-                                                type="file"
-                                                onChange={handleImageChange}
-                                                id="profile"
-                                                name="profile"
-                                                className={styles.uploadBtn}
-                                            ></input>
-                                            <p className={styles.subtitle}>
-                                                Upload Profile Picture
-                                            </p>
-                                        </Center>
-                                    </div>
-                                </Stack>
-                            </FormControl>
-
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="space-evenly"
-                            >
-                                {/* Remark */}
-                                <Box m={3}>
-                                    <FormControl id="userName">
-                                        <FormLabel>Username</FormLabel>
-                                        <Input
-                                            id="username"
-                                            name="username"
-                                            placeholder={profileList?.username}
-                                            onChange={formik.handleChange}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={formik.values.username}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="password">
-                                        <FormLabel>Password</FormLabel>
-                                        <InputGroup>
-                                            <Input
-                                                id="password"
-                                                name="password"
-                                                onChange={formik.handleChange}
-                                                value={formik.values.password}
-                                                type={
-                                                    showPassword
-                                                        ? 'text'
-                                                        : 'password'
-                                                }
-                                                placeholder="New Password"
-                                                w={'18rem'}
-                                            />
-                                            <InputRightElement>
-                                                <Button
-                                                    variant={'ghost'}
-                                                    onClick={() =>
-                                                        setShowPassword(
-                                                            (showPassword) =>
-                                                                !showPassword
-                                                        )
-                                                    }
-                                                >
-                                                    {showPassword ? (
-                                                        <ViewIcon />
-                                                    ) : (
-                                                        <ViewOffIcon />
-                                                    )}
-                                                </Button>
-                                            </InputRightElement>
-                                        </InputGroup>
-                                    </FormControl>
-                                </Box>
-                            </Flex>
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="space-evenly"
-                            >
-                                {/* Remark */}
-                                <Box m={3}>
-                                    <FormControl id="first_name">
-                                        <FormLabel>First Name</FormLabel>
-                                        <Input
-                                            id="first_name"
-                                            name="first_name"
-                                            onChange={formik.handleChange}
-                                            placeholder={
-                                                profileList?.first_name
-                                            }
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="last_name">
-                                        <FormLabel>Last Name</FormLabel>
-                                        <Input
-                                            id="last_name"
-                                            name="last_name"
-                                            onChange={formik.handleChange}
-                                            placeholder={profileList?.last_name}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="email">
-                                        <FormLabel>Email address</FormLabel>
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            onChange={formik.handleChange}
-                                            placeholder={profileList?.email}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="email"
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    {/* Remark */}
-                                    <FormControl id="phone_num">
-                                        <FormLabel>Phone no.</FormLabel>
-                                        <Input
-                                            id="phone_num"
-                                            name="phone_num"
-                                            placeholder={profileList?.phone_num}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="number"
-                                            value={formik.values.phone_num}
-                                            onChange={formik.handleChange}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="birthday">
-                                        <FormLabel>Birthday</FormLabel>
-                                        <Input
-                                            id="birthday"
-                                            name="birthday"
-                                            placeholder={profileList?.birthday}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={formik.values.birthday}
-                                            onChange={formik.handleChange}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    {/* Remark */}
-                                    <FormControl id="gender">
-                                        <FormLabel>Gender</FormLabel>
-                                        <Input
-                                            id="gender"
-                                            name="gender"
-                                            placeholder={profileList?.gender}
-                                            _placeholder={{ color: 'gray.500' }}
-                                            type="text"
-                                            value={formik.values.gender}
-                                            onChange={formik.handleChange}
-                                            w={'18rem'}
-                                        />
-                                    </FormControl>
-                                </Box>
-                                <Box m={3}>
-                                    <FormControl id="job">
-                                        <FormLabel>Job</FormLabel>
-                                        <Select
-                                            id="job"
-                                            name="job"
-                                            onChange={formik.handleChange}
-                                            value={formik.values.job}
-                                            placeholder={profileList?.job}
-                                            w={'18rem'}
-                                        >
-                                            <option value={1}>student</option>
-                                            <option value={2}>slash</option>
-                                            <option value={3}>designer</option>
-                                            <option value={4}>
-                                                programmer
-                                            </option>
-                                            <option value={5}>
-                                                entrepreneur
-                                            </option>
-                                            <option value={6}>youtuber</option>
-                                            <option value={7}>others</option>
-                                        </Select>
-                                    </FormControl>
-                                </Box>
-                            </Flex>
-                            <Flex
-                                w="100%"
-                                wrap="wrap"
-                                direction={{
-                                    base: 'row',
-                                    sm: 'column',
-                                    md: 'column',
-                                    lg: 'row',
-                                    xl: 'row',
-                                }}
-                                justify="center"
-                                align="center"
-                            >
-                                <Box m={3} w="90%">
-                                    {/* Remark */}
-                                    <FormControl
-                                        id="information"
-                                        className={styles.information}
+            <Box w="auto" h="full">
+                {/* === NavBar === */}
+                <Nav />
+                <VStack w="auto">
+                    <Text
+                        position={'relative'}
+                        className={styles.bigTitle}
+                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                    >
+                        Edit Profile
+                    </Text>
+                    <Flex minH={'full'} align={'center'} justify={'center'}>
+                        <Stack>
+                            <form onSubmit={formik.handleSubmit}>
+                                <FormControl id="userIcon">
+                                    <Stack
+                                        direction={['column', 'row']}
+                                        spacing={6}
                                     >
-                                        <FormLabel>Information</FormLabel>
-                                        <Textarea
-                                            id="information"
-                                            name="information"
-                                            minH="8rem"
-                                            w="85%"
-                                            placeholder={
-                                                profileList?.information
-                                            }
-                                            _placeholder={{ color: 'gray.500' }}
-                                            value={formik.values.information}
-                                            onChange={formik.handleChange}
-                                        />
-                                    </FormControl>
-                                </Box>
-                            </Flex>
+                                        <div
+                                            className={styles.profileContainer}
+                                        >
+                                            <Center>
+                                                {imageStore === '' ? (
+                                                    <Avatar
+                                                        name={
+                                                            profileList?.username
+                                                        }
+                                                        size="2xl"
+                                                        src={
+                                                            profileList?.profile as any as string
+                                                        }
+                                                    ></Avatar>
+                                                ) : (
+                                                    <Avatar
+                                                        size="2xl"
+                                                        src={imageStore}
+                                                    ></Avatar>
+                                                )}
+                                            </Center>
+                                            <Center w="full">
+                                                <input
+                                                    type="file"
+                                                    onChange={handleImageChange}
+                                                    id="profile"
+                                                    name="profile"
+                                                    className={styles.uploadBtn}
+                                                ></input>
+                                                <p className={styles.subtitle}>
+                                                    Upload Profile Picture
+                                                </p>
+                                            </Center>
+                                        </div>
+                                    </Stack>
+                                </FormControl>
 
-                            <Stack direction={['column', 'row']}>
-                                <Button
-                                    bgImage={
-                                        'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                                    }
-                                    type="submit"
-                                    className={styles.btn}
+                                <Flex
+                                    w="100%"
+                                    wrap="wrap"
+                                    direction={{
+                                        base: 'row',
+                                        sm: 'column',
+                                        md: 'column',
+                                        lg: 'row',
+                                        xl: 'row',
+                                    }}
+                                    justify="space-evenly"
                                 >
-                                    Update
-                                </Button>
-                            </Stack>
-                            <Box
-                                fontSize="sm"
-                                color="#363636"
-                                className={styles.timeBox}
-                            >
-                                <Text>
-                                    Member since: {profileList?.created_at}
-                                </Text>
-                                <Text>
-                                    Last update: {profileList?.updated_at}
-                                </Text>
-                            </Box>
-                        </form>
-                    </Stack>
-                </Flex>
-            </VStack>
-            <Dock />
+                                    {/* Remark */}
+                                    <Box m={3}>
+                                        <FormControl id="userName">
+                                            <FormLabel>Username</FormLabel>
+                                            <Input
+                                                id="username"
+                                                name="username"
+                                                placeholder={
+                                                    profileList?.username
+                                                }
+                                                onChange={formik.handleChange}
+                                                defaultValue={
+                                                    profileList?.username
+                                                }
+                                                value={formik.values.username}
+                                                autoComplete={'off'}
+                                                w={'18rem'}
+                                                isDisabled
+                                                readOnly
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={3}>
+                                        <FormControl id="password">
+                                            <FormLabel>Password</FormLabel>
+                                            <InputGroup>
+                                                <Input
+                                                    id="password"
+                                                    name="password"
+                                                    placeholder="New Password"
+                                                    onChange={
+                                                        formik.handleChange
+                                                    }
+                                                    value={
+                                                        formik.values.password
+                                                    }
+                                                    autoComplete={'off'}
+                                                    type={
+                                                        showPassword
+                                                            ? 'text'
+                                                            : 'password'
+                                                    }
+                                                    w={'18rem'}
+                                                    _focus={{
+                                                        borderColor: '#56C3E6',
+                                                    }}
+                                                />
+                                                <InputRightElement>
+                                                    <Button
+                                                        variant={'ghost'}
+                                                        onClick={() =>
+                                                            setShowPassword(
+                                                                (
+                                                                    showPassword
+                                                                ) =>
+                                                                    !showPassword
+                                                            )
+                                                        }
+                                                    >
+                                                        {showPassword ? (
+                                                            <ViewIcon />
+                                                        ) : (
+                                                            <ViewOffIcon />
+                                                        )}
+                                                    </Button>
+                                                </InputRightElement>
+                                            </InputGroup>
+                                        </FormControl>
+                                    </Box>
+                                </Flex>
+                                <Flex
+                                    w="100%"
+                                    wrap="wrap"
+                                    direction={{
+                                        base: 'row',
+                                        sm: 'column',
+                                        md: 'column',
+                                        lg: 'row',
+                                        xl: 'row',
+                                    }}
+                                    justify="space-evenly"
+                                >
+                                    {/* Remark */}
+                                    <Box m={3}>
+                                        <FormControl id="first_name">
+                                            <FormLabel>First Name</FormLabel>
+                                            <Input
+                                                id="first_name"
+                                                name="first_name"
+                                                onChange={formik.handleChange}
+                                                placeholder={
+                                                    profileList?.first_name
+                                                }
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                w={'18rem'}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={3}>
+                                        <FormControl id="last_name">
+                                            <FormLabel>Last Name</FormLabel>
+                                            <Input
+                                                id="last_name"
+                                                name="last_name"
+                                                onChange={formik.handleChange}
+                                                placeholder={
+                                                    profileList?.last_name
+                                                }
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                w={'18rem'}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={3}>
+                                        <FormControl id="email">
+                                            <FormLabel>Email address</FormLabel>
+                                            <Input
+                                                id="email"
+                                                name="email"
+                                                onChange={formik.handleChange}
+                                                placeholder={profileList?.email}
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="email"
+                                                w={'18rem'}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={3}>
+                                        {/* Remark */}
+                                        <FormControl id="phone_num">
+                                            <FormLabel>Phone no.</FormLabel>
+                                            <Input
+                                                id="phone_num"
+                                                name="phone_num"
+                                                placeholder={
+                                                    profileList?.phone_num
+                                                }
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="number"
+                                                value={formik.values.phone_num}
+                                                onChange={formik.handleChange}
+                                                w={'18rem'}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={3}>
+                                        <FormControl id="birthday">
+                                            <FormLabel>Birthday</FormLabel>
+                                            <Input
+                                                id="birthday"
+                                                name="birthday"
+                                                placeholder={
+                                                    profileList?.birthday
+                                                }
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={formik.values.birthday}
+                                                onChange={formik.handleChange}
+                                                w={'18rem'}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={3}>
+                                        {/* Remark */}
+                                        <FormControl id="gender">
+                                            <FormLabel>Gender</FormLabel>
+                                            <Input
+                                                id="gender"
+                                                name="gender"
+                                                placeholder={
+                                                    profileList?.gender
+                                                }
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                type="text"
+                                                value={formik.values.gender}
+                                                onChange={formik.handleChange}
+                                                w={'18rem'}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                    <Box m={3}>
+                                        <FormControl id="job">
+                                            <FormLabel>Job</FormLabel>
+                                            <Select
+                                                id="job"
+                                                name="job"
+                                                onChange={formik.handleChange}
+                                                value={formik.values.job}
+                                                placeholder={profileList?.job}
+                                                w={'18rem'}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            >
+                                                <option value={1}>
+                                                    student
+                                                </option>
+                                                <option value={2}>slash</option>
+                                                <option value={3}>
+                                                    designer
+                                                </option>
+                                                <option value={4}>
+                                                    programmer
+                                                </option>
+                                                <option value={5}>
+                                                    entrepreneur
+                                                </option>
+                                                <option value={6}>
+                                                    youtuber
+                                                </option>
+                                                <option value={7}>
+                                                    others
+                                                </option>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+                                </Flex>
+                                <Flex
+                                    w="100%"
+                                    wrap="wrap"
+                                    direction={{
+                                        base: 'row',
+                                        sm: 'column',
+                                        md: 'column',
+                                        lg: 'row',
+                                        xl: 'row',
+                                    }}
+                                    justify="center"
+                                    align="center"
+                                >
+                                    <Box m={3} w="90%">
+                                        {/* Remark */}
+                                        <FormControl
+                                            id="information"
+                                            className={styles.information}
+                                        >
+                                            <FormLabel>Information</FormLabel>
+                                            <Textarea
+                                                id="information"
+                                                name="information"
+                                                minH="8rem"
+                                                w="85%"
+                                                placeholder={
+                                                    profileList?.information
+                                                }
+                                                _placeholder={{
+                                                    color: 'gray.500',
+                                                }}
+                                                value={
+                                                    formik.values.information
+                                                }
+                                                onChange={formik.handleChange}
+                                                _focus={{
+                                                    borderColor: '#56C3E6',
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Box>
+                                </Flex>
+
+                                <Stack direction={['column', 'row']}>
+                                    <Button
+                                        bgImage={
+                                            'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                        }
+                                        type="submit"
+                                        className={styles.btn}
+                                    >
+                                        Update
+                                    </Button>
+                                </Stack>
+                                <Box
+                                    fontSize="sm"
+                                    color="#363636"
+                                    className={styles.timeBox}
+                                >
+                                    <Text>
+                                        Member since: {profileList?.created_at}
+                                    </Text>
+                                    <Text>
+                                        Last update: {profileList?.updated_at}
+                                    </Text>
+                                </Box>
+                            </form>
+                        </Stack>
+                    </Flex>
+                </VStack>
+                <Dock />
+            </Box>
         </div>
     )
 }

@@ -22,6 +22,8 @@ import {
     MenuList,
     useColorMode,
     Button,
+    LinkOverlay,
+    LinkBox,
 } from '@chakra-ui/react'
 import {
     FiTrendingUp,
@@ -33,10 +35,14 @@ import {
     FiUser,
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
-import { Link as ReactRouterLink, Outlet } from 'react-router-dom'
+import { Link as ReactRouterLink, Outlet, useNavigate } from 'react-router-dom'
 import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { useEffect, useState } from 'react'
+import { fetchSelfUserProfile } from '../../api/user'
+
+const { REACT_APP_API_SERVER } = process.env
 
 interface LinkItemProps {
     name: string
@@ -47,7 +53,7 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Dashboard', icon: FiTrendingUp, path: 'dashboard' },
     { name: 'Manage User', icon: FiUser, path: 'user' },
     { name: 'Manage Forum', icon: FiStar, path: 'forum' },
-    { name: 'Manage Destination', icon: FiCompass, path: 'destination' },
+    // { name: 'Manage Destination', icon: FiCompass, path: 'destination' },
 ]
 
 export default function ControlPanel() {
@@ -139,10 +145,10 @@ interface NavItemProps extends FlexProps {
 }
 const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
     return (
-        <Link
-            href={'control/' + path}
+        <ReactRouterLink
+            to={'control/' + path}
             style={{ textDecoration: 'none' }}
-            _focus={{ boxShadow: 'none' }}
+            // _focus={{ boxShadow: 'none' }}
         >
             <Flex
                 align="center"
@@ -169,7 +175,7 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
                 )}
                 {children}
             </Flex>
-        </Link>
+        </ReactRouterLink>
     )
 }
 
@@ -180,6 +186,24 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     const { colorMode, toggleColorMode } = useColorMode()
 
     const auth: AuthState = useSelector((state: any) => state.auth)
+
+    const navigate = useNavigate()
+    const [profilePic, setProfilePic] = useState<string>()
+
+    //update username from redux
+    function logOut() {
+        localStorage.removeItem('auth_token')
+        navigate('/welcome')
+    }
+
+    useEffect(() => {
+        fetchSelfUserProfile(auth.id as any as number).then((data: any) => {
+            const dataDetail = data.userDetail.rows[0]
+            const profile = dataDetail.profile
+            const profilePath = `${REACT_APP_API_SERVER}/profile/` + profile
+            setProfilePic(profilePath)
+        })
+    }, [])
 
     return (
         <Flex
@@ -228,7 +252,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <HStack>
                                 <Avatar
                                     size={'sm'}
-                                    src={auth.profile ? auth.profile : ''}
+                                    src={profilePic ? profilePic : ''}
                                 />
                                 <VStack
                                     display={{ base: 'none', md: 'flex' }}
@@ -259,12 +283,29 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                         >
                             <MenuItem>{auth.username}</MenuItem>
                             <MenuItem>
-                                <Link as={ReactRouterLink} to="/profile">
+                                <Link
+                                    as={ReactRouterLink}
+                                    to="/profile"
+                                    style={{
+                                        textDecoration: 'none',
+                                    }}
+                                >
                                     Edit Profile
                                 </Link>
                             </MenuItem>
                             <MenuDivider />
-                            <MenuItem>Logout</MenuItem>
+                            <MenuItem>
+                                <LinkBox>
+                                    <LinkOverlay
+                                        onClick={logOut}
+                                        style={{
+                                            textDecoration: 'none',
+                                        }}
+                                    >
+                                        Logout
+                                    </LinkOverlay>
+                                </LinkBox>
+                            </MenuItem>
                         </MenuList>
                     </Menu>
                 </Flex>

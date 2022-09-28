@@ -9,7 +9,6 @@ import {
     MenuList,
     MenuItem,
     MenuDivider,
-    useDisclosure,
     useColorModeValue,
     Stack,
     useColorMode,
@@ -52,9 +51,32 @@ export default function Nav() {
         })
     }, [])
 
+    var prevScrollpos = window.pageYOffset
+    window.onscroll = function () {
+        var currentScrollPos = window.pageYOffset
+        if (prevScrollpos > currentScrollPos) {
+            document.getElementById('navbar')!.style.top = '0'
+        } else {
+            document.getElementById('navbar')!.style.top = '-70px'
+        }
+        prevScrollpos = currentScrollPos
+    }
+
     return (
         <>
-            <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+            <Box
+                id="navbar"
+                px={4}
+                w={'100vw'}
+                position={'sticky'}
+                top="0"
+                zIndex={'1000'}
+                transition={'top 1s'}
+                bg={useColorModeValue('gray.100', 'gray.900')}
+                border={'1px'}
+                borderColor={useColorModeValue('gray.100', 'gray.900')}
+                boxShadow={'0px 0px 3px 0px #DDDDDD'}
+            >
                 <Flex
                     h={16}
                     alignItems={'center'}
@@ -68,7 +90,7 @@ export default function Nav() {
                     >
                         <Link href="/home" style={{ textDecoration: 'none' }}>
                             <Text
-                                fontSize="xl"
+                                fontSize="2xl"
                                 fontFamily="monospace"
                                 fontWeight="bold"
                             >
@@ -85,76 +107,85 @@ export default function Nav() {
                                     <SunIcon />
                                 )}
                             </Button>
-                            <Menu>
-                                <MenuButton
-                                    as={Button}
-                                    rounded={'full'}
-                                    variant={'link'}
-                                    cursor={'pointer'}
-                                    minW={0}
-                                >
-                                    <Icon as={HamburgerIcon} boxSize="1.5em" />
-                                </MenuButton>
-                                <MenuList>
-                                    <Box py={1} px={2}>
-                                        <HStack justifyContent={'space-around'}>
-                                            <Avatar
-                                                size={'md'}
-                                                name={auth.username}
-                                                src={profilePic}
-                                            />
-                                            <Text
-                                                fontSize={'lg'}
-                                                fontWeight={'semibold'}
-                                                textAlign={'center'}
+                            {auth.isAuthenticated ? (
+                                <Menu>
+                                    <MenuButton
+                                        as={Button}
+                                        rounded={'full'}
+                                        variant={'link'}
+                                        cursor={'pointer'}
+                                        minW={0}
+                                    >
+                                        <Icon
+                                            as={HamburgerIcon}
+                                            boxSize="1.5em"
+                                        />
+                                    </MenuButton>
+                                    <MenuList>
+                                        <Box py={1} px={2}>
+                                            <HStack
+                                                justifyContent={'space-around'}
                                             >
-                                                {auth.username}
-                                            </Text>
-                                        </HStack>
-                                    </Box>
-                                    <LinkBox>
-                                        <MenuItem>
-                                            <LinkOverlay
-                                                href="/editProfile"
-                                                style={{
-                                                    textDecoration: 'none',
-                                                }}
-                                            >
-                                                Edit Profile
-                                            </LinkOverlay>
-                                        </MenuItem>
-                                    </LinkBox>
-
-                                    {auth.isAdmin ? (
+                                                <Avatar
+                                                    size={'md'}
+                                                    name={auth.username}
+                                                    src={profilePic}
+                                                />
+                                                <Text
+                                                    fontSize={'lg'}
+                                                    fontWeight={'semibold'}
+                                                    textAlign={'center'}
+                                                >
+                                                    {auth.username}
+                                                </Text>
+                                            </HStack>
+                                        </Box>
                                         <LinkBox>
                                             <MenuItem>
-                                                <NavLink
-                                                    className="controlPanel"
-                                                    to={'/control/'}
+                                                <LinkOverlay
+                                                    href="/editProfile"
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                    }}
                                                 >
-                                                    Control Panel
-                                                </NavLink>
+                                                    Edit Profile
+                                                </LinkOverlay>
                                             </MenuItem>
                                         </LinkBox>
-                                    ) : (
-                                        <></>
-                                    )}
 
-                                    <MenuDivider />
-                                    <LinkBox>
-                                        <MenuItem>
-                                            <LinkOverlay
-                                                onClick={logOut}
-                                                style={{
-                                                    textDecoration: 'none',
-                                                }}
-                                            >
-                                                Logout
-                                            </LinkOverlay>
-                                        </MenuItem>
-                                    </LinkBox>
-                                </MenuList>
-                            </Menu>
+                                        {auth.isAdmin ? (
+                                            <LinkBox>
+                                                <MenuItem>
+                                                    <NavLink
+                                                        className="controlPanel"
+                                                        to={'/control/'}
+                                                    >
+                                                        Control Panel
+                                                    </NavLink>
+                                                </MenuItem>
+                                            </LinkBox>
+                                        ) : (
+                                            <></>
+                                        )}
+
+                                        <MenuDivider />
+                                        <LinkBox>
+                                            <MenuItem>
+                                                <LinkOverlay
+                                                    onClick={logOut}
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                    }}
+                                                >
+                                                    Logout
+                                                </LinkOverlay>
+                                            </MenuItem>
+                                        </LinkBox>
+                                    </MenuList>
+                                </Menu>
+                            ) : (
+                                <></>
+                            )}
                         </Stack>
                     </Flex>
                 </Flex>

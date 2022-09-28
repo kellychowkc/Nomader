@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react'
+import React, { useEffect, useState, ReactNode, useRef } from 'react'
 
 import {
     Box,
@@ -40,7 +40,7 @@ import { RootState, RootThunkDispatch } from '../../../redux/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsersList } from '../../../redux/manageUser/manageUserThunk'
 import {
-    getUserFriends,
+    getUserFriendsWithInfo,
     getUserProfile,
     updateUserPermission,
     UserProfile,
@@ -134,12 +134,20 @@ export default function ManageUser() {
     const auth: AuthState = useSelector((state: any) => state.auth)
     const dispatch = useDispatch<RootThunkDispatch>()
 
+    const reduxUserListData = useSelector(
+        (state: RootState) => state.manageUser
+    )
+    const [userList, setUserList] = useState<any>([])
+
     //Get all users list
     useEffect(() => {
         const result = dispatch(getAllUsersList()).then((data) => {
-            // console.log(data)
             if (data.success) {
                 console.log('<getAllUserList> Dispatch Success')
+                console.log('<getAllUserList> Fetch Data = ')
+                console.log(data.userList)
+                console.log('<getAllUserList> setUserList')
+                setUserList(data.userList)
             } else {
                 console.log('<getAllUserList> Dispatch Fail')
             }
@@ -159,41 +167,6 @@ export default function ManageUser() {
         useState<Permission['value']>(false)
     const [permission_upload, setPermission_upload] =
         useState<Permission['value']>(false)
-
-    // view selected user profile & permission setting
-    useEffect(() => {
-        if (viewUser) {
-            const result = getUserProfile(viewUser).then((data) => {
-                console.log('View user data = ', data)
-                if (data.success) {
-                    console.log('<getUserProfile> Fetch Success')
-                    setUserProfile(data.userProfile)
-                    setPermission_post(data.userProfile.isAdmin)
-                    setPermission_visible(data.userProfile.isAdmin)
-                    setPermission_matching(data.userProfile.isAdmin)
-                    setPermission_comment(data.userProfile.isAdmin)
-                    setPermission_upload(data.userProfile.isAdmin)
-                } else {
-                    console.log('<getUserProfile> Fetch Fail')
-                }
-            })
-
-            // permissions.map((permission: Permission) => {
-            //     // `setPermission_${permission.name}(${permission.value})`
-            //     if (permission.name === 'visible') {
-            //         setPermission_visible(permission.value)
-            //     } else if (permission.name === 'matching') {
-            //         setPermission_matching(permission.value)
-            //     } else if (permission.name === 'post') {
-            //         setPermission_post(permission.value)
-            //     } else if (permission.name === 'comment') {
-            //         setPermission_comment(permission.value)
-            //     } else if (permission.name === 'upload') {
-            //         setPermission_upload(permission.value)
-            //     }
-            // })
-        }
-    }, [viewUser])
 
     const permissions: Permission[] = [
         {
@@ -231,55 +204,77 @@ export default function ManageUser() {
         }
     }
 
-    // user permission
+    // view selected user profile & permission setting
     useEffect(() => {
-        console.log('Permission had been changed!!!')
-
-        console.log(
-            permission_visible,
-            permission_matching,
-            permission_post,
-            permission_comment,
-            permission_upload
-        )
-
-        const permissionUpdates = [
-            permission_visible,
-            permission_matching,
-            permission_post,
-            permission_comment,
-            permission_upload,
-        ]
         if (viewUser) {
-            const result = updateUserPermission(
-                viewUser,
-                permissionUpdates
-            ).then((data) => {
-                // console.log('Set user permissions = ', data)
-
+            const result = getUserProfile(viewUser).then((data) => {
+                console.log('View user data = ', data)
                 if (data.success) {
-                    console.log('<updateUserPermission> Fetch Success')
-                    console.log(data.result)
+                    console.log('<getUserProfile> Fetch Success')
+                    setUserProfile(data.userProfile)
+                    setPermission_visible(data.userProfile?.isVisible)
+                    setPermission_matching(data.userProfile?.allowMatching)
+                    setPermission_post(data.userProfile?.allowPost)
+                    setPermission_comment(data.userProfile?.allowComment)
+                    setPermission_upload(data.userProfile?.allowUpload)
+
+                    const permissionUpdates = [
+                        data.userProfile?.isVisible,
+                        data.userProfile?.allowMatching,
+                        data.userProfile?.allowPost,
+                        data.userProfile?.allowComment,
+                        data.userProfile?.allowUpload,
+                    ]
+
+                    const result = updateUserPermission(
+                        viewUser,
+                        permissionUpdates
+                    ).then((data) => {
+                        // console.log('Set user permissions = ', data)
+
+                        if (data.success) {
+                            console.log('<updateUserPermission> Fetch Success')
+                            console.log(data.result)
+                        } else {
+                            console.log('<updateUserPermission> Fetch Fail')
+                        }
+                    })
+                    console.log('Permission had been changed!!!')
+                    console.log(
+                        permission_visible,
+                        permission_matching,
+                        permission_post,
+                        permission_comment,
+                        permission_upload
+                    )
                 } else {
-                    console.log('<updateUserPermission> Fetch Fail')
+                    console.log('<getUserProfile> Fetch Fail')
                 }
             })
         }
-    }, [
-        permission_visible,
-        permission_matching,
-        permission_post,
-        permission_comment,
-        permission_upload,
-    ])
+    }, [viewUser])
 
-    const reduxUserListData = useSelector(
-        (state: RootState) => state.manageUser
-    )
-
-    const [searchUser, setSearchUser] = React.useState('')
+    const [searchUser, setSearchUser] = useState('')
     const handleChange_searchUser = (event: any) =>
         setSearchUser(event.target.value)
+    const searchRef = useRef(searchUser)
+
+    useEffect(() => {
+        if (searchUser !== searchRef.current) {
+            console.log('<Search User> searchUser = ', searchUser)
+            const result = reduxUserListData.userList!.filter(
+                (item) =>
+                    item.first_name.match(searchUser) ||
+                    item.last_name.match(searchUser)
+            )
+            const userListData = result.map((item: any) => ({
+                ...item,
+            }))
+            console.log('<Search User> Result = ', result)
+            console.log('<Search User> userListData = ', userListData)
+            setUserList(userListData)
+        }
+    }, [searchUser])
 
     // Modal popup for showing user profile detail and friends
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -289,20 +284,26 @@ export default function ManageUser() {
         undefined
     )
     const [userFriends, setUserFriends] = useState<Array<any>>([])
+    const [friendsCount, setFriendsCount] = useState<any>('')
 
     useEffect(() => {
         if (viewFriendsById) {
-            const result = getUserFriends(viewFriendsById).then((data) => {
+            const result = getUserFriendsWithInfo(
+                viewFriendsById as number
+            ).then((data) => {
                 console.log('View user friends = ', data)
                 if (data.success) {
-                    console.log('<getUserFriends> Fetch Success')
+                    console.log('<getUserFriendsWithInfo> Fetch Success')
                 } else {
-                    console.log('<getUserFriends> Fetch Fail')
+                    console.log('<getUserFriendsWithInfo> Fetch Fail')
                 }
                 setUserFriends(data.userFriends)
+                setFriendsCount(data.userFriends.length)
             })
         }
     }, [viewFriendsById])
+
+    console.log('<!!! Outside > userList = ', userList)
 
     return (
         <Box maxW="7xl" mx={'auto'} px={{ base: 2, sm: 12, md: 17 }}>
@@ -326,10 +327,10 @@ export default function ManageUser() {
                     <GridItem w="100%" h="50%" maxH="50%">
                         <Stack
                             spacing={4}
-                            w={'full'}
-                            minW={'md'}
+                            w={{ base: 'xs', sm: 'full' }}
+                            minW={{ base: 'xs', md: 'md', xl: 'lg' }}
                             maxW={'xl'}
-                            h="auto"
+                            h="max"
                             bg={useColorModeValue('white', 'gray.700')}
                             rounded={'xl'}
                             boxShadow={'lg'}
@@ -438,18 +439,19 @@ export default function ManageUser() {
                                     </Box>
 
                                     <Stack
+                                        h="max-content"
+                                        my={3}
                                         className="buttonGroup"
                                         direction={'column'}
                                         justifyContent="space-around"
                                         alignItems="center"
                                         alignContent={'space-around'}
-                                        h="max-content"
                                     >
                                         <Stack
                                             my="3px"
                                             p="3px"
-                                            spacing={4}
-                                            direction={['column', 'row']}
+                                            spacing={3}
+                                            direction={['row']}
                                         >
                                             <Button
                                                 id="button_UserProfileDetail"
@@ -504,6 +506,13 @@ export default function ManageUser() {
                                                             isOpen,
                                                             onClose,
                                                         }}
+                                                        setViewUser={(
+                                                            username: string
+                                                        ) => {
+                                                            setViewUser(
+                                                                username
+                                                            )
+                                                        }}
                                                     />
                                                 ) : (
                                                     <ModalUserFriends
@@ -518,6 +527,13 @@ export default function ManageUser() {
                                                             isOpen,
                                                             onClose,
                                                         }}
+                                                        setViewUser={(
+                                                            username: string
+                                                        ) => {
+                                                            setViewUser(
+                                                                username
+                                                            )
+                                                        }}
                                                     />
                                                 )}
                                             </Modal>
@@ -525,8 +541,8 @@ export default function ManageUser() {
                                         <Stack
                                             my="3px"
                                             p="3px"
-                                            spacing={4}
-                                            direction={['column', 'row']}
+                                            spacing={3}
+                                            direction={'row'}
                                         >
                                             <Button
                                                 bg={'orange.400'}
@@ -596,8 +612,8 @@ export default function ManageUser() {
                                             <Box bg="teal" w="66%">
                                                 <Image
                                                     src={
-                                                        auth.profile
-                                                            ? auth.profile
+                                                        userProfile.profile
+                                                            ? require(`../../../assets/${userProfile.profile}`)
                                                             : 'https://avatars.dicebear.com/api/male/username.svg'
                                                     }
                                                 />
@@ -613,7 +629,7 @@ export default function ManageUser() {
                                                 </VStack>
                                             </Box>
                                         </HStack>
-                                        <VStack
+                                        {/* <VStack
                                             className="profileComplains"
                                             w="100%"
                                             spacing={0}
@@ -640,7 +656,7 @@ export default function ManageUser() {
                                                 <Box>Submitted: {'#'}</Box>
                                                 <Box>Received: {'#'}</Box>
                                             </HStack>
-                                        </VStack>
+                                        </VStack> */}
                                         <VStack
                                             className="profilePermissionSetting"
                                             w="100%"
@@ -679,13 +695,13 @@ export default function ManageUser() {
                     <GridItem w="100%" h="50%" maxH="50%">
                         <Stack
                             spacing={4}
-                            w={'full'}
-                            minW={'md'}
+                            w={{ base: 'xs', sm: 'full' }}
+                            minW={{ base: 'xs', md: 'md', xl: 'lg' }}
                             maxW={'xl'}
                             bg={useColorModeValue('white', 'gray.700')}
                             rounded={'xl'}
                             boxShadow={'lg'}
-                            p={6}
+                            p={{ base: '4', sm: '6' }}
                         >
                             <Flex
                                 w="100%"
@@ -709,11 +725,7 @@ export default function ManageUser() {
                                                 _placeholder={{
                                                     color: 'gray.500',
                                                 }}
-                                                border="0"
-                                                _focus={{
-                                                    outline: 'none',
-                                                    border: '0px',
-                                                }}
+                                                focusBorderColor={'none'}
                                                 type="text"
                                                 onChange={
                                                     handleChange_searchUser
@@ -725,21 +737,20 @@ export default function ManageUser() {
                                     </HStack>
                                 </Box>
                                 <Box
-                                    w="90%"
-                                    m={3}
+                                    w={{ base: '100%', sm: '90%' }}
+                                    m={{ base: '0', sm: '2' }}
                                     bg={useColorModeValue('white', 'gray.400')}
                                     rounded={'15px'}
                                     scrollBehavior="smooth"
                                     overflowY="scroll"
                                     overflowX={'hidden'}
                                     maxH="550px"
-                                    h={'400px'}
+                                    h={'max'}
+                                    justifyContent={'center'}
                                 >
                                     <UsersList
-                                        list={
-                                            reduxUserListData.userList as IUser[]
-                                        }
-                                        viewUser={(username: string) => {
+                                        list={userList as IUser[]}
+                                        setViewUser={(username: string) => {
                                             setViewUser(username)
                                         }}
                                     />

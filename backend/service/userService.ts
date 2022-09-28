@@ -173,7 +173,7 @@ export class UserService {
         let user_id = body.id;
         delete body["id"];
         Object.keys(body).forEach((key) => {
-            if (body[key] === "" || body[key] === undefined) {
+            if (body[key] === "" || body[key] === undefined || body[key] === "undefined") {
                 delete body[key];
             }
         });
