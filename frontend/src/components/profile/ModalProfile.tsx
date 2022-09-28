@@ -24,10 +24,9 @@ import {
     VStack,
 } from '@chakra-ui/react'
 import { UserProfile } from '../../api/user'
-import { Post } from '../layoutForum/Forum'
 
 type Props = {
-    userPosts: Post[]
+    userProfile: UserProfile
     userFriends: IUser[]
     disclosure: any
 }
@@ -56,69 +55,137 @@ const demoUser: UserProfile = {
 export function ModalPosts(props: Props) {
     return (
         <ModalContent>
-            <ModalHeader>All Posts By User</ModalHeader>
+            <ModalHeader>User Profile Detail</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                <Table
-                    variant="striped"
-                    colorScheme="teal"
-                    bg={useColorModeValue('white', 'gray.600')}
-                    w="100%"
-                >
-                    <Thead
-                        position="sticky"
-                        top={0}
-                        bg={useColorModeValue('white', 'gray.600')}
-                        zIndex={10}
-                    >
-                        <Tr>
-                            <Th pl={3} fontSize={'md'} fontWeight={'bold'}>
-                                Created at
-                            </Th>
-                            <Th fontSize={'md'} fontWeight={'bold'}>
-                                Title
-                            </Th>
-                        </Tr>
-                    </Thead>
+                <Grid templateColumns="repeat(2, 1fr)">
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="userName">
+                                <FormLabel>User Name</FormLabel>
+                                <Input
+                                    placeholder="Username"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={props.userProfile.username}
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="first_name">
+                                <FormLabel>First Name</FormLabel>
+                                <Input
+                                    placeholder="First Name"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={props.userProfile.first_name}
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="last_name">
+                                <FormLabel>Last Name</FormLabel>
+                                <Input
+                                    placeholder="Last Name"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={props.userProfile.last_name}
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="birthday">
+                                <FormLabel>Birthday</FormLabel>
+                                <Input
+                                    placeholder="Birthday"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={props.userProfile.birthday}
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="gender">
+                                <FormLabel>Gender</FormLabel>
+                                <Input
+                                    placeholder="M/F/T..."
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={props.userProfile.gender}
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="job">
+                                <FormLabel>Occupation</FormLabel>
+                                <Input
+                                    placeholder="Job Title"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={props.userProfile.job}
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="emergency_contact_person">
+                                <FormLabel>Emergency Contact Person</FormLabel>
+                                <Input
+                                    placeholder="Person Name"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={
+                                        props.userProfile
+                                            .emergency_contact_person
+                                    }
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
 
-                    <Tbody>
-                        {props.userPosts.map((post: Post, idx: number) => (
-                            <Tr key={idx}>
-                                <Td py="5px">
-                                    <HStack>
-                                        <VStack align="left">
-                                            <Text className="created_at">
-                                                {post?.created_at?.split(
-                                                    'T',
-                                                    1
-                                                )}
-                                            </Text>
-                                        </VStack>
-                                    </HStack>
-                                </Td>
-                                <Td py="5px">
-                                    <HStack>
-                                        <VStack align="left">
-                                            <Text className="title">
-                                                {post?.title}
-                                            </Text>
-                                        </VStack>
-                                    </HStack>
-                                    {/* <Button
-                                        m="1"
-                                        size="md"
-                                        onClick={() => {
-                                            props.setViewUser(user.username)
-                                            props.disclosure.onClose()
-                                        }}
-                                    >
-                                        View
-                                    </Button> */}
-                                </Td>
-                            </Tr>
-                        ))}
-                    </Tbody>
-                </Table>
+                    <GridItem>
+                        <Box m={1} h="min-content" w="90%">
+                            <FormControl id="emergency_contact_number">
+                                <FormLabel>Emergency Contact Number</FormLabel>
+                                <Input
+                                    placeholder="Contact Number"
+                                    _placeholder={{
+                                        color: 'gray.500',
+                                    }}
+                                    type="text"
+                                    value={
+                                        props.userProfile.emergency_contact_num
+                                    }
+                                />
+                            </FormControl>
+                        </Box>
+                    </GridItem>
+                </Grid>
             </ModalBody>
 
             <ModalFooter>
@@ -129,6 +196,7 @@ export function ModalPosts(props: Props) {
                 >
                     Close
                 </Button>
+                <Button colorScheme="yellow">Update</Button>
             </ModalFooter>
         </ModalContent>
     )

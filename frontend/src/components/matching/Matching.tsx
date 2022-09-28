@@ -172,18 +172,16 @@ function Matching() {
                 </div>
                 <div className={styles.profileInfo}>
                     <div className={styles.infoBox}>
+                        <BsFillPersonFill className={styles.icon} />
                         <h1 className={styles.title}>{profile?.username}</h1>
                     </div>
                     <div className={styles.infoBox}>
-                        <h2 className={styles.subtitle}>
-                            From:{profile?.country}
-                        </h2>
+                        <BsHouseDoorFill className={styles.icon} />
+                        <h2 className={styles.subtitle}> {profile?.country}</h2>
                     </div>
                     <div className={styles.infoBox}>
-                        <h2 className={styles.subtitle}>
-                            Job:
-                            {profile?.jobTitle}
-                        </h2>
+                        <BsFillPersonBadgeFill className={styles.icon} />
+                        <h2 className={styles.subtitle}>{profile?.jobTitle}</h2>
                     </div>
                     <hr></hr>
 

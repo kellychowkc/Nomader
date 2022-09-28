@@ -105,7 +105,7 @@ export default function ChatHome() {
                             Chat
                         </Text>
                     </Box>
-                    {/* <Box className={styles.btnBox}>
+                    <Box className={styles.btnBox}>
                         <Button
                             className={styles.addbtn}
                             bgImage={
@@ -117,7 +117,7 @@ export default function ChatHome() {
                         >
                             <Icon as={AddIcon} w={6} h={6} />
                         </Button>
-                    </Box> */}
+                    </Box>
                 </HStack>
 
                 <Box
