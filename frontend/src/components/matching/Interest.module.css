@@ -53,6 +53,9 @@
 .interestBox {
     height: 30rem;
     overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn {
