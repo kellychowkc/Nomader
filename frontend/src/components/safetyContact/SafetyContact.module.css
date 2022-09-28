@@ -44,7 +44,8 @@
     size: 15rem;
     /*  */
     position: absolute;
-    left: 0px
+    left: 0px;
+    z-index: 1000;
 }
 
 .box {

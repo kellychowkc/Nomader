@@ -65,10 +65,6 @@ function Attraction() {
         post.image = newLink
     })
 
-    function goBack() {
-        navigate('/home')
-    }
-
     const [searchPost, setSearchPost] = useState('')
     const handleChange_searchPost = (event: any) =>
         setSearchPost(event.target.value)
@@ -143,6 +139,10 @@ function Attraction() {
                 </Box>
             </Box>
         )
+    }
+
+    function goBack() {
+        navigate('/home')
     }
 
     return (
