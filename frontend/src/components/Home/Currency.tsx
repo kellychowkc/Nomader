@@ -30,6 +30,7 @@ function Currency() {
             setCurrencyList(data as any)
         })
 
+        console.log(currencyList)
         if (selectedOption) {
             console.log('check', selectedOption2)
             currencyList?.forEach((cur) => {

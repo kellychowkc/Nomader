@@ -36,6 +36,7 @@ import { useSelector } from 'react-redux'
 import { AuthState } from '../../redux/state'
 import InterestCard, { InterestCardData } from './interestCard'
 import { fetchSelfUserProfile } from '../../api/user'
+import Location from './GetLocation'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -246,6 +247,7 @@ const Home = () => {
                         </Flex>
                     </HStack>
                 </Flex> */}
+                <Location />
                 <Flex
                     className="Category"
                     w="80vw"
