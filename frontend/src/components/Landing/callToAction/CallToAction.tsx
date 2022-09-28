@@ -12,7 +12,6 @@ import {
     createIcon,
     IconProps,
     useColorModeValue,
-    AspectRatio,
 } from '@chakra-ui/react'
 import { MdLaunch } from 'react-icons/md'
 import { useNavigate } from 'react-router'
@@ -41,17 +40,16 @@ export default function CallToAction() {
                         <Text
                             as={'span'}
                             position={'relative'}
-                            color={'#00B0B0'}
-                            // _after={{
-                            //     content: "''",
-                            //     width: 'full',
-                            //     height: '100%',
-                            //     position: 'absolute',
-                            //     bottom: 1,
-                            //     left: 0,
-                            //     bg: '#0ABAB5',
-                            //     zIndex: -1,
-                            // }}
+                            _after={{
+                                content: "''",
+                                width: 'full',
+                                height: '30%',
+                                position: 'absolute',
+                                bottom: 1,
+                                left: 0,
+                                bg: '#0ABAB5',
+                                zIndex: -1,
+                            }}
                         >
                             Nomad spirit,
                         </Text>
@@ -65,7 +63,7 @@ export default function CallToAction() {
                         freedom, culture, art, sport...
                     </Text>
                     <Stack
-                        spacing={{ base: 1, sm: 1 }}
+                        spacing={{ base: 4, sm: 6 }}
                         direction={{ base: 'column', sm: 'row' }}
                     >
                         <Button
@@ -97,7 +95,7 @@ export default function CallToAction() {
                         w={'150%'}
                         h={'150%'}
                         position={'absolute'}
-                        top={'-10%'}
+                        top={'-20%'}
                         left={0}
                         zIndex={-1}
                         color={useColorModeValue('teal.50', 'teal.300')}
@@ -110,6 +108,18 @@ export default function CallToAction() {
                         width={'full'}
                         overflow={'hidden'}
                     >
+                        <IconButton
+                            aria-label={'Play Button'}
+                            variant={'ghost'}
+                            _hover={{ bg: 'transparent' }}
+                            icon={<PlayIcon w={12} h={12} />}
+                            size={'lg'}
+                            color={'white'}
+                            position={'absolute'}
+                            left={'50%'}
+                            top={'50%'}
+                            transform={'translateX(-50%) translateY(-50%)'}
+                        />
                         <Image
                             alt={'Hero Image'}
                             fit={'cover'}

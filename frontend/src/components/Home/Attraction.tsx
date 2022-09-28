@@ -86,7 +86,6 @@ function Attraction() {
         }
     }, [searchPost])
 
-    // Function written to use useColorModeValue, but will cause error getting pictures
     function PostCards(post: any) {
         return (
             <Box

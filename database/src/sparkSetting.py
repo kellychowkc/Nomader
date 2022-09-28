@@ -24,4 +24,3 @@ def setup_spark(config : Config) :
             .config("spark.hadoop.fs.s3a.path.style.access", "false")\
             .getOrCreate()
     return spark
-
