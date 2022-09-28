@@ -3,7 +3,7 @@ import { BrowseCount, Post, User } from "../utils/models";
 import { hashPassword } from "../utils/hash";
 
 export class UserService {
-    constructor(private knex: Knex) { }
+    constructor(private knex: Knex) {}
 
     async getUserByUserName(username: string): Promise<User> {
         const user = await this.knex
@@ -87,6 +87,22 @@ export class UserService {
             .into("users_interests")
             .returning("id");
         return createdInterest;
+    }
+
+    async editInterest(userId: number, interestIdList: number[]) {
+        console.log(userId);
+        await this.knex("users_interests").where("user_id", userId).del();
+
+        const insertInterest = interestIdList.map((interestId) => ({
+            user_id: userId,
+            interest_id: interestId,
+        }));
+
+        const updatedInterest = await this.knex
+            .insert(insertInterest)
+            .into("users_interests")
+            .returning("id");
+        return updatedInterest;
     }
 
     async getInterestByUserId(userId: number): Promise<[number]> {
@@ -191,13 +207,17 @@ export class UserService {
         return updated;
     }
 
-    // Incompleted but able to return friends with mockup data 
+    // Incompleted but able to return friends with mockup data
     async getUserFriendsWithInfo(user_id: number) {
         const userFriends = await this.knex("users_relationship")
             .innerJoin("users", "users.id", "users_relationship.user2_id")
-            .select("users.id", "users.username", "users.first_name", "users.last_name")
-            .where("users_relationship.user1_id", user_id)
+            .select(
+                "users.id",
+                "users.username",
+                "users.first_name",
+                "users.last_name"
+            )
+            .where("users_relationship.user1_id", user_id);
         return userFriends;
     }
-
 }

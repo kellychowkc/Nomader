@@ -28,6 +28,7 @@ import ChatHome from './components/newChat/chatHome'
 import ChatRoom from './components/newChat/chatroom/chatRoom'
 import Currency from './components/Home/Currency'
 import SafetyContact from './components/safetyContact/SafetyContact'
+import EditInterest from './components/profile/EditInterest'
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -113,6 +114,7 @@ function App() {
                         <Route path="friends" element={<Friends />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="editProfile" element={<EditProfile />} />
+                        <Route path="editInterest" element={<EditInterest />} />
 
                         {/* // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
 

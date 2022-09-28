@@ -1,19 +1,19 @@
 {
   "short_name": "Nomader App",
-  "name": "Nomader App PWA",
+  "name": "Nomader",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "512x512",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "icon.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "1948x1780"
     },
     {
-      "src": "logo512.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }

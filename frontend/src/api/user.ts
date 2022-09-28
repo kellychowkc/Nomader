@@ -144,6 +144,20 @@ export async function addUserInterest(
     });
 }
 
+export async function editUserInterest(
+    interestList: Array<InterestItem>,
+    user_id: number
+) {
+    console.log(interestList);
+    return fetchJson(`${REACT_APP_API_SERVER}/user/editInterest`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ interestList, user_id }),
+    });
+}
+
 export async function newPost(postForm: PostForm) {
     const formData = new FormData();
     formData.append("user_id", postForm.user_id);

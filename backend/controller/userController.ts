@@ -7,7 +7,7 @@ import jwt from "../utils/jwt";
 import { Interest, Post, User } from "../utils/models";
 
 export class UserController {
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService) {}
 
     logIn = async (req: Request, res: Response) => {
         try {
@@ -165,6 +165,28 @@ export class UserController {
         }
     };
 
+    editInterest = async (req: Request, res: Response) => {
+        try {
+            const user_id: number = req.body.user_id;
+            let interestIdList: number[] = [];
+            req.body.interestList.forEach((element: any) => {
+                interestIdList.push(element.id);
+            });
+            await this.userService.editInterest(user_id, interestIdList);
+            res.status(201).json({
+                success: true,
+                message: "Updated Interest List",
+            });
+            console.log(req.body);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
+
     newPost = async (req: Request, res: Response) => {
         try {
             let postData = req.form?.fields;
@@ -272,10 +294,8 @@ export class UserController {
         }
     };
 
-
     getUserFriends = async (req: Request, res: Response) => {
         try {
-
             const user_id = req.body.user_id;
             if (!user_id) {
                 res.status(401).json({
@@ -287,7 +307,7 @@ export class UserController {
 
             const result = await this.userService.getUserFriends(user_id);
 
-            console.log('<Controller - User Freinds>', result)
+            console.log("<Controller - User Freinds>", result);
 
             res.status(201).json({
                 success: true,
@@ -314,7 +334,6 @@ export class UserController {
             await this.userService.update(userData as any as User);
 
             res.status(201).json({ success: true, message: "Updated" });
-
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
@@ -324,10 +343,8 @@ export class UserController {
         }
     };
 
-
     updateUserPermission = async (req: Request, res: Response) => {
         try {
-
             const username = req.body.username;
             const permissions = req.body.permissions;
             if (!username) {
@@ -338,9 +355,12 @@ export class UserController {
                 return;
             }
 
-            const result = await this.userService.updateUserPermission(username, permissions);
+            const result = await this.userService.updateUserPermission(
+                username,
+                permissions
+            );
 
-            console.log('<Controller - Update User Permission>', result)
+            console.log("<Controller - Update User Permission>", result);
 
             res.status(201).json({
                 success: true,
@@ -358,7 +378,6 @@ export class UserController {
 
     getUserFriendsWithInfo = async (req: Request, res: Response) => {
         try {
-
             const user_id = req.body.user_id;
             if (!user_id) {
                 res.status(401).json({
@@ -368,9 +387,11 @@ export class UserController {
                 return;
             }
 
-            const result = await this.userService.getUserFriendsWithInfo(user_id);
+            const result = await this.userService.getUserFriendsWithInfo(
+                user_id
+            );
 
-            console.log('<Controller - getUserFriendsWithInfo>', result)
+            console.log("<Controller - getUserFriendsWithInfo>", result);
 
             res.status(201).json({
                 success: true,
@@ -385,7 +406,6 @@ export class UserController {
             });
         }
     };
-
 }
 
 declare global {
