@@ -12,22 +12,18 @@ import {
     createIcon,
     IconProps,
     useColorModeValue,
+    AspectRatio,
 } from '@chakra-ui/react'
 import { MdLaunch } from 'react-icons/md'
-import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 
 export default function CallToAction() {
-    const navigate = useNavigate()
-
-    function welcome() {
-        navigate('/welcome')
-    }
     return (
         <Container w="90vw" centerContent>
             <Stack
                 w="85vw"
                 align={'center'}
-                spacing={{ base: 8, md: 1 }}
+                spacing={{ base: 1, md: 1 }}
                 py={{ base: 19, md: 25 }}
                 direction={{ base: 'column', md: 'row' }}
             >
@@ -40,16 +36,17 @@ export default function CallToAction() {
                         <Text
                             as={'span'}
                             position={'relative'}
-                            _after={{
-                                content: "''",
-                                width: 'full',
-                                height: '30%',
-                                position: 'absolute',
-                                bottom: 1,
-                                left: 0,
-                                bg: '#0ABAB5',
-                                zIndex: -1,
-                            }}
+                            color={'#00B0B0'}
+                            // _after={{
+                            //     content: "''",
+                            //     width: 'full',
+                            //     height: '100%',
+                            //     position: 'absolute',
+                            //     bottom: 1,
+                            //     left: 0,
+                            //     bg: '#0ABAB5',
+                            //     zIndex: -1,
+                            // }}
                         >
                             Nomad spirit,
                         </Text>
@@ -63,7 +60,7 @@ export default function CallToAction() {
                         freedom, culture, art, sport...
                     </Text>
                     <Stack
-                        spacing={{ base: 4, sm: 6 }}
+                        spacing={{ base: 1, sm: 1 }}
                         direction={{ base: 'column', sm: 'row' }}
                     >
                         <Button
@@ -78,9 +75,8 @@ export default function CallToAction() {
                                 'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                             }
                             color={'#FFFFFF'}
-                            onClick={welcome}
                         >
-                            Get Start
+                            <Link to="welcome">Get Start</Link>
                         </Button>
                     </Stack>
                 </Stack>
@@ -95,42 +91,11 @@ export default function CallToAction() {
                         w={'150%'}
                         h={'150%'}
                         position={'absolute'}
-                        top={'-20%'}
+                        top={'-10%'}
                         left={0}
                         zIndex={-1}
                         color={useColorModeValue('teal.50', 'teal.300')}
                     />
-                    <Box
-                        position={'relative'}
-                        height={'300px'}
-                        rounded={'2xl'}
-                        boxShadow={'2xl'}
-                        width={'full'}
-                        overflow={'hidden'}
-                    >
-                        <IconButton
-                            aria-label={'Play Button'}
-                            variant={'ghost'}
-                            _hover={{ bg: 'transparent' }}
-                            icon={<PlayIcon w={12} h={12} />}
-                            size={'lg'}
-                            color={'white'}
-                            position={'absolute'}
-                            left={'50%'}
-                            top={'50%'}
-                            transform={'translateX(-50%) translateY(-50%)'}
-                        />
-                        <Image
-                            alt={'Hero Image'}
-                            fit={'cover'}
-                            align={'center'}
-                            w={'100%'}
-                            h={'100%'}
-                            src={
-                                'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80'
-                            }
-                        />
-                    </Box>
                 </Flex>
             </Stack>
         </Container>
