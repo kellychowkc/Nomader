@@ -67,6 +67,11 @@ export class UserService {
                     job_id,
                     country_id,
                     isAdmin: false,
+                    isVisible: true,
+                    allow_post: true,
+                    allow_comment: true,
+                    allow_upload: true,
+                    allow_match: true,
                 })
                 .into("users")
                 .returning("id");
@@ -189,7 +194,11 @@ export class UserService {
         let user_id = body.id;
         delete body["id"];
         Object.keys(body).forEach((key) => {
-            if (body[key] === "" || body[key] === undefined || body[key] === "undefined") {
+            if (
+                body[key] === "" ||
+                body[key] === undefined ||
+                body[key] === "undefined"
+            ) {
                 delete body[key];
             }
         });
