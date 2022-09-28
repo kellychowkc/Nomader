@@ -23,8 +23,8 @@ function CurrencyList() {
     }, [])
     return (
         <>
-            {currencyList.map((item) => (
-                <option key={item.code} value={item.code}>
+            {currencyList.map((item, idx) => (
+                <option key={idx} value={item.code}>
                     {item.code}
                 </option>
             ))}

@@ -144,12 +144,27 @@ export async function addUserInterest(
     });
 }
 
+export async function editUserInterest(
+    interestList: Array<InterestItem>,
+    user_id: number
+) {
+    console.log(interestList);
+    return fetchJson(`${REACT_APP_API_SERVER}/user/editInterest`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ interestList, user_id }),
+    });
+}
+
 export async function newPost(postForm: PostForm) {
     const formData = new FormData();
     formData.append("user_id", postForm.user_id);
     formData.append("title", postForm.title);
     formData.append("content", postForm.content);
     formData.append("image", postForm.image);
+    console.log("fetch", formData.get("image"));
 
     return fetchJson(`${REACT_APP_API_SERVER}/user/post`, {
         method: "POST",
@@ -256,15 +271,27 @@ export async function fetchRate(code: string) {
     });
 }
 
-
-
-// added by dannys
-export async function getUserFriendsWithInfo(user_id: number) {
-    return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriendsWithInfo`, {
+export async function fetchCountry(id: number) {
+    console.log("fetch", id);
+    return fetchJson(`${REACT_APP_API_SERVER}/data/emergency`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
         },
-        body: JSON.stringify({ user_id: user_id }),
+        body: JSON.stringify({ id: id }),
     });
+}
+
+// added by dannys
+export async function getUserFriendsWithInfo(user_id: number) {
+    return fetchJson<any>(
+        `${REACT_APP_API_SERVER}/user/getUserFriendsWithInfo`,
+        {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({ user_id: user_id }),
+        }
+    );
 }

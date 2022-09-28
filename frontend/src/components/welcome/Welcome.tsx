@@ -1,8 +1,18 @@
 import styles from './Welcome.module.css'
 import { Button, Flex } from '@chakra-ui/react'
 import Dock from '../common/dock/Dock'
+import { useNavigate } from 'react-router'
 
 function Welcome() {
+    const navigate = useNavigate()
+
+    function logIn() {
+        navigate('/login')
+    }
+
+    function signUp() {
+        navigate('/signUp')
+    }
     return (
         <>
             <Flex
@@ -24,14 +34,16 @@ function Welcome() {
                             href="/login"
                             className={styles.button}
                             backgroundColor="#FFFFFF50"
+                            onClick={logIn}
                         >
-                            Sign In{' '}
+                            Login
                         </Button>
                         <Button
                             as="a"
                             href="/signup"
                             className={styles.button}
                             backgroundColor="#FFFFFF50"
+                            onClick={signUp}
                         >
                             Sign Up
                         </Button>

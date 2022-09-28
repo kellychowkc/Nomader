@@ -16,6 +16,7 @@ function NewPost() {
     const auth: AuthState = useSelector((state: any) => state.auth)
     const user_id = auth.id
 
+    console.log(imageStore)
     const formik = useFormik({
         initialValues: {
             user_id: user_id as any as string,
@@ -39,7 +40,7 @@ function NewPost() {
                 console.log(values)
                 newPost(values).then((data: any) => {
                     const res = data.success
-                    console.log(res)
+                    console.log('check', res)
                     if (res) {
                         Swal.fire({
                             title: 'Congrats!',
@@ -120,7 +121,7 @@ function NewPost() {
                         </Box>
                     </FormControl>
                     <div className={styles.imageContainer}>
-                        {<img src={imageStore} />}
+                        <img src={imageStore} />
                     </div>
                     <FormControl>
                         <Input

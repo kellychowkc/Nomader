@@ -2,7 +2,6 @@ import {
     Box,
     Flex,
     Avatar,
-    Link,
     Button,
     Menu,
     MenuButton,
@@ -23,7 +22,7 @@ import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons'
 
 import { useSelector } from 'react-redux'
 import { AuthState } from '../../../redux/state'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { fetchSelfUserProfile } from '../../../api/user'
 
@@ -88,7 +87,7 @@ export default function Nav() {
                         justifyContent={'center'}
                         alignItems={'center'}
                     >
-                        <Link href="/home" style={{ textDecoration: 'none' }}>
+                        <Link to="/home" style={{ textDecoration: 'none' }}>
                             <Text
                                 fontSize="2xl"
                                 fontFamily="monospace"

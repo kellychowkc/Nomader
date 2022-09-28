@@ -279,39 +279,34 @@ function SignUp() {
                                         </InputRightElement>
                                     </InputGroup>
                                 </FormControl>
-                                <HStack>
-                                    <Box>
-                                        <FormControl
-                                            className={styles.box}
-                                            isRequired
-                                        >
-                                            <Select
-                                                id="country"
-                                                name="country"
-                                                onChange={formik.handleChange}
-                                                value={formik.values.country}
-                                                placeholder={'Country'}
-                                            >
-                                                <CountryList />
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
-                                    <Box>
-                                        <FormControl
-                                            className={styles.box}
-                                            isRequired
-                                        >
-                                            <Input
-                                                id="phoneNum"
-                                                name="phone_num"
-                                                onChange={formik.handleChange}
-                                                value={formik.values.phone_num}
-                                                type="number"
-                                                placeholder={'Phone Number'}
-                                            />
-                                        </FormControl>
-                                    </Box>
-                                </HStack>
+
+                                <FormControl
+                                    className={styles.box}
+                                    width={'100%'}
+                                    isRequired
+                                >
+                                    <Select
+                                        id="country"
+                                        name="country"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.country}
+                                        placeholder={'Country'}
+                                    >
+                                        <CountryList />
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl className={styles.box} isRequired>
+                                    <Input
+                                        id="phoneNum"
+                                        name="phone_num"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.phone_num}
+                                        type="number"
+                                        placeholder={'Phone Number'}
+                                    />
+                                </FormControl>
+
                                 <Stack spacing={10} pt={2}>
                                     <Button
                                         loadingText="Submitting"

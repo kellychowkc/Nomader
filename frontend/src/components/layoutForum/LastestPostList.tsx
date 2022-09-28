@@ -36,6 +36,8 @@ function PostList() {
         post.profile = profilePath
     })
 
+    console.log('check', postList)
+
     function browseCount(post_id: number) {
         const user_id = auth.id
         addBrowseCount(post_id, user_id as any as number)
@@ -47,10 +49,7 @@ function PostList() {
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>
                         <div>
-                            <img
-                                src={require(`../../assets/matchingBackground.jpg`)}
-                                alt="latest"
-                            ></img>
+                            <Image src={post.image} alt="latest" />
                         </div>
                     </Box>
                     <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>

@@ -35,11 +35,7 @@ export class GetDataController {
     getPosts = async (req: Request, res: Response) => {
         try {
             const postList = await this.getDataService.getPostData();
-            const latestPostList = postList.slice(
-                Math.max(postList.length - 20, 0)
-            );
-
-            res.json(latestPostList);
+            res.json(postList);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
@@ -52,10 +48,7 @@ export class GetDataController {
     getHotPosts = async (req: Request, res: Response) => {
         try {
             const postList = await this.getDataService.getHotPostData();
-            const hotPostList = postList.slice(
-                Math.max(postList.length - 20, 0)
-            );
-            res.json(hotPostList);
+            res.json(postList);
         } catch (err) {
             logger.error(err.toString());
             res.status(500).json({
@@ -95,7 +88,7 @@ export class GetDataController {
 
     getRate = async (req: Request, res: Response) => {
         try {
-            const code = 'UKD';
+            const code = req.body.code;
             const rateData = await this.getDataService.getCurrencyRates(code);
             res.json(rateData);
         } catch (err) {
@@ -105,5 +98,21 @@ export class GetDataController {
                 message: "internal server error",
             });
         }
-    }
+    };
+
+    getEmergency = async (req: Request, res: Response) => {
+        try {
+            const dataList = await this.getDataService.getEmergencyData(
+                req.body.id
+            );
+
+            res.json(dataList);
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
 }
