@@ -16,7 +16,7 @@ export async function seed(knex: Knex): Promise<void> {
     const attractionId: Array<{ id: number }> = await knex("attractions").select("id");
 
     for (let user of userId) {
-        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664316000 });
         await knex("users")
             .where("id", user["id"])
             .update({
@@ -28,7 +28,7 @@ export async function seed(knex: Knex): Promise<void> {
     
     
     for (let post of postId) {
-        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664316000 });
         let city = citiesId[chance.integer({ min: 0, max: citiesId.length - 1 })];
         let attractionId: Array<{ id: number }> = await knex("attractions").select("id").whereLike("city_list", `%${city["name"]}%`);
         await knex("posts")
@@ -76,7 +76,7 @@ export async function seed(knex: Knex): Promise<void> {
 
     const relationshipId: Array<{ id: number }> = await knex("users_relationship").select("id");
     for (let relationship of relationshipId) {
-        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664316000 });
         await knex("users_relationship")
             .where("id", relationship["id"])
             .update({
@@ -87,7 +87,7 @@ export async function seed(knex: Knex): Promise<void> {
 
     const chatRoomId: Array<{ id: number }> = await knex("chat_rooms").select("id");
     for (let room of chatRoomId) {
-        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664316000 });
         await knex("chat_rooms")
             .where("id", room["id"])
             .update({
@@ -98,7 +98,7 @@ export async function seed(knex: Knex): Promise<void> {
 
     const chatId: Array<{ id: number }> = await knex("chats").select("id");
     for (let chat of chatId) {
-        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664316000 });
         await knex("chats")
             .where("id", chat["id"])
             .update({
@@ -109,7 +109,7 @@ export async function seed(knex: Knex): Promise<void> {
     
     const browsePostId: Array<{ id: number }> = await knex("users_browse_posts").select("id");
     for (let post of browsePostId) {
-        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664316000 });
         await knex("users_browse_posts")
             .where("id", post["id"])
             .update({
@@ -120,7 +120,7 @@ export async function seed(knex: Knex): Promise<void> {
     
     const browseAttractionId: Array<{ id: number }> = await knex("users_like_attractions").select("id");
     for (let browse of browseAttractionId) {
-        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664380800 });
+        let randomCreatedTime = chance.integer({ min: 1654041600, max: 1664316000 });
         await knex("users_like_attractions")
             .where("id", browse["id"])
             .update({

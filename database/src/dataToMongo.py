@@ -156,7 +156,7 @@ def daily_currency() :
                 'code_to' : rate[j][0],
                 'rates' : rate[j][1]
             }
-            db.currencyRates.insert_one(currencyData)
+            db.currencyRatesNew.insert_one(currencyData)
 
 
 
@@ -168,10 +168,11 @@ def main() :
 
 
 if __name__ == '__main__' :
-    main()
+    # main()
+    
     daily_currency()
 
-    # schedule.every().day.at('06:30').do(daily_currency)
+    # schedule.every().day.at('06:00').do(daily_currency)
     # while True:
     #     schedule.run_pending()
     #     time.sleep(1)

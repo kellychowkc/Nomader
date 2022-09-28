@@ -1,3 +1,4 @@
+
 CREATE OR REPLACE FUNCTION insert_emergency_data() 
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -44,8 +45,8 @@ LANGUAGE plpgsql
 AS $$
     BEGIN
         INSERT INTO attractions
-            (name, description, image, address, open_time, class)
-            VALUES (NEW.attraction_name, NEW.description, NEW.image, NEW.address, NEW.open_time, NEW.class);
+            (name, description, image, address, open_time, city_list, class)
+            VALUES (NEW.attraction_name, NEW.description, NEW.image, NEW.address, NEW.open_time, NEW.city_list, NEW.class);
 
         RETURN NEW;
     END

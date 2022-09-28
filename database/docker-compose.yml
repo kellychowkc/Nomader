@@ -16,6 +16,7 @@ services:
       - SPARK_SSL_ENABLED=no
     volumes:
       - ./src:/src
+      - ./tmp/streaming:/tmp/streaming
     ports:
       - '8282:8080'
       - '7077:7077'
@@ -36,6 +37,7 @@ services:
       - SPARK_SSL_ENABLED=no
     volumes:
       - ./src:/src
+      - ./tmp/streaming:/tmp/streaming
   spark-worker-2:
     image: docker.io/bitnami/spark
     user: root
@@ -53,6 +55,7 @@ services:
       - SPARK_SSL_ENABLED=no
     volumes:
       - ./src:/src
+      - ./tmp/streaming:/tmp/streaming
   mongodb:
     image: mongo:5
     restart: always

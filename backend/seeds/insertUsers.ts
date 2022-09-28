@@ -53,7 +53,7 @@ export async function seed(knex: Knex): Promise<void> {
 
     let userData = {};
     let nameArr : Array<string> = [];
-    for (let i = 0; i < 300 ; i++) {
+    for (let i = 0; i < 500 ; i++) {
         switch ( i ) {
             case 0 : 
                 userData = {
@@ -251,7 +251,7 @@ export async function seed(knex: Knex): Promise<void> {
         const roomData: Array<{ user_manager_id: number, user_member_id: number }> = await knex("chat_rooms")
             .select("user_manager_id", "user_member_id")
             .where("id", room["id"]);
-        let randomChatNum = chance.integer({min: 0, max: 10 });
+        let randomChatNum = chance.integer({min: 0, max: 20 });
         for (let i = 0; i <= randomChatNum - 1; i++) {
             let chatUser = chance.bool();
             let speechUser = 0;
@@ -275,7 +275,7 @@ export async function seed(knex: Knex): Promise<void> {
     }
 
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 500; i++) {
         let writer = chance.integer({ min: 0, max: userId.length - 1 });
         let postData = {
             user_id: userId[writer]["id"],

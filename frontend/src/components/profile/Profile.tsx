@@ -31,9 +31,7 @@ import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import { ModalFriends, ModalPosts } from './ModalProfile'
-import { Link, useNavigate } from 'react-router-dom'
-import { Post } from '../layoutForum/Forum'
-import { fetchJson } from '../../api/utils'
+import { Link } from 'react-router-dom'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -124,7 +122,6 @@ const Profile = () => {
     const [friendsCount, setFriendsCount] = useState<any>('')
 
     const [userPosts, setUserPosts] = useState<Array<any>>([])
-    const [postsCount, setPostsCount] = useState<any>('')
 
     useEffect(() => {
         const result = getUserFriendsWithInfo(auth.id as number).then(
@@ -142,35 +139,6 @@ const Profile = () => {
     }, [])
 
     console.log(`Friends Count = ${friendsCount}`)
-
-    // const [allPostList, setAllPostList] = useState<Array<Post>>([])
-
-    useEffect(() => {
-        fetchJson<Array<Post>>(`${REACT_APP_API_SERVER}/data/post`).then(
-            (data) => {
-                // setAllPostList(
-                //     data.map((item) => ({
-                //         ...item,
-                //     }))
-                // )
-                const result = data.filter(
-                    (item) => item.username === auth.username
-                )
-                setUserPosts(result)
-                setPostsCount(result.length)
-            }
-        )
-    }, [])
-
-    // console.log('postList = ', allPostList)
-
-    // setUserPosts(allPostList.filter((item) => item.id === auth.id))
-
-    // const filterResult = allPostList.filter((item) => item.id === auth.id)
-
-    // console.log('filterResult = ', filterResult)
-    console.log('userPosts = ', userPosts)
-    console.log('userPosts counts = ', userPosts.length)
 
     return (
         <div>
@@ -247,15 +215,6 @@ const Profile = () => {
                                             Edit Profile
                                         </Link>
                                     </Button>
-                                    <Button
-                                        size={'xs'}
-                                        colorScheme="gray"
-                                        boxShadow={'0px 1px 2px #BBBBBB'}
-                                    >
-                                        <Link to="/editInterest">
-                                            Edit Interest
-                                        </Link>
-                                    </Button>
                                 </Stack>
                             </Stack>
 
@@ -274,7 +233,7 @@ const Profile = () => {
                                     </Stat>
                                     <Stat p={1} m={2}>
                                         <StatLabel>Posts</StatLabel>
-                                        <StatNumber>{postsCount}</StatNumber>
+                                        <StatNumber>{friendsCount}</StatNumber>
                                     </Stat>
                                 </StatGroup>
                                 <Button
@@ -323,8 +282,8 @@ const Profile = () => {
                                     <ModalOverlay />
                                     {modalType === 'friends' ? (
                                         <ModalFriends
+                                            userProfile={userProfile}
                                             userFriends={userFriends}
-                                            userPosts={userPosts}
                                             disclosure={{
                                                 onOpen,
                                                 isOpen,
@@ -333,8 +292,8 @@ const Profile = () => {
                                         />
                                     ) : (
                                         <ModalPosts
+                                            userProfile={userProfile}
                                             userFriends={userFriends}
-                                            userPosts={userPosts}
                                             disclosure={{
                                                 onOpen,
                                                 isOpen,
