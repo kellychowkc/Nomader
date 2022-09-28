@@ -142,7 +142,8 @@ export default function Nav() {
                                         <LinkBox>
                                             <MenuItem>
                                                 <LinkOverlay
-                                                    href="/editProfile"
+                                                    as={Link}
+                                                    to={'/editProfile'}
                                                     style={{
                                                         textDecoration: 'none',
                                                     }}

@@ -52,7 +52,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
     { name: 'Dashboard', icon: FiTrendingUp, path: 'dashboard' },
     { name: 'Manage User', icon: FiUser, path: 'user' },
-    { name: 'Manage Forum', icon: FiStar, path: 'forum' },
+    // { name: 'Manage Forum', icon: FiStar, path: 'forum' },
     // { name: 'Manage Destination', icon: FiCompass, path: 'destination' },
 ]
 

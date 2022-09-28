@@ -613,12 +613,12 @@ export default function ManageUser() {
                                                 <Image
                                                     src={
                                                         userProfile.profile
-                                                            ? require(`../../../assets/${userProfile.profile}`)
+                                                            ? `https://cap.karassam123.me/profile/${userProfile.profile}`
                                                             : 'https://avatars.dicebear.com/api/male/username.svg'
                                                     }
                                                 />
                                             </Box>
-                                            <Box w="33%">
+                                            {/* <Box w="33%">
                                                 <VStack w="100%" spacing={0}>
                                                     <Box bg="red">
                                                         <Image src="https://avatars.dicebear.com/api/male/username.svg" />
@@ -627,7 +627,7 @@ export default function ManageUser() {
                                                         <Image src="https://avatars.dicebear.com/api/male/username.svg" />
                                                     </Box>
                                                 </VStack>
-                                            </Box>
+                                            </Box> */}
                                         </HStack>
                                         {/* <VStack
                                             className="profileComplains"

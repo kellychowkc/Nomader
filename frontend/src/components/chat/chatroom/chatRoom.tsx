@@ -237,7 +237,8 @@ const ChatRoom = (props: Props) => {
                                         <LinkBox>
                                             <MenuItem>
                                                 <LinkOverlay
-                                                    href="/editProfile"
+                                                    as={Link}
+                                                    to={'/editProfile'}
                                                     style={{
                                                         textDecoration: 'none',
                                                     }}
