@@ -15,9 +15,14 @@ import {
     AspectRatio,
 } from '@chakra-ui/react'
 import { MdLaunch } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 export default function CallToAction() {
+    const navigate = useNavigate()
+
+    function welcome() {
+        navigate('/welcome')
+    }
     return (
         <Container w="90vw" centerContent>
             <Stack
@@ -75,8 +80,9 @@ export default function CallToAction() {
                                 'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                             }
                             color={'#FFFFFF'}
+                            onClick={welcome}
                         >
-                            <Link to="welcome">Get Start</Link>
+                            Get Start
                         </Button>
                     </Stack>
                 </Stack>

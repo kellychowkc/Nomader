@@ -31,7 +31,6 @@ function Welcome() {
                         <h2 className={styles.header}>Welcome</h2>
                         <Button
                             as="a"
-                            href="/login"
                             className={styles.button}
                             backgroundColor="#FFFFFF50"
                             onClick={logIn}
@@ -40,7 +39,6 @@ function Welcome() {
                         </Button>
                         <Button
                             as="a"
-                            href="/signup"
                             className={styles.button}
                             backgroundColor="#FFFFFF50"
                             onClick={signUp}
