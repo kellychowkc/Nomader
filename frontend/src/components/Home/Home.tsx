@@ -84,7 +84,6 @@ const interestList: InterestCardData[] = [
     },
     {
         name: 'London Eye',
-
         city: 'London',
         country: 'UK',
         picture: 'london.jpeg',
@@ -94,7 +93,6 @@ const interestList: InterestCardData[] = [
     },
     {
         name: 'Oxford',
-
         city: 'Oxford',
         country: 'UK',
         picture: 'oxford.jpeg',
@@ -102,6 +100,24 @@ const interestList: InterestCardData[] = [
         rating: '-',
         link: 'https://www.visitbritain.com/gb/en/england/central-england/oxford',
     },
+    // {
+    //     name: 'CN Tower',
+    //     city: 'Toronto',
+    //     country: 'CA',
+    //     picture: 'toronto.jpeg',
+    //     like: true,
+    //     rating: '-',
+    //     link: 'https://www.cntower.ca/',
+    // },
+    // {
+    //     name: 'Toronto Island',
+    //     city: 'Toronto',
+    //     country: 'CA',
+    //     picture: 'toronto2.jpeg',
+    //     like: true,
+    //     rating: '-',
+    //     link: 'https://www.toronto.ca/explore-enjoy/parks-gardens-beaches/toronto-island-park/',
+    // },
 ]
 
 const Home = () => {
@@ -360,7 +376,8 @@ const Home = () => {
                     >
                         <Carousel
                             infinite={true}
-                            show={Math.max(1.5, windowWidth / 400)}
+                            show={Math.max(1.5, windowWidth / 300)}
+                            // show={4}
                             slide={2.5}
                             swiping={true}
                             responsive={true}
