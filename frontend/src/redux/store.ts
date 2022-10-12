@@ -1,7 +1,7 @@
 import {
-    combineReducers,
-    ThunkDispatch,
-    configureStore,
+  combineReducers,
+  ThunkDispatch,
+  configureStore,
 } from "@reduxjs/toolkit";
 
 import type { AuthState, ChatListState, UserInfoState } from "./state";
@@ -17,30 +17,29 @@ import logger from "redux-logger";
 import { ChatListActions } from "./chat/chatAction";
 import { chatListReducer } from "./chat/chatReducer";
 
-
-
 export interface RootState {
-    auth: AuthState;
-    manageUser: ManageUserState;
-    userInfo: UserInfoState;
-    chatList: ChatListState;
+  auth: AuthState;
+  manageUser: ManageUserState;
+  userInfo: UserInfoState;
+  chatList: ChatListState;
 }
 
-export type RootActions = AuthActions | UserInfoActions | ManageUserActions | ChatListActions;
-
-// export type IRootActions = AuthActions | ManageUserActions
+export type RootActions =
+  | AuthActions
+  | UserInfoActions
+  | ManageUserActions
+  | ChatListActions;
 
 export type RootThunkDispatch = ThunkDispatch<RootState, null, RootActions>;
 
 const rootReducer = combineReducers<RootState>({
-    auth: authReducer,
-    manageUser: manageUserReducer,
-    userInfo: userInfoReducer,
-    chatList: chatListReducer,
-
+  auth: authReducer,
+  manageUser: manageUserReducer,
+  userInfo: userInfoReducer,
+  chatList: chatListReducer,
 });
 
 export const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

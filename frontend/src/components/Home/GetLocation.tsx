@@ -1,15 +1,15 @@
-import { useGeolocated } from 'react-geolocated'
+import { useGeolocated } from "react-geolocated";
 
 const Location = () => {
-    const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-        useGeolocated({
-            positionOptions: {
-                enableHighAccuracy: false,
-            },
-            userDecisionTimeout: 5000,
-        })
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+    useGeolocated({
+      positionOptions: {
+        enableHighAccuracy: false,
+      },
+      userDecisionTimeout: 5000,
+    });
 
-    return <></>
-}
+  return <></>;
+};
 
-export default Location
+export default Location;
