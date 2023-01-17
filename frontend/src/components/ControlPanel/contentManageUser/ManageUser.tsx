@@ -618,16 +618,6 @@ export default function ManageUser() {
                                                     }
                                                 />
                                             </Box>
-                                            {/* <Box w="33%">
-                                                <VStack w="100%" spacing={0}>
-                                                    <Box bg="red">
-                                                        <Image src="https://avatars.dicebear.com/api/male/username.svg" />
-                                                    </Box>
-                                                    <Box bg="green">
-                                                        <Image src="https://avatars.dicebear.com/api/male/username.svg" />
-                                                    </Box>
-                                                </VStack>
-                                            </Box> */}
                                         </HStack>
                                         {/* <VStack
                                             className="profileComplains"
