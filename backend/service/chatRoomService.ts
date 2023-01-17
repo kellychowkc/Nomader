@@ -56,41 +56,8 @@ export class ChatRoomService {
         }
     }
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     async getAllChatInfo(userId: number) {
-        // const roomAsManager: Array<{ id: number }> = await this.knex("chat_rooms")
-        //     .join("users", "users.id", '=', "chat_rooms.user_manager_id")
-        //     .select("users.username", "users.profile", "chat_rooms.id", "chat_rooms.room_title", "chat_rooms.user_manager_id", "chat_rooms.user_member_id", "chat_rooms.updated_at")
-        //     .where("chat_rooms.user_member_id", userId)
-        // // .orderBy("chat_rooms.updated_at")
-        // const roomAsMember: Array<{ id: number }> = await this.knex("chat_rooms")
-        //     .join("users", "users.id", '=', "chat_rooms.user_member_id")
-        //     .select("users.username", "users.profile", "chat_rooms.id", "chat_rooms.room_title", "chat_rooms.user_manager_id", "chat_rooms.user_member_id", "chat_rooms.updated_at")
-        //     .where("chat_rooms.user_manager_id", userId)
-        // // .orderBy("chat_rooms.updated_at")
-        // if (roomAsManager.length > 0 || roomAsMember.length > 0) {
-        //     return roomAsManager.concat(roomAsMember);
-        // } else {
-        //     return 0;
-        // }
-
-        // with tmp_mx as (
-        //     select * 
-        //     from chat_rooms 
-        //     left join users on users.id = chat_rooms.user_manager_id
-        //     where user_manager_id = ?
-        // ), tmp_mem as (
-        //     select * 
-        //     from chat_rooms 
-        //     left join users on users.id = chat_rooms.user_manager_id
-        //     where user_member_id = ?
-        // )
-        // select distinct tmp_mx.id, users.username, users.profile, tmp_mx.room_title, tmp_mx.user_manager_id, tmp_mem.user_member_id, tmp_mx.updated_at
-        // from users
-        // join tmp_mx on users.id = tmp_mx.user_manager_id
-        // join tmp_mem on users.id = tmp_mem.user_member_id
-        // where not tmp_mx.user_manager_id = tmp_mem.user_member_id
         const roomInvolved = await this.knex.raw(`
         with tmp_mx as (
             select users.username username, chat_rooms.id room_id, chat_rooms.room_title room_title, chat_rooms.user_manager_id room_mx_id, chat_rooms.user_member_id room_mm_id, chat_rooms.updated_at room_updated_at
@@ -171,29 +138,7 @@ export class ChatRoomService {
 
         } else { return roomData_manager }
 
-
-        // if (roomData.length > 0) {
-        //     const managerUser: Array<{ username: string }> = await this.knex("users")
-        //         .select("username")
-        //         .where("id", roomData[0]["user_manager_id"]);
-        //     const memberUser: Array<{ username: string }> = await this.knex("users")
-        //         .select("username")
-        //         .where("id", roomData[0]["user_member_id"]);
-        //     const roomInfo = {
-        //         title: roomData[0]["room_title"],
-        //         manager: managerUser[0]["username"],
-        //         member: memberUser[0]["username"],
-        //         updatedDate: roomData[0]["updated_at"]
-        //     }
-        //     return roomInfo;
-        // } else {
-        //     return {};
-        // }
     }
-
-
-
-    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
     async getChatRoomInfo(roomId: number) {
         const roomData: Array<{
