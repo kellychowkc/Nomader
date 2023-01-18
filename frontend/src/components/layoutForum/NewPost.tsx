@@ -15,8 +15,6 @@ function NewPost() {
     const navigate = useNavigate()
     const auth: AuthState = useSelector((state: any) => state.auth)
     const user_id = auth.id
-
-    console.log(imageStore)
     const formik = useFormik({
         initialValues: {
             user_id: user_id as any as string,

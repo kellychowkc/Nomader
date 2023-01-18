@@ -230,8 +230,6 @@ export default function ManageUser() {
                         viewUser,
                         permissionUpdates
                     ).then((data) => {
-                        // console.log('Set user permissions = ', data)
-
                         if (data.success) {
                             console.log('<updateUserPermission> Fetch Success')
                             console.log(data.result)
@@ -619,34 +617,6 @@ export default function ManageUser() {
                                                 />
                                             </Box>
                                         </HStack>
-                                        {/* <VStack
-                                            className="profileComplains"
-                                            w="100%"
-                                            spacing={0}
-                                            p="3px"
-                                            shadow={'lg'}
-                                            border={'1px solid'}
-                                            borderColor={useColorModeValue(
-                                                'gray.800',
-                                                'gray.500'
-                                            )}
-                                            rounded={'lg'}
-                                        >
-                                            <Text
-                                                fontSize={'lg'}
-                                                fontWeight={'bold'}
-                                            >
-                                                Complain <Icon as={MdWarning} />
-                                            </Text>
-                                            <HStack
-                                                w="100%"
-                                                spacing={0}
-                                                justifyContent="space-evenly"
-                                            >
-                                                <Box>Submitted: {'#'}</Box>
-                                                <Box>Received: {'#'}</Box>
-                                            </HStack>
-                                        </VStack> */}
                                         <VStack
                                             className="profilePermissionSetting"
                                             w="100%"
