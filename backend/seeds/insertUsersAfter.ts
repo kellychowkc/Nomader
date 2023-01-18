@@ -19,9 +19,12 @@ export async function seed(knex: Knex): Promise<void> {
     const countryId: Array<{ id: number }> = await knex("countries").select(
         "id"
     );
+    console.log("check countryID array length",countryId.length)
     const attractionId: Array<{ id: number }> = await knex(
         "attractions"
     ).select("id");
+
+    console.log("check attractionID array length",countryId.length)
 
     for (let user of userId) {
         let randomCreatedTime = chance.integer({
@@ -39,6 +42,7 @@ export async function seed(knex: Knex): Promise<void> {
                 updated_at: new Date(randomCreatedTime * 1000),
             });
     }
+    console.log("phase 1 passed")
 
     for (let post of postId) {
         let randomCreatedTime = chance.integer({
@@ -47,9 +51,13 @@ export async function seed(knex: Knex): Promise<void> {
         });
         let city =
             citiesId[chance.integer({ min: 0, max: citiesId.length - 1 })];
+
+        console.log("check phase 2 city", city)
         let attractionId: Array<{ id: number }> = await knex("attractions")
             .select("id")
             .whereLike("city_list", `%${city["name"]}%`);
+        console.log("check phase 2 attractionID length",attractionId.length)
+
         await knex("posts")
             .where("id", post["id"])
             .update({
@@ -62,6 +70,8 @@ export async function seed(knex: Knex): Promise<void> {
                 updated_at: new Date(randomCreatedTime * 1000),
             });
     }
+
+    console.log("phase 2 passed")
 
     for (let attraction of attractionId) {
         let randomInterestNum = chance.integer({ min: 1, max: 3 });
@@ -83,6 +93,8 @@ export async function seed(knex: Knex): Promise<void> {
         }
     }
 
+    console.log("phase 3 passed")
+
     for (let attraction of attractionId) {
         let readerNum = chance.integer({ min: 0, max: userId.length - 1 });
         for (let i = 0; i < readerNum; i++) {
@@ -95,6 +107,8 @@ export async function seed(knex: Knex): Promise<void> {
             await knex("users_like_attractions").insert(browseData);
         }
     }
+
+    console.log("phase 4 passed")
 
     const relationshipId: Array<{ id: number }> = await knex(
         "users_relationship"
