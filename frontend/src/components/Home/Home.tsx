@@ -99,8 +99,6 @@ const interestList: InterestCardData[] = [
 
 const Home = () => {
   const [profilePic, setProfilePic] = React.useState<string>();
-  // const [search, setSearch] = React.useState("");
-  // const handleChangeSearch = (event: any) => setSearch(event.target.value);
 
   const windowWidth = window.innerWidth;
   const auth: AuthState = useSelector((state: any) => state.auth);
