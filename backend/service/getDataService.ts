@@ -1,6 +1,5 @@
 import { Knex } from "knex";
 import { AttractionPost } from "../utils/models";
-// import { Interest } from "../utils/models";
 
 export class GetDataService {
   constructor(private knex: Knex) {}

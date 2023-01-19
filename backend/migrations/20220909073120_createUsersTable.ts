@@ -23,7 +23,6 @@ export async function up(knex: Knex): Promise<void> {
       table.integer("year");
       table.integer("month");
       table.integer("day");
-      // table.unique(["code_base_id", "code_to_id"]);
     });
   }
 

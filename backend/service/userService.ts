@@ -169,22 +169,6 @@ export class UserService {
   }
 
   async updateUserPermission(username: string, permissions: any[]) {
-    // const permission_visible = permissions[0]
-    // const permission_matching = permissions[1]
-    // const permission_post = permissions[2]
-    // const permission_comment = permissions[3]
-    // const permission_upload = permissions[4]
-
-    // const userPermission = await this.knex("users")
-    //     .update({
-    //         isVisible: permission_visible,
-    //         allowPost: permission_post,
-    //         allowComment: permission_comment,
-    //         allowUpload: permission_upload,
-    //         allowMatch: permission_matching,
-    //     })
-    //     .where("username", username)
-
     const userPermission = "Update Permission";
 
     return userPermission;
