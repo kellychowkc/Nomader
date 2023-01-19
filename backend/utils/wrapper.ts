@@ -7,17 +7,17 @@ import { logger } from "./logger";
 type ControllerFn = (req: Request, res: Response) => Promise<void>;
 
 export const asyncWrapper =
-    (fn: ControllerFn) =>
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            await fn(req, res);
-        } catch (err) {
-            logger.error(err.toString());
-            if (err instanceof ApplicationError) {
-                next(err);
-                return;
-            }
-            const internalServerError = new InternalServerError();
-            next(internalServerError);
-        }
-    };
+  (fn: ControllerFn) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await fn(req, res);
+    } catch (err) {
+      logger.error(err.toString());
+      if (err instanceof ApplicationError) {
+        next(err);
+        return;
+      }
+      const internalServerError = new InternalServerError();
+      next(internalServerError);
+    }
+  };
