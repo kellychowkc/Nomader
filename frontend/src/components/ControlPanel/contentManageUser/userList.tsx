@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 
 import type { IUser } from "./ManageUser";
-import styles from "./userList.module.css";
 
 type Props = {
   list: IUser[];

@@ -8,7 +8,7 @@ export class UserService {
   async getUserByUserName(username: string): Promise<User> {
     const user = await this.knex
       .select("*")
-      .from("users123")
+      .from("users")
       .where("username", username)
       .first();
     return user;

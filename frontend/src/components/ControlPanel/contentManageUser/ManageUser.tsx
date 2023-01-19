@@ -44,8 +44,8 @@ import {
   updateUserPermission,
   UserProfile,
 } from "../../../api/user";
-import PermissionSetting from "./permissionSetting";
-import { UsersList } from "./userList";
+import PermissionSetting from "./PermissionSetting";
+import { UsersList } from "./UserList";
 import { ModalUserFriends, ModalUserProfileDetail } from "./ModalManageUser";
 
 export interface IUser {

@@ -23,14 +23,51 @@
   font-family: "Roboto", sans-serif;
 }
 
+@media only screen and (max-width: 600px) {
+  .hexagon {
+    font-size: 10px;
+    height: 28rem;
+    background: inherit;
+    width: 100%;
+    -webkit-clip-path: polygon(
+      50% 0,
+      100% 25%,
+      100% 75%,
+      50% 100%,
+      0 75%,
+      0 25%
+    );
+    -moz-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    -ms-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    overflow: hidden;
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .button {
+    margin: 1rem;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    border: 0.5rem;
+    text-decoration: none;
+  }
+}
+
 .hexagon {
-  height: 28rem;
+  height: 25rem;
   background: inherit;
   width: 100%;
-  -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  -moz-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  -ms-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
   overflow: hidden;
   backdrop-filter: blur(15px);
 
@@ -41,21 +78,21 @@
 }
 
 .header {
-  font-size: 40px;
+  font-size: 400%;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #ffffff;
 }
 
 .button {
   margin: 1rem;
-  width: 70%;
+  width: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0.8rem;
   color: white;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 500;
   border-radius: 0.5rem;
   border: 0.5rem;

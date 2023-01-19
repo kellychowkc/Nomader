@@ -52,21 +52,14 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Dashboard", icon: FiTrendingUp, path: "dashboard" },
   { name: "Manage User", icon: FiUser, path: "user" },
-  // { name: 'Manage Forum', icon: FiStar, path: 'forum' },
-  // { name: 'Manage Destination', icon: FiCompass, path: 'destination' },
 ];
 
-export default function ControlPanel() {
+export default function controlPanel() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const value = useColorModeValue("gray.100", "gray.900");
 
   return (
-    <Box
-      w="full"
-      h="auto"
-      minH="100vh"
-      bg={useColorModeValue("gray.100", "gray.900")}
-      m="0"
-    >
+    <Box w="full" h="auto" minH="100vh" bg={value} m="0">
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -84,7 +77,6 @@ export default function ControlPanel() {
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         <Outlet />
@@ -133,11 +125,7 @@ interface NavItemProps extends FlexProps {
 }
 const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
   return (
-    <ReactRouterLink
-      to={"control/" + path}
-      style={{ textDecoration: "none" }}
-      // _focus={{ boxShadow: 'none' }}
-    >
+    <ReactRouterLink to={"control/" + path} style={{ textDecoration: "none" }}>
       <Flex
         align="center"
         p="4"
