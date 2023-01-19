@@ -8,7 +8,6 @@ import expressSession from "express-session";
 import Knex from "knex";
 import knexConfigs from "./knexfile";
 import { ApplicationError } from "./utils/errors";
-
 import { Server as socketIO } from "socket.io";
 import initializeSocketIO from "./socket/socket";
 

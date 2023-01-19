@@ -14,7 +14,7 @@ function HotPostList() {
   const auth: AuthState = useSelector((state: any) => state.auth);
 
   useEffect(() => {
-    fetchJson<Array<Post>>(`${REACT_APP_API_SERVER}/data/hotPost`).then(
+    fetchJson<Array<Post>>(`${REACT_APP_API_SERVER}/data/hot_post`).then(
       (data) => {
         console.log("check2", data);
         setPostList(

@@ -29,7 +29,7 @@ import "./Home.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AuthState } from "../../redux/state";
-import InterestCard, { InterestCardData } from "./interestCard";
+import InterestCard, { InterestCardData } from "./InterestCard";
 import { fetchSelfUserProfile } from "../../api/user";
 import Location from "./GetLocation";
 

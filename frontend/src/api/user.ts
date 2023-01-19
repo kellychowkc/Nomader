@@ -104,14 +104,14 @@ export async function postSignUp(signUpForm: SignUpForm) {
   formData.append("information", signUpForm.information);
   formData.append("profile", signUpForm.profile);
 
-  return fetchJson(`${REACT_APP_API_SERVER}/user/signUp`, {
+  return fetchJson(`${REACT_APP_API_SERVER}/user/sign_up`, {
     method: "POST",
     body: formData,
   });
 }
 
 export async function preMatching(userId: number) {
-  return fetchJson(`${REACT_APP_API_SERVER}/user/getInterest`, {
+  return fetchJson(`${REACT_APP_API_SERVER}/user/get_interest`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -138,7 +138,7 @@ export async function editUserInterest(
   user_id: number
 ) {
   console.log(interestList);
-  return fetchJson(`${REACT_APP_API_SERVER}/user/editInterest`, {
+  return fetchJson(`${REACT_APP_API_SERVER}/user/edit_interest`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -163,7 +163,7 @@ export async function newPost(postForm: PostForm) {
 
 export async function getAllUsers() {
   return fetchJson<ManageUserState>(
-    `${REACT_APP_API_SERVER}/user/getAllUsers`,
+    `${REACT_APP_API_SERVER}/user/get_all_users`,
     {
       method: "GET",
     }
@@ -171,7 +171,7 @@ export async function getAllUsers() {
 }
 
 export async function getUserProfile(username: string) {
-  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserProfile`, {
+  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/get_user_profile`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -181,7 +181,7 @@ export async function getUserProfile(username: string) {
 }
 
 export async function addBrowseCount(post_id: number, user_id: number) {
-  return fetchJson(`${REACT_APP_API_SERVER}/user/browsePost`, {
+  return fetchJson(`${REACT_APP_API_SERVER}/user/browse_post`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -202,7 +202,7 @@ export async function fetchSelfUserProfile(userId: number) {
 }
 
 export async function getUserFriends(user_id: number) {
-  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriends`, {
+  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/get_user_friends`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -215,7 +215,7 @@ export async function updateUserPermission(
   username: string,
   permissions: any[]
 ) {
-  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/updateUserPermission`, {
+  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/update_user_permission`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -248,7 +248,7 @@ export async function updateProfile(updateForm: UserProfile, userId: string) {
     updateForm.emergency_contact_num as any as string
   );
 
-  return fetchJson(`${REACT_APP_API_SERVER}/user/updateProfile`, {
+  return fetchJson(`${REACT_APP_API_SERVER}/user/update_profile`, {
     method: "POST",
     body: formData,
   });
@@ -277,7 +277,7 @@ export async function fetchCountry(id: number) {
 }
 
 export async function getUserFriendsWithInfo(user_id: number) {
-  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriendsWithInfo`, {
+  return fetchJson<any>(`${REACT_APP_API_SERVER}/user/get_user_friends_info`, {
     method: "POST",
     headers: {
       "content-type": "application/json",

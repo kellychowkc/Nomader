@@ -46,7 +46,7 @@ export async function unlikedUserAction(id: number, userId: number) {
 export async function openChat(userMember: number, userManager: number) {
   const roomTitle = `Room-${userManager}-${userMember}`;
   console.log(userMember, userManager);
-  return fetchJson(`${REACT_APP_API_SERVER}/chat/openChat`, {
+  return fetchJson(`${REACT_APP_API_SERVER}/chat/open_chat`, {
     method: "POST",
     headers: {
       "content-type": "application/json",

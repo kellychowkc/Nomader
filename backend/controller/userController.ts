@@ -217,7 +217,6 @@ export class UserController {
     try {
       const user_id = req.body.uid;
       const user = await this.userService.getUserByUserId(user_id);
-      // console.log("controller", user);
       res.status(200).json({
         success: true,
         message: "success",

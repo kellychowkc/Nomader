@@ -28,9 +28,8 @@ export class MatchController {
       }
 
       let allUserId = await this.matchService.getAllUserId(userId);
-      const wantMatchUserId = await this.matchService.geUserIdWhoYouWantToMatch(
-        userId
-      );
+      const wantMatchUserId =
+        await this.matchService.getUserIdWhoYouWantToMatch(userId);
       for (let wantUser of wantMatchUserId) {
         allUserId = allUserId.filter((id) => {
           return id["id"] !== wantUser["user2_id"];
