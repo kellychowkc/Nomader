@@ -102,3 +102,14 @@ Frontend
 - File Name: camelCase
 - React Component: PascalCase
 - Python/SQL : snake_case
+
+## Setup Database
+```
+1. Run dockercompose
+2. Run knex migrations to create table
+3. Run createDBTrigger.sql (in database/sql)
+4. Run knex seeds - insertUsers.ts only
+5. Setup .env properly
+6. Run dataToMongo.py
+7. Run mongoToPsqlDB.py
+8. Run knex seeds - insertUsersAfter.ts
