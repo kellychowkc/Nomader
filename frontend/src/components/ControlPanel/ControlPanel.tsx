@@ -56,10 +56,10 @@ const LinkItems: Array<LinkItemProps> = [
 
 export default function controlPanel() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const value = useColorModeValue("gray.100", "gray.900");
+  const bgColor = useColorModeValue("gray.100", "gray.900");
 
   return (
-    <Box w="full" h="auto" minH="100vh" bg={value} m="0">
+    <Box w="full" h="auto" minH="100vh" bg={bgColor} m="0">
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}

@@ -46,8 +46,6 @@ const ChatRoom = (props: Props) => {
 
   let { room_id } = useParams();
 
-  // console.log('<ChatRoom> room_id = ', room_id)
-
   const auth: AuthState = useSelector((state: any) => state.auth);
   const chatRoomList: ChatListState = useSelector(
     (state: any) => state.chatList
@@ -93,9 +91,7 @@ const ChatRoom = (props: Props) => {
       auth.id as number,
       room_id as string
     ).then((result) => {
-      // console.log(`<getfriendsName> ${result}`)
       if (result.success) {
-        // console.log(`<getfriendsName> Friend's Name:`)
         console.table(result.data);
 
         setRoomInfo(result.data[0]);
@@ -103,9 +99,7 @@ const ChatRoom = (props: Props) => {
     });
 
     const chatRecords = getChatRecords(room_id as string).then((result) => {
-      // console.log(`<getChatRecords> ${result}`)
       if (result.success) {
-        // console.log(`<getChatRecords> setNeMessageHistory:`)
         console.table(result.data);
 
         setMessageHistory(result.data.map((item: any) => ({ ...item })));
@@ -139,8 +133,6 @@ const ChatRoom = (props: Props) => {
       flexDirection="column"
       justifyContent="center"
     >
-      {/* === NavBar === */}
-      {/* <Nav /> */}
       <Box
         w={"full"}
         h={"100%"}
@@ -263,7 +255,6 @@ const ChatRoom = (props: Props) => {
               </Stack>
             </Flex>
           </HStack>
-          {/* <Box className="room-name">Room ID: {room_id}</Box> */}
         </HStack>
       </Box>
       <VStack w="98vw" h={"auto"}>
@@ -297,8 +288,6 @@ const ChatRoom = (props: Props) => {
                     {message.content}
                   </Text>
                   <Text pb={2} lineHeight={"0.2"} textAlign={"right"}>
-                    {/* {message.created_at} */}
-
                     {Date.parse(message?.created_at as string) < Date.now()
                       ? message.created_at
                           .split("T", 2)[1]
@@ -411,7 +400,6 @@ const ChatRoom = (props: Props) => {
                 fontSize="3xl"
                 p={"0"}
                 boxShadow={"0px 0px 2px 0px #BBBBBB"}
-                // _hover={{ bg: 'red' }}
               >
                 +
               </Button>

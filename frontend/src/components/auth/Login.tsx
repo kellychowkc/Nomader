@@ -12,7 +12,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, RootThunkDispatch } from "../../redux/store";
 import { loginThunk } from "../../redux/auth/authThunk";
-// import { loginThunk as loginThunkDemo } from "../../redux/demo/auth/thunks";
 import { useNavigate } from "react-router";
 
 function Login() {
@@ -26,13 +25,12 @@ function Login() {
       password: "",
     },
     onSubmit: async (values) => {
-      // alert(JSON.stringify(values, null, 2))
       if (loading) {
         return;
       }
 
-      const res = await dispatch(loginThunk(values, navigate));
-      if (res) {
+      const loginError = await dispatch(loginThunk(values, navigate));
+      if (loginError) {
         Swal.fire({
           title: "Oops...",
           text: "Wrong Username or password",
@@ -69,7 +67,7 @@ function Login() {
               >
                 <Input
                   type="text"
-                  id="username"
+                  id="usernameInput"
                   name="username"
                   onChange={formik.handleChange}
                   value={formik.values.username}

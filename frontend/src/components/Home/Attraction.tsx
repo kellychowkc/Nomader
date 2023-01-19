@@ -54,7 +54,6 @@ function Attraction() {
           ...item,
         }))
       );
-      console.log("Fetch Data = ", data);
     });
   }, []);
 
@@ -77,11 +76,7 @@ function Attraction() {
         (item) =>
           item.name.match(searchPost) || item.description.match(searchPost)
       );
-      const postListData = result.map((item: any) => ({
-        ...item,
-      }));
-      // console.log('<Search User> userListData = ', postListData)
-      setPostList(postListData);
+      setPostList(result);
     }
   }, [searchPost]);
 
@@ -114,7 +109,6 @@ function Attraction() {
               textTransform="uppercase"
               fontSize="xl"
               letterSpacing="wide"
-              // color="teal.600"
               color={useColorModeValue("#1d1d42", "#B0D8BC")}
             >
               {post.name}

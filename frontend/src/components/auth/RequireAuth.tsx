@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { RootState, RootThunkDispatch } from "../../redux/store";
-import jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { loginSuccess } from "../../redux/auth/authAction";
 
 type tokenType = {
@@ -24,7 +24,7 @@ function RequireAuth() {
     if (token) {
       // pull token decode info into redux
       let decoded: tokenType;
-      decoded = jwt_decode(token);
+      decoded = jwtDecode(token);
       console.log("check decoded", decoded);
       dispatch(loginSuccess(decoded.username, decoded.id));
       return <Outlet />;
