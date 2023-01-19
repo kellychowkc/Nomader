@@ -23,76 +23,6 @@
   font-family: "Roboto", sans-serif;
 }
 
-<<<<<<< HEAD
-@media only screen and (max-width: 600px) {
-    .hexagon {
-        height: 28rem;
-        background: inherit;
-        width: 100%;
-        -webkit-clip-path: polygon(
-            50% 0,
-            100% 25%,
-            100% 75%,
-            50% 100%,
-            0 75%,
-            0 25%
-        );
-        -moz-clip-path: polygon(
-            50% 0,
-            100% 25%,
-            100% 75%,
-            50% 100%,
-            0 75%,
-            0 25%
-        );
-        -ms-clip-path: polygon(
-            50% 0,
-            100% 25%,
-            100% 75%,
-            50% 100%,
-            0 75%,
-            0 25%
-        );
-        clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-        overflow: hidden;
-        backdrop-filter: blur(15px);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .header {
-        font-size: 40px;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: #ffffff;
-    }
-
-    .button {
-        margin: 1rem;
-        width: 70%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0.8rem;
-        color: white;
-        font-size: 18px;
-        font-weight: 500;
-        border-radius: 0.5rem;
-        border: 0.5rem;
-        text-decoration: none;
-    }
-}
-
-.hexagon {
-    height: 25rem;
-    background: inherit;
-    width: 100%;
-    overflow: hidden;
-    backdrop-filter: blur(15px);
-=======
 .hexagon {
   height: 28rem;
   background: inherit;
@@ -103,7 +33,6 @@
   clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
   overflow: hidden;
   backdrop-filter: blur(15px);
->>>>>>> 18b03944fdc4f73493e48f95ec2c88ab943c6c65
 
   display: flex;
   justify-content: center;
@@ -112,27 +41,6 @@
 }
 
 .header {
-<<<<<<< HEAD
-    font-size: 400%;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: #ffffff;
-}
-
-.button {
-    margin: 1rem;
-    width: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.8rem;
-    color: white;
-    font-size: 25px;
-    font-weight: 500;
-    border-radius: 0.5rem;
-    border: 0.5rem;
-    text-decoration: none;
-=======
   font-size: 40px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -140,7 +48,6 @@
 }
 
 .button {
-  /* background: #ffffffbb; */
   margin: 1rem;
   width: 70%;
   display: flex;
@@ -153,5 +60,4 @@
   border-radius: 0.5rem;
   border: 0.5rem;
   text-decoration: none;
->>>>>>> 18b03944fdc4f73493e48f95ec2c88ab943c6c65
 }

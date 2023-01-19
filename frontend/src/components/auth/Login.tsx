@@ -31,94 +31,6 @@ function Login() {
         return;
       }
 
-<<<<<<< HEAD
-    return (
-        <div className={styles.body}>
-            <div className={styles.logoContainer}>
-                <img
-                    src={require('../../assets/loginBackground.jpg')}
-                    alt="background"
-                ></img>
-                <div className={styles.logo}>Logo</div>
-            </div>
-            <div className={styles.loginFormContainer}>
-                <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={5}>
-                    <Stack align={'left'}>
-                        <Heading
-                            fontSize={'4xl'}
-                            color={'#b0d8bc'}
-                            fontWeight={'500'}
-                        >
-                            Login
-                        </Heading>
-                    </Stack>
-                    <form onSubmit={formik.handleSubmit}>
-                        <Stack spacing={4}>
-                            <FormControl
-                                id="usernameController"
-                                color={'#b0d8bc'}
-                                className={styles.box}
-                            >
-                                <Input
-                                    type="text"
-                                    id="username"
-                                    name="username"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.username}
-                                    placeholder={'Username'}
-                                />
-                            </FormControl>
-                            <FormControl
-                                id="password"
-                                color={'#b0d8bc'}
-                                className={styles.box}
-                            >
-                                <Input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.password}
-                                    placeholder={'Password'}
-                                />
-                            </FormControl>
-                            <Stack spacing={10} align={'center'}></Stack>
-                            <Button
-                                bgImage={
-                                    'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                                }
-                                className={styles.btn}
-                                type="submit"
-                            >
-                                Login
-                            </Button>
-                        </Stack>
-                    </form>
-                    <Stack spacing={10} align={'center'}>
-                        <Link
-                            color={'blue.400'}
-                            onClick={() => navigate('/signUp')}
-                        >
-                            Sign Up
-                        </Link>
-                    </Stack>
-                </Stack>
-            </div>
-        </div>
-    )
-=======
-      // dispatch(loginThunkDemo(values))
-      //   .unwrap()
-      //   .then(() => navigate("/home"))
-      //   .catch(() => {
-      //     Swal.fire({
-      //       title: "Oops...",
-      //       text: "Wrong Username or password",
-      //       icon: "error",
-      //     });
-      //     return;
-      //   });
-
       const res = await dispatch(loginThunk(values, navigate));
       if (res) {
         Swal.fire({
@@ -197,7 +109,6 @@ function Login() {
       </div>
     </div>
   );
->>>>>>> 18b03944fdc4f73493e48f95ec2c88ab943c6c65
 }
 
 export default Login;

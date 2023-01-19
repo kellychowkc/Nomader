@@ -30,59 +30,7 @@ import Currency from "./components/Home/Currency";
 import SafetyContact from "./components/safetyContact/SafetyContact";
 import EditInterest from "./components/profile/EditInterest";
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-// import { io, Socket } from 'socket.io-client'
-
-// import { useState } from 'react'
-
-// import UserChatList from './components/newChat/userChatList'
-// import ChatRoom from './components/newChat/chatRoom'
-
-// const socketUrl = 'http://localhost:8080/'
-
-// export interface IChatUser {
-//     id: string
-//     username?: string
-//     room?: string
-//     active?: boolean
-// }
-
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 function App() {
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-  // const [socket, setSocket] = useState<Socket | null>(null)
-  // const [user, setUser] = useState<IChatUser | null>(null)
-
-  // console.log('user', user)
-
-  // const createNewSocket = () => {
-  //     let socket = io(socketUrl)
-  //     socket?.on('connect', () => {
-  //         console.log('connected! front-end')
-  //     })
-  //     setSocket(socket)
-  // }
-  // const connectUserToSocket = (user: IChatUser) => {
-  //     console.log('<connectUserToSocket> socket emit (before)')
-
-  //     socket?.emit('connect', user)
-  //     console.log('<connectUserToSocket> socket emit (after)')
-
-  //     setUser(user)
-  // }
-
-  // //to adapt height on mac device's browser:
-  // window.addEventListener('resize', () => {
-  //     let vh = window.innerHeight * 0.01
-  //     document.documentElement.style.setProperty('--vh', `${vh}px`)
-  // })
-  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
   return (
     <>
       <Router>
@@ -109,14 +57,8 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="editProfile" element={<EditProfile />} />
             <Route path="editInterest" element={<EditInterest />} />
-
-            {/* // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
-
             <Route path="chat" element={<ChatHome />} />
             <Route path="chat/:room_id" element={<ChatRoom />} />
-
-            {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/}
-
             <Route path="control" element={<ControlPanel />}>
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />

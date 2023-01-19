@@ -11,48 +11,6 @@ import { AuthState } from "../../redux/state";
 import { useSelector } from "react-redux";
 
 function NewPost() {
-<<<<<<< HEAD
-    const [imageStore, setImageStore] = useState('')
-    const navigate = useNavigate()
-    const auth: AuthState = useSelector((state: any) => state.auth)
-    const user_id = auth.id
-    const formik = useFormik({
-        initialValues: {
-            user_id: user_id as any as string,
-            title: '',
-            content: '',
-            image: new File([''], ''),
-        },
-        onSubmit: async (values) => {
-            if (
-                formik.values.title === '' ||
-                formik.values.content === '' ||
-                formik.values.image.name === ''
-            ) {
-                Swal.fire({
-                    title: 'Notice',
-                    text: 'Users would like to know everything!',
-                    icon: 'warning',
-                })
-                return
-            } else {
-                console.log(values)
-                newPost(values).then((data: any) => {
-                    const res = data.success
-                    console.log('check', res)
-                    if (res) {
-                        Swal.fire({
-                            title: 'Congrats!',
-                            text: 'New post is already posted!',
-                            icon: 'success',
-                        })
-                    }
-                })
-                navigate('/forum')
-            }
-        },
-    })
-=======
   const [imageStore, setImageStore] = useState("");
   const navigate = useNavigate();
   const auth: AuthState = useSelector((state: any) => state.auth);
@@ -95,7 +53,6 @@ function NewPost() {
       }
     },
   });
->>>>>>> 18b03944fdc4f73493e48f95ec2c88ab943c6c65
 
   function handleImageChange(e: any) {
     const file = e.target.files[0];
