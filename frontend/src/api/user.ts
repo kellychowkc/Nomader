@@ -2,13 +2,6 @@ import type { InterestItem } from "../components/matching/InterestList";
 import type { ManageUserState } from "../redux/state";
 import { fetchJson } from "./utils";
 
-// let REACT_APP_API_SERVER: any;
-// const env = process.env;
-// switch (env.NODE_ENV) {
-//     case "development":
-//         REACT_APP_API_SERVER = env.REACT_APP_API_SERVER;
-// }
-
 const { REACT_APP_API_SERVER } = process.env;
 
 export interface User {
@@ -59,8 +52,6 @@ export interface UserProfile {
   country?: string;
   created_at?: string;
   updated_at?: string;
-
-  // added by danny - start
   id?: number;
   isAdmin?: boolean;
   allowPost?: boolean;
@@ -69,8 +60,6 @@ export interface UserProfile {
   allowMatch?: boolean;
   emergency_contact_person?: string;
   emergency_contact_num?: number;
-
-  // added by danny - end
 }
 
 export async function fetchSelfUserInfo(token: string) {
@@ -250,7 +239,6 @@ export async function updateProfile(updateForm: UserProfile, userId: string) {
   formData.append("information", updateForm.information as any as string);
   formData.append("profile", updateForm.newProfile as any as string);
 
-  // added by danny
   formData.append(
     "emergency_contact_person",
     updateForm.emergency_contact_person as any as string
@@ -288,7 +276,6 @@ export async function fetchCountry(id: number) {
   });
 }
 
-// added by dannys
 export async function getUserFriendsWithInfo(user_id: number) {
   return fetchJson<any>(`${REACT_APP_API_SERVER}/user/getUserFriendsWithInfo`, {
     method: "POST",
