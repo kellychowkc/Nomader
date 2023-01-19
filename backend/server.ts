@@ -7,34 +7,16 @@ import http from "http";
 import expressSession from "express-session";
 import Knex from "knex";
 import knexConfigs from "./knexfile";
+import { ApplicationError } from "./utils/errors";
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// Added By Danny
-// dependencies:
 import { Server as socketIO } from "socket.io";
-//other modules:
-// import socketRouter from "./socket/socketRoute";
 import initializeSocketIO from "./socket/socket";
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 const app = express();
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
 app.use(express.json({ limit: "500mb" }));
 app.use(express.urlencoded({ limit: "500mb" }));
 
-//accept other host
-// const allowList = ["*","https://nomader.tecky-kc.me/"];
-// app.use(
-//     cors({
-//         origin: allowList.map((host) => host),
-//     })
-// );
-
-app.use(
-    cors()
-);
-
+app.use(cors());
 
 //service and controller
 import { UserService } from "./service/userService";
@@ -47,11 +29,11 @@ import { ChatRoomService } from "./service/chatRoomService";
 import { ChatRoomController } from "./controller/chatController";
 
 app.use(
-    expressSession({
-        secret: "Hi this is a secret",
-        resave: true,
-        saveUninitialized: true,
-    })
+  expressSession({
+    secret: "Hi this is a secret",
+    resave: true,
+    saveUninitialized: true,
+  })
 );
 
 //knex set up
@@ -68,46 +50,44 @@ export const matchService = new MatchService(knex);
 export const matchController = new MatchController(matchService);
 export const chatRoomService = new ChatRoomService(knex);
 export const chatRoomController = new ChatRoomController(chatRoomService);
-// export const currencyService = new CurrencyService(knex);
-// export const currencyController = new CurrencyController(currencyService);
 
 import { logInRoutes } from "./routers/userRoutes";
 import { dataRoutes } from "./routers/getDataRoutes";
 import { matchRoutes } from "./routers/matchRoutes";
 import { chatRoutes } from "./routers/chatRoutes";
-// import { CurrencyService } from "./service/currencyService";
-// import { CurrencyController } from "./controller/currencyController";
 
-//route handling
+// route handling
 app.use("/user", logInRoutes);
 app.use("/data", dataRoutes);
 app.use("/match", matchRoutes);
 app.use("/chat", chatRoutes);
 app.use(express.static("assets"));
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// Added By Danny
-// app.use(socketRouter);
-
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 const PORT = 8080;
 
 const server = http.createServer(app);
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-// Added By Danny
-
 const io = new socketIO(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-    },
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
 
 initializeSocketIO(io);
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+app.use(
+  (
+    err: ApplicationError,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error(err.stack);
+    res.status(err.httpStatus).send({ message: err.message });
+  }
+);
 
 server.listen(PORT, () => {
-    console.log(`listening at http://localhost:${PORT}`);
+  console.log(`listening at http://localhost:${PORT}`);
 });
