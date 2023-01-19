@@ -88,6 +88,7 @@ export class GetDataController {
 
     getRate = async (req: Request, res: Response) => {
         try {
+            // params / query
             const code = req.body.code;
             const rateData = await this.getDataService.getCurrencyRates(code);
             res.json(rateData);

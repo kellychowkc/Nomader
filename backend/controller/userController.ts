@@ -5,70 +5,59 @@ import { checkPassword } from "../utils/hash";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
 import { Interest, Post, User } from "../utils/models";
+import { ApplicationError } from "../utils/errors";
 
 export class UserController {
     constructor(private userService: UserService) {}
 
     logIn = async (req: Request, res: Response) => {
-        try {
-            const { username, password } = req.body;
-            console.log(req.body);
-            if (!username || !password) {
-                res.status(400).json({
-                    success: false,
-                    message: "invalid username/password",
-                });
-                return;
-            }
+        const { username, password } = req.body;
+        console.log(req.body);
+        if (!username || !password) {
+            throw new ApplicationError("invalid username/password", 400);
+        }
 
-            const user = await this.userService.getUserByUserName(username);
-            console.log(user);
-            if (!user) {
-                res.status(401).json({
-                    success: false,
-                    message: "No such user or wrong password",
-                });
-                return;
-            }
-            const match = await checkPassword(password, user["password"]);
-            if (match) {
-                if (req.session) {
-                    req.session["user"] = {
-                        id: user["id"],
-                        username: user["username"],
-                    };
-
-                    //jwt
-                    const payload = {
-                        id: user.id,
-                        username: user.username,
-                    };
-                    const token = jwtSimple.encode(payload, jwt.jwtSecret);
-                    console.log("isAdmin = " + user.isAdmin);
-
-                    res.status(200).json({
-                        success: true,
-                        message: "success",
-                        token: token,
-                        username: user.username,
-                        id: user.id,
-                        // additional user information needed - danny
-                        isAdmin: user.isAdmin,
-                    });
-                }
-            } else {
-                res.status(401).json({
-                    success: false,
-                    message: "No such user or wrong password",
-                });
-                return;
-            }
-        } catch (err) {
-            logger.error(err.toString());
-            res.status(500).json({
+        const user = await this.userService.getUserByUserName(username);
+        console.log(user);
+        if (!user) {
+            res.status(401).json({
                 success: false,
-                message: "Internal server error",
+                message: "No such user or wrong password",
             });
+            return;
+        }
+        const match = await checkPassword(password, user["password"]);
+        if (match) {
+            if (req.session) {
+                req.session["user"] = {
+                    id: user["id"],
+                    username: user["username"],
+                };
+
+                //jwt
+                const payload = {
+                    id: user.id,
+                    username: user.username,
+                };
+                const token = jwtSimple.encode(payload, jwt.jwtSecret);
+                console.log("isAdmin = " + user.isAdmin);
+
+                res.status(200).json({
+                    success: true,
+                    message: "success",
+                    token: token,
+                    username: user.username,
+                    id: user.id,
+                    // additional user information needed - danny
+                    isAdmin: user.isAdmin,
+                });
+            }
+        } else {
+            res.status(401).json({
+                success: false,
+                message: "No such user or wrong password",
+            });
+            return;
         }
     };
 

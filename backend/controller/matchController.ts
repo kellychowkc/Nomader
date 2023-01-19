@@ -1,24 +1,14 @@
 import { MatchService } from "../service/matchService";
 import { Request, Response } from "express";
 import { logger } from "../utils/logger";
-// import jwtSimple from 'jwt-simple';
-// import jwt from '../utils/jwt';
-// import { Bearer } from 'permit';
 
 export class MatchController {
     constructor(private matchService: MatchService) {}
 
     matchUser = async (req: Request, res: Response) => {
         try {
-            // const permit = new Bearer({
-            //     query: "access_token"
-            // })
-            // const token = permit.check(req);
-            // const payload = jwtSimple.decode(token, jwt.jwtSecret);
-            // const userId = payload.id as number;
-
             console.log(req.body);
-            const userId = req.body.user_id as number;
+            const userId = req.user!.id as number;
             const waitingList: Array<{ user1_id: number }> = [];
             const waitingUserId =
                 await this.matchService.getUserIdWhoWaitMatchYou(userId);
@@ -161,7 +151,7 @@ export class MatchController {
                         profile: userInfo["profile"],
                         information: userInfo["information"],
                         interests: interestArr,
-                        country : userInfo["name"]
+                        country: userInfo["name"],
                     };
                     matchUserData.push(userPortfolio);
                 }
