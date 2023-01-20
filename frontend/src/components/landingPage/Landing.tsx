@@ -1,7 +1,7 @@
 import { Box, Flex, VStack } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
-import CallToAction from './callToAction/CallToAction'
-import InfiniteGrid from './infiniteGrid/InfiniteGrid'
+import CallToAction from './CallToAction'
+import InfiniteGrid from './InfiniteGrid'
 import Dock from '../common/dock/Dock'
 
 function Landing() {
