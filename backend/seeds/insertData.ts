@@ -40,16 +40,66 @@ export async function seed(knex: Knex): Promise<void> {
 
     const attractionId: Array<{ id: number }> = await knex("attractions")
         .insert([
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
-            { name: "hiking", city_list: "hongkong" },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
+            {
+                name: "Disney",
+                description: "hi",
+                image: `url("https://media-cdn.tripadvisor.com/media/photo-w/14/b3/aa/b3/911-memorial-nyc.jpg")`,
+                city_list: "hongkong",
+            },
         ])
         .returning("id");
 

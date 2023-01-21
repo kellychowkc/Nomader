@@ -35,7 +35,7 @@ export class UserController {
                 };
 
                 //jwt
-                const expires = Date.now() / 1000 + 60;
+                const expires = Date.now() / 1000 + 60 * 60 * 24;
 
                 const payload = {
                     id: user.id,
