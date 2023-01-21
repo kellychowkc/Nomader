@@ -19,8 +19,9 @@ export async function isLoggedIn(
             return res.status(401).json({ message: "Permission Denied" });
         }
         const payload = jwtSimple.decode(token, jwt.jwtSecret);
+
         const user = await userService.getUserByUserId(payload.id);
-        console.log(user);
+
         if (user) {
             const { password, ...others } = user;
             req.user = { ...others };
