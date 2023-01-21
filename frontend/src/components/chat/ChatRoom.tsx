@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
 import './Chatroom.css'
 
-import useChat from '../useChat'
+import useChat from './useChat'
 import {
     Box,
     VStack,
@@ -24,17 +24,17 @@ import {
     MenuItem,
     MenuList,
 } from '@chakra-ui/react'
-import Dock from '../../common/dock/Dock'
-import { getChatRecords, getRoomInfoByRoomTitle } from '../../../api/chat'
+import Dock from '../common/dock/Dock'
+import { getChatRecords, getRoomInfoByRoomTitle } from '../../api/chat'
 import { useSelector } from 'react-redux'
-import { AuthState, ChatListState } from '../../../redux/state'
+import { AuthState, ChatListState } from '../../redux/state'
 import {
     ChevronLeftIcon,
     HamburgerIcon,
     MoonIcon,
     SunIcon,
 } from '@chakra-ui/icons'
-import { fetchSelfUserProfile } from '../../../api/user'
+import { fetchSelfUserProfile } from '../../api/user'
 
 const { REACT_APP_API_SERVER } = process.env
 
