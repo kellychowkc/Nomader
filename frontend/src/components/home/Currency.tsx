@@ -21,7 +21,6 @@ function Currency() {
     const navigate = useNavigate()
 
     function goBack() {
-        // navigate(-1);
         navigate('/home')
     }
 

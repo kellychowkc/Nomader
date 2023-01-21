@@ -1,6 +1,4 @@
 import { Knex } from "knex";
-import { Chance } from "chance";
-const chance = new Chance();
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
@@ -104,26 +102,4 @@ export async function seed(knex: Knex): Promise<void> {
         .returning("id");
 
     console.log(countryId, attractionId, cityId, "break");
-
-    const cities_Id: Array<{ id: number; name: string }> = await knex(
-        "cities"
-    ).select("id", "name");
-    const country_Id: Array<{ id: number }> = await knex("countries").select(
-        "id"
-    );
-    const attraction_Id: Array<{ id: number }> = await knex(
-        "attractions"
-    ).select("id");
-
-    console.log(
-        attraction_Id[chance.integer({ min: 0, max: attractionId.length - 1 })][
-            "id"
-        ],
-        country_Id[chance.integer({ min: 0, max: attractionId.length - 1 })][
-            "id"
-        ],
-        cities_Id[chance.integer({ min: 0, max: attractionId.length - 1 })][
-            "id"
-        ]
-    );
 }

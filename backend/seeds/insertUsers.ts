@@ -292,6 +292,7 @@ export async function seed(knex: Knex): Promise<void> {
             user_id: userId[writer]["id"],
             title: chance.sentence(),
             content: chance.paragraph(),
+            image: "post1.jpeg",
         };
         await knex("posts").insert(postData);
     }
