@@ -58,12 +58,6 @@
     border: none;
 }
 
-.messages-container,
-.new-message-input-field,
-.send-message-button {
-    /* border-color: #9a9a9a; */
-}
-
 .messages-container::-webkit-scrollbar {
     display: none;
 }
