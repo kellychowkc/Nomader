@@ -37,6 +37,7 @@ def get_emergency_data() :
             #     callingCode = callingCode.replace('\n', ', ')
 
             record = {
+
                 'country_name' : countryName,
                 'emergency_tel' : emergency,
                 'police_tel' : police,
@@ -54,6 +55,8 @@ def get_currency_data() :
     #  data from 'exchangerate.host'
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
+ 
+ 
         url='https://api.exchangerate.host/symbols'
     
         response = requests.get(url)

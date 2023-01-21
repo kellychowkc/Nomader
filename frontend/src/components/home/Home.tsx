@@ -108,6 +108,9 @@ const Home = () => {
         fetchSelfUserProfile(auth.id as any as number).then((data: any) => {
             const dataDetail = data.userDetail.rows[0]
             const profile = dataDetail.profile
+            if (!profile) {
+                return
+            }
             const profilePath = `${REACT_APP_API_SERVER}/profile/` + profile
             setProfilePic(profilePath)
         })
