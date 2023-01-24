@@ -143,16 +143,9 @@ const Profile = () => {
 
     console.log(`Friends Count = ${friendsCount}`)
 
-    // const [allPostList, setAllPostList] = useState<Array<Post>>([])
-
     useEffect(() => {
         fetchJson<Array<Post>>(`${REACT_APP_API_SERVER}/data/post`).then(
             (data) => {
-                // setAllPostList(
-                //     data.map((item) => ({
-                //         ...item,
-                //     }))
-                // )
                 const result = data.filter(
                     (item) => item.username === auth.username
                 )
@@ -162,13 +155,6 @@ const Profile = () => {
         )
     }, [])
 
-    // console.log('postList = ', allPostList)
-
-    // setUserPosts(allPostList.filter((item) => item.id === auth.id))
-
-    // const filterResult = allPostList.filter((item) => item.id === auth.id)
-
-    // console.log('filterResult = ', filterResult)
     console.log('userPosts = ', userPosts)
     console.log('userPosts counts = ', userPosts.length)
 

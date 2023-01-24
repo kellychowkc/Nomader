@@ -112,49 +112,61 @@ const EditProfile = () => {
                     >
                         Edit Profile
                     </Text>
-                    <Flex minH={'full'} align={'center'} justify={'center'}>
+                    <Box className={styles.editContainer}>
                         <Stack>
                             <form onSubmit={formik.handleSubmit}>
                                 <FormControl id="userIcon">
-                                    <Stack
-                                        direction={['column', 'row']}
-                                        spacing={6}
-                                    >
-                                        <div
-                                            className={styles.profileContainer}
+                                    <Center>
+                                        <Stack
+                                            direction={['column', 'row']}
+                                            spacing={6}
                                         >
-                                            <Center>
-                                                {imageStore === '' ? (
-                                                    <Avatar
-                                                        name={
-                                                            profileList?.username
+                                            <div
+                                                className={
+                                                    styles.profileContainer
+                                                }
+                                            >
+                                                <Center>
+                                                    {imageStore === '' ? (
+                                                        <Avatar
+                                                            name={
+                                                                profileList?.username
+                                                            }
+                                                            size="2xl"
+                                                            src={
+                                                                profileList?.profile as any as string
+                                                            }
+                                                        ></Avatar>
+                                                    ) : (
+                                                        <Avatar
+                                                            size="2xl"
+                                                            src={imageStore}
+                                                        ></Avatar>
+                                                    )}
+                                                </Center>
+                                                <Center w="full">
+                                                    <input
+                                                        type="file"
+                                                        onChange={
+                                                            handleImageChange
                                                         }
-                                                        size="2xl"
-                                                        src={
-                                                            profileList?.profile as any as string
+                                                        id="profile"
+                                                        name="profile"
+                                                        className={
+                                                            styles.uploadBtn
                                                         }
-                                                    ></Avatar>
-                                                ) : (
-                                                    <Avatar
-                                                        size="2xl"
-                                                        src={imageStore}
-                                                    ></Avatar>
-                                                )}
-                                            </Center>
-                                            <Center w="full">
-                                                <input
-                                                    type="file"
-                                                    onChange={handleImageChange}
-                                                    id="profile"
-                                                    name="profile"
-                                                    className={styles.uploadBtn}
-                                                ></input>
-                                                <p className={styles.subtitle}>
-                                                    Upload Profile Picture
-                                                </p>
-                                            </Center>
-                                        </div>
-                                    </Stack>
+                                                    ></input>
+                                                    <p
+                                                        className={
+                                                            styles.subtitle
+                                                        }
+                                                    >
+                                                        Upload Profile Picture
+                                                    </p>
+                                                </Center>
+                                            </div>
+                                        </Stack>
+                                    </Center>
                                 </FormControl>
 
                                 <Flex
@@ -169,7 +181,6 @@ const EditProfile = () => {
                                     }}
                                     justify="space-evenly"
                                 >
-                                    {/* Remark */}
                                     <Box m={3}>
                                         <FormControl id="userName">
                                             <FormLabel>Username</FormLabel>
@@ -432,7 +443,6 @@ const EditProfile = () => {
                                     align="center"
                                 >
                                     <Box m={3} w="90%">
-                                        {/* Remark */}
                                         <FormControl
                                             id="information"
                                             className={styles.information}
@@ -486,7 +496,7 @@ const EditProfile = () => {
                                 </Box>
                             </form>
                         </Stack>
-                    </Flex>
+                    </Box>
                 </VStack>
                 <Dock />
             </Box>

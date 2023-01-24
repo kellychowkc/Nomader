@@ -19,12 +19,12 @@
     padding: 0;
 }
 
-.new-message-input-field {
-    height: 200px;
-    max-height: 50%;
-    font-size: 20px;
-    padding: 8px 12px;
+.newMessage-input-field {
+    height: 5rem;
+    font-size: 1rem;
+    padding: 1rem;
     resize: none;
+    overflow: scroll;
 }
 
 .message_item {
@@ -50,11 +50,11 @@
 }
 
 .send-message-button {
-    font-size: 28px;
+    font-size: 1.5rem;
     font-weight: 600;
     color: white;
-    background: #31a24c;
-    padding: 24px 12px;
+    background: #94d0a2;
+    padding: 1rem 1rem;
     border: none;
 }
 
@@ -89,4 +89,18 @@
     color: #000000;
     outline: none;
     size: 15rem;
+}
+
+.typeContainer {
+    margin-bottom: 10rem;
+}
+
+@media only screen and (max-width: 850px) {
+    .newMessage-input-field {
+        height: 6rem;
+        font-size: 1rem;
+        padding: 1rem;
+        resize: none;
+        overflow: scroll;
+    }
 }

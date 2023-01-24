@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
-import './Chatroom.css'
+import '../chat/ChatRoom.css'
+// import styles from './chatroom.module.css'
 
 import useChat from './useChat'
 import {
@@ -274,8 +275,8 @@ const ChatRoom = (props: Props) => {
                     </HStack>
                 </HStack>
             </Box>
-            <VStack w="98vw" h={'auto'}>
-                <Box w={'85%'} h={'100%'}>
+            <VStack w="100vw" h={'100vw'}>
+                <Box w={'100%'} h={'100%'} m={3}>
                     <Box
                         h={'70vh'}
                         className="messages-container"
@@ -391,29 +392,25 @@ const ChatRoom = (props: Props) => {
                             ))}
                         </ol>
                     </Box>
-                    <Box>
+                    <Box className="typeContainer">
                         <HStack
                             px={5}
                             py={4}
-                            borderRadius={'10px'}
+                            borderRadius={'px'}
                             bg={useColorModeValue('gray.100', 'gray.600')}
                             boxShadow={'0px 3px 3px 0px #BBBBBB'}
-                            h={'fit-content'}
-                            maxH={'100px'}
+                            h={'7rem'}
                         >
                             <Textarea
-                                className="new-message-input-field"
-                                h={'min-content'}
-                                minH={'30px'}
-                                maxH={'80px'}
+                                className="newMessage-input-field"
                                 bg={useColorModeValue(
                                     'whiteAlpha.800',
                                     'gray.400'
                                 )}
+                                overflow={'scroll'}
                                 boxShadow={'0px 0px 2px 0px #DDDDDD'}
                                 focusBorderColor={'none'}
                                 border={'none'}
-                                borderRadius={'full'}
                                 placeholder="Write message..."
                                 value={newMessage}
                                 onChange={handleNewMessageChange}
@@ -432,18 +429,6 @@ const ChatRoom = (props: Props) => {
                                 onClick={handleSendMessage}
                             >
                                 Send
-                            </Button>
-                            <Button
-                                className="add-button"
-                                colorScheme={'teal'}
-                                bg={useColorModeValue('gray.100', 'gray.400')}
-                                border={'none'}
-                                borderRadius={'full'}
-                                fontSize="3xl"
-                                p={'0'}
-                                boxShadow={'0px 0px 2px 0px #BBBBBB'}
-                            >
-                                +
                             </Button>
                         </HStack>
                     </Box>

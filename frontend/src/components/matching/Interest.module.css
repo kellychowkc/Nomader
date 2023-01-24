@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 .body {
-    background: url('../../assets/matchingBackground.jpg');
+    background: url('../../assets/matchingBackgroundMobile.jpg');
     height: 100%;
     width: 100%;
     background-position: center;
@@ -42,14 +42,14 @@
 }
 
 .interestContainer {
-    height: 32rem;
-    width: 88%;
+    height: 30rem;
+    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 4%;
     padding: 0.5rem;
-    padding-left: 1rem;
+    padding-left: 2.8rem;
     background-color: #628f88ac;
     overflow: hidden;
 }
@@ -106,5 +106,25 @@
         background-repeat: no-repeat;
         min-width: auto;
         min-height: auto;
+    }
+    .interestContainer {
+        height: 32rem;
+        width: 88%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4%;
+        padding: 0.5rem;
+        padding-left: 1rem;
+        background-color: #628f88ac;
+        overflow: hidden;
+    }
+
+    .interestBox {
+        height: 30rem;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
