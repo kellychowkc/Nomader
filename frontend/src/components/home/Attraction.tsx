@@ -113,16 +113,18 @@ function Attraction() {
                 <VStack justifyContent={'center'}>
                     <Box
                         className="searchUser"
-                        w="90%"
+                        w="100%"
                         maxW={'xl'}
-                        m={3}
-                        px="5px"
+                        m={5}
+                        px="1rem"
                         bg="gray.200"
                         rounded={'15px'}
                         boxShadow={'lg'}
+                        ml={'30%'}
+                        mr={'30%'}
                     >
                         <HStack>
-                            <FormControl id="searchUser">
+                            <FormControl id="searchUser" width="100%">
                                 <Input
                                     placeholder="Search attraction"
                                     _placeholder={{
@@ -135,59 +137,68 @@ function Attraction() {
                                     focusBorderColor={'none'}
                                 />
                             </FormControl>
-                            <Icon as={MdSearch} h="30px" w="30px" />
+                            <Icon as={MdSearch} h="7%" w="7%" />
                         </HStack>
                     </Box>
-                    <Box className={styles.postContainer} p={3}>
-                        {postList.map((post, idx) => (
-                            <Box
-                                px={5}
-                                py={3}
-                                display={{ md: 'flex' }}
-                                key={post.id}
-                                marginBottom={1}
-                            >
-                                <Box flexShrink={0}>
-                                    <div>
-                                        <Image
-                                            borderRadius="lg"
-                                            w={{
-                                                md: '150px',
-                                                lg: '200px',
-                                            }}
-                                            src={post.image}
-                                        />
-                                    </div>
-                                </Box>
-                                <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
-                                    <HStack>
-                                        <Text
-                                            fontWeight="bold"
-                                            textTransform="uppercase"
-                                            fontSize="xl"
-                                            letterSpacing="wide"
-                                            color="teal.600"
-                                        >
-                                            {post.name}
-                                        </Text>
-                                    </HStack>
-                                    <Text
-                                        className={styles.cityList}
-                                        fontWeight="medium"
-                                        fontSize="lg"
-                                        color="#2d4b6fca"
+                    <VStack
+                        w={{ base: '90vw', lg: '85vw', xl: '75vw' }}
+                        spacing="2"
+                        alignItems="flex-start"
+                    >
+                        <Box className={styles.postContainer} p={3} w={'100%'}>
+                            {postList.map((post, idx) => (
+                                <Box
+                                    py={'1rem'}
+                                    display={{ md: 'flex' }}
+                                    key={post.id}
+                                    marginBottom={'1rem'}
+                                >
+                                    <Box flexShrink={0}>
+                                        <div>
+                                            <Image
+                                                borderRadius="lg"
+                                                w={{
+                                                    md: '50rem',
+                                                    lg: '50rem',
+                                                }}
+                                                src={post.image}
+                                            />
+                                        </div>
+                                    </Box>
+                                    <Box
+                                        mt={{ base: 4, md: 0 }}
+                                        ml={{ md: 6 }}
+                                        w={'100%'}
                                     >
-                                        {post.city_list}
-                                    </Text>
-                                    <Box className={styles.infoBox}>
-                                        <Text className={styles.content}>
-                                            {post.description}
+                                        <HStack>
+                                            <Text
+                                                fontWeight="bold"
+                                                textTransform="uppercase"
+                                                fontSize="lg"
+                                                letterSpacing="wide"
+                                                color="teal.600"
+                                            >
+                                                {post.name}
+                                            </Text>
+                                        </HStack>
+                                        <Text
+                                            className={styles.cityList}
+                                            fontWeight="medium"
+                                            fontSize="lg"
+                                            color="#2d4b6fca"
+                                        >
+                                            {post.city_list}
                                         </Text>
+                                        <Box className={styles.infoBox}>
+                                            <Text className={styles.content}>
+                                                {post.description}
+                                            </Text>
+                                        </Box>
                                     </Box>
                                 </Box>
-                            </Box>
-                        ))}
-                    </Box>
+                            ))}
+                        </Box>
+                    </VStack>
                 </VStack>
                 <Dock />
             </div>

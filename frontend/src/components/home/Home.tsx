@@ -36,7 +36,7 @@ import Location from './GetLocation'
 const { REACT_APP_API_SERVER } = process.env
 
 const categories = [
-    { name: 'location', icon: MdMap, path: '/attraction' },
+    { name: 'attraction', icon: MdMap, path: '/attraction' },
     { name: 'exchange', icon: MdMoney, path: '/currency' },
     { name: 'flight', icon: MdFlight, path: '/airline' },
     { name: 'safety', icon: MdSecurity, path: '/contact' },
@@ -185,66 +185,12 @@ const Home = () => {
                         </Box>
                     </HStack>
                 </Flex>
-                {/* <Flex
-                    className="Search"
-                    w="80vw"
-                    mb="10px"
-                    direction="column"
-                    justify="center"
-                    align="center"
-                >
-                    <HStack
-                        w="100%"
-                        m="0"
-                        spacing={{ base: 3, lg: 5 }}
-                        justify="center"
-                    >
-                        <Flex
-                            className="serachBar"
-                            w="85%"
-                            maxW={'2xl'}
-                            h="50px"
-                            px="3"
-                            py="1"
-                            borderRadius="10px"
-                            boxShadow="0px 0px 9px #BBBBBB"
-                            bg={useColorModeValue('gray.100', 'gray.400')}
-                            align={'center'}
-                            justify={'center'}
-                        >
-                            <HStack w="100%" justify="space-between" p="3px">
-                                <FormControl id="search" isRequired>
-                                    <Input
-                                        placeholder="Search..."
-                                        _placeholder={{
-                                            color: 'gray.900',
-                                        }}
-                                        type="text"
-                                        value={search}
-                                        onChange={handleChange_search}
-                                        border="0"
-                                        fontSize={{ base: 'md', lg: 'lg' }}
-                                        _focus={{
-                                            outline: 'none',
-                                            border: '0px',
-                                        }}
-                                    />
-                                </FormControl>
-                                <Icon
-                                    as={MdSearch}
-                                    h={{ base: '30px', lg: '35px' }}
-                                    w={{ base: '30px', lg: '35px' }}
-                                    _hover={{ cursor: 'pointer' }}
-                                />
-                            </HStack>
-                        </Flex>
-                    </HStack>
-                </Flex> */}
+
                 <Location />
                 <Flex
                     className="Category"
                     w="80vw"
-                    pt={'10px'}
+                    pt={'3%'}
                     direction="column"
                     justify="center"
                     align="center"
@@ -253,34 +199,34 @@ const Home = () => {
                         w="100%"
                         maxW="container.lg"
                         p="0"
-                        mb="3"
+                        mb="1rem"
                         justify="space-between"
                     >
                         <HStack>
                             <Text
-                                fontSize="1.5em"
+                                fontSize={{ base: '1.5em', lg: '2.5em' }}
                                 fontWeight="bold"
                                 letterSpacing={'wide'}
                             >
                                 Category
                             </Text>
-                            <Icon as={MdLocalActivity} w="30px" h="30px" />
+                            <Icon as={MdLocalActivity} w="20%" h="20%" />
                         </HStack>
                     </HStack>
 
                     <HStack
-                        h="5rem"
+                        h="100%"
                         w="100%"
                         maxW="container.lg"
-                        p="0"
+                        p="1"
                         mb="2"
                         justify="space-around"
                     >
                         {categories.map((category: any, idx: number) => (
                             <Button
                                 key={idx}
-                                w="30%"
-                                h="4.5rem"
+                                w="80%"
+                                h="80%"
                                 py={['3', '3', '3', '4', '4']}
                                 border="0"
                                 borderRadius="10px"
@@ -330,13 +276,13 @@ const Home = () => {
                         <Box>
                             <HStack>
                                 <Text
-                                    fontSize="1.5em"
+                                    fontSize={{ base: '1.5em', lg: '2.5em' }}
                                     fontWeight="bold"
                                     letterSpacing={'wide'}
                                 >
                                     Features
                                 </Text>
-                                <Icon as={MdLocationPin} w="30px" h="30px" />
+                                <Icon as={MdLocationPin} w="20%" h="20%" />
                             </HStack>
                         </Box>
                     </HStack>
@@ -344,7 +290,6 @@ const Home = () => {
                     <HStack
                         className="carousel"
                         w={{ base: '97vw', lg: '98vw' }}
-                        // maxW="container.lg"
                         p="0"
                         m="0"
                         justify="center"
@@ -354,7 +299,6 @@ const Home = () => {
                         <Carousel
                             infinite={true}
                             show={Math.max(1.5, windowWidth / 300)}
-                            // show={4}
                             slide={2.5}
                             swiping={true}
                             responsive={true}

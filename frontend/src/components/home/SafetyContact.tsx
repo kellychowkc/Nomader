@@ -44,24 +44,12 @@ function SafetyContact() {
                         <h1 className={styles.bigTitle}>Emergency</h1>
                     </div>
                 </div>
-                <Box
-                    maxW="sm"
-                    borderWidth="3px"
-                    borderRadius="xl"
-                    overflow="hidden"
-                    margin={10}
-                    padding={10}
-                    display="flex"
-                    flexDirection={'column'}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    className={styles.box}
-                >
-                    <div className={styles.currencyBox}>
+                <div className={styles.safetyContainer}>
+                    <div className={styles.safetyBox}>
                         <Select
                             h={'4rem'}
-                            w={'15rem'}
-                            fontSize={'24px'}
+                            w={'80%'}
+                            fontSize={'20px'}
                             id="country"
                             name="country"
                             placeholder={'Country'}
@@ -74,15 +62,19 @@ function SafetyContact() {
                             <CountryList />
                         </Select>
                         <h4 className={styles.subtitle}>Emergency</h4>
-                        <Box className={styles.rate}>{list?.emergency_tel}</Box>
+                        <Box className={styles.contact}>
+                            {list?.emergency_tel}
+                        </Box>
                         <h4 className={styles.subtitle}>Police</h4>
-                        <Box className={styles.rate}>{list?.police_tel}</Box>
+                        <Box className={styles.contact}>{list?.police_tel}</Box>
                         <h4 className={styles.subtitle}>Ambulance</h4>
-                        <Box className={styles.rate}>{list?.ambulance_tel}</Box>
+                        <Box className={styles.contact}>
+                            {list?.ambulance_tel}
+                        </Box>
                         <h4 className={styles.subtitle}>Fire station</h4>
-                        <Box className={styles.rate}>{list?.fire_tel}</Box>
+                        <Box className={styles.contact}>{list?.fire_tel}</Box>
                     </div>
-                </Box>
+                </div>
             </div>
             <Dock />
         </div>

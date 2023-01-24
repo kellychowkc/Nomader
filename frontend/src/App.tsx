@@ -33,12 +33,12 @@ const MatchingIndex = React.lazy(
 )
 const Skyscanner = React.lazy(() => import('./components/home/Skyscanner'))
 const EditProfile = React.lazy(() => import('./components/profile/EditProfile'))
-const Attraction = React.lazy(() => import('./components/chat/ChatHome'))
-const ChatHome = React.lazy(() => import('./components/home/Home'))
+const Attraction = React.lazy(() => import('./components/home/Attraction'))
+const ChatHome = React.lazy(() => import('./components/chat/ChatHome'))
 const ChatRoom = React.lazy(() => import('./components/chat/ChatRoom'))
 const Currency = React.lazy(() => import('./components/home/Currency'))
 const SafetyContact = React.lazy(
-    () => import('./components/safetyContact/SafetyContact')
+    () => import('./components/home/SafetyContact')
 )
 const EditInterest = React.lazy(
     () => import('./components/profile/EditInterest')

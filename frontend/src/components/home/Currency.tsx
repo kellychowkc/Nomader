@@ -53,23 +53,11 @@ function Currency() {
                         <h1 className={styles.bigTitle}>Currency</h1>
                     </div>
                 </div>
-                <Box
-                    maxW="sm"
-                    borderWidth="3px"
-                    borderRadius="xl"
-                    overflow="hidden"
-                    margin={10}
-                    padding={10}
-                    display="flex"
-                    flexDirection={'column'}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    className={styles.box}
-                >
+                <div className={styles.currencyContainer}>
                     <div className={styles.currencyBox}>
                         <Select
                             h={'4rem'}
-                            w={'10rem'}
+                            w={'80%'}
                             fontSize={'20px'}
                             id="currency1"
                             name="currency1"
@@ -85,7 +73,7 @@ function Currency() {
                         <Box className={styles.rate}>1</Box>
                         <Select
                             h={'4rem'}
-                            w={'10rem'}
+                            w={'80%'}
                             fontSize={'20px'}
                             id="currency2"
                             name="currency2"
@@ -100,7 +88,7 @@ function Currency() {
                         </Select>
                         <Box className={styles.rate}>{rate}</Box>
                     </div>
-                </Box>
+                </div>
             </div>
             <Dock />
         </div>
