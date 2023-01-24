@@ -1,55 +1,56 @@
-import * as React from "react";
-import { MasonryInfiniteGrid } from "@egjs/react-infinitegrid";
+import * as React from 'react'
+import { MasonryInfiniteGrid } from '@egjs/react-infinitegrid'
+import styles from './InfiniteGrid.module.css'
 
 function getItems(nextGroupKey: number, count: number) {
-  const nextItems = [];
-  const nextKey = nextGroupKey * count;
+    const nextItems = []
+    const nextKey = nextGroupKey * count
 
-  for (let i = 0; i < count; ++i) {
-    nextItems.push({ groupKey: nextGroupKey, key: nextKey + i });
-  }
-  return nextItems;
+    for (let i = 0; i < count; ++i) {
+        nextItems.push({ groupKey: nextGroupKey, key: nextKey + i })
+    }
+    return nextItems
 }
 
 const Item = ({ num }: any) => (
-  <div
-    className="item"
-    style={{
-      width: "32%",
-    }}
-  >
-    <div className="thumbnail">
-      <img
-        src={`https://naver.github.io/egjs-infinitegrid/assets/image/${
-          (num % 33) + 1
-        }.jpg`}
-        alt="egjs"
-      />
+    <div
+        className={styles.item}
+        style={{
+            width: '32%',
+        }}
+    >
+        <div className="thumbnail">
+            <img
+                className={styles.image}
+                src={`https://naver.github.io/egjs-infinitegrid/assets/image/${
+                    (num % 33) + 1
+                }.jpg`}
+                alt="egjs"
+            ></img>
+        </div>
     </div>
-    {/* <div className="info">{`egjs ${num}`}</div> */}
-  </div>
-);
+)
 
 export default function App() {
-  const [items, setItems] = React.useState(() => getItems(0, 10));
+    const [items, setItems] = React.useState(() => getItems(0, 10))
 
-  return (
-    <MasonryInfiniteGrid
-      className="container"
-      gap={8}
-      onRequestAppend={(e) => {
-        const nextGroupKey = (+e.groupKey! || 0) + 1;
+    return (
+        <MasonryInfiniteGrid
+            className={styles.containerBox}
+            gap={8}
+            onRequestAppend={(e) => {
+                const nextGroupKey = (+e.groupKey! || 0) + 1
 
-        setItems([...items, ...getItems(nextGroupKey, 10)]);
-      }}
-    >
-      {items.map((item) => (
-        <Item
-          data-grid-groupkey={item.groupKey}
-          key={item.key}
-          num={item.key}
-        />
-      ))}
-    </MasonryInfiniteGrid>
-  );
+                setItems([...items, ...getItems(nextGroupKey, 10)])
+            }}
+        >
+            {items.map((item) => (
+                <Item
+                    data-grid-groupkey={item.groupKey}
+                    key={item.key}
+                    num={item.key}
+                />
+            ))}
+        </MasonryInfiniteGrid>
+    )
 }

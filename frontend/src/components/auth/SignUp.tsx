@@ -113,6 +113,7 @@ function SignUp() {
         <div className={styles.body}>
             <div className={styles.logoContainer}>
                 <img
+                    className={styles.image}
                     src={require('../../assets/loginBackground.png')}
                     alt="background"
                 ></img>

@@ -2,6 +2,7 @@ import { Button } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import React, { Suspense } from 'react'
+import ReactLoading from 'react-loading'
 
 //import component
 const Welcome = React.lazy(() => import('./components/welcome/Welcome'))
@@ -47,7 +48,16 @@ const EditInterest = React.lazy(
 function App() {
     return (
         <>
-            <React.Suspense fallback={<div>Loading...</div>}>
+            <React.Suspense
+                fallback={
+                    <ReactLoading
+                        type={'balls'}
+                        color={'#0DAD8D'}
+                        height={'50%'}
+                        width={'50%'}
+                    />
+                }
+            >
                 <Router>
                     <Routes>
                         <Route path="/" element={<Landing />} />

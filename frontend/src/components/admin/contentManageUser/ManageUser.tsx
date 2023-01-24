@@ -22,7 +22,6 @@ import {
     StatLabel,
     StatNumber,
     Text,
-    useColorModeValue,
     useDisclosure,
     VStack,
 } from '@chakra-ui/react'
@@ -101,7 +100,6 @@ function StatsCard(props: StatsCardProps) {
             py={'5'}
             shadow={'lg'}
             border={'1px solid'}
-            borderColor={useColorModeValue('gray.800', 'gray.500')}
             rounded={'lg'}
         >
             <Flex justifyContent={'space-between'} minW={'100px'}>
@@ -111,11 +109,7 @@ function StatsCard(props: StatsCardProps) {
                         {stat}
                     </StatNumber>
                 </Box>
-                <Box
-                    my={'auto'}
-                    color={useColorModeValue('gray.800', 'gray.200')}
-                    alignContent={'center'}
-                >
+                <Box my={'auto'} alignContent={'center'}>
                     {icon}
                 </Box>
             </Flex>
@@ -325,7 +319,6 @@ export default function ManageUser() {
                             minW={{ base: 'xs', md: 'md', xl: 'lg' }}
                             maxW={'xl'}
                             h="max"
-                            bg={useColorModeValue('white', 'gray.700')}
                             rounded={'xl'}
                             boxShadow={'lg'}
                             p={6}
@@ -621,10 +614,6 @@ export default function ManageUser() {
                                             p="3px"
                                             shadow={'lg'}
                                             border={'1px solid'}
-                                            borderColor={useColorModeValue(
-                                                'gray.800',
-                                                'gray.500'
-                                            )}
                                             rounded={'lg'}
                                         >
                                             <Text
@@ -655,7 +644,6 @@ export default function ManageUser() {
                             w={{ base: 'xs', sm: 'full' }}
                             minW={{ base: 'xs', md: 'md', xl: 'lg' }}
                             maxW={'xl'}
-                            bg={useColorModeValue('white', 'gray.700')}
                             rounded={'xl'}
                             boxShadow={'lg'}
                             p={{ base: '4', sm: '6' }}
@@ -696,7 +684,6 @@ export default function ManageUser() {
                                 <Box
                                     w={{ base: '100%', sm: '90%' }}
                                     m={{ base: '0', sm: '2' }}
-                                    bg={useColorModeValue('white', 'gray.400')}
                                     rounded={'15px'}
                                     scrollBehavior="smooth"
                                     overflowY="scroll"

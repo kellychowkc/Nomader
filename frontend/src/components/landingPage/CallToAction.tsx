@@ -11,10 +11,12 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react'
 import { MdLaunch } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function CallToAction() {
     const color = useColorModeValue('teal.50', 'teal.300')
+    const navigate = useNavigate()
+
     return (
         <Container w="90vw" centerContent>
             <Stack
@@ -55,15 +57,13 @@ export default function CallToAction() {
                             size={'lg'}
                             fontWeight={'medium'}
                             px={6}
-                            leftIcon={
-                                <Icon as={MdLaunch} color={'#FFFFFF'}></Icon>
-                            }
                             bg={
                                 'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
                             }
                             color={'#FFFFFF'}
+                            onClick={() => navigate('/welcome')}
                         >
-                            <Link to="welcome">Get Start</Link>
+                            Get Start
                         </Button>
                     </Stack>
                 </Stack>

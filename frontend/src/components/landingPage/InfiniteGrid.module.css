@@ -1,0 +1,18 @@
+@media only screen and (max-width: 850px) {
+    .containerBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* align-items: center; */
+    }
+    .itemBox {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .image {
+        width: 100%;
+        /* margin: 1rem 1rem; */
+    }
+}
