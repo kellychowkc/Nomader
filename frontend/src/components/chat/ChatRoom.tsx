@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom'
-import '../chat/ChatRoom.css'
-// import styles from './chatroom.module.css'
+import './Chatroom.css'
 
 import useChat from './useChat'
 import {
