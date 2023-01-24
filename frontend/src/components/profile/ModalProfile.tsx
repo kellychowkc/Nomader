@@ -22,6 +22,7 @@ import {
     HStack,
     Avatar,
     VStack,
+    color,
 } from '@chakra-ui/react'
 import { UserProfile } from '../../api/user'
 import { Post } from '../forum/Forum'
@@ -54,6 +55,7 @@ const demoUser: UserProfile = {
 }
 
 export function ModalPosts(props: Props) {
+    const bgcolor = useColorModeValue('white', 'gray.600')
     return (
         <ModalContent>
             <ModalHeader>All Posts By User</ModalHeader>
@@ -62,15 +64,10 @@ export function ModalPosts(props: Props) {
                 <Table
                     variant="striped"
                     colorScheme="teal"
-                    bg={useColorModeValue('white', 'gray.600')}
+                    bg={bgcolor}
                     w="100%"
                 >
-                    <Thead
-                        position="sticky"
-                        top={0}
-                        bg={useColorModeValue('white', 'gray.600')}
-                        zIndex={10}
-                    >
+                    <Thead position="sticky" top={0} bg={bgcolor} zIndex={10}>
                         <Tr>
                             <Th pl={3} fontSize={'md'} fontWeight={'bold'}>
                                 Created at
@@ -104,16 +101,6 @@ export function ModalPosts(props: Props) {
                                             </Text>
                                         </VStack>
                                     </HStack>
-                                    {/* <Button
-                                        m="1"
-                                        size="md"
-                                        onClick={() => {
-                                            props.setViewUser(user.username)
-                                            props.disclosure.onClose()
-                                        }}
-                                    >
-                                        View
-                                    </Button> */}
                                 </Td>
                             </Tr>
                         ))}
@@ -135,6 +122,7 @@ export function ModalPosts(props: Props) {
 }
 
 export function ModalFriends(props: Props) {
+    const bgcolor = useColorModeValue('white', 'gray.600')
     return (
         <ModalContent>
             <ModalHeader>User's Friends</ModalHeader>
@@ -143,15 +131,10 @@ export function ModalFriends(props: Props) {
                 <Table
                     variant="striped"
                     colorScheme="teal"
-                    bg={useColorModeValue('white', 'gray.600')}
+                    bg={bgcolor}
                     w="100%"
                 >
-                    <Thead
-                        position="sticky"
-                        top={0}
-                        bg={useColorModeValue('white', 'gray.600')}
-                        zIndex={10}
-                    >
+                    <Thead position="sticky" top={0} bg={bgcolor} zIndex={10}>
                         <Tr>
                             <Th pl={8} fontSize={'md'} fontWeight={'bold'}>
                                 User

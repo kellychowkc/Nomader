@@ -15,7 +15,6 @@ import {
     Avatar,
     Flex,
     Stack,
-    useColorMode,
     Menu,
     LinkBox,
     LinkOverlay,
@@ -23,6 +22,7 @@ import {
     MenuDivider,
     MenuItem,
     MenuList,
+    useColorMode,
 } from '@chakra-ui/react'
 import Dock from '../common/dock/Dock'
 import { getChatRecords, getRoomInfoByRoomTitle } from '../../api/chat'
@@ -42,6 +42,8 @@ type Props = {}
 
 const ChatRoom = (props: Props) => {
     const { colorMode, toggleColorMode } = useColorMode()
+    const bgColor = useColorModeValue('#1d1d42', '#B0D8BC')
+    const bg = useColorModeValue('gray.100', 'gray.900')
 
     let { room_id } = useParams()
 
@@ -138,7 +140,7 @@ const ChatRoom = (props: Props) => {
             <Box
                 w={'full'}
                 h={'100%'}
-                bg={useColorModeValue('gray.100', 'gray.900')}
+                bg={bg}
                 boxShadow={'0px 1px 2px 0px #DDDDDD'}
             >
                 <HStack
@@ -155,10 +157,7 @@ const ChatRoom = (props: Props) => {
                                     as={ChevronLeftIcon}
                                     w={12}
                                     h={12}
-                                    color={useColorModeValue(
-                                        '#1d1d42',
-                                        '#B0D8BC'
-                                    )}
+                                    color={bgColor}
                                 />
                             </Link>
                         </button>
@@ -396,16 +395,13 @@ const ChatRoom = (props: Props) => {
                             px={5}
                             py={4}
                             borderRadius={'px'}
-                            bg={useColorModeValue('gray.100', 'gray.600')}
+                            bg={bg}
                             boxShadow={'0px 3px 3px 0px #BBBBBB'}
                             h={'7rem'}
                         >
                             <Textarea
                                 className="newMessage-input-field"
-                                bg={useColorModeValue(
-                                    'whiteAlpha.800',
-                                    'gray.400'
-                                )}
+                                bg={'gray.400'}
                                 overflow={'scroll'}
                                 boxShadow={'0px 0px 2px 0px #DDDDDD'}
                                 focusBorderColor={'none'}

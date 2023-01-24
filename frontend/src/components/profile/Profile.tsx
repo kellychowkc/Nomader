@@ -11,12 +11,12 @@ import {
     useColorModeValue,
     Modal,
     ModalOverlay,
-    useDisclosure,
     Stat,
     StatLabel,
     StatNumber,
     StatGroup,
 } from '@chakra-ui/react'
+import { useDisclosure } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
 import { useFormik } from 'formik'
@@ -39,7 +39,7 @@ const { REACT_APP_API_SERVER } = process.env
 
 const Profile = () => {
     const [imageStore, setImageStore] = useState('')
-
+    const color = useColorModeValue('#1d1d42', '#B0D8BC')
     // show existing info
     const [profileList, setProfileList] = useState<UserProfile>()
     const auth: AuthState = useSelector((state: any) => state.auth)
@@ -167,7 +167,7 @@ const Profile = () => {
                     <Text
                         position={'relative'}
                         className={styles.bigTitle}
-                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                        color={color}
                     >
                         Profile
                     </Text>
@@ -215,10 +215,7 @@ const Profile = () => {
                                         as="h3"
                                         fontSize={'2xl'}
                                         fontWeight={'semibold'}
-                                        color={useColorModeValue(
-                                            '#1d1d42',
-                                            '#B0D8BC'
-                                        )}
+                                        color={color}
                                     >
                                         {profileList?.first_name +
                                             ' ' +
@@ -332,7 +329,7 @@ const Profile = () => {
                             </Stack>
                             <Box
                                 fontSize="sm"
-                                color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                                color={color}
                                 className={styles.timeBox}
                             >
                                 <Text fontSize={'1em'}>

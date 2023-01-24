@@ -38,6 +38,7 @@ function Attraction() {
         []
     )
     const [searchPost, setSearchPost] = useState('')
+    const bg = useColorModeValue('#1d1d42', '#B0D8BC')
 
     const navigate = useNavigate()
 
@@ -92,19 +93,10 @@ function Attraction() {
                 <Nav />
                 <div className={styles.tab}>
                     <button className={styles.backwardBtn} onClick={goBack}>
-                        <Icon
-                            as={ChevronLeftIcon}
-                            w={12}
-                            h={12}
-                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
-                        />
+                        <Icon as={ChevronLeftIcon} w={12} h={12} color={bg} />
                     </button>
                     <div className={styles.titleBox}>
-                        <Text
-                            as="h1"
-                            className={styles.headTitle}
-                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
-                        >
+                        <Text as="h1" className={styles.headTitle} color={bg}>
                             Attraction
                         </Text>
                     </div>

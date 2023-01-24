@@ -8,10 +8,10 @@ import {
     Th,
     Thead,
     Tr,
-    useColorModeValue,
     Button,
     Icon,
     HStack,
+    useColorModeValue,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
@@ -35,6 +35,8 @@ interface IChatUser {
 export default function ChatHome() {
     const dispatch = useDispatch<RootThunkDispatch>()
     const navigate = useNavigate()
+    const bgColor = useColorModeValue('#1d1d42', '#B0D8BC')
+    const bg = useColorModeValue('white', 'gray.600')
 
     const auth: AuthState = useSelector((state: any) => state.auth)
 
@@ -91,7 +93,7 @@ export default function ChatHome() {
                             className={styles.headTitle}
                             as="h1"
                             textAlign={'center'}
-                            color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                            color={bgColor}
                         >
                             Chat
                         </Text>
@@ -107,17 +109,8 @@ export default function ChatHome() {
                     overflowY="auto"
                     overflowX="hidden"
                 >
-                    <Table
-                        className={styles.messageTable}
-                        bg={useColorModeValue('white', 'gray.600')}
-                        w="100%"
-                    >
-                        <Thead
-                            position="sticky"
-                            top={0}
-                            bg={useColorModeValue('white', 'gray.600')}
-                            zIndex={10}
-                        >
+                    <Table className={styles.messageTable} bg={bg} w="100%">
+                        <Thead position="sticky" top={0} bg={bg} zIndex={10}>
                             <Tr>
                                 <Th
                                     pl={2}

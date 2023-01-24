@@ -36,7 +36,7 @@ const { REACT_APP_API_SERVER } = process.env
 const EditProfile = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [imageStore, setImageStore] = useState('')
-
+    const color = useColorModeValue('#1d1d42', '#B0D8BC')
     // show existing info
     const [profileList, setProfileList] = useState<UserProfile>()
     const auth: AuthState = useSelector((state: any) => state.auth)
@@ -108,7 +108,7 @@ const EditProfile = () => {
                     <Text
                         position={'relative'}
                         className={styles.bigTitle}
-                        color={useColorModeValue('#1d1d42', '#B0D8BC')}
+                        color={color}
                     >
                         Edit Profile
                     </Text>

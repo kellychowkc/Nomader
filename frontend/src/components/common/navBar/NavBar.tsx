@@ -32,6 +32,7 @@ export default function Nav() {
     const { colorMode, toggleColorMode } = useColorMode()
     const navigate = useNavigate()
     const [profilePic, setProfilePic] = useState<string>()
+    const bg = useColorModeValue('gray.100', 'gray.900')
 
     //update username from redux
     const auth: AuthState = useSelector((state: any) => state.auth)
@@ -74,9 +75,9 @@ export default function Nav() {
                 top="0"
                 zIndex={'1000'}
                 transition={'top 1s'}
-                bg={useColorModeValue('gray.100', 'gray.900')}
+                bg={bg}
                 border={'1px'}
-                borderColor={useColorModeValue('gray.100', 'gray.900')}
+                borderColor={bg}
                 boxShadow={'0px 0px 3px 0px #DDDDDD'}
             >
                 <Flex
