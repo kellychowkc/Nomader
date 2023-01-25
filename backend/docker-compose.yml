@@ -11,11 +11,11 @@ services:
             DB_SECRET: iamasecret
             PORT: 8080
         platform: linux/amd64
-        image: "kellychowkc/nomader:latest"
+        image: "nomader:latest"
         # depends_on: 
         #     - postgres
         build:
-            context: ./
+            context: ../backend/
             dockerfile: ./Dockerfile
         ports:
             - "8080:8080"

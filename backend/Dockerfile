@@ -1,4 +1,4 @@
-FROM node:lts
+FROM --platform=linux/amd64 node:lts
 WORKDIR /usr/src/app
 COPY . .
 EXPOSE 8080

@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   spark:
@@ -90,7 +90,7 @@ services:
         DB_SECRET: iamasecret
         PORT: 8080
     platform: linux/amd64
-    image: "kellychowkc/nomader:latest"
+    image: "nomader:latest"
     depends_on: 
         - postgres
     build:
