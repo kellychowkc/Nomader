@@ -7,7 +7,7 @@ on:
 
 env:
   DB_NAME: cap_project
-  DB_USERNAM: ${{env.DB_USERNAME}}
+  DB_USERNAME: ${{env.DB_USERNAME}}
   DB_PASSWORD: ${{env.DB_PASSWORD}}
 
 
