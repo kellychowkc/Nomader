@@ -97,7 +97,6 @@ export class ChatRoomService {
 
     async getChatRecords(room_title: any) {
         const chatRecords: Array<any> = await this.knex("chat_rooms")
-            // .select("chat_rooms.id")
             .select(
                 "chat_rooms.id",
                 "chats.content",
@@ -106,8 +105,8 @@ export class ChatRoomService {
                 "chats.created_at"
             )
             .where("chat_rooms.room_title", room_title)
-            .join("chats", "chats.chat_room_id", "chat_rooms.id");
-        // .limit(10)
+            .join("chats", "chats.chat_room_id", "chat_rooms.id")
+            .orderBy("created_at", "asc");
 
         console.log("getChatRecords = ", chatRecords);
 
@@ -257,12 +256,14 @@ export class ChatRoomService {
     async newChatOfOnlyContent(
         myId: number,
         userId: number,
+        roomId: number,
         newContent: string
     ) {
         const newChat: Array<{ id: number }> = await this.knex("chats")
             .insert([
                 {
                     user_speech_id: myId,
+                    chat_room_id: roomId,
                     content: newContent,
                     user_listen_id: userId,
                 },

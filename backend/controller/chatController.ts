@@ -99,7 +99,7 @@ export class ChatRoomController {
             const foundChatRecords = await this.chatRoomService.getChatRecords(
                 room_title
             );
-            console.log("check2", foundChatRecords);
+
             if (!foundChatRecords) {
                 res.status(401).json({
                     success: false,
@@ -182,11 +182,13 @@ export class ChatRoomController {
         try {
             const myId: number = req.body.uid;
             const userId: number = req.body.userId;
+            const roomId: number = req.body.roomId;
             const newContent: string = req.body.newContent;
 
             const resp = await this.chatRoomService.newChatOfOnlyContent(
                 myId,
                 userId,
+                roomId,
                 newContent
             );
 
