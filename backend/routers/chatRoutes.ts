@@ -9,6 +9,7 @@ chatRoutes.post("/get_last_messages", chatRoomController.getLastMessages);
 chatRoutes.post("/get_chat_records", chatRoomController.getChatRecords);
 chatRoutes.post("/open_chat", chatRoomController.openChat);
 chatRoutes.post(
-  "/get_room_infoByRoomTitle",
-  chatRoomController.getRoomInfoByRoomTitle
+    "/get_room_infoByRoomTitle",
+    chatRoomController.getRoomInfoByRoomTitle
 );
+chatRoutes.post("/insertMessage", chatRoomController.newChatOfOnlyContent);

@@ -18,6 +18,7 @@ export async function seed(knex: Knex): Promise<void> {
             { name: "Korea", emergency_tel: "112" },
             { name: "UK", emergency_tel: "999" },
             { name: "US", emergency_tel: "911" },
+            { name: "Hong Kong", emergency_tel: "999" },
         ])
         .returning("name");
 
@@ -38,7 +39,7 @@ export async function seed(knex: Knex): Promise<void> {
                 name: "Hollywood",
                 description:
                     "Hollywood is a neighborhood located in Los Angeles, California, that's also synonymous with the glamour, money and power of the entertainment industry. ",
-                image: `url(https://ca-times.brightspotcdn.com/dims4/default/b48a977/2147483647/strip/true/crop/5280x3574+0+0/resize/1200x812!/quality/80/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F9f%2F69%2F18bc96774efc8aae8a5dfdbe7b84%2F1196163-me-hollywood-sign-paint-brv-brv-23a.jpg")`,
+                image: `url("https://www.thetimes.co.uk/imageserver/image/%2Fmethode%2Ftimes%2Fprod%2Fweb%2Fbin%2Fab09cbbc-00fc-11ec-8fe4-ebc2f9f03d76.jpg?crop=2743%2C1829%2C428%2C27")`,
                 city_list: "Los_Angeles",
             },
             {

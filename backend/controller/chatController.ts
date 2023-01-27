@@ -4,12 +4,12 @@ import { logger } from "../utils/logger";
 import { User } from "../utils/models";
 
 export class ChatRoomController {
-    constructor(private chatRoomService: ChatRoomService) { }
+    constructor(private chatRoomService: ChatRoomService) {}
 
     getUserChatRooms = async (req: Request, res: Response) => {
         try {
             const user_id: number = req.body.uid;
-            console.log("<getUserChatRooms> user ID", user_id);
+
             const foundChatRoom = await this.chatRoomService.getAllChatInfo(
                 user_id
             );
@@ -38,7 +38,7 @@ export class ChatRoomController {
     getRoomInfo = async (req: Request, res: Response) => {
         try {
             const room_ids: any = req.body.room_ids;
-            console.log("<getRoomInfo> Room ID", room_ids[0].id);
+
             const foundRoomInfo = await this.chatRoomService.getChatRoomInfo(
                 room_ids[0].id
             );
@@ -67,10 +67,10 @@ export class ChatRoomController {
     getLastMessages = async (req: Request, res: Response) => {
         try {
             const room_ids: any = req.body.room_ids;
-            console.log("<getLastMessages> Room ID", room_ids);
+
             const foundLastMessages =
                 await this.chatRoomService.getLastMessages(room_ids);
-            console.log(`<getLastMessages>${foundLastMessages}`);
+
             if (!foundLastMessages) {
                 res.status(401).json({
                     success: false,
@@ -95,14 +95,11 @@ export class ChatRoomController {
     getChatRecords = async (req: Request, res: Response) => {
         try {
             const room_title: any = req.body.room_title;
-            console.log(
-                "<getChatRecords> Room Title [socket room number]",
-                room_title
-            );
+
             const foundChatRecords = await this.chatRoomService.getChatRecords(
                 room_title
             );
-            console.log(`<getChatRecords>${foundChatRecords}`);
+            console.log("check2", foundChatRecords);
             if (!foundChatRecords) {
                 res.status(401).json({
                     success: false,
@@ -130,7 +127,6 @@ export class ChatRoomController {
             const userManager: number = req.body.userManager;
             const userMember: number = req.body.userMember;
 
-            console.log(userMember, userManager);
             const resp = await this.chatRoomService.openChat(
                 roomTitle,
                 userManager,
@@ -154,9 +150,13 @@ export class ChatRoomController {
         try {
             const uid: number = req.body.uid;
             const room_title: string = req.body.room_title;
-            console.log("<getRoomInfoByRoomTitle> Room Title", room_title);
-            const foundRoomInfo = await this.chatRoomService.getRoomInfoByRoomTitle(uid, room_title);
-            console.log(foundRoomInfo);
+
+            const foundRoomInfo =
+                await this.chatRoomService.getRoomInfoByRoomTitle(
+                    uid,
+                    room_title
+                );
+            console.log("check getRoom", foundRoomInfo);
             if (!foundRoomInfo) {
                 res.status(401).json({
                     success: false,
@@ -178,6 +178,31 @@ export class ChatRoomController {
         }
     };
 
+    newChatOfOnlyContent = async (req: Request, res: Response) => {
+        try {
+            const myId: number = req.body.uid;
+            const userId: number = req.body.userId;
+            const newContent: string = req.body.newContent;
+
+            const resp = await this.chatRoomService.newChatOfOnlyContent(
+                myId,
+                userId,
+                newContent
+            );
+
+            res.status(201).json({
+                success: true,
+                message: "new chat updated",
+                chat: resp,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(500).json({
+                success: false,
+                message: "internal server error",
+            });
+        }
+    };
 }
 
 declare global {
