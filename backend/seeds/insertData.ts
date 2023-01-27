@@ -38,14 +38,14 @@ export async function seed(knex: Knex): Promise<void> {
                 name: "Hollywood",
                 description:
                     "Hollywood is a neighborhood located in Los Angeles, California, that's also synonymous with the glamour, money and power of the entertainment industry. ",
-                image: `url(https://cdn.britannica.com/99/100099-050-17B6FE50/sign-Hollywood-Los-Angeles.jpg")`,
+                image: `url(https://ca-times.brightspotcdn.com/dims4/default/b48a977/2147483647/strip/true/crop/5280x3574+0+0/resize/1200x812!/quality/80/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F9f%2F69%2F18bc96774efc8aae8a5dfdbe7b84%2F1196163-me-hollywood-sign-paint-brv-brv-23a.jpg")`,
                 city_list: "Los_Angeles",
             },
             {
                 name: "Golden Gate",
                 description:
                     "The Golden Gate Bridge is a suspension bridge spanning the Golden Gate",
-                image: `url("https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FGolden_Gate_Bridge&psig=AOvVaw0Iw3Un-3kghHZpkjMfmN81&ust=1674691444826000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCOi3gfe14fwCFQAAAAAdAAAAABAE")`,
+                image: `url("https://media.npr.org/assets/img/2012/05/26/golden-gate-today_wide-8462da9949bef3d5c02aaa1f78e0a4344a3a597c.jpg")`,
                 city_list: "San_Francisco",
             },
             {
