@@ -49,11 +49,7 @@ function PostList() {
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>
                         <div>
-                            <Image
-                                src={post.image}
-                                alt="latest"
-                                maxWidth={'40rem'}
-                            />
+                            <img src={post.image} alt="interest"></img>
                         </div>
                     </Box>
                     <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>

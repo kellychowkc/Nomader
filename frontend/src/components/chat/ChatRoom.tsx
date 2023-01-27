@@ -25,7 +25,11 @@ import {
     useColorMode,
 } from '@chakra-ui/react'
 import Dock from '../common/dock/Dock'
-import { getChatRecords, getRoomInfoByRoomTitle } from '../../api/chat'
+import {
+    getChatRecords,
+    getRoomInfoByRoomTitle,
+    insertMessage,
+} from '../../api/chat'
 import { useSelector } from 'react-redux'
 import { AuthState, ChatListState } from '../../redux/state'
 import {
@@ -60,7 +64,8 @@ const ChatRoom = (props: Props) => {
 
     const { messages, sendMessage } = useChat(room_id as string)
     const [newMessage, setNewMessage] = useState('')
-
+    const [send, setSend] = useState('')
+    console.log(send)
     const handleNewMessageChange = (event: any) => {
         setNewMessage(event.target.value)
     }
@@ -69,6 +74,7 @@ const ChatRoom = (props: Props) => {
         if (newMessage !== '') {
             sendMessage(newMessage)
             setNewMessage('')
+            setSend('true')
         }
     }
 
@@ -88,12 +94,13 @@ const ChatRoom = (props: Props) => {
     }, [])
 
     useEffect(() => {
+        console.log('roomid', room_id)
         const friendsName = getRoomInfoByRoomTitle(
             auth.id as number,
             room_id as string
         ).then((result) => {
             if (result.success) {
-                console.table(result.data)
+                console.table('check', result.data[0])
 
                 setRoomInfo(result.data[0])
             }
@@ -101,7 +108,7 @@ const ChatRoom = (props: Props) => {
 
         const chatRecords = getChatRecords(room_id as string).then((result) => {
             if (result.success) {
-                console.table(result.data)
+                console.table('hi', result.data)
 
                 setMessageHistory(result.data.map((item: any) => ({ ...item })))
             }
@@ -128,6 +135,27 @@ const ChatRoom = (props: Props) => {
     }, [])
 
     console.log('[STATE: roomInfo] = ', roomInfo)
+
+    //insert new message into db
+    useEffect(() => {
+        const userId = roomInfo.user_manager_id
+        const roomId = roomInfo.id
+        setSend('false')
+
+        if (messages[messages.length - 1]) {
+            const content = messages[messages.length - 1].body
+            insertMessage(
+                auth.id as any as number,
+                userId,
+                roomId,
+                content
+            ).then((data: any) => {
+                console.log(data)
+            })
+        } else {
+            return
+        }
+    }, [send])
 
     return (
         <Box
@@ -273,7 +301,7 @@ const ChatRoom = (props: Props) => {
                     </HStack>
                 </HStack>
             </Box>
-            <VStack w="100vw" h={'100vw'}>
+            <VStack w="100vw" h={'15vw'}>
                 <Box w={'100%'} h={'100%'} m={3}>
                     <Box
                         h={'70vh'}

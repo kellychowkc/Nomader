@@ -31,7 +31,6 @@ import { useSelector } from 'react-redux'
 import { AuthState } from '../../redux/state'
 import InterestCard, { InterestCardData } from './InterestCard'
 import { fetchSelfUserProfile } from '../../api/user'
-import Location from './GetLocation'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -46,6 +45,7 @@ const interestList: InterestCardData[] = [
     {
         name: 'Peak',
         city: 'Hong Kong',
+        country: 'China',
         picture: 'peak.jpeg',
         like: true,
         rating: '-',
@@ -54,6 +54,7 @@ const interestList: InterestCardData[] = [
     {
         name: 'Disneyland',
         city: 'Hong Kong',
+        country: 'China',
         picture: 'disney.jpeg',
         like: true,
         rating: '-',
@@ -186,7 +187,6 @@ const Home = () => {
                     </HStack>
                 </Flex>
 
-                <Location />
                 <Flex
                     className="Category"
                     w="80vw"
