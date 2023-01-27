@@ -1,6 +1,7 @@
-version: '3'
+version: '3.7'
 
 services:
+
   spark:
     image: docker.io/bitnami/spark
     user: root
@@ -72,6 +73,7 @@ services:
       POSTGRES_DB: cap_project
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
     restart: always
     networks:
       project:

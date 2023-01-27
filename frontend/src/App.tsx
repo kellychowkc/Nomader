@@ -33,6 +33,7 @@ const MatchingIndex = React.lazy(
     () => import('./components/matching/MatchingIndex')
 )
 const Skyscanner = React.lazy(() => import('./components/home/Skyscanner'))
+const Exchange = React.lazy(() => import('./components/home/Exchange'))
 const EditProfile = React.lazy(() => import('./components/profile/EditProfile'))
 const Attraction = React.lazy(() => import('./components/home/Attraction'))
 const ChatHome = React.lazy(() => import('./components/chat/ChatHome'))
@@ -71,6 +72,7 @@ function App() {
                             <Route path="attraction" element={<Attraction />} />
                             <Route path="airline" element={<Skyscanner />} />
                             <Route path="currency" element={<Currency />} />
+                            <Route path="exchange" element={<Exchange />} />
                             <Route path="contact" element={<SafetyContact />} />
                             <Route path="forum" element={<Forum />} />
                             <Route

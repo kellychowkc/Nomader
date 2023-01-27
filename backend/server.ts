@@ -8,6 +8,7 @@ import expressSession from "express-session";
 import Knex from "knex";
 import knexConfigs from "./knexfile";
 import { ApplicationError } from "./utils/errors";
+
 import { Server as socketIO } from "socket.io";
 import initializeSocketIO from "./socket/socket";
 
@@ -28,11 +29,11 @@ import { ChatRoomService } from "./service/chatRoomService";
 import { ChatRoomController } from "./controller/chatController";
 
 app.use(
-  expressSession({
-    secret: "Hi this is a secret",
-    resave: true,
-    saveUninitialized: true,
-  })
+    expressSession({
+        secret: "Hi this is a secret",
+        resave: true,
+        saveUninitialized: true,
+    })
 );
 
 //knex set up
@@ -67,26 +68,26 @@ const PORT = 8080;
 const server = http.createServer(app);
 
 const io = new socketIO(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+    },
 });
 
 initializeSocketIO(io);
 
 app.use(
-  (
-    err: ApplicationError,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
-    console.error(err.stack);
-    res.status(err.httpStatus).send({ message: err.message });
-  }
+    (
+        err: ApplicationError,
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
+        console.error(err.stack);
+        res.status(err.httpStatus).send({ message: err.message });
+    }
 );
 
 server.listen(PORT, () => {
-  console.log(`listening at http://localhost:${PORT}`);
+    console.log(`listening at http://localhost:${PORT}`);
 });

@@ -37,7 +37,7 @@ const { REACT_APP_API_SERVER } = process.env
 
 const categories = [
     { name: 'attraction', icon: MdMap, path: '/attraction' },
-    { name: 'exchange', icon: MdMoney, path: '/currency' },
+    { name: 'exchange', icon: MdMoney, path: '/exchange' },
     { name: 'flight', icon: MdFlight, path: '/airline' },
     { name: 'safety', icon: MdSecurity, path: '/contact' },
 ]
