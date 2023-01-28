@@ -38,6 +38,8 @@ export class ChatRoomController {
 
                 let time = `${hour}:${minutes}`;
 
+                console.log(time);
+
                 record.room_updated_at = time;
             });
 
@@ -144,6 +146,8 @@ export class ChatRoomController {
                     : (minutes = newTime.getMinutes());
 
                 let time = `${hour}:${minutes}`;
+
+                console.log(time);
 
                 record.created_at = time;
             });
