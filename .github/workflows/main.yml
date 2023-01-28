@@ -1,0 +1,29 @@
+name: nomader
+on:
+  push:
+    branches:
+      - '*'
+  workflow_dispatch:
+
+env:
+  POSTGRES_DB: cap_project
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_HOST: postgres
+
+jobs:
+   deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: ssh to pull latest version
+      uses: fifsky/ssh-action@master
+      with:
+        command: |
+          cd c21-tw-cap-group2
+          git pull origin main
+          yarn install
+          yarn knex migrate:latest 
+          forever restart -c "npm run start:staging" ./
+        host: nomader-server.tecky-kc.me
+        user: ubuntu
+        key: ${{secrets.SSH_PRIVATE_KEY}}
