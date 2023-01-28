@@ -13,7 +13,7 @@ export class ChatRoomController {
             const foundChatRoom = await this.chatRoomService.getAllChatInfo(
                 user_id
             );
-            // console.log(`<getUserChatRooms> Chat Rooms Found = ${foundChatRoom}`);
+
             if (!foundChatRoom) {
                 res.status(401).json({
                     success: false,
@@ -21,6 +21,26 @@ export class ChatRoomController {
                 });
                 return;
             }
+
+            foundChatRoom.forEach((record: any) => {
+                let originalTimestamp = new Date(record.room_updated_at);
+                originalTimestamp.setHours(originalTimestamp.getHours());
+                let newTime = new Date(originalTimestamp);
+                let hour;
+                let minutes;
+                newTime.getHours() < 10
+                    ? (hour = "0" + newTime.getHours())
+                    : (hour = newTime.getHours());
+
+                newTime.getMinutes() < 10
+                    ? (minutes = "0" + newTime.getMinutes())
+                    : (minutes = newTime.getMinutes());
+
+                let time = `${hour}:${minutes}`;
+
+                record.room_updated_at = time;
+            });
+
             res.status(201).json({
                 success: true,
                 message: "Chat Room Found",
@@ -42,7 +62,7 @@ export class ChatRoomController {
             const foundRoomInfo = await this.chatRoomService.getChatRoomInfo(
                 room_ids[0].id
             );
-            console.log(foundRoomInfo);
+
             if (!foundRoomInfo) {
                 res.status(401).json({
                     success: false,
@@ -107,6 +127,27 @@ export class ChatRoomController {
                 });
                 return;
             }
+
+            foundChatRecords.forEach((record: any) => {
+                let originalTimestamp = new Date(record.created_at);
+                originalTimestamp.setHours(originalTimestamp.getHours());
+                let newTime = new Date(originalTimestamp);
+                let hour;
+                let minutes;
+
+                newTime.getHours() < 10
+                    ? (hour = "0" + newTime.getHours())
+                    : (hour = newTime.getHours());
+
+                newTime.getMinutes() < 10
+                    ? (minutes = "0" + newTime.getMinutes())
+                    : (minutes = newTime.getMinutes());
+
+                let time = `${hour}:${minutes}`;
+
+                record.created_at = time;
+            });
+
             res.status(201).json({
                 success: true,
                 message: "Chat Record Found",
@@ -133,10 +174,10 @@ export class ChatRoomController {
                 userMember
             );
 
-            console.log(resp);
             res.status(201).json({
                 success: true,
                 message: "Chat Room opened",
+                result: resp,
             });
         } catch (err) {
             logger.error(err.toString());
@@ -156,7 +197,7 @@ export class ChatRoomController {
                     uid,
                     room_title
                 );
-            console.log("check getRoom", foundRoomInfo);
+
             if (!foundRoomInfo) {
                 res.status(401).json({
                     success: false,

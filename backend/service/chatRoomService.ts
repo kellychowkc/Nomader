@@ -108,8 +108,6 @@ export class ChatRoomService {
             .join("chats", "chats.chat_room_id", "chat_rooms.id")
             .orderBy("created_at", "asc");
 
-        console.log("getChatRecords = ", chatRecords);
-
         if (chatRecords.length > 0) {
             return chatRecords;
         } else {
@@ -269,6 +267,11 @@ export class ChatRoomService {
                 },
             ])
             .returning("id");
+
+        await this.knex("chat_rooms").where("id", roomId).update({
+            updated_at: this.knex.fn.now(),
+        });
+
         if (newChat.length > 0) {
             return true;
         } else {
