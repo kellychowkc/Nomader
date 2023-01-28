@@ -57,6 +57,16 @@ const ChatRoom = (props: Props) => {
     )
 
     const today = new Date()
+    let minutes = today.getMinutes()
+    let minute
+    let time: string
+
+    if (minutes < 10) {
+        minute = minutes.toString().padStart(2, '0')
+        time = `${today.getHours()}:${minute}`
+    } else {
+        time = `${today.getHours()}:${minutes}`
+    }
 
     const [roomInfo, setRoomInfo] = useState<any>('')
 
@@ -64,8 +74,7 @@ const ChatRoom = (props: Props) => {
 
     const { messages, sendMessage } = useChat(room_id as string)
     const [newMessage, setNewMessage] = useState('')
-    const [send, setSend] = useState('')
-    console.log(send)
+
     const handleNewMessageChange = (event: any) => {
         setNewMessage(event.target.value)
     }
@@ -74,7 +83,6 @@ const ChatRoom = (props: Props) => {
         if (newMessage !== '') {
             sendMessage(newMessage)
             setNewMessage('')
-            setSend('true')
         }
     }
 
@@ -108,13 +116,14 @@ const ChatRoom = (props: Props) => {
 
         const chatRecords = getChatRecords(room_id as string).then((result) => {
             if (result.success) {
-                console.table('hi', result.data)
-
                 setMessageHistory(result.data.map((item: any) => ({ ...item })))
             }
         })
+
         return
     }, [])
+
+    console.log(messageHistory)
 
     const messageEl: React.MutableRefObject<any> = useRef(null)
 
@@ -140,8 +149,9 @@ const ChatRoom = (props: Props) => {
     useEffect(() => {
         const userId = roomInfo.user_manager_id
         const roomId = roomInfo.id
-        setSend('false')
 
+        if (messages.length == 0) {
+        }
         if (messages[messages.length - 1]) {
             const content = messages[messages.length - 1].body
             insertMessage(
@@ -155,7 +165,7 @@ const ChatRoom = (props: Props) => {
         } else {
             return
         }
-    }, [send])
+    })
 
     return (
         <Box
@@ -339,15 +349,7 @@ const ChatRoom = (props: Props) => {
                                         lineHeight={'0.2'}
                                         textAlign={'right'}
                                     >
-                                        {Date.parse(
-                                            message?.created_at as string
-                                        ) < Date.now()
-                                            ? message.created_at
-                                                  .split('T', 2)[1]
-                                                  .split('.', 1)[0]
-                                                  .split(':', 2)
-                                                  .join(':')
-                                            : message.created_at.split('T', 1)}
+                                        {message?.created_at}
                                     </Text>
                                 </li>
                             ))}
@@ -410,9 +412,7 @@ const ChatRoom = (props: Props) => {
                                         lineHeight={'0'}
                                         textAlign={'right'}
                                     >
-                                        {today.getHours() +
-                                            ':' +
-                                            today.getMinutes()}
+                                        {time}
                                     </Text>
                                 </li>
                             ))}
