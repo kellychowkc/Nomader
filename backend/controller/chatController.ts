@@ -24,7 +24,7 @@ export class ChatRoomController {
 
             foundChatRoom.forEach((record: any) => {
                 let originalTimestamp = new Date(record.room_updated_at);
-                originalTimestamp.setHours(originalTimestamp.getHours());
+                originalTimestamp.setHours(originalTimestamp.getHours() - 5);
                 let newTime = new Date(originalTimestamp);
                 let hour;
                 let minutes;
@@ -130,7 +130,7 @@ export class ChatRoomController {
 
             foundChatRecords.forEach((record: any) => {
                 let originalTimestamp = new Date(record.created_at);
-                originalTimestamp.setHours(originalTimestamp.getHours());
+                originalTimestamp.setHours(originalTimestamp.getHours() - 5);
                 let newTime = new Date(originalTimestamp);
                 let hour;
                 let minutes;
