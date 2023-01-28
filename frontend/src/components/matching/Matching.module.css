@@ -157,3 +157,7 @@ hr {
         flex-direction: column;
     }
 }
+
+.loadingMessage {
+    font-weight: bolder;
+}

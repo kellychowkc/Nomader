@@ -56,6 +56,7 @@ const demoUser: UserProfile = {
 
 export function ModalPosts(props: Props) {
     const bgcolor = useColorModeValue('white', 'gray.600')
+
     return (
         <ModalContent>
             <ModalHeader>All Posts By User</ModalHeader>
@@ -63,7 +64,7 @@ export function ModalPosts(props: Props) {
             <ModalBody>
                 <Table
                     variant="striped"
-                    colorScheme="teal"
+                    colorScheme="blue"
                     bg={bgcolor}
                     w="100%"
                 >
@@ -109,13 +110,13 @@ export function ModalPosts(props: Props) {
             </ModalBody>
 
             <ModalFooter>
-                <Button
+                {/* <Button
                     colorScheme="blue"
                     mr={3}
                     onClick={props.disclosure.onClose}
                 >
                     Close
-                </Button>
+                </Button> */}
             </ModalFooter>
         </ModalContent>
     )
@@ -130,17 +131,19 @@ export function ModalFriends(props: Props) {
             <ModalBody>
                 <Table
                     variant="striped"
-                    colorScheme="teal"
+                    colorScheme="blue"
                     bg={bgcolor}
                     w="100%"
                 >
                     <Thead position="sticky" top={0} bg={bgcolor} zIndex={10}>
                         <Tr>
-                            <Th pl={8} fontSize={'md'} fontWeight={'bold'}>
+                            <Th
+                                pl={8}
+                                fontSize={'md'}
+                                fontWeight={'bold'}
+                                textAlign={'center'}
+                            >
                                 User
-                            </Th>
-                            <Th fontSize={'md'} fontWeight={'bold'}>
-                                Detail
                             </Th>
                         </Tr>
                     </Thead>
@@ -176,33 +179,13 @@ export function ModalFriends(props: Props) {
                                         </VStack>
                                     </HStack>
                                 </Td>
-                                <Td py="5px">
-                                    <Button
-                                        m="1"
-                                        size="md"
-                                        // onClick={() =>
-                                        //     props.viewUser(user.username)
-                                        // }
-                                    >
-                                        View
-                                    </Button>
-                                </Td>
                             </Tr>
                         ))}
                     </Tbody>
                 </Table>
             </ModalBody>
 
-            <ModalFooter>
-                <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={props.disclosure.onClose}
-                >
-                    Close
-                </Button>
-                <Button colorScheme="yellow">Update</Button>
-            </ModalFooter>
+            <ModalFooter></ModalFooter>
         </ModalContent>
     )
 }

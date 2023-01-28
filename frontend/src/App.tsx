@@ -5,6 +5,7 @@ import React, { Suspense } from 'react'
 import ReactLoading from 'react-loading'
 
 //import component
+const Loading = React.lazy(() => import('./components/common/Loading'))
 const Welcome = React.lazy(() => import('./components/welcome/Welcome'))
 const Dashboard = React.lazy(
     () => import('./components/admin/contentDashboard/Dashboard')
@@ -49,22 +50,14 @@ const EditInterest = React.lazy(
 function App() {
     return (
         <>
-            <React.Suspense
-                fallback={
-                    <ReactLoading
-                        type={'balls'}
-                        color={'#0DAD8D'}
-                        height={'50%'}
-                        width={'50%'}
-                    />
-                }
-            >
+            <React.Suspense fallback={<Loading />}>
                 <Router>
                     <Routes>
                         <Route path="/" element={<Landing />} />
                         <Route path="welcome" element={<Welcome />} />
                         <Route path="login" element={<Login />} />
                         <Route path="signUp" element={<SignUp />} />
+                        <Route path="/Loading" element={<Loading />} />
 
                         {/* Required Auth Route */}
                         <Route path="/" element={<RequireAuth />}>

@@ -1,11 +1,5 @@
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import {
-    BsFillPencilFill,
-    BsFillPersonBadgeFill,
-    BsFillPersonFill,
-    BsHouseDoorFill,
-} from 'react-icons/bs'
-import {
     Box,
     Button,
     Center,
@@ -31,6 +25,7 @@ import { AuthState } from '../../redux/state'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'
 import Nav from '../common/navBar/NavBar'
+import Loading from '../common/Loading'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -45,7 +40,11 @@ function Matching() {
 
     const userId = auth.id
 
-    console.log(profileList)
+    let loading
+    if (!profileList) {
+        loading = <Loading />
+    }
+
     useEffect(() => {
         try {
             fetchOtherUserProfile(userId as any as number).then((data: any) => {
@@ -57,7 +56,7 @@ function Matching() {
                         ...user,
                     }))
                 )
-                console.log('check', profileList)
+
                 setProfile(userList[0])
                 let likedUserIdList: number[] = []
                 if (likedUser === 2) {
@@ -153,6 +152,7 @@ function Matching() {
     return (
         <>
             <Nav />
+            {loading}
             <div className={styles.profileContainer}>
                 <div className={styles.flexContainer}>
                     {profileDefault ? (
@@ -169,6 +169,7 @@ function Matching() {
                         ></img>
                     )}
                 </div>
+
                 <div className={styles.profileInfo}>
                     <div className={styles.infoBox}>
                         <h1 className={styles.title}>{profile?.username}</h1>

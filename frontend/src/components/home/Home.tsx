@@ -19,7 +19,11 @@ import {
     MdLocalActivity,
 } from 'react-icons/md'
 
-import { Carousel } from '@trendyol-js/react-carousel'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { FreeMode, Pagination } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/free-mode'
+import 'swiper/css/pagination'
 
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
@@ -132,7 +136,7 @@ const Home = () => {
                 <Flex
                     className="greeting"
                     w="80vw"
-                    mb="2"
+                    mb="0"
                     direction="column"
                     justify="center"
                     align="center"
@@ -214,19 +218,12 @@ const Home = () => {
                         </HStack>
                     </HStack>
 
-                    <HStack
-                        h="100%"
-                        w="100%"
-                        maxW="container.lg"
-                        p="1"
-                        mb="2"
-                        justify="space-around"
-                    >
+                    <HStack maxW="container.lg" className="buttonContainer">
                         {categories.map((category: any, idx: number) => (
                             <Button
                                 key={idx}
-                                w="80%"
-                                h="80%"
+                                w="90%"
+                                h="90%"
                                 py={['3', '3', '3', '4', '4']}
                                 border="0"
                                 borderRadius="10px"
@@ -270,7 +267,7 @@ const Home = () => {
                         w="100%"
                         maxW="container.lg"
                         p="0"
-                        mb="0"
+                        mb="1rem"
                         justify="space-between"
                     >
                         <Box>
@@ -291,24 +288,28 @@ const Home = () => {
                         className="carousel"
                         w={{ base: '97vw', lg: '98vw' }}
                         p="0"
-                        m="0"
+                        mb="0"
                         justify="center"
                         align="center"
                         overflow={'visible'}
                     >
-                        <Carousel
-                            infinite={true}
-                            show={Math.max(1.5, windowWidth / 300)}
-                            slide={2.5}
-                            swiping={true}
-                            responsive={true}
+                        <Swiper
+                            slidesPerView={2}
+                            spaceBetween={20}
+                            pagination={{
+                                clickable: true,
+                            }}
+                            modules={[FreeMode, Pagination]}
+                            className="mySwiper"
                         >
                             {interestList.map(
                                 (item: InterestCardData, idx: any) => (
-                                    <InterestCard key={idx} data={item} />
+                                    <SwiperSlide>
+                                        <InterestCard key={idx} data={item} />
+                                    </SwiperSlide>
                                 )
                             )}
-                        </Carousel>
+                        </Swiper>
                     </HStack>
                 </Flex>
             </VStack>

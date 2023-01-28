@@ -6,6 +6,7 @@ import { Post } from './Forum'
 import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 import { addBrowseCount } from '../../api/user'
+import Loading from '../common/Loading'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -36,7 +37,10 @@ function PostList() {
         post.profile = profilePath
     })
 
-    console.log('check', postList)
+    let loading
+    if (!postList) {
+        loading = <Loading />
+    }
 
     function browseCount(post_id: number) {
         const user_id = auth.id
@@ -45,6 +49,7 @@ function PostList() {
 
     return (
         <>
+            {loading}
             {postList.map((post) => (
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>

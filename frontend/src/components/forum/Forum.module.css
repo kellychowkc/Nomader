@@ -2,6 +2,7 @@
 
 .container {
     color: #1d1d42;
+    overflow: hidden;
 }
 
 .tab {
@@ -17,6 +18,7 @@
     font-size: 32px;
     font-family: 'Roboto', sans-serif;
     color: #1d1d42;
+    text-align: center;
 }
 
 .titleBox {
@@ -31,7 +33,7 @@
     padding-top: 6rem;
     border-width: 3px;
     border-radius: 30px;
-    margin: 2rem 5rem;
+    margin: 2rem 10rem;
     padding: 3rem;
 }
 
@@ -215,7 +217,7 @@ summary {
         width: 100%;
         border-width: 3px;
         border-radius: 30px;
-        margin: 1rem;
+        margin: 0.1rem;
         padding: 1rem 3rem;
     }
 }
