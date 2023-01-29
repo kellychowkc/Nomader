@@ -25,6 +25,7 @@ import { RootThunkDispatch } from '../../redux/store'
 import { useNavigate } from 'react-router'
 import { signUpThunk } from '../../redux/auth/authThunk'
 import CountryList from './CountryList'
+import { APIError } from '../../api/utils'
 
 function SignUp() {
     const [showPassword, setShowPassword] = useState(false)
@@ -32,6 +33,10 @@ function SignUp() {
     const [imageStore, setImageStore] = useState('')
     const dispatch = useDispatch<RootThunkDispatch>()
     const navigate = useNavigate()
+
+    function goBack() {
+        setNextPage(!nextPage)
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -62,6 +67,16 @@ function SignUp() {
                 return
             } else {
                 const res = await dispatch(signUpThunk(values, navigate))
+
+                if (res === 'Username is already used.') {
+                    Swal.fire({
+                        title: 'Notice',
+                        text: 'Please create another username',
+                        icon: 'warning',
+                    })
+                    goBack()
+                    return
+                }
                 if (res.success) {
                     Swal.fire({
                         title: 'Congrats!',
@@ -74,6 +89,22 @@ function SignUp() {
     })
 
     function toNextPage() {
+        if (formik.values.phone_num.toString().length > 10) {
+            Swal.fire({
+                title: 'Notice',
+                text: 'Please input the correct phone number',
+                icon: 'warning',
+            })
+            return
+        }
+        if (formik.values.country === '') {
+            Swal.fire({
+                title: 'Notice',
+                text: 'Please select your country',
+                icon: 'warning',
+            })
+            return
+        }
         if (
             formik.values.first_name === '' ||
             formik.values.last_name === '' ||
@@ -82,8 +113,7 @@ function SignUp() {
             formik.values.username === '' ||
             formik.values.password === '' ||
             formik.values.email === '' ||
-            formik.values.phone_num === '' ||
-            formik.values.country === ''
+            formik.values.phone_num === ''
         ) {
             Swal.fire({
                 title: 'Notice',
@@ -94,9 +124,6 @@ function SignUp() {
         } else {
             setNextPage(!nextPage)
         }
-    }
-    function goBack() {
-        setNextPage(!nextPage)
     }
 
     function handleImageChange(e: any) {
