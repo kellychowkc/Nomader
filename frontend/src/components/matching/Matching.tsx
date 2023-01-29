@@ -150,7 +150,7 @@ function Matching() {
     }
 
     return (
-        <>
+        <div className={styles.matchingBody}>
             <Nav />
             {loading}
             <div className={styles.profileContainer}>
@@ -231,7 +231,7 @@ function Matching() {
                 </Box>
                 <Dock />
             </div>
-        </>
+        </div>
     )
 }
 
