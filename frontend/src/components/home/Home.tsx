@@ -161,8 +161,10 @@ const Home = () => {
                                 >
                                     Hello,
                                 </Text>
+                            </HStack>
+                            <HStack color="#B0D8BC" align={'baseline'}>
                                 <Text
-                                    fontSize={{ base: '2em', lg: '3em' }}
+                                    fontSize={{ base: '2em', lg: '1em' }}
                                     fontWeight="bolder"
                                     textTransform={'uppercase'}
                                     whiteSpace={'break-spaces'}
@@ -170,7 +172,6 @@ const Home = () => {
                                     {auth.username}
                                 </Text>
                             </HStack>
-
                             <Text
                                 fontSize={{ base: '1em', lg: '1.2em' }}
                                 fontWeight="medium"

@@ -25,7 +25,6 @@ import { RootThunkDispatch } from '../../redux/store'
 import { useNavigate } from 'react-router'
 import { signUpThunk } from '../../redux/auth/authThunk'
 import CountryList from './CountryList'
-import { APIError } from '../../api/utils'
 
 function SignUp() {
     const [showPassword, setShowPassword] = useState(false)
@@ -67,7 +66,6 @@ function SignUp() {
                 return
             } else {
                 const res = await dispatch(signUpThunk(values, navigate))
-
                 if (res === 'Username is already used.') {
                     Swal.fire({
                         title: 'Notice',
