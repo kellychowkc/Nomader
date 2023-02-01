@@ -25,19 +25,35 @@ function HotPostList() {
                 )
             }
         )
+        setImage()
     }, [])
 
-    postList.forEach((post: Post) => {
-        const time = post.created_at!.slice(0, 10)
-        post.created_at = time
-        const fileName = post.image
-        let path = `${REACT_APP_API_SERVER}/post/` + fileName
-        post.image = path
-        const profileFileName = post.profile
-        let profilePath = `${REACT_APP_API_SERVER}/profile/` + profileFileName
-        post.profile = profilePath
-        const id = post.id
-    })
+    function setImage() {
+        postList.forEach((post: Post) => {
+            const time = post.created_at!.slice(0, 10)
+            post.created_at = time
+            if (post.id) {
+                if (post.id % 3 == 0) {
+                    post.image = `../../assets/successBackgroundMobile.jpg`
+                }
+                if (post.id % 2 == 0) {
+                    post.image = `../../assets/safetyBackground.jpg`
+                } else {
+                    post.image = `../../assets/matchingBackground.jpg`
+                }
+            } else {
+                post.image = `../../assets/matchingBackground.jpg`
+            }
+            // const fileName = post.image
+            // let path = `${REACT_APP_API_SERVER}/post/` + fileName
+            // post.image = path
+            const profileFileName = post.profile
+            let profilePath =
+                `${REACT_APP_API_SERVER}/profile/` + profileFileName
+            post.profile = profilePath
+            const id = post.id
+        })
+    }
 
     function browseCount(post_id: number) {
         const user_id = auth.id
@@ -51,10 +67,17 @@ function HotPostList() {
                     <Box flexShrink={0}>
                         <div>
                             <div>
-                                <img
-                                    src={require(`../../assets/successBackgroundMobile.jpg`)}
-                                    alt="interest"
-                                ></img>
+                                {(post.id as any as number) % 2 == 0 ? (
+                                    <img
+                                        src={require(`../../assets/matchingBackground.jpg`)}
+                                        alt="interest"
+                                    ></img>
+                                ) : (
+                                    <img
+                                        src={require(`../../assets/successBackgroundMobile.jpg`)}
+                                        alt="interest"
+                                    ></img>
+                                )}
                             </div>
                         </div>
                     </Box>

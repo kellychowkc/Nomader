@@ -84,6 +84,7 @@ function SafetyContact() {
                                     <option
                                         key={`country-${item.id}`}
                                         value={item.id}
+                                        className={styles.option}
                                     >
                                         {item.name}
                                     </option>
