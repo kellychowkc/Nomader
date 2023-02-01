@@ -15,6 +15,7 @@ function NewPost() {
     const navigate = useNavigate()
     const auth: AuthState = useSelector((state: any) => state.auth)
     const user_id = auth.id
+    const windowWidth = window.innerWidth
 
     const formik = useFormik({
         initialValues: {
@@ -48,7 +49,9 @@ function NewPost() {
                         })
                     }
                 })
-                navigate('/forum')
+                setTimeout(() => {
+                    navigate('/forum')
+                }, 3000)
             }
         },
     })
@@ -115,6 +118,7 @@ function NewPost() {
                         id="image"
                         name="image"
                         hidden
+                        margin={1}
                     ></Input>
                     <label htmlFor="image" className={styles.uploadBtn}>
                         Choose File
@@ -130,7 +134,8 @@ function NewPost() {
                     Post
                 </Button>
             </form>
-            <Dock />
+
+            {windowWidth > 850 ? <></> : <Dock />}
         </div>
     )
 }

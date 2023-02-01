@@ -33,6 +33,7 @@ export interface AttractionPost {
 }
 
 function Attraction() {
+    const windowWidth = window.innerWidth
     const [postList, setPostList] = useState<Array<AttractionPost>>([])
     const [searchPostList, setSearchPostList] = useState<Array<AttractionPost>>(
         []
@@ -192,7 +193,7 @@ function Attraction() {
                         </Box>
                     </VStack>
                 </VStack>
-                <Dock />
+                {windowWidth > 850 ? <></> : <Dock />}
             </div>
         </>
     )

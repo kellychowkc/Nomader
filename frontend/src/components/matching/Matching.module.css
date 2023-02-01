@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 .matchingBody {
-    overflow: hidden;
+    overflow: scroll;
 }
 .profileContainer {
-    overflow: hidden;
+    overflow: scroll;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .infoBox {
-    height: 25px;
+    height: 20px;
     display: flex;
     flex-direction: row;
     margin-bottom: 0;
@@ -142,6 +142,16 @@ hr {
     color: #ffffff;
 }
 
+.interestTitle {
+    text-transform: capitalize;
+    font-size: small;
+}
+
+.interestContainer {
+    display: flex;
+    flex-direction: column;
+}
+
 @media only screen and (max-width: 850px) {
     .profileInfo {
         margin: 1rem 0;
@@ -158,6 +168,9 @@ hr {
         display: flex;
         justify-content: center;
         flex-direction: column;
+    }
+    .bodyBox {
+        overflow: scroll;
     }
 }
 

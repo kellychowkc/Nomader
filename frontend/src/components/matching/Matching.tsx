@@ -9,7 +9,7 @@ import {
     WrapItem,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import {
@@ -21,29 +21,30 @@ import {
 
 import type { OtherUserProfile } from '../../api/friend'
 
-import { AuthState } from '../../redux/state'
+import { AuthState, UserInfoState } from '../../redux/state'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'
 import Nav from '../common/navBar/NavBar'
 import Loading from '../common/Loading'
+import SideMenu from '../common/sideMenu/SideMenu'
+import { storeMatch } from '../../redux/userInfo/userInfoThunk'
+import { RootThunkDispatch } from '../../redux/store'
 
 const { REACT_APP_API_SERVER } = process.env
 
 function Matching() {
+    const windowWidth = window.innerWidth
     const auth: AuthState = useSelector((state: any) => state.auth)
     const [profileList, setProfileList] = useState<[OtherUserProfile]>()
     const [profile, setProfile] = useState<OtherUserProfile>()
     const [likedUser, setLikedUser] = useState(2)
     const [likedUserId, setLikedUserId] = useState<number[]>()
     const [profileDefault, setProfileDefault] = useState(true)
+    const [matchTime, setMatchTime] = useState(5)
     const navigate = useNavigate()
+    const [refresh, setRefresh] = useState(false)
 
     const userId = auth.id
-
-    let loading
-    if (!profileList) {
-        loading = <Loading />
-    }
 
     useEffect(() => {
         try {
@@ -58,6 +59,7 @@ function Matching() {
                 )
 
                 setProfile(userList[0])
+
                 let likedUserIdList: number[] = []
                 if (likedUser === 2) {
                     likedUserIdList.push(userList[0].id)
@@ -106,14 +108,16 @@ function Matching() {
                 text: `Don't be greedy. You can only read 5 profiles each time`,
                 icon: 'warning',
             })
-            navigate('/home')
+            navigate('/chat')
         }
+
         profileList!.shift()
         setProfile(profileList![0])
         setProfileDefault(!profileDefault)
     }
 
     function liked() {
+        setMatchTime(matchTime - 1)
         likedUserAction(userId!, profile!.id).then((data: any) => {
             console.log(data)
         })
@@ -124,7 +128,7 @@ function Matching() {
                 text: `Don't be greedy. You can only read 5 profiles each time`,
                 icon: 'warning',
             })
-            navigate('/home')
+            navigate('/chat')
         }
         if (likedUser === 2 || likedUser === 1) {
             likedUserId?.forEach((id) => {
@@ -137,6 +141,7 @@ function Matching() {
                         text: `Please go to chat room now!`,
                         icon: 'success',
                     })
+                    navigate('/chat')
                 }
             })
             profileList!.shift()
@@ -152,85 +157,101 @@ function Matching() {
     return (
         <div className={styles.matchingBody}>
             <Nav />
-            {loading}
-            <div className={styles.profileContainer}>
-                <div className={styles.flexContainer}>
-                    {profileDefault ? (
-                        <img
-                            src={require(`../../assets/profile2.jpg`)}
-                            alt="profile pic"
-                            className={styles.profilePic}
-                        ></img>
-                    ) : (
-                        <img
-                            src={require(`../../assets/profile.1.jpg`)}
-                            alt="profile pic"
-                            className={styles.profilePic}
-                        ></img>
-                    )}
+            <Box className="bodyBox">
+                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {!profileList ? <Loading /> : <></>}
+                <div className={styles.profileContainer}>
+                    <div className={styles.flexContainer}>
+                        {profileDefault ? (
+                            <img
+                                src={require(`../../assets/profile2.jpg`)}
+                                alt="profile pic"
+                                className={styles.profilePic}
+                            ></img>
+                        ) : (
+                            <img
+                                src={require(`../../assets/profile.1.jpg`)}
+                                alt="profile pic"
+                                className={styles.profilePic}
+                            ></img>
+                        )}
+                    </div>
+
+                    <div className={styles.profileInfo}>
+                        <div className={styles.infoBox}>
+                            <h1 className={styles.title}>
+                                {profile?.username}
+                            </h1>
+                        </div>
+                        <div className={styles.infoBox}>
+                            <h2 className={styles.subtitle}>
+                                From: {profile?.country}
+                            </h2>
+                        </div>
+                        <div className={styles.infoBox}>
+                            <h2 className={styles.subtitle}>
+                                Job: {profile?.jobTitle}
+                            </h2>
+                        </div>
+                        <hr></hr>
+
+                        <h3 className={styles.bio}> {profile?.information}</h3>
+
+                        <hr></hr>
+
+                        <h3 className={styles.subtitle}> Interests </h3>
+                        <div className={styles.interestBox}>
+                            <Wrap spacingX={1}>
+                                {profile?.interests.map((interest) => (
+                                    <WrapItem
+                                        key={interest}
+                                        className={styles.interestContainer}
+                                    >
+                                        <h3 className={styles.interestTitle}>
+                                            {interest}
+                                        </h3>
+                                        <Center
+                                            w="80px"
+                                            h="80px"
+                                            overflow="hidden"
+                                        >
+                                            <img
+                                                src={require(`../../assets/interests/${interest}.png`)}
+                                                alt="interest"
+                                            ></img>
+                                        </Center>
+                                    </WrapItem>
+                                ))}
+                            </Wrap>
+                        </div>
+                    </div>
+                    <Box className={styles.btnBox}>
+                        <Button
+                            className={styles.crossbtn}
+                            onClick={unliked}
+                            borderRadius="full"
+                            bgImage={
+                                'linear-gradient(to right,#569ee6,  #b0d8bc)'
+                            }
+                            boxSize={'4em'}
+                        >
+                            <Icon as={CloseIcon} boxSize={'1.5em'} />
+                        </Button>
+                        <Button
+                            className={styles.tickbtn}
+                            onClick={liked}
+                            borderRadius="full"
+                            bgImage={
+                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                            }
+                            boxSize={'4em'}
+                        >
+                            <Icon as={CheckIcon} boxSize={'2em'} />
+                        </Button>
+                    </Box>
+                    {windowWidth > 850 ? <></> : <Dock />}
                 </div>
-
-                <div className={styles.profileInfo}>
-                    <div className={styles.infoBox}>
-                        <h1 className={styles.title}>{profile?.username}</h1>
-                    </div>
-                    <div className={styles.infoBox}>
-                        <h2 className={styles.subtitle}>
-                            From:{profile?.country}
-                        </h2>
-                    </div>
-                    <div className={styles.infoBox}>
-                        <h2 className={styles.subtitle}>
-                            Job:
-                            {profile?.jobTitle}
-                        </h2>
-                    </div>
-                    <hr></hr>
-
-                    <h3 className={styles.bio}> {profile?.information}</h3>
-
-                    <hr></hr>
-
-                    <h3 className={styles.subtitle}> Interests </h3>
-                    <div className={styles.interestBox}>
-                        <Wrap spacingX={2}>
-                            {profile?.interests.map((interest) => (
-                                <WrapItem key={interest}>
-                                    <Center w="80px" h="80px" overflow="hidden">
-                                        <img
-                                            src={require(`../../assets/interests/${interest}.png`)}
-                                            alt="interest"
-                                        ></img>
-                                    </Center>
-                                </WrapItem>
-                            ))}
-                        </Wrap>
-                    </div>
-                </div>
-                <Box className={styles.btnBox}>
-                    <Button
-                        className={styles.crossbtn}
-                        onClick={unliked}
-                        borderRadius="full"
-                        bgImage={'linear-gradient(to right,#569ee6,  #b0d8bc)'}
-                        boxSize={'4em'}
-                    >
-                        <Icon as={CloseIcon} boxSize={'1.5em'} />
-                    </Button>
-                    <Button
-                        className={styles.tickbtn}
-                        onClick={liked}
-                        borderRadius="full"
-                        bgImage={
-                            'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                        }
-                        boxSize={'4em'}
-                    >
-                        <Icon as={CheckIcon} boxSize={'2em'} />
-                    </Button>
-                </Box>
-                <Dock />
-            </div>
+            </Box>
         </div>
     )
 }

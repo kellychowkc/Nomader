@@ -8,8 +8,8 @@ function Loading() {
             <ReactLoading
                 type={'spin'}
                 color={'#0DAD8D'}
-                height={'50%'}
-                width={'50%'}
+                height={'80px'}
+                width={'80px'}
             />
         </div>
     )

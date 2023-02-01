@@ -23,6 +23,7 @@ import { RootThunkDispatch } from '../../redux/store'
 
 import styles from './ChatHome.module.css'
 import { useNavigate } from 'react-router-dom'
+import SideMenu from '../common/sideMenu/SideMenu'
 
 interface IChatUser {
     room_id: string
@@ -44,6 +45,7 @@ export default function ChatHome() {
         (state: any) => state.chatList
     )
 
+    const windowWidth = window.innerWidth
     const [roomInfo, setRoomInfo] = React.useState<IChatUser>()
 
     const [roomList, setRoomList] = useState<Array<any>>([])
@@ -79,57 +81,68 @@ export default function ChatHome() {
             flexDirection="column"
             justifyContent="center"
         >
-            {/* === NavBar === */}
             <Nav />
-
-            <VStack w="98vw" mt={6} justifyContent="center" alignItems="center">
-                <HStack
-                    w="100%"
-                    className={styles.head}
-                    justifyContent="space-around"
+            <Box className="bodyBox">
+                {windowWidth > 850 ? <SideMenu /> : <></>}
+                <VStack
+                    w="98vw"
+                    mt={6}
+                    justifyContent="center"
+                    alignItems="center"
                 >
-                    <Box w={'80%'} pl={5} justifyContent="center">
-                        <Text
-                            className={styles.headTitle}
-                            as="h1"
-                            textAlign={'center'}
-                            color={bgColor}
-                        >
-                            Chat
-                        </Text>
+                    <HStack
+                        w="100%"
+                        className={styles.head}
+                        justifyContent="space-around"
+                    >
+                        <Box w={'80%'} pl={5} justifyContent="center">
+                            <Text
+                                className={styles.headTitle}
+                                as="h1"
+                                textAlign={'center'}
+                                color={bgColor}
+                            >
+                                Chat
+                            </Text>
+                        </Box>
+                    </HStack>
+
+                    <Box
+                        w="85vw"
+                        h="100%"
+                        maxW={'container.lg'}
+                        maxH="full"
+                        scrollBehavior="smooth"
+                        overflowY="auto"
+                        overflowX="hidden"
+                    >
+                        <Table className={styles.messageTable} bg={bg} w="100%">
+                            <Thead
+                                position="sticky"
+                                top={0}
+                                bg={bg}
+                                zIndex={10}
+                            >
+                                <Tr>
+                                    <Th
+                                        pl={2}
+                                        fontSize={{ base: 'lg', lg: 'xl' }}
+                                        fontWeight={'bold'}
+                                    >
+                                        Message
+                                    </Th>
+                                </Tr>
+                            </Thead>
+
+                            <Tbody>
+                                {/* ==== ChatList ==== */}
+                                <ChatList chatRoomList={roomList} />
+                            </Tbody>
+                        </Table>
                     </Box>
-                </HStack>
-
-                <Box
-                    w="85vw"
-                    h="100%"
-                    maxW={'container.lg'}
-                    maxH="full"
-                    scrollBehavior="smooth"
-                    overflowY="auto"
-                    overflowX="hidden"
-                >
-                    <Table className={styles.messageTable} bg={bg} w="100%">
-                        <Thead position="sticky" top={0} bg={bg} zIndex={10}>
-                            <Tr>
-                                <Th
-                                    pl={2}
-                                    fontSize={{ base: 'lg', lg: 'xl' }}
-                                    fontWeight={'bold'}
-                                >
-                                    Message
-                                </Th>
-                            </Tr>
-                        </Thead>
-
-                        <Tbody>
-                            {/* ==== ChatList ==== */}
-                            <ChatList chatRoomList={roomList} />
-                        </Tbody>
-                    </Table>
-                </Box>
-            </VStack>
-            <Dock />
+                </VStack>
+            </Box>
+            {windowWidth > 850 ? <></> : <Dock />}
         </Box>
     )
 }

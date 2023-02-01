@@ -34,6 +34,7 @@ import { ModalFriends, ModalPosts } from './ModalProfile'
 import { Link, useNavigate } from 'react-router-dom'
 import { Post } from '../forum/Forum'
 import { fetchJson } from '../../api/utils'
+import SideMenu from '../common/sideMenu/SideMenu'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -43,7 +44,7 @@ const Profile = () => {
     // show existing info
     const [profileList, setProfileList] = useState<UserProfile>()
     const auth: AuthState = useSelector((state: any) => state.auth)
-
+    const windowWidth = window.innerWidth
     const userId = auth.id
 
     const [userProfile, setUserProfile] = React.useState<UserProfile>({})
@@ -161,188 +162,198 @@ const Profile = () => {
     return (
         <div>
             <Box w="auto" h="full">
-                {/* === NavBar === */}
                 <Nav />
-                <VStack w="auto">
-                    <Text
-                        position={'relative'}
-                        className={styles.bigTitle}
-                        color={color}
-                    >
-                        Profile
-                    </Text>
-                    <Flex minH={'full'} align={'center'} justify={'center'}>
-                        <Stack>
-                            <Stack
-                                direction={['column', 'row']}
-                                spacing={3}
-                                justifyContent="center"
-                                alignItems={'center'}
-                            >
-                                <div className={styles.profileContainer}>
-                                    {imageStore === '' ? (
-                                        <Avatar
-                                            name={profileList?.username}
-                                            size="2xl"
-                                            src={
-                                                profileList?.profile as any as string
-                                            }
-                                        ></Avatar>
-                                    ) : (
-                                        <Avatar
-                                            size="2xl"
-                                            src={imageStore}
-                                        ></Avatar>
-                                    )}
-                                </div>
+                <Box className="bodyBox">
+                    {windowWidth > 850 ? <SideMenu /> : <></>}
+                    <VStack w="auto">
+                        <Text
+                            position={'relative'}
+                            className={styles.bigTitle}
+                            color={color}
+                        >
+                            Profile
+                        </Text>
+                        <Flex minH={'full'} align={'center'} justify={'center'}>
+                            <Stack>
+                                <Stack
+                                    direction={['column', 'row']}
+                                    spacing={3}
+                                    justifyContent="center"
+                                    alignItems={'center'}
+                                >
+                                    <div className={styles.profileContainer}>
+                                        {imageStore === '' ? (
+                                            <Avatar
+                                                name={profileList?.username}
+                                                size="2xl"
+                                                src={
+                                                    profileList?.profile as any as string
+                                                }
+                                            ></Avatar>
+                                        ) : (
+                                            <Avatar
+                                                size="2xl"
+                                                src={imageStore}
+                                            ></Avatar>
+                                        )}
+                                    </div>
+
+                                    <Stack
+                                        w="100%"
+                                        p={3}
+                                        wrap="wrap"
+                                        direction={{
+                                            base: 'column',
+                                            sm: 'column',
+                                            md: 'column',
+                                            lg: 'row',
+                                            xl: 'row',
+                                        }}
+                                        justify="space-evenly"
+                                        alignItems={'center'}
+                                        spacing={2}
+                                    >
+                                        <Text
+                                            as="h3"
+                                            fontSize={'2xl'}
+                                            fontWeight={'semibold'}
+                                            color={color}
+                                        >
+                                            {profileList?.first_name +
+                                                ' ' +
+                                                profileList?.last_name}
+                                        </Text>
+                                        <Button
+                                            size={'xs'}
+                                            colorScheme="gray"
+                                            boxShadow={'0px 1px 2px #BBBBBB'}
+                                        >
+                                            <Link to="/editProfile">
+                                                Edit Profile
+                                            </Link>
+                                        </Button>
+                                        <Button
+                                            size={'xs'}
+                                            colorScheme="gray"
+                                            boxShadow={'0px 1px 2px #BBBBBB'}
+                                        >
+                                            <Link to="/editInterest">
+                                                Edit Interest
+                                            </Link>
+                                        </Button>
+                                    </Stack>
+                                </Stack>
 
                                 <Stack
-                                    w="100%"
-                                    p={3}
-                                    wrap="wrap"
-                                    direction={{
-                                        base: 'column',
-                                        sm: 'column',
-                                        md: 'column',
-                                        lg: 'row',
-                                        xl: 'row',
-                                    }}
-                                    justify="space-evenly"
-                                    alignItems={'center'}
-                                    spacing={2}
+                                    w={'100%'}
+                                    p={2}
+                                    direction={['column', 'row']}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    spacing={5}
                                 >
-                                    <Text
-                                        as="h3"
-                                        fontSize={'2xl'}
-                                        fontWeight={'semibold'}
-                                        color={color}
-                                    >
-                                        {profileList?.first_name +
-                                            ' ' +
-                                            profileList?.last_name}
-                                    </Text>
+                                    <StatGroup>
+                                        <Stat p={1} m={2}>
+                                            <StatLabel>Friends</StatLabel>
+                                            <StatNumber>
+                                                {friendsCount}
+                                            </StatNumber>
+                                        </Stat>
+                                        <Stat p={1} m={2}>
+                                            <StatLabel>Posts</StatLabel>
+                                            <StatNumber>
+                                                {postsCount}
+                                            </StatNumber>
+                                        </Stat>
+                                    </StatGroup>
                                     <Button
-                                        size={'xs'}
-                                        colorScheme="gray"
+                                        size={'lg'}
+                                        bgImage={
+                                            'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                        }
                                         boxShadow={'0px 1px 2px #BBBBBB'}
+                                        type="submit"
+                                        className={styles.btn}
+                                        onClick={() => {
+                                            setModalType('friends')
+                                            onOpen()
+                                        }}
                                     >
-                                        <Link to="/editProfile">
-                                            Edit Profile
-                                        </Link>
+                                        View Friends
                                     </Button>
                                     <Button
-                                        size={'xs'}
-                                        colorScheme="gray"
+                                        size={'lg'}
+                                        bgImage={
+                                            'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                        }
                                         boxShadow={'0px 1px 2px #BBBBBB'}
+                                        type="submit"
+                                        className={styles.btn}
+                                        onClick={() => {
+                                            setModalType('posts')
+                                            onOpen()
+                                        }}
                                     >
-                                        <Link to="/editInterest">
-                                            Edit Interest
-                                        </Link>
+                                        View Posts
                                     </Button>
                                 </Stack>
-                            </Stack>
-
-                            <Stack
-                                w={'100%'}
-                                p={2}
-                                direction={['column', 'row']}
-                                justifyContent="center"
-                                alignItems="center"
-                                spacing={5}
-                            >
-                                <StatGroup>
-                                    <Stat p={1} m={2}>
-                                        <StatLabel>Friends</StatLabel>
-                                        <StatNumber>{friendsCount}</StatNumber>
-                                    </Stat>
-                                    <Stat p={1} m={2}>
-                                        <StatLabel>Posts</StatLabel>
-                                        <StatNumber>{postsCount}</StatNumber>
-                                    </Stat>
-                                </StatGroup>
-                                <Button
-                                    size={'lg'}
-                                    bgImage={
-                                        'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                                    }
-                                    boxShadow={'0px 1px 2px #BBBBBB'}
-                                    type="submit"
-                                    className={styles.btn}
-                                    onClick={() => {
-                                        setModalType('friends')
-                                        onOpen()
-                                    }}
+                                <Stack
+                                    my="3px"
+                                    p="3px"
+                                    spacing={4}
+                                    direction={['column', 'row']}
                                 >
-                                    View Friends
-                                </Button>
-                                <Button
-                                    size={'lg'}
-                                    bgImage={
-                                        'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                                    }
-                                    boxShadow={'0px 1px 2px #BBBBBB'}
-                                    type="submit"
-                                    className={styles.btn}
-                                    onClick={() => {
-                                        setModalType('posts')
-                                        onOpen()
-                                    }}
+                                    <Modal
+                                        id="modal_Profile"
+                                        isOpen={isOpen}
+                                        onClose={onClose}
+                                        size={{
+                                            base: 'sm',
+                                            md: 'lg',
+                                            lg: 'xl',
+                                        }}
+                                    >
+                                        <ModalOverlay />
+                                        {modalType === 'friends' ? (
+                                            <ModalFriends
+                                                userFriends={userFriends}
+                                                userPosts={userPosts}
+                                                disclosure={{
+                                                    onOpen,
+                                                    isOpen,
+                                                    onClose,
+                                                }}
+                                            />
+                                        ) : (
+                                            <ModalPosts
+                                                userFriends={userFriends}
+                                                userPosts={userPosts}
+                                                disclosure={{
+                                                    onOpen,
+                                                    isOpen,
+                                                    onClose,
+                                                }}
+                                            />
+                                        )}
+                                    </Modal>
+                                </Stack>
+                                <Box
+                                    fontSize="sm"
+                                    color={color}
+                                    className={styles.timeBox}
                                 >
-                                    View Posts
-                                </Button>
+                                    <Text fontSize={'1em'}>
+                                        Member since: {profileList?.created_at}
+                                    </Text>
+                                    <Text>
+                                        Last update: {profileList?.updated_at}
+                                    </Text>
+                                </Box>
                             </Stack>
-                            <Stack
-                                my="3px"
-                                p="3px"
-                                spacing={4}
-                                direction={['column', 'row']}
-                            >
-                                <Modal
-                                    id="modal_Profile"
-                                    isOpen={isOpen}
-                                    onClose={onClose}
-                                    size={{ base: 'sm', md: 'lg', lg: 'xl' }}
-                                >
-                                    <ModalOverlay />
-                                    {modalType === 'friends' ? (
-                                        <ModalFriends
-                                            userFriends={userFriends}
-                                            userPosts={userPosts}
-                                            disclosure={{
-                                                onOpen,
-                                                isOpen,
-                                                onClose,
-                                            }}
-                                        />
-                                    ) : (
-                                        <ModalPosts
-                                            userFriends={userFriends}
-                                            userPosts={userPosts}
-                                            disclosure={{
-                                                onOpen,
-                                                isOpen,
-                                                onClose,
-                                            }}
-                                        />
-                                    )}
-                                </Modal>
-                            </Stack>
-                            <Box
-                                fontSize="sm"
-                                color={color}
-                                className={styles.timeBox}
-                            >
-                                <Text fontSize={'1em'}>
-                                    Member since: {profileList?.created_at}
-                                </Text>
-                                <Text>
-                                    Last update: {profileList?.updated_at}
-                                </Text>
-                            </Box>
-                        </Stack>
-                    </Flex>
-                </VStack>
-                <Dock />
+                        </Flex>
+                    </VStack>
+                </Box>
+                {windowWidth > 850 ? <></> : <Dock />}
             </Box>
         </div>
     )

@@ -48,6 +48,7 @@ const ChatRoom = (props: Props) => {
     const { colorMode, toggleColorMode } = useColorMode()
     const bgColor = useColorModeValue('#1d1d42', '#B0D8BC')
     const bg = useColorModeValue('gray.100', 'gray.900')
+    const windowWidth = window.innerWidth
 
     let { room_id } = useParams()
 
@@ -443,7 +444,11 @@ const ChatRoom = (props: Props) => {
                                         : // <></>
                                           console.log(e.code)
                                 }
-                            />
+                            ></Textarea>
+                            <div className="scrollbar" id="style-7">
+                                <div className="force-overflow"></div>
+                            </div>
+
                             <Button
                                 className="send-message-button"
                                 colorScheme={'teal'}
@@ -457,7 +462,8 @@ const ChatRoom = (props: Props) => {
                     </Box>
                 </Box>
             </VStack>
-            <Dock />
+
+            {windowWidth > 850 ? <></> : <Dock />}
         </Box>
     )
 }

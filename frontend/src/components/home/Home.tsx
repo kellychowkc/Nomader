@@ -35,6 +35,7 @@ import { useSelector } from 'react-redux'
 import { AuthState } from '../../redux/state'
 import InterestCard, { InterestCardData } from './InterestCard'
 import { fetchSelfUserProfile } from '../../api/user'
+import SideMenu from '../common/sideMenu/SideMenu'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -124,197 +125,231 @@ const Home = () => {
     return (
         <Box
             w="auto"
-            h="full"
+            h="100vm"
             display="flex"
             flexDirection="column"
             justifyContent="center"
         >
-            {/* === NavBar === */}
             <Nav />
+            <Box className="bodyBox">
+                {windowWidth > 850 ? <SideMenu /> : <></>}
 
-            <VStack w="100%">
-                <Flex
-                    className="greeting"
-                    w="80vw"
-                    mb="0"
-                    direction="column"
-                    justify="center"
-                    align="center"
-                >
-                    <HStack
-                        w="100%"
-                        pt="15px"
-                        m="0"
-                        spacing={3}
-                        justify={{ base: 'space-around', lg: 'center' }}
+                <VStack w="100%">
+                    <Flex
+                        className="greeting"
+                        w="80vw"
+                        mb="0"
+                        direction="column"
+                        justify="center"
+                        align="center"
                     >
-                        <VStack
-                            className="displayName"
-                            px="5px"
-                            mx="0"
-                            align="flex-start"
+                        <HStack
+                            w="100%"
+                            pt="15px"
+                            m="0"
+                            spacing={3}
+                            justify={{ base: 'space-around', lg: 'center' }}
                         >
-                            <HStack color="#B0D8BC" align={'baseline'}>
-                                <Text
-                                    fontSize={{ base: '1.5em', lg: '2.5em' }}
-                                    fontWeight="bold"
-                                >
-                                    Hello,
-                                </Text>
-                            </HStack>
-                            <HStack color="#B0D8BC" align={'baseline'}>
-                                <Text
-                                    fontSize={{ base: '2em', lg: '1em' }}
-                                    fontWeight="bolder"
-                                    textTransform={'uppercase'}
-                                    whiteSpace={'break-spaces'}
-                                >
-                                    {auth.username}
-                                </Text>
-                            </HStack>
-                            <Text
-                                fontSize={{ base: '1em', lg: '1.2em' }}
-                                fontWeight="medium"
-                                letterSpacing={'wide'}
-                                whiteSpace={'nowrap'}
+                            <VStack
+                                className="displayName"
+                                px="5px"
+                                mx="0"
+                                align="flex-start"
                             >
-                                Where are you heading?
-                            </Text>
-                        </VStack>
-                        <Box className="avatar" p="10px" mx="0">
-                            <Avatar
-                                name={auth.username}
-                                size={{ base: 'xl', lg: 'xl' }}
-                                src={profilePic as any as string}
-                                boxShadow={'0px 0px 6px #AAAAAA'}
-                            ></Avatar>
-                        </Box>
-                    </HStack>
-                </Flex>
-
-                <Flex
-                    className="Category"
-                    w="80vw"
-                    pt={'3%'}
-                    direction="column"
-                    justify="center"
-                    align="center"
-                >
-                    <HStack
-                        w="100%"
-                        maxW="container.lg"
-                        p="0"
-                        mb="1rem"
-                        justify="space-between"
-                    >
-                        <HStack>
-                            <Text
-                                fontSize={{ base: '1.5em', lg: '2.5em' }}
-                                fontWeight="bold"
-                                letterSpacing={'wide'}
-                            >
-                                Category
-                            </Text>
-                            <Icon as={MdLocalActivity} w="20%" h="20%" />
+                                <HStack color="#B0D8BC" align={'baseline'}>
+                                    <Text
+                                        fontSize={{
+                                            base: '1.5em',
+                                            lg: '2.5em',
+                                        }}
+                                        fontWeight="bold"
+                                    >
+                                        Hello,
+                                    </Text>
+                                </HStack>
+                                <HStack color="#B0D8BC" align={'baseline'}>
+                                    <Text
+                                        fontSize={{ base: '2em', lg: '1em' }}
+                                        fontWeight="bolder"
+                                        textTransform={'uppercase'}
+                                        whiteSpace={'break-spaces'}
+                                    >
+                                        {auth.username}
+                                    </Text>
+                                </HStack>
+                                <Text
+                                    fontSize={{ base: '1em', lg: '1.2em' }}
+                                    fontWeight="medium"
+                                    letterSpacing={'wide'}
+                                    whiteSpace={'nowrap'}
+                                >
+                                    Where are you heading?
+                                </Text>
+                            </VStack>
+                            <Box className="avatar" p="10px" mx="0">
+                                <Avatar
+                                    name={auth.username}
+                                    size={{ base: 'xl', lg: 'xl' }}
+                                    src={profilePic as any as string}
+                                    boxShadow={'0px 0px 6px #AAAAAA'}
+                                ></Avatar>
+                            </Box>
                         </HStack>
-                    </HStack>
+                    </Flex>
 
-                    <HStack maxW="container.lg" className="buttonContainer">
-                        {categories.map((category: any, idx: number) => (
-                            <Button
-                                key={idx}
-                                w="90%"
-                                h="90%"
-                                py={['3', '3', '3', '4', '4']}
-                                border="0"
-                                borderRadius="10px"
-                                justifyContent="center"
-                                boxShadow="0px 0px 9px #AAAAAA"
-                                bgGradient="linear(to-r, #56C3E6, #B0D8BC)"
-                                onClick={() => navigate(category.path)}
-                            >
-                                <Link to={category.path}>
-                                    <Icon
-                                        as={category.icon}
-                                        h={[
-                                            '30px',
-                                            '40px',
-                                            '50px',
-                                            '60px',
-                                            '65px',
-                                        ]}
-                                        w={[
-                                            '30px',
-                                            '40px',
-                                            '50px',
-                                            '60px',
-                                            '65px',
-                                        ]}
-                                        color="#FFFFFF"
-                                    />
-                                </Link>
-                            </Button>
-                        ))}
-                    </HStack>
-                </Flex>
-                <Flex
-                    className="Interest"
-                    w="80vw"
-                    direction="column"
-                    justify="center"
-                    align="center"
-                >
-                    <HStack
-                        w="100%"
-                        maxW="container.lg"
-                        p="0"
-                        mb="1rem"
-                        justify="space-between"
+                    <Flex
+                        className="Category"
+                        w="80vw"
+                        pt={'3%'}
+                        direction="column"
+                        justify="center"
+                        align="center"
                     >
-                        <Box>
+                        <HStack
+                            w="100%"
+                            maxW="container.lg"
+                            p="0"
+                            mb="1rem"
+                            justify="space-between"
+                        >
                             <HStack>
                                 <Text
                                     fontSize={{ base: '1.5em', lg: '2.5em' }}
                                     fontWeight="bold"
                                     letterSpacing={'wide'}
                                 >
-                                    Features
+                                    Category
                                 </Text>
-                                <Icon as={MdLocationPin} w="20%" h="20%" />
+                                <Icon as={MdLocalActivity} w="20%" h="20%" />
                             </HStack>
-                        </Box>
-                    </HStack>
+                        </HStack>
 
-                    <HStack
-                        className="carousel"
-                        w={{ base: '97vw', lg: '98vw' }}
-                        p="0"
-                        mb="0"
+                        <HStack maxW="container.lg" className="buttonContainer">
+                            {categories.map((category: any, idx: number) => (
+                                <Button
+                                    key={idx}
+                                    w="90%"
+                                    h="90%"
+                                    py={['3', '3', '3', '4', '4']}
+                                    border="0"
+                                    borderRadius="10px"
+                                    justifyContent="center"
+                                    boxShadow="0px 0px 9px #AAAAAA"
+                                    bgGradient="linear(to-r, #56C3E6, #B0D8BC)"
+                                    onClick={() => navigate(category.path)}
+                                >
+                                    <Link to={category.path}>
+                                        <Icon
+                                            as={category.icon}
+                                            h={[
+                                                '30px',
+                                                '40px',
+                                                '50px',
+                                                '60px',
+                                                '65px',
+                                            ]}
+                                            w={[
+                                                '30px',
+                                                '40px',
+                                                '50px',
+                                                '60px',
+                                                '65px',
+                                            ]}
+                                            color="#FFFFFF"
+                                        />
+                                    </Link>
+                                </Button>
+                            ))}
+                        </HStack>
+                    </Flex>
+                    <Flex
+                        className="Interest"
+                        w="80vw"
+                        direction="column"
                         justify="center"
                         align="center"
-                        overflow={'visible'}
                     >
-                        <Swiper
-                            slidesPerView={2}
-                            spaceBetween={20}
-                            pagination={{
-                                clickable: true,
-                            }}
-                            modules={[FreeMode, Pagination]}
-                            className="mySwiper"
+                        <HStack
+                            w="100%"
+                            maxW="container.lg"
+                            p="0"
+                            mb="1rem"
+                            justify="space-between"
                         >
-                            {interestList.map(
-                                (item: InterestCardData, idx: any) => (
-                                    <SwiperSlide>
-                                        <InterestCard key={idx} data={item} />
-                                    </SwiperSlide>
-                                )
+                            <Box>
+                                <HStack>
+                                    <Text
+                                        fontSize={{
+                                            base: '1.5em',
+                                            lg: '2.5em',
+                                        }}
+                                        fontWeight="bold"
+                                        letterSpacing={'wide'}
+                                    >
+                                        Features
+                                    </Text>
+                                    <Icon as={MdLocationPin} w="20%" h="20%" />
+                                </HStack>
+                            </Box>
+                        </HStack>
+
+                        <HStack
+                            className="carousel"
+                            w={{ base: '97vw', lg: '98vw' }}
+                            p="0"
+                            mb="0"
+                            justify="center"
+                            align="center"
+                            overflow={'visible'}
+                        >
+                            {windowWidth < 850 ? (
+                                <Swiper
+                                    slidesPerView={2}
+                                    spaceBetween={20}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    modules={[FreeMode, Pagination]}
+                                    className="mySwiper"
+                                >
+                                    {interestList.map(
+                                        (item: InterestCardData, idx: any) => (
+                                            <SwiperSlide>
+                                                <InterestCard
+                                                    key={idx}
+                                                    data={item}
+                                                />
+                                            </SwiperSlide>
+                                        )
+                                    )}
+                                </Swiper>
+                            ) : (
+                                <Swiper
+                                    slidesPerView={3}
+                                    spaceBetween={20}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    modules={[FreeMode, Pagination]}
+                                    className="mySwiper"
+                                >
+                                    {interestList.map(
+                                        (item: InterestCardData, idx: any) => (
+                                            <SwiperSlide className="slide">
+                                                <InterestCard
+                                                    key={idx}
+                                                    data={item}
+                                                />
+                                            </SwiperSlide>
+                                        )
+                                    )}
+                                </Swiper>
                             )}
-                        </Swiper>
-                    </HStack>
-                </Flex>
-            </VStack>
-            <Dock />
+                        </HStack>
+                    </Flex>
+                </VStack>
+            </Box>
+            {windowWidth > 850 ? <></> : <Dock />}
         </Box>
     )
 }

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ChakraProvider } from '@chakra-ui/react'
+import { ProSidebarProvider } from 'react-pro-sidebar'
 
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
     <ChakraProvider cssVarsRoot="#app">
         <Provider store={store}>
-            <App />
+            <ProSidebarProvider>
+                <App />
+            </ProSidebarProvider>
         </Provider>
     </ChakraProvider>
 )

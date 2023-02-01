@@ -7,6 +7,7 @@ import {
     Stack,
     Text,
 } from '@chakra-ui/react'
+import { cursorTo } from 'readline'
 
 export interface InterestCardData {
     name: string

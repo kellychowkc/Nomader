@@ -5,7 +5,6 @@ import styles from './InfiniteGrid.module.css'
 function getItems(nextGroupKey: number, count: number) {
     const nextItems = []
     const nextKey = nextGroupKey * count
-
     for (let i = 0; i < count; ++i) {
         nextItems.push({ groupKey: nextGroupKey, key: nextKey + i })
     }
@@ -33,6 +32,13 @@ const Item = ({ num }: any) => (
 
 export default function App() {
     const [items, setItems] = React.useState(() => getItems(0, 10))
+    const [itemLength, setItemLength] = React.useState(0)
+
+    React.useEffect(() => {
+        setItemLength(items.length)
+    }, [items])
+
+    console.log(itemLength)
 
     return (
         <MasonryInfiniteGrid
@@ -40,8 +46,13 @@ export default function App() {
             gap={8}
             onRequestAppend={(e) => {
                 const nextGroupKey = (+e.groupKey! || 0) + 1
-
-                setItems([...items, ...getItems(nextGroupKey, 10)])
+                {
+                    itemLength < 30 ? (
+                        setItems([...items, ...getItems(nextGroupKey, 10)])
+                    ) : (
+                        <></>
+                    )
+                }
             }}
         >
             {items.map((item) => (

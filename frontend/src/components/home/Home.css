@@ -2,6 +2,10 @@
     box-shadow: 0px 0px 5px #fff, 0px 0px 10px 0px 0px 25px, 0px 0px 50px #ff0;
 }
 
+.bodyBox {
+    display: flex;
+    height: 100%;
+}
 .swiper-slide img {
     display: block;
     width: 100%;
@@ -11,6 +15,11 @@
 
 .mySwiper {
     margin: 0 5rem;
+    cursor: pointer;
+}
+
+.slide {
+    margin-bottom: 1rem;
 }
 
 .buttonContainer {
@@ -21,6 +30,9 @@
 }
 
 @media only screen and (max-width: 850px) {
+    .Hstack {
+        margin: 1rem;
+    }
     .mySwiper {
         margin: 0;
     }

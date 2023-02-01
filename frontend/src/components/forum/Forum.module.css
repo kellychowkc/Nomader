@@ -87,11 +87,11 @@
     border: 1px solid;
     border-color: #56c3e6;
     color: #56c3e6;
-    padding: 0.5rem;
+    padding: 0.1rem;
     font-family: sans-serif;
     border-radius: 0.3rem;
     cursor: pointer;
-    margin-top: 2rem;
+    margin-top: 5rem;
 }
 
 /* Forum */
@@ -151,7 +151,7 @@ summary {
 }
 
 .contentBox {
-    width: 20rem;
+    width: 30rem;
 }
 
 /* attractions */
@@ -194,7 +194,33 @@ summary {
     justify-content: space-between;
     color: #1d1d42;
 }
+
+.imageBox {
+    max-width: 60rem;
+    max-height: 60rem;
+}
+
+.latestPostImage {
+    max-width: 30rem;
+    max-height: 40rem;
+}
+
 @media only screen and (max-width: 850px) {
+    .imageBox {
+        max-width: 10rem;
+        max-height: 20rem;
+    }
+
+    .latestPostImage {
+        max-width: 20rem;
+        max-height: 20rem;
+    }
+    .body {
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     .profileInfo {
         margin: 1rem 0;
     }
@@ -219,5 +245,8 @@ summary {
         border-radius: 30px;
         margin: 0.1rem;
         padding: 1rem 3rem;
+    }
+    .contentBox {
+        width: 20rem;
     }
 }

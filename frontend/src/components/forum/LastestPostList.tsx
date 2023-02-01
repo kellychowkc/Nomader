@@ -13,6 +13,7 @@ const { REACT_APP_API_SERVER } = process.env
 function PostList() {
     const [postList, setPostList] = useState<Array<Post>>([])
     const auth: AuthState = useSelector((state: any) => state.auth)
+    const windowWidth = window.innerWidth
 
     useEffect(() => {
         fetchJson<Array<Post>>(`${REACT_APP_API_SERVER}/data/post`).then(
@@ -53,8 +54,12 @@ function PostList() {
             {postList.map((post) => (
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>
-                        <div>
-                            <img src={post.image} alt="interest"></img>
+                        <div className={styles.imageBox}>
+                            <img
+                                src={post.image}
+                                alt="interest"
+                                className={styles.latestPostImage}
+                            ></img>
                         </div>
                     </Box>
                     <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
@@ -82,20 +87,28 @@ function PostList() {
                                 {post.created_at}
                             </div>
                         </Box>
-                        <details>
-                            <summary
-                                onClick={() =>
-                                    browseCount(post.id as any as number)
-                                }
-                            >
-                                Read more
-                            </summary>
+                        {windowWidth > 850 ? (
                             <Box className={styles.contentBox}>
                                 <Text className={styles.content}>
                                     {post.content}
                                 </Text>
                             </Box>
-                        </details>
+                        ) : (
+                            <details>
+                                <summary
+                                    onClick={() =>
+                                        browseCount(post.id as any as number)
+                                    }
+                                >
+                                    Read more
+                                </summary>
+                                <Box className={styles.contentBox}>
+                                    <Text className={styles.content}>
+                                        {post.content}
+                                    </Text>
+                                </Box>
+                            </details>
+                        )}
                     </Box>
                 </Box>
             ))}

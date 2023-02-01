@@ -12,6 +12,7 @@ const { REACT_APP_API_SERVER } = process.env
 function HotPostList() {
     const [postList, setPostList] = useState<Array<Post>>([])
     const auth: AuthState = useSelector((state: any) => state.auth)
+    const windowWidth = window.innerWidth
 
     useEffect(() => {
         fetchJson<Array<Post>>(`${REACT_APP_API_SERVER}/data/hot_post`).then(
@@ -82,20 +83,28 @@ function HotPostList() {
                                 {post.created_at}
                             </div>
                         </Box>
-                        <details>
-                            <summary
-                                onClick={() =>
-                                    browseCount(post.id as any as number)
-                                }
-                            >
-                                Read more
-                            </summary>
+                        {windowWidth > 850 ? (
                             <Box className={styles.contentBox}>
                                 <Text className={styles.content}>
                                     {post.content}
                                 </Text>
                             </Box>
-                        </details>
+                        ) : (
+                            <details>
+                                <summary
+                                    onClick={() =>
+                                        browseCount(post.id as any as number)
+                                    }
+                                >
+                                    Read more
+                                </summary>
+                                <Box className={styles.contentBox}>
+                                    <Text className={styles.content}>
+                                        {post.content}
+                                    </Text>
+                                </Box>
+                            </details>
+                        )}
                     </Box>
                 </Box>
             ))}

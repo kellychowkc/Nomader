@@ -3,7 +3,6 @@ import styles from './Forum.module.css'
 import {
     Box,
     Heading,
-    Link,
     Image,
     Text,
     HStack,
@@ -18,17 +17,18 @@ import {
     Tab,
     TabPanel,
     Icon,
-    Button,
     FormControl,
     Input,
+    Button,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
-import { AddIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router'
 import PostList from './LastestPostList'
 import HotPostList from './HotPost'
-import { MdSearch } from 'react-icons/md'
+import SideMenu from '../common/sideMenu/SideMenu'
+import { AddIcon } from '@chakra-ui/icons'
+import FloatingActionButtons from './FloatingActionButton'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -46,63 +46,78 @@ export interface Post {
 const Forum = () => {
     const navigate = useNavigate()
     const color = useColorModeValue('#1d1d42', '#B0D8BC')
+    const windowWidth = window.innerWidth
 
     return (
         <div>
-            {/* === NavBar === */}
             <Nav />
-            <VStack w="auto" margin={6}>
-                <div className={styles.head}>
-                    <Text as="h1" className={styles.headTitle} color={color}>
-                        Nomad Blog
-                    </Text>
-                    <Box className={styles.btnBox}>
-                        <Button
-                            className={styles.addbtn}
-                            bgImage={
-                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                            }
-                            onClick={() => {
-                                navigate('/newPost')
-                            }}
+            <Box className="bodyBox">
+                {windowWidth > 850 ? <SideMenu /> : <></>}
+                <VStack w="auto" margin={6}>
+                    <div className={styles.head}>
+                        <Text
+                            as="h1"
+                            className={styles.headTitle}
+                            color={color}
                         >
-                            <Icon as={AddIcon} w={6} h={6} />
-                        </Button>
-                    </Box>
-                </div>
-                <VStack w="auto">
-                    <Tabs isFitted>
-                        <TabList>
-                            <Tab>Hot</Tab>
-                            <Tab>Latest</Tab>
-                        </TabList>
+                            Nomad Blog
+                        </Text>
+                        <Box className={styles.btnBox}>
+                            <Button
+                                className={styles.addbtn}
+                                bgImage={
+                                    'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                }
+                                onClick={() => {
+                                    navigate('/newPost')
+                                }}
+                            >
+                                <Icon as={AddIcon} w={6} h={6} />
+                            </Button>
+                        </Box>
+                    </div>
+                    <VStack w="auto">
+                        <Tabs isFitted>
+                            <TabList>
+                                <Tab>Hot</Tab>
+                                <Tab>Latest</Tab>
+                            </TabList>
 
-                        <TabPanels>
-                            <TabPanel>
-                                <VStack
-                                    w={{ base: '90vw', lg: '85vw', xl: '75vw' }}
-                                    paddingTop="20px"
-                                    spacing="2"
-                                    alignItems="flex-start"
-                                >
-                                    <HotPostList />
-                                </VStack>
-                            </TabPanel>
-                            <TabPanel>
-                                <VStack
-                                    w={{ base: '90vw', lg: '85vw', xl: '75vw' }}
-                                    paddingTop="20px"
-                                    spacing="2"
-                                    alignItems="flex-start"
-                                >
-                                    <PostList />
-                                </VStack>
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>
+                            <TabPanels>
+                                <TabPanel>
+                                    <VStack
+                                        w={{
+                                            base: '90vw',
+                                            lg: '85vw',
+                                            xl: '75vw',
+                                        }}
+                                        paddingTop="20px"
+                                        spacing="2"
+                                        alignItems="flex-start"
+                                    >
+                                        <HotPostList />
+                                    </VStack>
+                                </TabPanel>
+                                <TabPanel>
+                                    <VStack
+                                        w={{
+                                            base: '90vw',
+                                            lg: '85vw',
+                                            xl: '75vw',
+                                        }}
+                                        paddingTop="20px"
+                                        spacing="2"
+                                        alignItems="flex-start"
+                                    >
+                                        <PostList />
+                                    </VStack>
+                                </TabPanel>
+                            </TabPanels>
+                        </Tabs>
+                    </VStack>
                 </VStack>
-            </VStack>
-            <Dock />
+            </Box>
+            {windowWidth > 850 ? <></> : <Dock />}
         </div>
     )
 }

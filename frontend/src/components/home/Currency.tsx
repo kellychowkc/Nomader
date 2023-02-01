@@ -7,6 +7,7 @@ import Dock from '../common/dock/Dock'
 import CurrencyList from './CurrencyList'
 import { fetchRate } from '../../api/user'
 import { useEffect, useState } from 'react'
+import SideMenu from '../common/sideMenu/SideMenu'
 
 interface Currency {
     rate: number
@@ -19,6 +20,7 @@ function Currency() {
     const [rate, setRate] = useState(1)
     const [currencyList, setCurrencyList] = useState<[Currency]>()
     const navigate = useNavigate()
+    const windowWidth = window.innerWidth
 
     function goBack() {
         navigate('/home')
@@ -43,54 +45,56 @@ function Currency() {
 
     return (
         <div className={styles.body}>
-            <Nav />
-            <div className={styles.container}>
-                <div className={styles.tab}>
-                    <button className={styles.backwardBtn} onClick={goBack}>
-                        <Icon as={ChevronLeftIcon} w={12} h={12} />
-                    </button>
-                    <div className={styles.titleBox}>
-                        <h1 className={styles.bigTitle}>Currency</h1>
+            <Box className="bodyBox">
+                {windowWidth > 850 ? <SideMenu /> : <></>}
+                <div className={styles.container}>
+                    <div className={styles.tab}>
+                        <button className={styles.backwardBtn} onClick={goBack}>
+                            <Icon as={ChevronLeftIcon} w={12} h={12} />
+                        </button>
+                        <div className={styles.titleBox}>
+                            <h1 className={styles.bigTitle}>Currency</h1>
+                        </div>
+                    </div>
+                    <div className={styles.currencyContainer}>
+                        <div className={styles.currencyBox}>
+                            <Select
+                                h={'4rem'}
+                                w={'80%'}
+                                fontSize={'20px'}
+                                id="currency1"
+                                name="currency1"
+                                placeholder={'Currency'}
+                                className={styles.select}
+                                value={selectedOption}
+                                onChange={(e) =>
+                                    setSelectedOption(e.target.value as any)
+                                }
+                            >
+                                <CurrencyList />
+                            </Select>
+                            <Box className={styles.rate}>1</Box>
+                            <Select
+                                h={'4rem'}
+                                w={'80%'}
+                                fontSize={'20px'}
+                                id="currency2"
+                                name="currency2"
+                                placeholder={'Currency'}
+                                className={styles.select}
+                                value={selectedOption2}
+                                onChange={(e) =>
+                                    setSelectedOption2(e.target.value as any)
+                                }
+                            >
+                                <CurrencyList />
+                            </Select>
+                            <Box className={styles.rate}>{rate}</Box>
+                        </div>
                     </div>
                 </div>
-                <div className={styles.currencyContainer}>
-                    <div className={styles.currencyBox}>
-                        <Select
-                            h={'4rem'}
-                            w={'80%'}
-                            fontSize={'20px'}
-                            id="currency1"
-                            name="currency1"
-                            placeholder={'Currency'}
-                            className={styles.select}
-                            value={selectedOption}
-                            onChange={(e) =>
-                                setSelectedOption(e.target.value as any)
-                            }
-                        >
-                            <CurrencyList />
-                        </Select>
-                        <Box className={styles.rate}>1</Box>
-                        <Select
-                            h={'4rem'}
-                            w={'80%'}
-                            fontSize={'20px'}
-                            id="currency2"
-                            name="currency2"
-                            placeholder={'Currency'}
-                            className={styles.select}
-                            value={selectedOption2}
-                            onChange={(e) =>
-                                setSelectedOption2(e.target.value as any)
-                            }
-                        >
-                            <CurrencyList />
-                        </Select>
-                        <Box className={styles.rate}>{rate}</Box>
-                    </div>
-                </div>
-            </div>
-            <Dock />
+            </Box>
+            {windowWidth > 850 ? <></> : <Dock />}
         </div>
     )
 }
