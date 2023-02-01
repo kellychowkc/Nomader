@@ -6,8 +6,11 @@ import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
 import { fetchCountry, fetchRate } from '../../api/user'
 import { useEffect, useState } from 'react'
-import CountryList from '../auth/CountryList'
+import CountryList, { CountryItem } from '../auth/CountryList'
 import SideMenu from '../common/sideMenu/SideMenu'
+import { fetchJson } from '../../api/utils'
+import Dropdown from 'react-bootstrap/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
 
 interface Emergency {
     emergency_tel: string
@@ -15,9 +18,11 @@ interface Emergency {
     ambulance_tel: string
     fire_tel: string
 }
+const { REACT_APP_API_SERVER } = process.env
 
 function SafetyContact() {
     const [selectedOption, setSelectedOption] = useState()
+    const [countryList, setCountryList] = useState<Array<CountryItem>>([])
     const [list, setList] = useState<Emergency>()
     const windowWidth = window.innerWidth
 
@@ -33,6 +38,18 @@ function SafetyContact() {
             setList(dataList)
         })
     })
+
+    useEffect(() => {
+        fetchJson<Array<CountryItem>>(
+            `${REACT_APP_API_SERVER}/data/country`
+        ).then((data) => {
+            setCountryList(
+                data.map((item) => ({
+                    ...item,
+                }))
+            )
+        })
+    }, [])
 
     return (
         <div className={styles.body}>
@@ -56,14 +73,23 @@ function SafetyContact() {
                                 id="country"
                                 name="country"
                                 placeholder={'Country'}
+                                bg={'transparent'}
                                 className={styles.select}
                                 value={selectedOption}
                                 onChange={(e) =>
                                     setSelectedOption(e.target.value as any)
                                 }
                             >
-                                <CountryList />
+                                {countryList.map((item) => (
+                                    <option
+                                        key={`country-${item.id}`}
+                                        value={item.id}
+                                    >
+                                        {item.name}
+                                    </option>
+                                ))}
                             </Select>
+
                             <h4 className={styles.subtitle}>Emergency</h4>
                             <Box className={styles.contact}>
                                 {list?.emergency_tel}

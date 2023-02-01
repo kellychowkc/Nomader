@@ -104,21 +104,22 @@
     font-family: 'Roboto', sans-serif;
     color: #1c324d;
 }
+
 .btnBox {
-    position: relative;
+    position: fixed;
+    bottom: 90px;
+    right: 10px;
     margin-top: 1px;
-    left: 4.5rem;
 }
 
 .addbtn {
     height: 100%;
-    width: 80%;
+    width: 70%;
     transition: all 0.5s ease;
     color: #ffffff;
     background-color: #aae5bb;
     outline: none;
     size: 10rem;
-    border-radius: 80%;
     border: solid #aae5bb;
 }
 
@@ -157,8 +158,8 @@ summary {
 /* attractions */
 .backwardBtn {
     background-color: transparent;
-    margin-left: 1rem;
-    width: 15%;
+    margin-left: 4rem;
+    width: 3%;
     transition: all 0.5s ease;
     outline: none;
     size: 15rem;
@@ -206,6 +207,13 @@ summary {
 }
 
 @media only screen and (max-width: 850px) {
+    .btnBox {
+        position: fixed;
+        bottom: 90px;
+        right: 1px;
+        margin-top: 1px;
+    }
+
     .imageBox {
         max-width: 10rem;
         max-height: 20rem;

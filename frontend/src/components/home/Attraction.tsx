@@ -65,24 +65,29 @@ function Attraction() {
     }, [])
 
     useEffect(() => {
+        postListImageUpdate()
         if (searchPost !== searchRef.current) {
-            console.log('searched')
+            console.log(searchPostList)
             const result = searchPostList!.filter(
                 (item) =>
                     item.name.match(searchPost) ||
                     item.description.match(searchPost)
             )
-
             setPostList(result)
+            postListImageUpdate()
         }
     }, [searchPost])
 
-    postList.forEach((post: AttractionPost) => {
-        const imageLink = post.image?.replace('url(', '')
-        let lastIndex = imageLink?.lastIndexOf('"')
-        let newLink = imageLink?.substring(0, lastIndex).substring(1)
-        post.image = newLink
-    })
+    function postListImageUpdate() {
+        postList.forEach((post: AttractionPost) => {
+            const imageLink = post.image?.replace('url(', '')
+            let lastIndex = imageLink?.lastIndexOf('"')
+            let newLink = imageLink?.substring(0, lastIndex).substring(1)
+            post.image = newLink
+        })
+    }
+
+    postListImageUpdate()
 
     function goBack() {
         navigate('/home')
@@ -104,35 +109,6 @@ function Attraction() {
                 </div>
                 <hr className={styles.line} />
                 <VStack justifyContent={'center'}>
-                    <Box
-                        className="searchUser"
-                        w="100%"
-                        maxW={'xl'}
-                        m={5}
-                        px="1rem"
-                        bg="gray.200"
-                        rounded={'15px'}
-                        boxShadow={'lg'}
-                        ml={'30%'}
-                        mr={'30%'}
-                    >
-                        <HStack>
-                            <FormControl id="searchUser" width="100%">
-                                <Input
-                                    placeholder="Search attraction"
-                                    _placeholder={{
-                                        color: 'gray.500',
-                                    }}
-                                    border="0"
-                                    type="text"
-                                    onChange={handleChange_searchPost}
-                                    value={searchPost}
-                                    focusBorderColor={'none'}
-                                />
-                            </FormControl>
-                            <Icon as={MdSearch} h="7%" w="7%" />
-                        </HStack>
-                    </Box>
                     <VStack
                         w={{ base: '90vw', lg: '85vw', xl: '75vw' }}
                         spacing="2"

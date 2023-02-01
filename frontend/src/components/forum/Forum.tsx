@@ -62,19 +62,6 @@ const Forum = () => {
                         >
                             Nomad Blog
                         </Text>
-                        <Box className={styles.btnBox}>
-                            <Button
-                                className={styles.addbtn}
-                                bgImage={
-                                    'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                                }
-                                onClick={() => {
-                                    navigate('/newPost')
-                                }}
-                            >
-                                <Icon as={AddIcon} w={6} h={6} />
-                            </Button>
-                        </Box>
                     </div>
                     <VStack w="auto">
                         <Tabs isFitted>
@@ -114,6 +101,20 @@ const Forum = () => {
                                 </TabPanel>
                             </TabPanels>
                         </Tabs>
+                        <Box className={styles.btnBox}>
+                            <Button
+                                borderRadius={'50%'}
+                                className={styles.addbtn}
+                                bgImage={
+                                    'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                }
+                                onClick={() => {
+                                    navigate('/newPost')
+                                }}
+                            >
+                                <Icon as={AddIcon} w={6} h={6} />
+                            </Button>
+                        </Box>
                     </VStack>
                 </VStack>
             </Box>
