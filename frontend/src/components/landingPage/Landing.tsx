@@ -9,7 +9,8 @@ function Landing() {
     const windowWidth = window.innerWidth
     return (
         <Box w="auto" h="full">
-            <Box className="bodyBox">
+            <Nav />
+            <Box display={'flex'}>
                 {windowWidth > 850 ? <SideMenu /> : <></>}
                 <VStack w="auto">
                     <Flex w="90vw" mb={1} justify="center">

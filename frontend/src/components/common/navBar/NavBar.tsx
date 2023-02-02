@@ -103,13 +103,6 @@ export default function Nav() {
                     </HStack>
                     <Flex alignItems={'center'}>
                         <Stack direction={'row'} spacing={0}>
-                            <Button onClick={toggleColorMode}>
-                                {colorMode === 'light' ? (
-                                    <MoonIcon />
-                                ) : (
-                                    <SunIcon />
-                                )}
-                            </Button>
                             {auth.isAuthenticated ? (
                                 <Menu>
                                     <MenuButton
