@@ -52,49 +52,59 @@ function SafetyContact() {
     }, [])
 
     return (
-        <div className={styles.body}>
-            {windowWidth > 850 ? <SideMenu /> : <></>}
-            <div className={styles.container}>
-                <div className={styles.tab}>
-                    <button className={styles.backwardBtn} onClick={goBack}>
-                        <Icon as={ChevronLeftIcon} w={12} h={12} />
-                    </button>
-                    <div className={styles.titleBox}>
-                        <h1 className={styles.bigTitle}>Emergency</h1>
-                    </div>
-                </div>
-                <div className={styles.safetyContainer}>
-                    <div className={styles.safetyBox}>
-                        <Select
-                            h={'4rem'}
-                            w={'80%'}
-                            fontSize={'20px'}
-                            id="country"
-                            name="country"
-                            placeholder={'Country'}
-                            bg={'transparent'}
-                            className={styles.select}
-                            value={selectedOption}
-                            onChange={(e) =>
-                                setSelectedOption(e.target.value as any)
-                            }
-                        >
-                            {countryList.map((item) => (
-                                <option
-                                    key={`country-${item.id}`}
-                                    value={item.id}
-                                    className={styles.option}
-                                >
-                                    {item.name}
-                                </option>
-                            ))}
-                        </Select>
+        <div>
+            <Nav />
+            <div className={styles.body}>
+                {windowWidth > 850 ? <SideMenu /> : <></>}
+                <div className={styles.container}>
+                    <div className={styles.tab}>
+                        {windowWidth > 850 ? (
+                            <></>
+                        ) : (
+                            <button
+                                className={styles.backwardBtn}
+                                onClick={goBack}
+                            >
+                                <Icon as={ChevronLeftIcon} w={12} h={12} />
+                            </button>
+                        )}
 
-                        <h4 className={styles.subtitle}>Emergency</h4>
-                        <Box className={styles.contact}>
-                            {list?.emergency_tel}
-                        </Box>
-                        {/* <h4 className={styles.subtitle}>Police</h4>
+                        <div className={styles.titleBox}>
+                            <h1 className={styles.bigTitle}>Emergency</h1>
+                        </div>
+                    </div>
+                    <div className={styles.safetyContainer}>
+                        <div className={styles.safetyBox}>
+                            <Select
+                                h={'4rem'}
+                                w={'80%'}
+                                fontSize={'20px'}
+                                id="country"
+                                name="country"
+                                placeholder={'Country'}
+                                bg={'transparent'}
+                                className={styles.select}
+                                value={selectedOption}
+                                onChange={(e) =>
+                                    setSelectedOption(e.target.value as any)
+                                }
+                            >
+                                {countryList.map((item) => (
+                                    <option
+                                        key={`country-${item.id}`}
+                                        value={item.id}
+                                        className={styles.option}
+                                    >
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </Select>
+
+                            <h4 className={styles.subtitle}>Emergency</h4>
+                            <Box className={styles.contact}>
+                                {list?.emergency_tel}
+                            </Box>
+                            {/* <h4 className={styles.subtitle}>Police</h4>
                             <Box className={styles.contact}>
                                 {list?.police_tel}
                             </Box>
@@ -106,6 +116,7 @@ function SafetyContact() {
                             <Box className={styles.contact}>
                                 {list?.fire_tel}
                             </Box> */}
+                        </div>
                     </div>
                 </div>
             </div>
