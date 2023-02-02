@@ -97,4 +97,14 @@ export class MatchService {
             .returning("id");
         return relationshipId;
     }
+
+    async checkMatch(id: number) {
+        const relationshipId: Array<{ id: number; created_at: string }> =
+            await this.knex("users_relationship")
+                .select("id", "created_at")
+                .where("user1_id", id)
+                .orderBy("created_at", "desc");
+
+        return relationshipId;
+    }
 }

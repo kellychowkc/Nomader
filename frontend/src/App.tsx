@@ -26,8 +26,8 @@ const ManageUser = React.lazy(
     () => import('./components/admin/contentManageUser/ManageUser')
 )
 const Matching = React.lazy(() => import('./components/matching/Matching'))
-const MatchingSuccess = React.lazy(
-    () => import('./components/matching/MatchingSuccess')
+const MatchingBlock = React.lazy(
+    () => import('./components/matching/MatchingBlock')
 )
 const NewPost = React.lazy(() => import('./components/forum/NewPost'))
 const MatchingIndex = React.lazy(
@@ -74,10 +74,9 @@ function App() {
                             />
                             <Route path="interest" element={<InterestList />} />
                             <Route path="matching" element={<Matching />} />
-
                             <Route
-                                path="matchingSuccess"
-                                element={<MatchingSuccess />}
+                                path="matchingBlock"
+                                element={<MatchingBlock />}
                             />
                             <Route path="newPost" element={<NewPost />} />
                             <Route path="friends" element={<Friends />} />

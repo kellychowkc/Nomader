@@ -198,4 +198,32 @@ export class MatchController {
             return;
         }
     };
+
+    checkMatch = async (req: Request, res: Response) => {
+        let date = new Date();
+        let dateOnly = date.toISOString().split("T")[0];
+
+        function check(data: any) {
+            return data.created_at.toISOString().split("T")[0] === dateOnly;
+        }
+        try {
+            const id = req.body.id;
+            const resp = await this.matchService.checkMatch(id);
+
+            const result = resp.filter((data) => check(data));
+            console.log(result);
+            res.status(200).json({
+                success: true,
+                message: "success",
+                result: result.length,
+            });
+        } catch (err) {
+            logger.error(err.toString());
+            res.status(401).json({
+                success: false,
+                message: "check match failed",
+            });
+            return;
+        }
+    };
 }

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import {
+    checkMatch,
     fetchOtherUserProfile,
     likedUserAction,
     openChat,
@@ -27,8 +28,6 @@ import styles from './Matching.module.css'
 import Nav from '../common/navBar/NavBar'
 import Loading from '../common/Loading'
 import SideMenu from '../common/sideMenu/SideMenu'
-import { storeMatch } from '../../redux/userInfo/userInfoThunk'
-import { RootThunkDispatch } from '../../redux/store'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -40,9 +39,8 @@ function Matching() {
     const [likedUser, setLikedUser] = useState(2)
     const [likedUserId, setLikedUserId] = useState<number[]>()
     const [profileDefault, setProfileDefault] = useState(true)
-    const [matchTime, setMatchTime] = useState(5)
+
     const navigate = useNavigate()
-    const [refresh, setRefresh] = useState(false)
 
     const userId = auth.id
 
@@ -117,7 +115,6 @@ function Matching() {
     }
 
     function liked() {
-        setMatchTime(matchTime - 1)
         likedUserAction(userId!, profile!.id).then((data: any) => {
             console.log(data)
         })

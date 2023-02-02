@@ -58,3 +58,15 @@ export async function openChat(userMember: number, userManager: number) {
         }),
     });
 }
+
+export async function checkMatch(userId: number) {
+    return fetchJson(`${REACT_APP_API_SERVER}/match/checkMatch`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({
+            id: userId,
+        }),
+    });
+}

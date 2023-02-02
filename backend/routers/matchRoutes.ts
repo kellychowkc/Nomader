@@ -6,3 +6,4 @@ export const matchRoutes = express.Router();
 matchRoutes.post("/", matchController.matchUser);
 matchRoutes.post("/like", matchController.likedUser);
 matchRoutes.post("/unlike", matchController.unlikeUser);
+matchRoutes.post("/checkMatch", matchController.checkMatch);

@@ -2,7 +2,8 @@ import { BlockList } from 'net'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { AuthState, UserInfoState } from '../../redux/state'
+import { checkMatch } from '../../api/friend'
+import { AuthState } from '../../redux/state'
 import { RootThunkDispatch } from '../../redux/store'
 import { getUserInterest } from '../../redux/userInfo/userInfoThunk'
 
@@ -10,22 +11,36 @@ function MatchingIndex() {
     const dispatch = useDispatch<RootThunkDispatch>()
     const navigate = useNavigate()
     const auth: AuthState = useSelector((state: any) => state.auth)
-    const match: UserInfoState = useSelector((state: any) => state.userInfo)
 
-    const blockTime = match.matchTime
-    const today = new Date()
-    const currentTime = today.getHours() - 2
-
-    const insertData = useEffect(() => {
-        const res = dispatch(getUserInterest(auth.id as any as number)).then(
+    async function checkMatching() {
+        let check = true
+        await checkMatch(auth.id as any as number).then((data: any) => {
+            if (data.result >= 5) {
+                check = false
+                return
+            } else {
+                return
+            }
+        })
+        await dispatch(getUserInterest(auth.id as any as number)).then(
             (data) => {
-                if (data.success) {
+                if (data.success && check) {
                     navigate('/matching')
-                } else {
-                    navigate('/interest')
                 }
+                if (!check) {
+                    navigate('/matchingBlock')
+                }
+                // navigate('/interest')
+                console.log('fail')
             }
         )
+    }
+    useEffect(() => {
+        try {
+            checkMatching()
+        } catch (err) {
+            window.location.reload()
+        }
     }, [])
 
     return <></>
