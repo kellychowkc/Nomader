@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-:root {
+/* :root {
     --background-color: #e6f3f9;
     --title-color: #b0d8bc;
     --tab-color: #56c3e6;
     --deeper-color: #1d1d42;
-}
+} */
 
 .btn {
     background-image: linear-gradient(
