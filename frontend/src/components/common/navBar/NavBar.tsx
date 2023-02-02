@@ -29,7 +29,6 @@ import { fetchSelfUserProfile } from '../../../api/user'
 const { REACT_APP_API_SERVER } = process.env
 
 export default function Nav() {
-    const { colorMode, toggleColorMode } = useColorMode()
     const navigate = useNavigate()
     const [profilePic, setProfilePic] = useState<string>()
     const bg = useColorModeValue('gray.100', 'gray.900')
