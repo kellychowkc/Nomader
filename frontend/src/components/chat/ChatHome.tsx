@@ -82,7 +82,7 @@ export default function ChatHome() {
             justifyContent="center"
         >
             <Nav />
-            <Box className="bodyBox">
+            <div className={styles.body}>
                 {windowWidth > 850 ? <SideMenu /> : <></>}
                 <VStack
                     w="98vw"
@@ -141,7 +141,7 @@ export default function ChatHome() {
                         </Table>
                     </Box>
                 </VStack>
-            </Box>
+            </div>
             {windowWidth > 850 ? <></> : <Dock />}
         </Box>
     )

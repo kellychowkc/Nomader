@@ -1,16 +1,27 @@
-.avatar {
+.homeBox {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 90%;
+}
+
+.avatarBox {
     box-shadow: 0px 0px 5px #fff, 0px 0px 10px 0px 0px 25px, 0px 0px 50px #ff0;
+    padding-left: 2.3rem;
 }
 
 .bodyBox {
     display: flex;
     height: 100%;
+    overflow-x: hidden;
 }
 .swiper-slide img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    margin: 0;
+    padding: 0%;
 }
 
 .mySwiper {
@@ -19,17 +30,105 @@
 }
 
 .slide {
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
 }
 
 .buttonContainer {
-    height: 7rem;
+    height: 10rem;
     width: 100%;
+    display: flex;
     margin-bottom: 1rem;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+
+.greeting {
+    margin-top: 2rem;
+    margin-right: 2rem;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.greetingBox {
+    width: 80%;
+    margin: 0 2rem;
+    padding: 0 1rem;
+    justify-content: space-between;
+    padding-top: 2rem;
+}
+
+.userName {
+    font-size: 3rem;
+    font-weight: bolder;
+    text-transform: uppercase;
+    white-space: inherit;
+}
+
+.category {
+    width: 80%;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 2rem;
+}
+
+.categoryBox {
+    margin: 3rem 0;
+    padding: 2rem 0;
+}
+
+.interestBox {
+    width: 80%;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+.carousel {
+    margin: 2rem 0;
+    padding-top: 2rem;
 }
 
 @media only screen and (max-width: 850px) {
+    .swiper-horizontal > .swiper-pagination-bullets,
+    .swiper-pagination-bullets.swiper-pagination-horizontal,
+    .swiper-pagination-custom,
+    .swiper-pagination-fraction {
+        width: 72%;
+    }
+    .slide {
+        margin-bottom: 1rem;
+    }
+
+    .homeBox {
+        width: 100%;
+    }
+    .carousel {
+        margin-left: 0;
+        padding-left: 0;
+        width: 30rem;
+    }
+    .category {
+        width: 80%;
+        margin: 0;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .categoryBox {
+        margin: 0;
+    }
+    .greeting {
+        margin-right: 0;
+        padding-right: 0;
+        margin-left: 1rem;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .greetingBox {
+        justify-content: space-around;
+        padding: 0;
+        margin: 0;
+    }
     .Hstack {
         margin: 1rem;
     }
@@ -42,5 +141,25 @@
         width: 100%;
         margin-bottom: 1rem;
         justify-content: space-around;
+    }
+
+    .greetingBox {
+        justify-content: center;
+    }
+    .userName {
+        font-size: 2rem;
+        font-weight: bolder;
+        text-transform: uppercase;
+        white-space: inherit;
+    }
+
+    .interestBox {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .carousel {
+        margin: 0;
+        padding-top: 0;
     }
 }

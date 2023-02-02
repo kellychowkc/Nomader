@@ -10,6 +10,8 @@ import Dock from '../common/dock/Dock'
 import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 import InterestItem from '../matching/InterestItem'
+import Nav from '../common/navBar/NavBar'
+import SideMenu from '../common/sideMenu/SideMenu'
 
 const { REACT_APP_API_SERVER } = process.env
 export interface InterestItem {
@@ -83,34 +85,37 @@ function EditInterest() {
         }
     }
     return (
-        <div className={styles.body}>
-            <div className={styles.pageContainer}>
-                <div className={styles.titleContainer}>
-                    <h1 className={styles.title}>Edit Interests</h1>
-                    <h3 className={styles.subtitle}>
-                        Pick your interests again!
-                    </h3>
-                </div>
-                <div className={styles.interestContainer}>
-                    <div className={styles.interestBox}>
-                        <Wrap>
-                            {interestList.map((item) => (
-                                <InterestItem
-                                    key={item.id}
-                                    {...item}
-                                    toggle={() => toggle(item.id)}
-                                />
-                            ))}
-                        </Wrap>
+        <div>
+            <Nav />
+            <div className={styles.body}>
+                {windowWidth > 850 ? <SideMenu /> : <></>}
+                <div className={styles.pageContainer}>
+                    <div className={styles.titleContainer}>
+                        <h1 className={styles.title}>Edit Interests</h1>
+                        <h3 className={styles.subtitle}>
+                            Pick your interests again!
+                        </h3>
+                    </div>
+                    <div className={styles.interestContainer}>
+                        <div className={styles.interestBox}>
+                            <Wrap>
+                                {interestList.map((item) => (
+                                    <InterestItem
+                                        key={item.id}
+                                        {...item}
+                                        toggle={() => toggle(item.id)}
+                                    />
+                                ))}
+                            </Wrap>
+                        </div>
+                    </div>
+                    <div className={styles.btnContainer}>
+                        <button className={styles.tickbtn} onClick={submit}>
+                            <Icon as={CheckIcon} w={9} h={9} />
+                        </button>
                     </div>
                 </div>
-                <div className={styles.btnContainer}>
-                    <button className={styles.tickbtn} onClick={submit}>
-                        <Icon as={CheckIcon} w={9} h={9} />
-                    </button>
-                </div>
             </div>
-
             {windowWidth > 850 ? <></> : <Dock />}
         </div>
     )

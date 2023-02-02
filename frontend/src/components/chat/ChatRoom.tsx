@@ -39,6 +39,8 @@ import {
     SunIcon,
 } from '@chakra-ui/icons'
 import { fetchSelfUserProfile } from '../../api/user'
+import SideMenu from '../common/sideMenu/SideMenu'
+import Nav from '../common/navBar/NavBar'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -176,293 +178,227 @@ const ChatRoom = (props: Props) => {
             flexDirection="column"
             justifyContent="center"
         >
+            {windowWidth > 850 ? <Nav /> : <></>}
             <Box
                 w={'full'}
                 h={'100%'}
-                bg={bg}
+                bg={'#F3F5F6'}
                 boxShadow={'0px 1px 2px 0px #DDDDDD'}
+                className="body"
             >
-                <HStack
-                    px={4}
-                    py={2}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    alignContent={'center'}
-                >
-                    <div className={'tab'}>
-                        <button className={'backwardBtn'}>
-                            <Link to="/chat">
-                                <Icon
-                                    as={ChevronLeftIcon}
-                                    w={12}
-                                    h={12}
-                                    color={bgColor}
-                                />
-                            </Link>
-                        </button>
-                    </div>
+                {windowWidth > 850 ? <SideMenu /> : <></>}
+                <div className="chatBox">
                     <HStack
-                        pl={2}
-                        flex={'1'}
-                        justifyContent={'space-between'}
+                        px={4}
+                        py={2}
+                        justifyContent={'center'}
                         alignItems={'center'}
                         alignContent={'center'}
-                        spacing={3}
                     >
-                        <HStack justifyContent={'flex-start'}>
-                            <Avatar
-                                size={{
-                                    base: 'md',
-                                    lg: 'lg',
-                                }}
-                                name={roomInfo.username}
-                                src={roomInfo.profile}
-                            />
-                            <Text fontSize={'lg'} fontWeight={'medium'}>
-                                {roomInfo.username ? roomInfo.username : ''}
-                            </Text>
-                        </HStack>
-                        <Flex alignItems={'center'}>
-                            <Stack direction={'row'} spacing={0}>
-                                <Button onClick={toggleColorMode}>
-                                    {colorMode === 'light' ? (
-                                        <MoonIcon />
-                                    ) : (
-                                        <SunIcon />
-                                    )}
-                                </Button>
-                                <Menu>
-                                    <MenuButton
-                                        as={Button}
-                                        rounded={'full'}
-                                        variant={'link'}
-                                        cursor={'pointer'}
-                                        minW={0}
-                                    >
-                                        <Icon
-                                            as={HamburgerIcon}
-                                            boxSize="1.5em"
-                                        />
-                                    </MenuButton>
-                                    <MenuList>
-                                        <Box py={1} px={2}>
-                                            <HStack
-                                                justifyContent={'space-around'}
-                                            >
-                                                <Avatar
-                                                    size={'md'}
-                                                    name={auth.username}
-                                                    src={profilePic}
-                                                />
-                                                <Text
-                                                    fontSize={'lg'}
-                                                    fontWeight={'semibold'}
-                                                    textAlign={'center'}
-                                                >
-                                                    {auth.username}
-                                                </Text>
-                                            </HStack>
-                                        </Box>
-                                        <LinkBox>
-                                            <MenuItem>
-                                                <LinkOverlay
-                                                    as={Link}
-                                                    to={'/editProfile'}
-                                                    style={{
-                                                        textDecoration: 'none',
-                                                    }}
-                                                >
-                                                    Edit Profile
-                                                </LinkOverlay>
-                                            </MenuItem>
-                                        </LinkBox>
-
-                                        {auth.isAdmin ? (
-                                            <LinkBox>
-                                                <MenuItem>
-                                                    <NavLink
-                                                        className="controlPanel"
-                                                        to={'/control/'}
-                                                    >
-                                                        Control Panel
-                                                    </NavLink>
-                                                </MenuItem>
-                                            </LinkBox>
-                                        ) : (
-                                            <></>
-                                        )}
-
-                                        <MenuDivider />
-                                        <LinkBox>
-                                            <MenuItem>
-                                                <LinkOverlay
-                                                    onClick={logOut}
-                                                    style={{
-                                                        textDecoration: 'none',
-                                                    }}
-                                                >
-                                                    Logout
-                                                </LinkOverlay>
-                                            </MenuItem>
-                                        </LinkBox>
-                                    </MenuList>
-                                </Menu>
-                            </Stack>
-                        </Flex>
-                    </HStack>
-                </HStack>
-            </Box>
-            <VStack w="100vw" h={'15vw'}>
-                <Box w={'100%'} h={'100%'} m={3}>
-                    <Box
-                        h={'70vh'}
-                        className="messages-container"
-                        overflowY={'scroll'}
-                        ref={messageEl}
-                    >
-                        <ol className="messages-list">
-                            {messageHistory.map((message: any, idx: number) => (
-                                <li
-                                    key={idx}
-                                    className={`message_item ${
-                                        message.user_speech_id === auth.id
-                                            ? 'my-message'
-                                            : 'received-message'
-                                    }`}
-                                >
-                                    <Text
-                                        className="message_header"
-                                        fontSize={'1.2em'}
-                                        fontWeight={'medium'}
-                                    >
-                                        {message.user_speech_id === auth.id
-                                            ? 'me: '
-                                            : `${roomInfo.username}: `}
-                                    </Text>
-                                    <Text
-                                        className="message_content"
-                                        fontSize={'1em'}
-                                    >
-                                        {message.content}
-                                    </Text>
-                                    <Text
-                                        pb={2}
-                                        lineHeight={'0.2'}
-                                        textAlign={'right'}
-                                    >
-                                        {message?.created_at}
-                                    </Text>
-                                </li>
-                            ))}
-
-                            {messages.map((message: any, idx: number) => (
-                                <li
-                                    key={idx}
-                                    className={`message-item ${
-                                        message.ownedByCurrentUser
-                                            ? 'my-message'
-                                            : 'received-message'
-                                    }`}
-                                    style={
-                                        message.ownedByCurrentUser
-                                            ? {
-                                                  width: 'auto',
-                                                  maxWidth: '70%',
-                                                  padding: '10px 15px',
-                                                  wordBreak: 'break-word',
-                                                  borderRadius: '10px',
-                                                  color: '#FFFFFF',
-                                                  margin: '15px 15px',
-                                                  backgroundColor: '#B0D8BC',
-                                                  marginLeft: 'auto',
-                                                  boxShadow:
-                                                      '1px 1px 2px 0px #DDDDDD',
-                                              }
-                                            : {
-                                                  width: 'auto',
-                                                  maxWidth: '70%',
-                                                  padding: '10px 15px',
-                                                  wordBreak: 'break-word',
-                                                  borderRadius: '10px',
-                                                  color: '#FFFFFF',
-                                                  margin: '15px 15px',
-                                                  backgroundColor: '#1D1D42',
-                                                  marginRight: 'auto',
-                                                  boxShadow:
-                                                      '-1px 1px 2px 0px #DDDDDD',
-                                              }
-                                    }
-                                >
-                                    <Text
-                                        className="message_header"
-                                        fontSize={'1.2em'}
-                                        fontWeight={'medium'}
-                                    >
-                                        {message.ownedByCurrentUser
-                                            ? 'me:'
-                                            : 'other:'}
-                                    </Text>
-                                    <Text
-                                        className="message_content"
-                                        fontSize={'1em'}
-                                    >
-                                        {message.body}
-                                    </Text>
-                                    <Text
-                                        pb={2}
-                                        lineHeight={'0'}
-                                        textAlign={'right'}
-                                    >
-                                        {time}
-                                    </Text>
-                                </li>
-                            ))}
-                        </ol>
-                    </Box>
-                    <Box className="typeContainer">
+                        <div className={'tab'}>
+                            <button className={'backwardBtn'}>
+                                <Link to="/chat">
+                                    <Icon
+                                        as={ChevronLeftIcon}
+                                        w={12}
+                                        h={12}
+                                        color={bgColor}
+                                    />
+                                </Link>
+                            </button>
+                        </div>
                         <HStack
-                            px={5}
-                            py={4}
-                            borderRadius={'px'}
-                            bg={bg}
-                            boxShadow={'0px 3px 3px 0px #BBBBBB'}
-                            h={'7rem'}
+                            pl={2}
+                            flex={'1'}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
+                            alignContent={'center'}
+                            spacing={3}
                         >
-                            <Textarea
-                                className="newMessage-input-field"
-                                bg={'gray.400'}
-                                overflow={'scroll'}
-                                boxShadow={'0px 0px 2px 0px #DDDDDD'}
-                                focusBorderColor={'none'}
-                                border={'none'}
-                                placeholder="Write message..."
-                                value={newMessage}
-                                onChange={handleNewMessageChange}
-                                onKeyDown={(e) =>
-                                    e.code === 'Enter'
-                                        ? handleSendMessage
-                                        : // <></>
-                                          console.log(e.code)
-                                }
-                            ></Textarea>
-                            <div className="scrollbar" id="style-7">
-                                <div className="force-overflow"></div>
-                            </div>
-
-                            <Button
-                                className="send-message-button"
-                                colorScheme={'teal'}
-                                px={5}
-                                borderRadius={'full'}
-                                onClick={handleSendMessage}
-                            >
-                                Send
-                            </Button>
+                            <HStack justifyContent={'flex-start'}>
+                                <Avatar
+                                    size={{
+                                        base: 'md',
+                                        lg: 'lg',
+                                    }}
+                                    name={roomInfo.username}
+                                    src={roomInfo.profile}
+                                />
+                                <Text fontSize={'lg'} fontWeight={'medium'}>
+                                    {roomInfo.username ? roomInfo.username : ''}
+                                </Text>
+                            </HStack>
                         </HStack>
-                    </Box>
-                </Box>
-            </VStack>
+                    </HStack>
 
+                    <VStack className="messageBox">
+                        <Box w={'100%'} h={'100%'} m={3}>
+                            <Box
+                                h={'70vh'}
+                                className="messages-container"
+                                overflowY={'scroll'}
+                                ref={messageEl}
+                            >
+                                <ol className="messages-list">
+                                    {messageHistory.map(
+                                        (message: any, idx: number) => (
+                                            <li
+                                                key={idx}
+                                                className={`message_item ${
+                                                    message.user_speech_id ===
+                                                    auth.id
+                                                        ? 'my-message'
+                                                        : 'received-message'
+                                                }`}
+                                            >
+                                                <Text
+                                                    className="message_header"
+                                                    fontSize={'1.2em'}
+                                                    fontWeight={'medium'}
+                                                >
+                                                    {message.user_speech_id ===
+                                                    auth.id
+                                                        ? 'me: '
+                                                        : `${roomInfo.username}: `}
+                                                </Text>
+                                                <Text
+                                                    className="message_content"
+                                                    fontSize={'1em'}
+                                                >
+                                                    {message.content}
+                                                </Text>
+                                                <Text
+                                                    pb={2}
+                                                    lineHeight={'0.2'}
+                                                    textAlign={'right'}
+                                                >
+                                                    {message?.created_at}
+                                                </Text>
+                                            </li>
+                                        )
+                                    )}
+
+                                    {messages.map(
+                                        (message: any, idx: number) => (
+                                            <li
+                                                key={idx}
+                                                className={`message-item ${
+                                                    message.ownedByCurrentUser
+                                                        ? 'my-message'
+                                                        : 'received-message'
+                                                }`}
+                                                style={
+                                                    message.ownedByCurrentUser
+                                                        ? {
+                                                              width: 'auto',
+                                                              maxWidth: '70%',
+                                                              padding:
+                                                                  '10px 15px',
+                                                              wordBreak:
+                                                                  'break-word',
+                                                              borderRadius:
+                                                                  '10px',
+                                                              color: '#FFFFFF',
+                                                              margin: '15px 15px',
+                                                              backgroundColor:
+                                                                  '#B0D8BC',
+                                                              marginLeft:
+                                                                  'auto',
+                                                              boxShadow:
+                                                                  '1px 1px 2px 0px #DDDDDD',
+                                                          }
+                                                        : {
+                                                              width: 'auto',
+                                                              maxWidth: '70%',
+                                                              padding:
+                                                                  '10px 15px',
+                                                              wordBreak:
+                                                                  'break-word',
+                                                              borderRadius:
+                                                                  '10px',
+                                                              color: '#FFFFFF',
+                                                              margin: '15px 15px',
+                                                              backgroundColor:
+                                                                  '#1D1D42',
+                                                              marginRight:
+                                                                  'auto',
+                                                              boxShadow:
+                                                                  '-1px 1px 2px 0px #DDDDDD',
+                                                          }
+                                                }
+                                            >
+                                                <Text
+                                                    className="message_header"
+                                                    fontSize={'1.2em'}
+                                                    fontWeight={'medium'}
+                                                >
+                                                    {message.ownedByCurrentUser
+                                                        ? 'me:'
+                                                        : 'other:'}
+                                                </Text>
+                                                <Text
+                                                    className="message_content"
+                                                    fontSize={'1em'}
+                                                >
+                                                    {message.body}
+                                                </Text>
+                                                <Text
+                                                    pb={2}
+                                                    lineHeight={'0'}
+                                                    textAlign={'right'}
+                                                >
+                                                    {time}
+                                                </Text>
+                                            </li>
+                                        )
+                                    )}
+                                </ol>
+                            </Box>
+                            <Box className="typeContainer">
+                                <HStack
+                                    px={5}
+                                    py={4}
+                                    borderRadius={'px'}
+                                    bg={bg}
+                                    boxShadow={'0px 3px 3px 0px #BBBBBB'}
+                                    h={'7rem'}
+                                >
+                                    <Textarea
+                                        className="newMessage-input-field"
+                                        bg={'gray.400'}
+                                        overflow={'scroll'}
+                                        boxShadow={'0px 0px 2px 0px #DDDDDD'}
+                                        focusBorderColor={'none'}
+                                        border={'none'}
+                                        placeholder="Write message..."
+                                        value={newMessage}
+                                        onChange={handleNewMessageChange}
+                                        onKeyDown={(e) =>
+                                            e.code === 'Enter'
+                                                ? handleSendMessage
+                                                : // <></>
+                                                  console.log(e.code)
+                                        }
+                                    ></Textarea>
+                                    <div className="scrollbar" id="style-7">
+                                        <div className="force-overflow"></div>
+                                    </div>
+
+                                    <Button
+                                        className="send-message-button"
+                                        colorScheme={'teal'}
+                                        px={5}
+                                        borderRadius={'full'}
+                                        onClick={handleSendMessage}
+                                    >
+                                        Send
+                                    </Button>
+                                </HStack>
+                            </Box>
+                        </Box>
+                    </VStack>
+                </div>
+            </Box>
             {windowWidth > 850 ? <></> : <Dock />}
         </Box>
     )

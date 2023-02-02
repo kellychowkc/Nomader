@@ -6,6 +6,7 @@ import { Post } from './Forum'
 import { AuthState } from '../../redux/state'
 import { useSelector } from 'react-redux'
 import { addBrowseCount } from '../../api/user'
+import { title } from 'process'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -25,13 +26,10 @@ function HotPostList() {
                 )
             }
         )
-        setImage()
     }, [])
 
     function setImage() {
         postList.forEach((post: Post) => {
-            const time = post.created_at!.slice(0, 10)
-            post.created_at = time
             if (post.id) {
                 if (post.id % 3 == 0) {
                     post.image = `../../assets/successBackgroundMobile.jpg`
@@ -47,6 +45,9 @@ function HotPostList() {
             // const fileName = post.image
             // let path = `${REACT_APP_API_SERVER}/post/` + fileName
             // post.image = path
+            const time = post.created_at!.slice(0, 10)
+            post.created_at = time
+            console.log(post.created_at)
             const profileFileName = post.profile
             let profilePath =
                 `${REACT_APP_API_SERVER}/profile/` + profileFileName
@@ -55,41 +56,38 @@ function HotPostList() {
         })
     }
 
+    setImage()
     function browseCount(post_id: number) {
         const user_id = auth.id
         addBrowseCount(post_id, user_id as any as number)
     }
 
     return (
-        <>
+        <div className={styles.forumBody}>
             {postList.map((post) => (
                 <Box p={2} display={{ md: 'flex' }} key={post.id}>
                     <Box flexShrink={0}>
-                        <div>
-                            <div>
-                                {(post.id as any as number) % 2 == 0 ? (
-                                    <img
-                                        src={require(`../../assets/matchingBackground.jpg`)}
-                                        alt="interest"
-                                    ></img>
-                                ) : (
-                                    <img
-                                        src={require(`../../assets/successBackgroundMobile.jpg`)}
-                                        alt="interest"
-                                    ></img>
-                                )}
-                            </div>
-                        </div>
+                        {(post.id as any as number) % 2 == 0 ? (
+                            <img
+                                src={require(`../../assets/matchingBackground.jpg`)}
+                                alt="interest"
+                                className={styles.latestPostImage}
+                            ></img>
+                        ) : (
+                            <img
+                                src={require(`../../assets/successBackgroundMobile.jpg`)}
+                                alt="interest"
+                                className={styles.latestPostImage}
+                            ></img>
+                        )}
                     </Box>
-                    <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
+                    <Box
+                        mt={{ base: 4, md: 0 }}
+                        ml={{ md: 6 }}
+                        className={styles.postBox}
+                    >
                         <HStack>
-                            <Text
-                                fontWeight="bold"
-                                textTransform="uppercase"
-                                fontSize="lg"
-                                letterSpacing="wide"
-                                color="teal.600"
-                            >
+                            <Text className={styles.title} color="teal.600">
                                 {post.title}
                             </Text>
                         </HStack>
@@ -131,7 +129,7 @@ function HotPostList() {
                     </Box>
                 </Box>
             ))}
-        </>
+        </div>
     )
 }
 

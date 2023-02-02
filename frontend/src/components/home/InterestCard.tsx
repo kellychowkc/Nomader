@@ -27,10 +27,10 @@ export default function InterestCard(props: { data: InterestCardData }) {
     const assetLink = props.data.picture
     console.log(assetLink)
     return (
-        <Center py={5} mx={'10px'} w="auto">
+        <Center py={4} w="auto">
             <Box
                 role={'group'}
-                p={6}
+                p={5}
                 maxW={'400px'}
                 w={{ base: '50vw', sm: '45vw', md: '45vw' }}
                 boxShadow={'lg'}

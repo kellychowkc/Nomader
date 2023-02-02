@@ -134,25 +134,16 @@ const Home = () => {
             <Box className="bodyBox">
                 {windowWidth > 850 ? <SideMenu /> : <></>}
 
-                <VStack w="100%">
+                <VStack className="homeBox">
                     <Flex
                         className="greeting"
-                        w="80vw"
                         mb="0"
                         direction="column"
-                        justify="center"
                         align="center"
                     >
-                        <HStack
-                            w="100%"
-                            pt="15px"
-                            m="0"
-                            spacing={3}
-                            justify={{ base: 'space-around', lg: 'center' }}
-                        >
+                        <HStack className="greetingBox">
                             <VStack
                                 className="displayName"
-                                px="5px"
                                 mx="0"
                                 align="flex-start"
                             >
@@ -168,17 +159,12 @@ const Home = () => {
                                     </Text>
                                 </HStack>
                                 <HStack color="#B0D8BC" align={'baseline'}>
-                                    <Text
-                                        fontSize={{ base: '2em', lg: '1em' }}
-                                        fontWeight="bolder"
-                                        textTransform={'uppercase'}
-                                        whiteSpace={'break-spaces'}
-                                    >
+                                    <Text className="userName">
                                         {auth.username}
                                     </Text>
                                 </HStack>
                                 <Text
-                                    fontSize={{ base: '1em', lg: '1.2em' }}
+                                    fontSize={{ lg: '1.5em' }}
                                     fontWeight="medium"
                                     letterSpacing={'wide'}
                                     whiteSpace={'nowrap'}
@@ -186,35 +172,41 @@ const Home = () => {
                                     Where are you heading?
                                 </Text>
                             </VStack>
-                            <Box className="avatar" p="10px" mx="0">
-                                <Avatar
-                                    name={auth.username}
-                                    size={{ base: 'xl', lg: 'xl' }}
-                                    src={profilePic as any as string}
-                                    boxShadow={'0px 0px 6px #AAAAAA'}
-                                ></Avatar>
+                            <Box className="avatarBox">
+                                {windowWidth > 850 ? (
+                                    <Avatar
+                                        name={auth.username}
+                                        size={{ lg: '2xl' }}
+                                        src={profilePic as any as string}
+                                        boxShadow={'0px 0px 6px #AAAAAA'}
+                                    ></Avatar>
+                                ) : (
+                                    <Avatar
+                                        name={auth.username}
+                                        size={{ base: 'xl', lg: 'xl' }}
+                                        src={profilePic as any as string}
+                                        boxShadow={'0px 0px 6px #AAAAAA'}
+                                    ></Avatar>
+                                )}
                             </Box>
                         </HStack>
                     </Flex>
 
-                    <Flex
-                        className="Category"
-                        w="80vw"
-                        pt={'3%'}
-                        direction="column"
-                        justify="center"
-                        align="center"
-                    >
+                    <Flex className="category">
                         <HStack
-                            w="100%"
-                            maxW="container.lg"
-                            p="0"
-                            mb="1rem"
-                            justify="space-between"
+                            className="categoryBox"
+                            // w="100%"
+                            // maxW="container.lg"
+                            // p="0"
+                            // mb="1rem"
+                            // justify="space-between"
                         >
                             <HStack>
                                 <Text
-                                    fontSize={{ base: '1.5em', lg: '2.5em' }}
+                                    fontSize={{
+                                        base: '1.5em',
+                                        lg: '2.5em',
+                                    }}
                                     fontWeight="bold"
                                     letterSpacing={'wide'}
                                 >
@@ -224,13 +216,12 @@ const Home = () => {
                             </HStack>
                         </HStack>
 
-                        <HStack maxW="container.lg" className="buttonContainer">
+                        <HStack className="buttonContainer">
                             {categories.map((category: any, idx: number) => (
                                 <Button
                                     key={idx}
-                                    w="90%"
-                                    h="90%"
-                                    py={['3', '3', '3', '4', '4']}
+                                    w="100%"
+                                    h="100%"
                                     border="0"
                                     borderRadius="10px"
                                     justifyContent="center"
@@ -262,16 +253,9 @@ const Home = () => {
                             ))}
                         </HStack>
                     </Flex>
-                    <Flex
-                        className="Interest"
-                        w="80vw"
-                        direction="column"
-                        justify="center"
-                        align="center"
-                    >
+                    <Flex className="interestBox">
                         <HStack
                             w="100%"
-                            maxW="container.lg"
                             p="0"
                             mb="1rem"
                             justify="space-between"
@@ -295,17 +279,14 @@ const Home = () => {
 
                         <HStack
                             className="carousel"
-                            w={{ base: '97vw', lg: '98vw' }}
-                            p="0"
-                            mb="0"
-                            justify="center"
+                            justify="space-between"
                             align="center"
                             overflow={'visible'}
                         >
                             {windowWidth < 850 ? (
                                 <Swiper
                                     slidesPerView={2}
-                                    spaceBetween={20}
+                                    spaceBetween={50}
                                     pagination={{
                                         clickable: true,
                                     }}
@@ -314,7 +295,7 @@ const Home = () => {
                                 >
                                     {interestList.map(
                                         (item: InterestCardData, idx: any) => (
-                                            <SwiperSlide>
+                                            <SwiperSlide className="slide">
                                                 <InterestCard
                                                     key={idx}
                                                     data={item}
@@ -326,7 +307,7 @@ const Home = () => {
                             ) : (
                                 <Swiper
                                     slidesPerView={3}
-                                    spaceBetween={20}
+                                    spaceBetween={50}
                                     pagination={{
                                         clickable: true,
                                     }}

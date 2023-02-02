@@ -112,11 +112,10 @@ const EditProfile = () => {
 
     return (
         <div>
-            <Box w="auto" h="full">
-                <Nav />
-
+            <Nav />
+            <div className={styles.body}>
                 {windowWidth > 850 ? <SideMenu /> : <></>}
-                <VStack w="auto">
+                <VStack w="auto" className={styles.editBox}>
                     <Text
                         position={'relative'}
                         className={styles.bigTitle}
@@ -310,20 +309,7 @@ const EditProfile = () => {
                                             </InputGroup>
                                         </FormControl>
                                     </Box>
-                                </Flex>
-                                <Flex
-                                    w="100%"
-                                    wrap="wrap"
-                                    direction={{
-                                        base: 'row',
-                                        sm: 'column',
-                                        md: 'column',
-                                        lg: 'row',
-                                        xl: 'row',
-                                    }}
-                                    justify="space-evenly"
-                                >
-                                    {/* Remark */}
+
                                     <Box m={3}>
                                         <FormControl id="first_name">
                                             <FormLabel>First Name</FormLabel>
@@ -513,7 +499,9 @@ const EditProfile = () => {
                                                 id="information"
                                                 name="information"
                                                 minH="8rem"
-                                                w="85%"
+                                                className={
+                                                    styles.informationBox
+                                                }
                                                 placeholder={
                                                     profileList?.information
                                                 }
@@ -559,7 +547,7 @@ const EditProfile = () => {
                         </Stack>
                     </Box>
                 </VStack>
-            </Box>
+            </div>
             {windowWidth > 850 ? <></> : <Dock />}
         </div>
     )

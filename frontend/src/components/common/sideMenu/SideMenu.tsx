@@ -1,11 +1,4 @@
-import {
-    Box,
-    HStack,
-    VStack,
-    Flex,
-    useColorModeValue,
-    Icon,
-} from '@chakra-ui/react'
+import { Box, VStack, Flex, useColorModeValue, Icon } from '@chakra-ui/react'
 import { IconType } from 'react-icons/lib'
 import {
     MdOutlineChat,
@@ -35,31 +28,33 @@ function SideMenu() {
     const bg = useColorModeValue('gray.100', 'gray.900')
 
     return (
-        <Sidebar className={styles.box}>
-            <Menu>
+        <Sidebar width="13rem" min-width="10rem">
+            <Menu className={styles.box}>
                 {actions.map((action: Action, idx: number) => (
-                    <MenuItem className={styles.meunItem}>
-                        <Flex key={idx}>
-                            <text>{action.name}</text>
-                            <NavLink
-                                to={action.path}
-                                className={({ isActive }) =>
-                                    isActive ? 'active' : undefined
-                                }
-                                style={({ isActive }) =>
-                                    isActive
-                                        ? {
-                                              color: '#393939',
-                                          }
-                                        : { color: '#CCCCCC' }
-                                }
-                            >
+                    <MenuItem className={styles.menuItem}>
+                        <NavLink
+                            to={action.path}
+                            className={({ isActive }) =>
+                                isActive ? 'active' : undefined
+                            }
+                            style={({ isActive }) =>
+                                isActive
+                                    ? {
+                                          color: '#393939',
+                                      }
+                                    : { color: '#808080  ' }
+                            }
+                        >
+                            <Flex key={idx}>
+                                <text className={styles.title}>
+                                    {action.name}
+                                </text>
                                 <VStack justify="center" align="center">
                                     <Icon as={action.icon} h="35px" w="35px" />
                                     <Box className="bar"></Box>
                                 </VStack>
-                            </NavLink>
-                        </Flex>
+                            </Flex>
+                        </NavLink>
                     </MenuItem>
                 ))}
             </Menu>

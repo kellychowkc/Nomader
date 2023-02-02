@@ -49,35 +49,36 @@ function PostList() {
     }
 
     return (
-        <>
+        <div className={styles.forumBody}>
             {loading}
             {postList.map((post) => (
-                <Box p={2} display={{ md: 'flex' }} key={post.id}>
+                <Box
+                    p={2}
+                    display={{ md: 'flex' }}
+                    key={post.id}
+                    className={styles.postBigBox}
+                >
                     <Box flexShrink={0}>
-                        <div className={styles.imageBox}>
-                            <img
-                                src={post.image}
-                                alt="interest"
-                                className={styles.latestPostImage}
-                            ></img>
-                        </div>
+                        <img
+                            src={post.image}
+                            alt="interest"
+                            className={styles.latestPostImage}
+                        ></img>
                     </Box>
-                    <Box mt={{ base: 4, md: 0 }} ml={{ md: 6 }}>
+                    <Box
+                        mt={{ base: 4, md: 0 }}
+                        ml={{ md: 6 }}
+                        className={styles.postBox}
+                    >
                         <HStack>
-                            <Text
-                                fontWeight="bold"
-                                textTransform="uppercase"
-                                fontSize="lg"
-                                letterSpacing="wide"
-                                color="teal.600"
-                            >
+                            <Text className={styles.title} color="teal.600">
                                 {post.title}
                             </Text>
                         </HStack>
                         <Box className={styles.infoBox}>
                             <div className={styles.usernameBox}>
                                 <Avatar
-                                    name="profile"
+                                    name={post.username}
                                     src={post.profile}
                                     className={styles.profile}
                                 />
@@ -112,7 +113,7 @@ function PostList() {
                     </Box>
                 </Box>
             ))}
-        </>
+        </div>
     )
 }
 

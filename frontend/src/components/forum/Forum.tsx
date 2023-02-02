@@ -28,7 +28,6 @@ import PostList from './LastestPostList'
 import HotPostList from './HotPost'
 import SideMenu from '../common/sideMenu/SideMenu'
 import { AddIcon } from '@chakra-ui/icons'
-import FloatingActionButtons from './FloatingActionButton'
 
 const { REACT_APP_API_SERVER } = process.env
 
@@ -53,7 +52,7 @@ const Forum = () => {
             <Nav />
             <Box className="bodyBox">
                 {windowWidth > 850 ? <SideMenu /> : <></>}
-                <VStack w="auto" margin={6}>
+                <VStack className={styles.forumBox}>
                     <div className={styles.head}>
                         <Text
                             as="h1"
@@ -80,7 +79,7 @@ const Forum = () => {
                                         }}
                                         paddingTop="20px"
                                         spacing="2"
-                                        alignItems="flex-start"
+                                        alignItems="center"
                                     >
                                         <HotPostList />
                                     </VStack>
@@ -94,7 +93,7 @@ const Forum = () => {
                                         }}
                                         paddingTop="20px"
                                         spacing="2"
-                                        alignItems="flex-start"
+                                        alignItems="center"
                                     >
                                         <PostList />
                                     </VStack>

@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.forumBody {
+    min-width: 60rem;
+    max-width: 120rem;
+    margin: 0 1rem;
+    padding: 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.forumBox {
+    width: 90%;
+    margin: 2rem;
+}
+.postBigBox {
+    display: flex;
+    justify-content: space-between;
+}
 .container {
     color: #1d1d42;
     overflow: hidden;
@@ -19,6 +37,13 @@
     font-family: 'Roboto', sans-serif;
     color: #1d1d42;
     text-align: center;
+}
+
+.title {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: normal;
+    font-size: 2rem;
 }
 
 .titleBox {
@@ -137,7 +162,8 @@
     align-items: center;
 }
 .profile {
-    margin: 5px 1rem 0;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
 }
 
 .dateBox {
@@ -153,6 +179,7 @@ summary {
 
 .contentBox {
     width: 30rem;
+    margin-top: 1rem;
 }
 
 /* attractions */
@@ -196,17 +223,31 @@ summary {
     color: #1d1d42;
 }
 
-.imageBox {
-    max-width: 60rem;
-    max-height: 60rem;
+.postBox {
+    width: 39rem;
+    min-height: 50rem;
 }
 
 .latestPostImage {
-    max-width: 30rem;
-    max-height: 40rem;
+    min-width: 40rem;
+    max-width: 40rem;
+    min-height: 40rem;
+    max-height: 60rem;
 }
 
 @media only screen and (max-width: 850px) {
+    .postBigBox {
+        display: block;
+    }
+    .forumBody {
+        min-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .forumBox {
+        width: 90%;
+        margin: 1.2rem;
+    }
     .btnBox {
         position: fixed;
         bottom: 90px;
@@ -214,14 +255,19 @@ summary {
         margin-top: 1px;
     }
 
-    .imageBox {
-        max-width: 10rem;
-        max-height: 20rem;
+    .latestPostImage {
+        min-width: 20rem;
+        max-width: 20rem;
+        max-height: 40rem;
+        min-height: 20rem;
     }
 
-    .latestPostImage {
+    .postBox {
+        min-width: 20rem;
         max-width: 20rem;
-        max-height: 20rem;
+        min-height: 5rem;
+        max-height: 30rem;
+        margin-bottom: 0.5rem;
     }
     .body {
         max-width: 100%;
@@ -256,5 +302,12 @@ summary {
     }
     .contentBox {
         width: 20rem;
+    }
+
+    .title {
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: normal;
+        font-size: 1.5rem;
     }
 }

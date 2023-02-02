@@ -155,103 +155,112 @@ function Matching() {
     }
 
     return (
-        <div className={styles.matchingBody}>
+        <div>
             <Nav />
-            <Box className="bodyBox">
+            <div className={styles.matchingBody}>
                 {windowWidth > 850 ? <SideMenu /> : <></>}
-                {!profileList ? <Loading /> : <></>}
-                <div className={styles.profileContainer}>
-                    <div className={styles.flexContainer}>
-                        {profileDefault ? (
-                            <img
-                                src={require(`../../assets/profile2.jpg`)}
-                                alt="profile pic"
-                                className={styles.profilePic}
-                            ></img>
-                        ) : (
-                            <img
-                                src={require(`../../assets/profile.1.jpg`)}
-                                alt="profile pic"
-                                className={styles.profilePic}
-                            ></img>
-                        )}
-                    </div>
 
-                    <div className={styles.profileInfo}>
-                        <div className={styles.infoBox}>
-                            <h1 className={styles.title}>
-                                {profile?.username}
-                            </h1>
+                {!profileList ? (
+                    <Loading />
+                ) : (
+                    <div className={styles.profileContainer}>
+                        <div className={styles.flexContainer}>
+                            {profileDefault ? (
+                                <img
+                                    src={require(`../../assets/profile2.jpg`)}
+                                    alt="profile pic"
+                                    className={styles.profilePic}
+                                ></img>
+                            ) : (
+                                <img
+                                    src={require(`../../assets/profile.1.jpg`)}
+                                    alt="profile pic"
+                                    className={styles.profilePic}
+                                ></img>
+                            )}
                         </div>
-                        <div className={styles.infoBox}>
-                            <h2 className={styles.subtitle}>
-                                From: {profile?.country}
-                            </h2>
-                        </div>
-                        <div className={styles.infoBox}>
-                            <h2 className={styles.subtitle}>
-                                Job: {profile?.jobTitle}
-                            </h2>
-                        </div>
-                        <hr></hr>
 
-                        <h3 className={styles.bio}> {profile?.information}</h3>
+                        <div className={styles.profileInfo}>
+                            <div className={styles.infoBox}>
+                                <h1 className={styles.title}>
+                                    {profile?.username}
+                                </h1>
+                            </div>
+                            <div className={styles.infoBox}>
+                                <h2 className={styles.subtitle}>
+                                    From: {profile?.country}
+                                </h2>
+                            </div>
+                            <div className={styles.infoBox}>
+                                <h2 className={styles.subtitle}>
+                                    Job: {profile?.jobTitle}
+                                </h2>
+                            </div>
+                            <hr></hr>
 
-                        <hr></hr>
+                            <h3 className={styles.bio}>
+                                {' '}
+                                {profile?.information}
+                            </h3>
 
-                        <h3 className={styles.subtitle}> Interests </h3>
-                        <div className={styles.interestBox}>
-                            <Wrap spacingX={1}>
-                                {profile?.interests.map((interest) => (
-                                    <WrapItem
-                                        key={interest}
-                                        className={styles.interestContainer}
-                                    >
-                                        <h3 className={styles.interestTitle}>
-                                            {interest}
-                                        </h3>
-                                        <Center
-                                            w="80px"
-                                            h="80px"
-                                            overflow="hidden"
+                            <hr></hr>
+
+                            <h3 className={styles.subtitle}> Interests </h3>
+                            <div className={styles.interestBox}>
+                                <Wrap spacingX={1}>
+                                    {profile?.interests.map((interest) => (
+                                        <WrapItem
+                                            key={interest}
+                                            className={styles.interestContainer}
                                         >
-                                            <img
-                                                src={require(`../../assets/interests/${interest}.png`)}
-                                                alt="interest"
-                                            ></img>
-                                        </Center>
-                                    </WrapItem>
-                                ))}
-                            </Wrap>
+                                            <h3
+                                                className={styles.interestTitle}
+                                            >
+                                                {interest}
+                                            </h3>
+                                            <Center
+                                                w="80px"
+                                                h="80px"
+                                                overflow="hidden"
+                                            >
+                                                <img
+                                                    src={require(`../../assets/interests/${interest}.png`)}
+                                                    alt="interest"
+                                                ></img>
+                                            </Center>
+                                        </WrapItem>
+                                    ))}
+                                </Wrap>
+                            </div>
                         </div>
+                        <Box className={styles.btnBox}>
+                            <Button
+                                className={styles.crossbtn}
+                                onClick={unliked}
+                                borderRadius="full"
+                                bgImage={
+                                    'linear-gradient(to right,#569ee6,  #b0d8bc)'
+                                }
+                                boxSize={'4em'}
+                            >
+                                <Icon as={CloseIcon} boxSize={'1.5em'} />
+                            </Button>
+                            <Button
+                                className={styles.tickbtn}
+                                onClick={liked}
+                                borderRadius="full"
+                                bgImage={
+                                    'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
+                                }
+                                boxSize={'4em'}
+                            >
+                                <Icon as={CheckIcon} boxSize={'2em'} />
+                            </Button>
+                        </Box>
                     </div>
-                    <Box className={styles.btnBox}>
-                        <Button
-                            className={styles.crossbtn}
-                            onClick={unliked}
-                            borderRadius="full"
-                            bgImage={
-                                'linear-gradient(to right,#569ee6,  #b0d8bc)'
-                            }
-                            boxSize={'4em'}
-                        >
-                            <Icon as={CloseIcon} boxSize={'1.5em'} />
-                        </Button>
-                        <Button
-                            className={styles.tickbtn}
-                            onClick={liked}
-                            borderRadius="full"
-                            bgImage={
-                                'linear-gradient(to right,#569ee6, #67d6f8, #b0d8bc)'
-                            }
-                            boxSize={'4em'}
-                        >
-                            <Icon as={CheckIcon} boxSize={'2em'} />
-                        </Button>
-                    </Box>
-                    {windowWidth > 850 ? <></> : <Dock />}
-                </div>
-            </Box>
+                )}
+            </div>
+            {windowWidth > 850 ? <></> : <Dock />}
         </div>
     )
 }
