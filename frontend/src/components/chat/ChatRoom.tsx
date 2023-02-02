@@ -13,15 +13,6 @@ import {
     HStack,
     Icon,
     Avatar,
-    Flex,
-    Stack,
-    Menu,
-    LinkBox,
-    LinkOverlay,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
     useColorMode,
 } from '@chakra-ui/react'
 import Dock from '../common/dock/Dock'
@@ -157,6 +148,7 @@ const ChatRoom = (props: Props) => {
         }
         if (messages[messages.length - 1]) {
             const content = messages[messages.length - 1].body
+            console.log('sent', content)
             insertMessage(
                 auth.id as any as number,
                 userId,
@@ -168,7 +160,7 @@ const ChatRoom = (props: Props) => {
         } else {
             return
         }
-    })
+    }, [messages])
 
     return (
         <Box
