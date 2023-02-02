@@ -1,6 +1,4 @@
 import styles from './Interest.module.css'
-import { Button, Icon } from '@chakra-ui/react'
-import { CheckIcon } from '@chakra-ui/icons'
 
 import InterestItem from './InterestItem'
 
@@ -41,7 +39,7 @@ function MatchingBlock() {
                         )}
 
                         <h6 className={styles.blockTitle}>
-                            Let 's chat and enjoy your time with them first!
+                            Let's explore other function!
                         </h6>
                         <h6 className={styles.blockTitle}>(つ´ω`)つ</h6>
                     </div>

@@ -29,6 +29,7 @@ const Matching = React.lazy(() => import('./components/matching/Matching'))
 const MatchingBlock = React.lazy(
     () => import('./components/matching/MatchingBlock')
 )
+
 const NewPost = React.lazy(() => import('./components/forum/NewPost'))
 const MatchingIndex = React.lazy(
     () => import('./components/matching/MatchingIndex')
@@ -78,6 +79,7 @@ function App() {
                                 path="matchingBlock"
                                 element={<MatchingBlock />}
                             />
+
                             <Route path="newPost" element={<NewPost />} />
                             <Route path="friends" element={<Friends />} />
                             <Route path="profile" element={<Profile />} />

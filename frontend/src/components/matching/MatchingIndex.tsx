@@ -15,7 +15,8 @@ function MatchingIndex() {
     async function checkMatching() {
         let check = true
         await checkMatch(auth.id as any as number).then((data: any) => {
-            if (data.result >= 5) {
+            console.log(data.result)
+            if (data.result >= 3) {
                 check = false
                 return
             } else {
@@ -27,11 +28,12 @@ function MatchingIndex() {
                 if (data.success && check) {
                     navigate('/matching')
                 }
+                if (!data.success) {
+                    navigate('/interest')
+                }
                 if (!check) {
                     navigate('/matchingBlock')
                 }
-                // navigate('/interest')
-                console.log('fail')
             }
         )
     }

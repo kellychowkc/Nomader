@@ -50,6 +50,28 @@ function Matching() {
                 const userList = data.message.user
                 console.log('check', userList)
                 setLikedUser(data.message.waitMatchNum)
+
+                userList?.forEach((user: OtherUserProfile) => {
+                    const interestList = user.interests
+                    console.log(interestList)
+                    for (let i = 0; i < interestList.length; i++) {
+                        interestList[i] = interestList[i].replace(/\s+/g, '')
+                    }
+                    if (user.profile === '') {
+                        return
+                    } else {
+                        const fileName = user.profile
+                        let path = `${REACT_APP_API_SERVER}/profile/` + fileName
+                        user.profile = path
+                    }
+
+                    if (user.gender === 'Female') {
+                        setProfileDefault(true)
+                    } else {
+                        setProfileDefault(false)
+                    }
+                })
+
                 setProfileList(
                     userList.map((user: OtherUserProfile) => ({
                         ...user,
@@ -75,38 +97,12 @@ function Matching() {
         }
     }, [])
 
-    profileList?.forEach((user: OtherUserProfile) => {
-        const interestList = user.interests
-        console.log(interestList)
-        for (let i = 0; i < interestList.length; i++) {
-            interestList[i] = interestList[i].replace(/\s+/g, '')
-        }
-        if (user.profile === '') {
-            return
-        } else {
-            const fileName = user.profile
-            let path = `${REACT_APP_API_SERVER}/profile/` + fileName
-            user.profile = path
-        }
-
-        if (user.gender === 'Female') {
-            setProfileDefault(true)
-        } else {
-            setProfileDefault(false)
-        }
-    })
-
     function unliked() {
         unlikedUserAction(userId!, profile!.id).then((data: any) => {
             console.log(data)
         })
         if (profileList!.length === 1) {
-            Swal.fire({
-                title: 'Oops...',
-                text: `Don't be greedy. You can only read 5 profiles each time`,
-                icon: 'warning',
-            })
-            navigate('/chat')
+            navigate('/matchingBlock')
         }
 
         profileList!.shift()
@@ -120,12 +116,7 @@ function Matching() {
         })
         console.log(userId, profile?.id)
         if (profileList!.length === 1) {
-            Swal.fire({
-                title: 'Oops...',
-                text: `Don't be greedy. You can only read 5 profiles each time`,
-                icon: 'warning',
-            })
-            navigate('/chat')
+            navigate('/matchingBlock')
         }
         if (likedUser === 2 || likedUser === 1) {
             likedUserId?.forEach((id) => {
