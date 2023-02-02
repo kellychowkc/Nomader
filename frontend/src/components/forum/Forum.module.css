@@ -133,13 +133,13 @@
 .btnBox {
     position: fixed;
     bottom: 90px;
-    right: 10px;
+    right: 20px;
     margin-top: 1px;
 }
 
 .addbtn {
-    height: 100%;
-    width: 70%;
+    height: 4rem;
+    width: 4rem;
     transition: all 0.5s ease;
     color: #ffffff;
     background-color: #aae5bb;
@@ -311,7 +311,13 @@ summary {
         font-size: 1.5rem;
     }
     .addbtn {
-        height: 100%;
-        width: 50%;
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+    .btnBox {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        margin-top: 1px;
     }
 }

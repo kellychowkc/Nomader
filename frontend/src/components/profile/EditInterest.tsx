@@ -78,8 +78,12 @@ function EditInterest() {
             )
             editUserInterest(submitInterestList, user_id as any as number).then(
                 (data) => {
-                    console.log(data)
-                    navigate('/editProfile')
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Your interests are updated!',
+                        icon: 'success',
+                    })
+                    navigate('/profile')
                 }
             )
         }
