@@ -18,7 +18,7 @@ export default function CallToAction() {
     const navigate = useNavigate()
 
     return (
-        <Container w="90vw" centerContent>
+        <Container w="100vw" centerContent>
             <Stack
                 w="85vw"
                 align={'center'}

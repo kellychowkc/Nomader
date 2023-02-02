@@ -11,8 +11,7 @@ function Landing() {
         <Box w="auto" h="full">
             <Nav />
             <Box display={'flex'}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
-                <VStack w="auto">
+                <VStack w="100%">
                     <Flex w="90vw" mb={1} justify="center">
                         <CallToAction />
                     </Flex>

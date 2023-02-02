@@ -86,7 +86,6 @@ export default function Nav() {
                     justifyContent={'space-between'}
                 >
                     <HStack
-                        paddingLeft={'4rem'}
                         w={'full'}
                         justifyContent={'center'}
                         alignItems={'center'}
