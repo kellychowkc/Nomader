@@ -1,19 +1,10 @@
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
-import {
-    Box,
-    Button,
-    Center,
-    Icon,
-    Image,
-    Wrap,
-    WrapItem,
-} from '@chakra-ui/react'
+import { CheckIcon, CloseIcon, StarIcon } from '@chakra-ui/icons'
+import { Box, Button, Center, Icon, Wrap, WrapItem } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import {
-    checkMatch,
     fetchOtherUserProfile,
     likedUserAction,
     openChat,
@@ -22,7 +13,7 @@ import {
 
 import type { OtherUserProfile } from '../../api/friend'
 
-import { AuthState, UserInfoState } from '../../redux/state'
+import { AuthState } from '../../redux/state'
 import Dock from '../common/dock/Dock'
 import styles from './Matching.module.css'
 import Nav from '../common/navBar/NavBar'
@@ -39,6 +30,7 @@ function Matching() {
     const [likedUser, setLikedUser] = useState(2)
     const [likedUserId, setLikedUserId] = useState<number[]>()
     const [profileDefault, setProfileDefault] = useState(true)
+    const [applyMatch, setApplyMatch] = useState<Boolean[]>()
 
     const navigate = useNavigate()
 
@@ -85,10 +77,13 @@ function Matching() {
                     likedUserIdList.push(userList[0].id)
                     likedUserIdList.push(userList[1].id)
                     setLikedUserId(likedUserIdList)
+                    setApplyMatch([true, true])
                 } else if (likedUser === 1) {
                     likedUserIdList.push(userList[0].id)
                     setLikedUserId(likedUserIdList)
+                    setApplyMatch([true])
                 } else {
+                    setApplyMatch([])
                     return
                 }
             })
@@ -104,6 +99,10 @@ function Matching() {
         if (profileList!.length === 1) {
             navigate('/matchingBlock')
         }
+        if (applyMatch) {
+            applyMatch.shift()
+            console.log(applyMatch)
+        }
 
         profileList!.shift()
         setProfile(profileList![0])
@@ -114,6 +113,10 @@ function Matching() {
         likedUserAction(userId!, profile!.id).then((data: any) => {
             console.log(data)
         })
+        if (applyMatch) {
+            applyMatch.shift()
+            console.log(applyMatch)
+        }
         console.log(userId, profile?.id)
         if (profileList!.length === 1) {
             navigate('/matchingBlock')
@@ -173,7 +176,15 @@ function Matching() {
                                 <h1 className={styles.title}>
                                     {profile?.username}
                                 </h1>
+                                {applyMatch?.length ? (
+                                    <h2 className={styles.lovelytitle}>
+                                        picked you💕
+                                    </h2>
+                                ) : (
+                                    <></>
+                                )}
                             </div>
+
                             <div className={styles.infoBox}>
                                 <h2 className={styles.subtitle}>
                                     From: {profile?.country}
