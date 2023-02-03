@@ -2,23 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from './Forum.module.css'
 import {
     Box,
-    Heading,
-    Image,
     Text,
-    HStack,
-    Tag,
-    SpaceProps,
     useColorModeValue,
     VStack,
-    Flex,
     Tabs,
     TabList,
     TabPanels,
     Tab,
     TabPanel,
     Icon,
-    FormControl,
-    Input,
     Button,
 } from '@chakra-ui/react'
 import Nav from '../common/navBar/NavBar'

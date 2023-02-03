@@ -3,7 +3,7 @@ import Swal from 'sweetalert2'
 import { Box, Button, FormControl, Icon, Input } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useFormik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Dock from '../common/dock/Dock'
 import styles from './Forum.module.css'
 import { newPost } from '../../api/user'
@@ -46,6 +46,13 @@ function NewPost() {
                             title: 'Congrats!',
                             text: 'New post is already posted!',
                             icon: 'success',
+                        })
+                    }
+                    if (!res) {
+                        Swal.fire({
+                            title: 'Failed',
+                            text: 'Fail to post',
+                            icon: 'error',
                         })
                     }
                 })

@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+.bodyBox {
+    display: flex;
+    justify-content: row;
+}
+
 .forumBody {
     min-width: 60rem;
     max-width: 120rem;
@@ -138,8 +143,8 @@
 }
 
 .addbtn {
-    height: 4rem;
-    width: 4rem;
+    height: 2.5rem;
+    width: 2rem;
     transition: all 0.5s ease;
     color: #ffffff;
     background-color: #aae5bb;

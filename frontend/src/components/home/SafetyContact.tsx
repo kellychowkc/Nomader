@@ -4,13 +4,11 @@ import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router'
 import Nav from '../common/navBar/NavBar'
 import Dock from '../common/dock/Dock'
-import { fetchCountry, fetchRate } from '../../api/user'
+import { fetchCountry } from '../../api/user'
 import { useEffect, useState } from 'react'
-import CountryList, { CountryItem } from '../auth/CountryList'
+import { CountryItem } from '../auth/CountryList'
 import SideMenu from '../common/sideMenu/SideMenu'
 import { fetchJson } from '../../api/utils'
-import Dropdown from 'react-bootstrap/Dropdown'
-import DropdownButton from 'react-bootstrap/DropdownButton'
 
 interface Emergency {
     emergency_tel: string
