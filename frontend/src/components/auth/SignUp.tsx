@@ -208,8 +208,14 @@ function SignUp() {
                                                 name="gender"
                                                 onChange={formik.handleChange}
                                                 value={formik.values.gender}
-                                                placeholder={'Gender'}
                                             >
+                                                <option
+                                                    value=""
+                                                    disabled
+                                                    selected
+                                                >
+                                                    Gender
+                                                </option>
                                                 <option>Male</option>
                                                 <option>Female</option>
                                             </Select>
@@ -399,8 +405,10 @@ function SignUp() {
                                             name="job"
                                             onChange={formik.handleChange}
                                             value={formik.values.job}
-                                            placeholder={'Job'}
                                         >
+                                            <option value="" disabled selected>
+                                                Job
+                                            </option>
                                             <option value={1}>student</option>
                                             <option value={2}>slash</option>
                                             <option value={3}>designer</option>
@@ -434,7 +442,7 @@ function SignUp() {
                                         goBack()
                                     }}
                                 >
-                                    Return
+                                    Back
                                 </Button>
                                 <Button
                                     type="submit"
