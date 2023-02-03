@@ -46,13 +46,17 @@ function SideMenu() {
                             }
                         >
                             <Flex key={idx}>
-                                <text className={styles.title}>
-                                    {action.name}
-                                </text>
-                                <VStack justify="center" align="center">
+                                <VStack
+                                    justify="center"
+                                    align="center"
+                                    mr={'1rem'}
+                                >
                                     <Icon as={action.icon} h="35px" w="35px" />
                                     <Box className="bar"></Box>
                                 </VStack>
+                                <text className={styles.title}>
+                                    {action.name}
+                                </text>
                             </Flex>
                         </NavLink>
                     </MenuItem>

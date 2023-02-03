@@ -112,6 +112,7 @@ function NewPost() {
                             value={formik.values.content}
                             placeholder="I would like to share..."
                             className={styles.contents}
+                            maxLength={400}
                         />
                     </Box>
                 </FormControl>

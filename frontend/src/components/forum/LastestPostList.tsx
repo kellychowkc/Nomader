@@ -52,13 +52,8 @@ function PostList() {
         <div className={styles.forumBody}>
             {loading}
             {postList.map((post) => (
-                <Box
-                    p={2}
-                    display={{ md: 'flex' }}
-                    key={post.id}
-                    className={styles.postBigBox}
-                >
-                    <Box flexShrink={0}>
+                <Box p={2} key={post.id} className={styles.postBigBox}>
+                    <Box flexShrink={0} className={styles.imageBox}>
                         <img
                             src={post.image}
                             alt="interest"

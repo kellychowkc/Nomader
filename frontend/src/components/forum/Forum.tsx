@@ -42,7 +42,7 @@ const Forum = () => {
     return (
         <div>
             <Nav />
-            <Box className="bodyBox">
+            <div className={styles.bodyBox}>
                 {windowWidth > 850 ? <SideMenu /> : <></>}
                 <VStack className={styles.forumBox}>
                     <div className={styles.head}>
@@ -54,8 +54,8 @@ const Forum = () => {
                             Nomad Blog
                         </Text>
                     </div>
-                    <VStack w="auto">
-                        <Tabs isFitted>
+                    <VStack className={styles.blogContainer}>
+                        <Tabs isFitted className={styles.blogContainer}>
                             <TabList>
                                 <Tab>Hot</Tab>
                                 <Tab>Latest</Tab>
@@ -64,11 +64,7 @@ const Forum = () => {
                             <TabPanels>
                                 <TabPanel>
                                     <VStack
-                                        w={{
-                                            base: '90vw',
-                                            lg: '85vw',
-                                            xl: '75vw',
-                                        }}
+                                        className={styles.postList}
                                         paddingTop="20px"
                                         spacing="2"
                                         alignItems="center"
@@ -78,11 +74,7 @@ const Forum = () => {
                                 </TabPanel>
                                 <TabPanel>
                                     <VStack
-                                        w={{
-                                            base: '90vw',
-                                            lg: '85vw',
-                                            xl: '75vw',
-                                        }}
+                                        className={styles.postList}
                                         paddingTop="20px"
                                         spacing="2"
                                         alignItems="center"
@@ -103,12 +95,12 @@ const Forum = () => {
                                     navigate('/newPost')
                                 }}
                             >
-                                <Icon as={AddIcon} w={6} h={6} />
+                                <Icon as={AddIcon} w={6} h={6} p={1} />
                             </Button>
                         </Box>
                     </VStack>
                 </VStack>
-            </Box>
+            </div>
             {windowWidth > 850 ? <></> : <Dock />}
         </div>
     )

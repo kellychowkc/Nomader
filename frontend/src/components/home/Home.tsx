@@ -20,7 +20,7 @@ import {
 } from 'react-icons/md'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { FreeMode, Pagination } from 'swiper'
+import SwiperCore, { FreeMode, Pagination, Mousewheel } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/pagination'
@@ -102,6 +102,8 @@ const interestList: InterestCardData[] = [
         link: 'https://www.visitbritain.com/gb/en/england/central-england/oxford',
     },
 ]
+
+SwiperCore.use([Mousewheel, Pagination])
 
 const Home = () => {
     const [profilePic, setProfilePic] = React.useState<string>()
@@ -285,6 +287,7 @@ const Home = () => {
                         >
                             {windowWidth < 850 ? (
                                 <Swiper
+                                    mousewheel={true}
                                     slidesPerView={2}
                                     spaceBetween={50}
                                     pagination={{
@@ -311,6 +314,7 @@ const Home = () => {
                                     pagination={{
                                         clickable: true,
                                     }}
+                                    mousewheel={true}
                                     modules={[FreeMode, Pagination]}
                                     className="mySwiper"
                                 >

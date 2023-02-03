@@ -2,26 +2,34 @@
 
 .bodyBox {
     display: flex;
-    justify-content: row;
+    flex-direction: row;
+    width: auto;
 }
 
 .forumBody {
-    min-width: 60rem;
-    max-width: 120rem;
-    margin: 0 1rem;
-    padding: 0 2.5rem;
+    width: 100%;
+    padding: 0 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 .forumBox {
-    width: 90%;
-    margin: 2rem;
+    width: auto;
+    padding: 2rem;
+}
+
+.blogContainer {
+    width: 100%;
+}
+
+.postList {
+    width: 100%;
 }
 .postBigBox {
+    width: auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 .container {
     color: #1d1d42;
@@ -89,10 +97,14 @@
     width: 100%;
     height: 3rem;
 }
+.content {
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+}
 
 .contents {
-    padding-top: 1rem;
-    padding-left: 1rem;
+    padding: 1rem;
     width: 100%;
     height: 100%;
 }
@@ -143,6 +155,7 @@
 }
 
 .addbtn {
+    padding: 10px;
     height: 2.5rem;
     width: 2rem;
     transition: all 0.5s ease;
@@ -183,8 +196,10 @@ summary {
 }
 
 .contentBox {
-    width: 30rem;
+    min-width: 32em;
+    max-width: 32em;
     margin-top: 1rem;
+    height: auto;
 }
 
 /* attractions */
@@ -229,12 +244,13 @@ summary {
 }
 
 .postBox {
-    width: 39rem;
+    width: 100%;
+    height: 100%;
     min-height: 50rem;
 }
 
 .latestPostImage {
-    min-width: 40rem;
+    min-width: auto;
     max-width: 40rem;
     min-height: 40rem;
     max-height: 60rem;
