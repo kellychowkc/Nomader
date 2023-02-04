@@ -56,12 +56,6 @@ function Matching() {
                         let path = `${REACT_APP_API_SERVER}/profile/` + fileName
                         user.profile = path
                     }
-
-                    if (user.gender === 'Female') {
-                        setProfileDefault(true)
-                    } else {
-                        setProfileDefault(false)
-                    }
                 })
 
                 setProfileList(
@@ -144,6 +138,7 @@ function Matching() {
             setProfileDefault(!profileDefault)
         }
     }
+    console.log(profileDefault)
 
     return (
         <div>
@@ -158,13 +153,13 @@ function Matching() {
                         <div className={styles.flexContainer}>
                             {profileDefault ? (
                                 <img
-                                    src={require(`../../assets/profile2.jpg`)}
+                                    src={require(`../../assets/profile1.jpg`)}
                                     alt="profile pic"
                                     className={styles.profilePic}
                                 ></img>
                             ) : (
                                 <img
-                                    src={require(`../../assets/profile.1.jpg`)}
+                                    src={require(`../../assets/profile2.jpg`)}
                                     alt="profile pic"
                                     className={styles.profilePic}
                                 ></img>
