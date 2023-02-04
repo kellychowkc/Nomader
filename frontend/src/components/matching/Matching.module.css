@@ -165,8 +165,13 @@ hr {
 }
 
 .lovelytitle {
-    color: rgb(252, 146, 163);
+    font-size: 1rem;
+    background-color: rgba(252, 146, 164, 0.866);
+    color: #ffffff;
     margin-left: 0.5rem;
+    border-radius: 10px;
+    padding: 4px;
+    border: solid rgba(252, 146, 164, 0.791);
 }
 
 @media only screen and (max-width: 850px) {

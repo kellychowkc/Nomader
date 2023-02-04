@@ -177,9 +177,9 @@ function Matching() {
                                     {profile?.username}
                                 </h1>
                                 {applyMatch?.length ? (
-                                    <h2 className={styles.lovelytitle}>
-                                        picked you💕
-                                    </h2>
+                                    <div className={styles.lovelytitle}>
+                                        <p>Picked you💕</p>
+                                    </div>
                                 ) : (
                                     <></>
                                 )}
