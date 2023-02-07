@@ -43,7 +43,7 @@ const Forum = () => {
         <div>
             <Nav />
             <div className={styles.bodyBox}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <VStack className={styles.forumBox}>
                     <div className={styles.head}>
                         <Text

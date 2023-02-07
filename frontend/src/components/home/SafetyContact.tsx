@@ -53,7 +53,7 @@ function SafetyContact() {
         <div>
             <Nav />
             <div className={styles.body}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <div className={styles.container}>
                     <div className={styles.tab}>
                         {windowWidth > 850 ? (

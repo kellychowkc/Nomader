@@ -83,7 +83,7 @@ export default function ChatHome() {
         >
             <Nav />
             <div className={styles.body}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <VStack
                     w="98vw"
                     mt={6}

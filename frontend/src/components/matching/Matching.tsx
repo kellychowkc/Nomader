@@ -144,7 +144,7 @@ function Matching() {
         <div>
             <Nav />
             <div className={styles.matchingBody}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
 
                 {!profileList ? (
                     <Loading />

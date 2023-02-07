@@ -178,7 +178,7 @@ const ChatRoom = (props: Props) => {
                 boxShadow={'0px 1px 2px 0px #DDDDDD'}
                 className="body"
             >
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 &&<SideMenu />}
                 <div className="chatBox">
                     <HStack
                         px={4}

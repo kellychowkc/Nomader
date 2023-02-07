@@ -46,7 +46,7 @@ function Currency() {
     return (
         <div className={styles.body}>
             <Box className="bodyBox">
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <div className={styles.container}>
                     <div className={styles.tab}>
                         <button className={styles.backwardBtn} onClick={goBack}>

@@ -24,7 +24,7 @@ function MatchingBlock() {
             <Nav />
 
             <div className={styles.body}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <div className={styles.pageContainer}>
                     <div className={styles.blockTitleContainer}>
                         {windowWidth < 850 ? (

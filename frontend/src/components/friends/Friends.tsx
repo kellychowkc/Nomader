@@ -47,7 +47,7 @@ const Friends = () => {
             >
                 <Nav />
                 <Box className="bodyBox">
-                    {windowWidth > 850 ? <SideMenu /> : <></>}
+                    {windowWidth > 850 && <SideMenu />}
                     <Heading as="h1">Friends</Heading>
                     <p></p>
 

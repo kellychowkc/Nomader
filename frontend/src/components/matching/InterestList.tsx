@@ -89,7 +89,7 @@ function InterestList() {
             <Nav />
 
             <div className={styles.body}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <div className={styles.pageContainer}>
                     <div className={styles.titleContainer}>
                         <h1 className={styles.title}>Interests</h1>

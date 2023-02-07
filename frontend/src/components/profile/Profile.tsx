@@ -164,7 +164,7 @@ const Profile = () => {
             <Nav />
 
             <div className={styles.bodyBox}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <VStack className={styles.profileBox}>
                     <Text className={styles.bigTitle} color={color}>
                         Profile

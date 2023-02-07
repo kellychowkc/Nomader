@@ -114,7 +114,7 @@ const EditProfile = () => {
         <div>
             <Nav />
             <div className={styles.body}>
-                {windowWidth > 850 ? <SideMenu /> : <></>}
+                {windowWidth > 850 && <SideMenu />}
                 <VStack className={styles.editBox}>
                     <Text
                         position={'relative'}
